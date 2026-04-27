@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:15
+    container_name: incap-db
+    environment:
+      POSTGRES_USER: evershop
+      POSTGRES_PASSWORD: evershop_password
+      POSTGRES_DB: evershop
+    ports:
+      - "5435:5432"
+    volumes:
+      - incap-db-data:/var/lib/postgresql/data
+
+volumes:
+  incap-db-data:

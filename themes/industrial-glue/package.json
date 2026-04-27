@@ -1,0 +1,11 @@
+{
+  "name": "incap-theme",
+  "version": "1.0.0",
+  "description": "Industrial theme for Incap E-commerce",
+  "main": "index.js",
+  "author": "Antigravity",
+  "license": "MIT",
+  "evershop": {
+    "type": "theme"
+  }
+}

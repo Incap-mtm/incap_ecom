@@ -1,0 +1,10 @@
+node_modules/
+.env
+.evershop/
+dist/
+build/
+mock-preview/node_modules/
+mock-preview/dist/
+.DS_Store
+.npm
+*.log
