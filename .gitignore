@@ -3,6 +3,8 @@ node_modules/
 .evershop/
 dist/
 build/
+!extensions/**/dist/
+!themes/**/dist/
 mock-preview/node_modules/
 mock-preview/dist/
 .DS_Store
