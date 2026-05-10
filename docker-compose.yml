@@ -1,3 +1,7 @@
+# Desarrollo local — solo base de datos
+# La app corre con: npm run dev
+# Para producción en Railway, ver Dockerfile y railway.toml
+
 services:
   db:
     image: postgres:15
@@ -10,6 +14,25 @@ services:
       - "5435:5432"
     volumes:
       - incap-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U evershop"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Stack completo local (opcional — descomenta para probar producción)
+  # app:
+  #   build: .
+  #   container_name: incap-app
+  #   ports:
+  #     - "3000:3000"
+  #   env_file: .env
+  #   volumes:
+  #     - incap-media:/app/media   # En Railway: Volume montado en /app/media
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
 
 volumes:
   incap-db-data:
+  incap-media:     # Local: named volume | Railway: Volume persistente montado en /app/media

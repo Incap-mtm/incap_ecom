@@ -1,44 +1,62 @@
 import React from 'react';
 
+const WHATSAPP_NUMBER = '5491112345678'; // Cambiar por el número real
+
 export default function Hero() {
+  const waMessage = encodeURIComponent('Hola INCAP! Quiero solicitar una auditoría técnica en planta.');
+
   return (
-    <div className="relative bg-slate-900 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="relative z-10 pb-8 bg-slate-900 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
-          <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-            <div className="sm:text-center lg:text-left">
-              <h1 className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
-                <span className="block xl:inline">Soluciones de pegado</span>{' '}
-                <span className="block text-amber-400 xl:inline">Ultra Resistentes</span>
-              </h1>
-              <p className="mt-3 text-base text-slate-300 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                Fabricamos el futuro de la industria con adhesivos diseñados para los retos más exigentes. Desde construcción pesada hasta manualidades de precisión.
-              </p>
-              <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-                <div className="rounded-md shadow">
-                  <a href="/shop" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-slate-900 bg-amber-400 hover:bg-amber-500 md:py-4 md:text-lg md:px-10 transition-all duration-300 transform hover:scale-105">
-                    Ver Catálogo
-                  </a>
-                </div>
-                <div className="mt-3 sm:mt-0 sm:ml-3">
-                  <a href="/contact" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-slate-800 hover:bg-slate-700 md:py-4 md:text-lg md:px-10 transition-all duration-300">
-                    Asesoría Técnica
-                  </a>
-                </div>
-              </div>
-            </div>
-          </main>
+    <section className="relative bg-[#181B1C] overflow-hidden min-h-[600px] flex items-center">
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <img
+          src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&q=80&w=2070"
+          alt="Producción industrial INCAP"
+          className="w-full h-full object-cover opacity-30"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#181B1C] via-[#181B1C]/80 to-transparent" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+        <div className="max-w-2xl">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 bg-[#2A4899]/20 border border-[#2A4899]/40 rounded-full px-4 py-1.5 mb-6">
+            <span className="w-2 h-2 rounded-full bg-[#85C639] animate-pulse" />
+            <span className="text-[#85C639] text-sm font-medium tracking-wide">+56 años respaldando la industria colombiana</span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight" style={{ fontFamily: 'Sora, sans-serif' }}>
+            La química exacta<br />
+            <span className="text-[#85C639]">detrás de las marcas</span><br />
+            que construyen país.
+          </h1>
+
+          <p className="mt-6 text-lg text-slate-300 leading-relaxed max-w-xl">
+            Más que adhesivos, somos el respaldo técnico que garantiza la estructura de tus muebles, el confort de tus colchones y la durabilidad de tu calzado.
+          </p>
+
+          <div className="mt-8 flex flex-col sm:flex-row gap-4">
+            <a
+              href="/catalog"
+              className="inline-flex items-center justify-center px-8 py-4 bg-[#2A4899] hover:bg-[#1e3a7a] text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-[#2A4899]/30"
+            >
+              Explorar Soluciones por Industria
+            </a>
+            <a
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${waMessage}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-8 py-4 border-2 border-white/30 hover:border-white text-white font-semibold rounded-lg transition-all duration-300 backdrop-blur-sm"
+            >
+              Solicitar Auditoría Técnica en Planta
+            </a>
+          </div>
         </div>
       </div>
-      <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-        <img
-          className="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full"
-          src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&q=80&w=2070"
-          alt="Industrial production"
-        />
-        <div className="absolute inset-0 bg-gradient-to-l from-transparent to-slate-900 opacity-60"></div>
-      </div>
-    </div>
+
+      {/* Decorative accent line */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#2A4899] via-[#85C639] to-[#2A4899]" />
+    </section>
   );
 }
 
