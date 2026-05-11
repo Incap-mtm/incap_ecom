@@ -5,8 +5,8 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
+RUN mkdir -p public && ls -la
 RUN npm run build
-RUN mkdir -p public
 
 # ── Runtime ──────────────────────────────────────────────
 FROM node:20-alpine AS runner
