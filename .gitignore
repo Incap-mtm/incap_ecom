@@ -11,3 +11,8 @@ mock-preview/dist/
 .DS_Store
 .npm
 *.log
+ 
+*.png
+db-check.cjs
+test-*.js
+evershop_import.csv

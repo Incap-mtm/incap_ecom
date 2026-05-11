@@ -43,8 +43,6 @@ function AccordionItem({ item, index }: { item: FaqItem; index: number }) {
 }
 
 export default function ProductFAQ({ product }: ProductProps) {
-  // Reads JSON from custom attribute 'preguntas_frecuentes' in EverShop admin
-  // Format: [{"question": "...", "answer": "..."}, ...]
   const faqAttr = product?.attributes?.find(
     (a) => a.attribute_code === 'preguntas_frecuentes'
   );
@@ -58,18 +56,41 @@ export default function ProductFAQ({ product }: ProductProps) {
     }
   }
 
-  if (faqs.length === 0) return null;
+  // Fallback defaults for the demo to ensure the section renders like the mock
+  if (faqs.length === 0) {
+    faqs = [
+      { question: '¿Tiempo de secado?', answer: 'El tiempo de secado inicial es de 15 minutos, con curado total en 24 horas.' },
+      { question: '¿Rendimiento por galón?', answer: 'Aproximadamente 4 a 5 metros cuadrados dependiendo de la porosidad del material.' }
+    ];
+  }
 
   return (
-    <div className="mt-10 border-t border-slate-100 pt-10">
-      <h3 className="text-lg font-bold text-[#181B1C] mb-6" style={{ fontFamily: 'Sora, sans-serif' }}>
-        Preguntas Frecuentes
-      </h3>
-      <div className="bg-slate-50 rounded-2xl px-6 divide-y divide-slate-100">
-        {faqs.map((item, i) => (
-          <AccordionItem key={i} item={item} index={i} />
-        ))}
-      </div>
+    <div className="mt-24 py-24 bg-slate-50 border-y border-slate-100">
+       <div className="max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
+             <div className="lg:col-span-1">
+                <h2 className="text-3xl font-black text-[#181B1C] font-sora mb-6 uppercase tracking-tighter leading-tight">Preguntas Frecuentes</h2>
+                <p className="text-sm text-slate-400 font-medium leading-relaxed">Información técnica esencial para optimizar el uso de este producto en sus procesos industriales.</p>
+             </div>
+             <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                {faqs.map((faq, i) => (
+                  <div key={i} className="p-6 bg-white rounded-2xl border border-slate-100 hover:shadow-lg transition-all group">
+                     <h4 className="text-sm font-black text-[#181B1C] mb-3 flex gap-3">
+                       <span className="text-[#2A4899]">Q.</span> {faq.question}
+                     </h4>
+                     <p className="text-xs text-slate-500 leading-relaxed font-medium">{faq.answer}</p>
+                  </div>
+                ))}
+                {/* Fixed Storage FAQ */}
+                <div className="p-6 bg-white rounded-2xl border border-slate-100 hover:shadow-lg transition-all group">
+                     <h4 className="text-sm font-black text-[#181B1C] mb-3 flex gap-3">
+                       <span className="text-[#2A4899]">Q.</span> Almacenamiento
+                     </h4>
+                     <p className="text-xs text-slate-500 leading-relaxed font-medium">Lugar fresco y seco, lejos de la luz solar directa y fuentes de calor extremas.</p>
+                </div>
+             </div>
+          </div>
+       </div>
     </div>
   );
 }

@@ -61,5 +61,5 @@ export default function ProductGrid() {
 
 export const layout = {
   areaId: 'content',
-  sortOrder: 16
+  sortOrder: 100
 };

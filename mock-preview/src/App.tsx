@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { PRODUCTS } from './products';
 
 // --- Custom Hooks ---
 const useReveal = () => {
@@ -37,56 +38,56 @@ const INDUSTRIES_DATA = {
   madera: {
     id: 'madera',
     name: 'Madera y Muebles',
-    heroImage: 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&q=80&w=2070',
+    heroImage: '/images/Categoria_Maderas_Muebles_Seccion_Home.png',
+    icons: ['/images/Icono_Categoria_Madera_Muebles.svg', '/images/Icono_Categoria_Madera_Muebles_2.svg'],
     description: 'Soluciones adhesivas de alta ingeniería para la industria del mueble. De la ebanistería fina a la producción en serie.',
     applications: [
       { title: 'Ensamble Estructural', desc: 'Adhesivos PVA de alta resistencia para uniones madera-madera indestructibles.' },
       { title: 'Laminado Decorativo', desc: 'Sistemas de contacto para el pegue de láminas de alta presión y fórmicas.' },
       { title: 'Postformado Industrial', desc: 'Tecnología de aspersión para curvas perfectas.' }
-    ],
-    products: [
-      { id: 'pva-8000', name: 'PVA Industrial 8000', cat: 'Base Agua', feature: 'Secado Rápido', description: 'El adhesivo PVA más confiable para el sector maderero. Ideal para ensambles que requieren alta resistencia mecánica.', specs: ['Viscosidad: 4000-6000 cPs', 'Sólidos: 48%', 'Tiempo abierto: 15 min'], image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=600' },
-      { id: 'madefort', name: 'Madefort Contacto', cat: 'Solvente', feature: 'Alto Tack', description: 'Pegamento de contacto diseñado para carpintería de alta calidad y láminas decorativas.', specs: ['Resistencia al calor: 70°C', 'Aplicación: Brocha/Espátula', 'Color: Ámbar'], image: 'https://images.unsplash.com/photo-1544006659-f0b21f04cb1d?auto=format&fit=crop&q=80&w=600' },
-      { id: 'incaspray-m', name: 'Incaspray Madera', cat: 'Aspersión', feature: 'Gran Cobertura', description: 'Sistema de aspersión de alto rendimiento que reduce el consumo de adhesivo en un 30%.', specs: ['Consumo: 150g/m2', 'Secado: 2-3 min', 'No inflamable'], image: 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&q=80&w=600' }
     ]
   },
   colchones: {
     id: 'colchones',
     name: 'Colchones y Espumas',
-    heroImage: 'https://images.unsplash.com/photo-1631679706909-1844bbd07221?auto=format&fit=crop&q=80&w=2070',
+    heroImage: '/images/Colchones_Seccion_Home.png',
+    icons: ['/images/INCAP_Icono_colchones_Espumas.svg', '/images/INCAP_Icono_colchones_Espumas_2.svg'],
     description: 'Ingeniería para el descanso. Adhesivos que optimizan tu línea de producción y protegen la salud de tu equipo.',
     applications: [
       { title: 'Pegue de Espumas', desc: 'Adhesivos de alta adherencia inicial para unión de bloques.' },
       { title: 'Cierre de Colchoneta', desc: 'Sistemas que permiten el cierre inmediato.' },
       { title: 'Laminado de Capas', desc: 'Distribución uniforme para evitar bultos.' }
-    ],
-    products: [
-      { id: 'incafom-lt', name: 'Incafom LT', cat: 'Libre Tolueno', feature: 'No Tóxico', description: 'Adhesivo amigable con el operario. Elimina riesgos por inhalación de solventes.', specs: ['Libre de Tolueno: Sí', 'Color: Rojo', 'Tack inicial: Inmediato'], image: 'https://images.unsplash.com/photo-1631679706909-1844bbd07221?auto=format&fit=crop&q=80&w=600' },
-      { id: 'incafom-wb', name: 'Incafom WaterBase', cat: 'Base Agua', feature: 'Eco-Friendly', description: 'La evolución del pegue de espumas. 100% libre de VOCs.', specs: ['Ecológico: Sí', 'Base: Acrílica', 'Resistencia: Alta'], image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=600' },
-      { id: 'incaspray-e', name: 'Incaspray Espumas', cat: 'Aspersión', feature: 'Secado Instantáneo', description: 'Diseñado para líneas de producción continuas.', specs: ['Aplicación: Pistola', 'Presión: 30 PSI', 'Cobertura: Máxima'], image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=600' }
     ]
   },
   calzado: {
     id: 'calzado',
     name: 'Calzado y Marroquinería',
-    heroImage: 'https://images.unsplash.com/photo-1544006659-f0b21f04cb1d?auto=format&fit=crop&q=80&w=2070',
+    heroImage: '/images/Calzado_Marroquinera_Seccion_Home.png',
+    icons: ['/images/INCAP_Icono_Calzado y Marroquinera_2.svg', '/images/INCAP_Icono_Calzado y Marroquinera_2 (1).svg'],
     description: 'El estándar de las grandes fábricas. Un ecosistema completo para reducir garantías.',
     applications: [
       { title: 'Pegado de Suelas', desc: 'Sistemas de poliuretano y caucho.' },
       { title: 'Montado de Puntas', desc: 'Termoplásticos Tecnogi.' },
       { title: 'Aparado de Capellada', desc: 'Adhesivos de alta precisión.' }
-    ],
-    products: [
-      { id: 'jab-3000', name: 'JAB 3000', cat: 'Poliuretano', feature: 'Súper Fuerte', description: 'El líder indiscutible en el pegado de suelas.', specs: ['Activación Térmica: 70°C', 'Fuerza: >5kg/cm', 'Color: Cristal'], image: 'https://images.unsplash.com/photo-1544006659-f0b21f04cb1d?auto=format&fit=crop&q=80&w=600' },
-      { id: 'kenda', name: 'Kenda Farben Especial', cat: 'Químico Italiano', feature: 'Premium', description: 'Soluciones italianas para el acabado de cueros.', specs: ['Importado: Italia', 'Uso: Cueros Grasos', 'Brillo: Natural'], image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=600' },
-      { id: 'tecnogi', name: 'Tecnogi Reinforcements', cat: 'Termoplástico', feature: 'Memoria de Forma', description: 'Topes y contrafuertes con la mejor memoria.', specs: ['Espesor: 1.0 mm', 'Adherencia: Térmica', 'Origen: Italia'], image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=600' }
+    ]
+  },
+  hogar: {
+    id: 'hogar',
+    name: 'Hogar y Multiusos',
+    heroImage: '/images/Hogar_Multiusos_Seccion_Home.png',
+    icons: ['/images/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg', '/images/INCAP_Icono_Hogar_Manualidades_y_Multisuos_2.svg', '/images/INCAP_Icono_Hogar_Manualidades_y_Multisuos_3.svg'],
+    description: 'Soluciones versátiles para el día a día. Reparaciones rápidas y proyectos creativos con calidad industrial.',
+    applications: [
+      { title: 'Reparaciones del Hogar', desc: 'Pegado de maderas, cerámicas y plásticos.' },
+      { title: 'Manualidades y Hobby', desc: 'Adhesivos de precisión para proyectos creativos.' },
+      { title: 'Multiusos', desc: 'Fórmulas universales de alta adherencia.' }
     ]
   }
 };
 
 // --- Components ---
 
-const Header = ({ setPage }) => {
+const Header = ({ setPage, currentPage }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -96,294 +97,213 @@ const Header = ({ setPage }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const isDarkText = !scrolled && (currentPage === 'product-detail' || (currentPage !== 'home' && !INDUSTRIES_DATA[currentPage]?.heroImage));
+
   return (
-    <header className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'glass-header py-3 shadow-xl' : 'bg-transparent py-6'}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-lg py-3' : 'bg-transparent py-6'}`}>
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-12">
-            <button onClick={() => { setPage('home'); window.scrollTo(0,0); }} className="hover:opacity-80 transition-opacity">
-              <Logo />
-            </button>
-            <nav className="hidden lg:flex space-x-10 items-center">
-              <div className="relative group" onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
-                <button className="text-white hover:text-incap-green transition-colors text-sm font-bold uppercase tracking-widest font-sora flex items-center gap-2">
-                  Industrias
-                  <svg className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                  </svg>
-                </button>
-                <div className={`absolute top-full left-0 mt-0 w-64 bg-white rounded-b-2xl shadow-2xl overflow-hidden transition-all duration-300 border border-slate-100 ${isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-4'}`}>
-                  {Object.values(INDUSTRIES_DATA).map(ind => (
-                    <button key={ind.id} onClick={() => { setPage(ind.id); setIsOpen(false); window.scrollTo(0,0); }} className="w-full text-left px-8 py-5 hover:bg-slate-50 text-incap-black font-bold text-xs border-b border-slate-50 last:border-0 hover:text-incap-blue transition-all flex items-center justify-between group">
-                      {ind.name.toUpperCase()} <span className="text-slate-300 group-hover:translate-x-1 transition-transform">→</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <button onClick={() => { setPage('home'); setTimeout(() => document.getElementById('historia')?.scrollIntoView({behavior:'smooth'}), 100); }} className="text-white hover:text-incap-green transition-colors text-sm font-bold uppercase tracking-widest font-sora">Nosotros</button>
-              <a href="#" className="text-white hover:text-incap-green transition-colors text-sm font-bold uppercase tracking-widest font-sora">Catálogo</a>
-              <a href="#" className="text-white hover:text-incap-green transition-colors text-sm font-bold uppercase tracking-widest font-sora">Capacitación</a>
-            </nav>
+          <div className="flex items-center cursor-pointer" onClick={() => setPage('home')}>
+            <Logo color={scrolled || isDarkText ? "#003057" : "#FFFFFF"} />
           </div>
-          <button className="bg-incap-green text-incap-black px-8 py-3 rounded-full font-black text-xs uppercase tracking-widest hover:bg-white hover:scale-105 transition-all duration-300 shadow-lg glow-on-hover">
-            Cotizar Proyecto
-          </button>
+          
+          <div className="hidden md:flex items-center space-x-10">
+            {['madera', 'colchones', 'calzado', 'hogar'].map((id) => (
+              <button
+                key={id}
+                onClick={() => setPage(id)}
+                className={`text-[11px] font-black uppercase tracking-[0.3em] transition-all hover:text-incap-green ${scrolled || isDarkText ? 'text-incap-blue' : 'text-white'}`}
+              >
+                {INDUSTRIES_DATA[id].name.split(' ')[0]}
+              </button>
+            ))}
+            <button className={`px-6 py-2 rounded-full border-2 text-[10px] font-black uppercase tracking-widest transition-all hover:bg-incap-green hover:border-incap-green hover:text-incap-black ${scrolled || isDarkText ? 'border-incap-blue text-incap-blue' : 'border-white text-white'}`}>
+              Contacto
+            </button>
+          </div>
+
+          <div className="md:hidden">
+            <button onClick={() => setIsOpen(!isOpen)} className={scrolled || isDarkText ? 'text-incap-blue' : 'text-white'}>
+              <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
-    </header>
-  );
-};
-
-const ProductModal = ({ product, onClose }) => {
-  if (!product) return null;
-  const whatsappLink = `https://wa.me/573123786868?text=Hola,%20estoy%20interesado%20en%20el%20producto%20${encodeURIComponent(product.name)}`;
-
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-incap-black/90 backdrop-blur-md animate-fadeIn" onClick={onClose}></div>
-      <div className="bg-white w-full max-w-5xl rounded-[2.5rem] overflow-hidden shadow-2xl relative z-10 flex flex-col md:flex-row animate-scaleIn">
-        <button onClick={onClose} className="absolute top-8 right-8 z-20 bg-white/50 backdrop-blur-xl p-3 rounded-full hover:bg-incap-blue hover:text-white transition-all duration-300">
-           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
-        <div className="md:w-1/2 relative h-96 md:h-auto bg-slate-100 overflow-hidden">
-           <img src={product.image} className="w-full h-full object-cover" alt={product.name} />
-           <div className="absolute top-10 left-10"><span className="bg-incap-green text-incap-black px-5 py-2 rounded-full font-black text-[10px] uppercase tracking-[0.2em]">{product.cat}</span></div>
-        </div>
-        <div className="md:w-1/2 p-10 md:p-16 flex flex-col justify-between overflow-y-auto max-h-[90vh]">
-           <div className="reveal active">
-              <h2 className="text-4xl md:text-5xl font-black font-sora text-incap-black mb-6 uppercase tracking-tighter leading-[0.9]">{product.name}</h2>
-              <div className="text-incap-blue font-black text-xs mb-10 uppercase tracking-[0.3em] flex items-center gap-4"><span className="w-12 h-1 bg-incap-blue"></span> {product.feature}</div>
-              <p className="text-slate-500 text-lg font-inter leading-relaxed mb-12">{product.description}</p>
-              <div className="space-y-8 mb-12">
-                 <h4 className="font-black text-incap-black uppercase tracking-[0.2em] text-[10px]">Especificaciones Técnicas</h4>
-                 <ul className="grid grid-cols-1 gap-4">
-                    {product.specs.map((spec, i) => (
-                      <li key={i} className="flex items-center gap-4 text-slate-600 font-bold text-sm uppercase tracking-wide">
-                         <div className="w-6 h-6 rounded-full bg-incap-green/10 flex items-center justify-center"><svg className="w-3 h-3 text-incap-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7"></path></svg></div>
-                         {spec}
-                      </li>
-                    ))}
-                 </ul>
-              </div>
-           </div>
-           <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="w-full py-7 bg-incap-blue text-white rounded-2xl font-black text-xl hover:bg-incap-black transition-all flex items-center justify-center gap-4 group shadow-xl shadow-incap-blue/20">
-              <svg className="w-8 h-8 group-hover:rotate-12 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.232 3.483 8.413-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.308 1.654zm6.249-1.916c1.472.873 2.915 1.332 4.416 1.333 5.335 0 9.68-4.343 9.682-9.678.001-2.586-1.007-5.016-2.841-6.852-1.834-1.835-4.261-2.844-6.848-2.845-5.336 0-9.681 4.345-9.684 9.681-.001 1.705.443 3.371 1.285 4.83l-1.077 3.928 4.067-1.067zm12.332-11.968c-.274-.137-1.62-.8-1.87-.891-.251-.09-.433-.137-.617.137-.183.274-.71.891-.869 1.073-.159.183-.319.206-.593.069-.274-.137-1.155-.426-2.201-1.359-.813-.726-1.363-1.622-1.523-1.896-.159-.274-.017-.422.12-.559.123-.123.274-.32.411-.479.137-.16.183-.274.274-.457.092-.183.046-.343-.023-.479-.069-.137-.617-1.486-.845-2.035-.221-.532-.444-.459-.617-.468-.159-.009-.342-.01-.525-.01s-.479.069-.731.343c-.251.274-.959.937-.959 2.285 0 1.348.982 2.651 1.12 2.834.137.183 1.932 2.951 4.679 4.141.654.283 1.164.453 1.562.58.657.208 1.255.179 1.728.108.528-.079 1.62-.663 1.848-1.303.228-.64.228-1.188.159-1.303-.069-.115-.251-.183-.525-.32z"/></svg>
-              COTIZAR POR WHATSAPP
-           </a>
+      
+      {/* Mobile Menu */}
+      <div className={`md:hidden absolute w-full bg-white shadow-2xl transition-all duration-300 overflow-hidden ${isOpen ? 'max-h-96' : 'max-h-0'}`}>
+        <div className="px-4 pt-4 pb-8 space-y-4">
+          {Object.keys(INDUSTRIES_DATA).map((id) => (
+            <button
+              key={id}
+              onClick={() => { setPage(id); setIsOpen(false); }}
+              className="block w-full text-left px-4 py-3 text-incap-blue font-black uppercase tracking-widest border-b border-slate-100"
+            >
+              {INDUSTRIES_DATA[id].name}
+            </button>
+          ))}
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
-
-// --- Technical Advisor (Smart Search) Component ---
 
 const TechnicalAdvisor = ({ onProductClick }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
-
-  // Simulated AI Logic for matching uses to products
-  const searchProducts = (q) => {
-    setIsSearching(true);
-    const searchTerms = q.toLowerCase();
-    
-    // Flat list of all products from INDUSTRIES_DATA for searching
-    const allProducts = Object.values(INDUSTRIES_DATA).flatMap(ind => 
-      ind.products.map(p => ({ ...p, industry: ind.name }))
-    );
-
-    setTimeout(() => {
-      const filtered = allProducts.filter(p => {
-        const textToSearch = `${p.name} ${p.description} ${p.cat} ${p.feature} ${p.industry} ${p.specs.join(' ')}`.toLowerCase();
-        
-        // Intelligent mapping (Keywords that trigger certain products)
-        const logic = [
-          { keywords: ['calor', 'temperatura', 'sol', 'fuego'], match: 'jab-3000' },
-          { keywords: ['tóxico', 'olor', 'seguridad', 'operario', 'salud'], match: 'incafom-lt' },
-          { keywords: ['ecológico', 'agua', 'medio ambiente'], match: 'incafom-wb' },
-          { keywords: ['rápido', 'producción', 'serie'], match: 'pva-8000' },
-          { keywords: ['fuerte', 'extremo', 'irrompible'], match: 'jab-3000' },
-          { keywords: ['italiano', 'premium', 'lujo'], match: 'kenda' }
-        ];
-
-        let isMatch = textToSearch.includes(searchTerms);
-        
-        logic.forEach(l => {
-          if (l.keywords.some(k => searchTerms.includes(k)) && p.id === l.match) {
-            isMatch = true;
-          }
-        });
-
-        return isMatch;
-      });
-
-      setResults(filtered.slice(0, 3));
-      setIsSearching(false);
-    }, 800);
-  };
+  const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
-    if (query.length > 3) {
-      searchProducts(query);
+    if (query.length > 2) {
+      const filtered = PRODUCTS.filter(p => 
+        p.name.toLowerCase().includes(query.toLowerCase()) || 
+        p.category.toLowerCase().includes(query.toLowerCase()) ||
+        p.description.toLowerCase().includes(query.toLowerCase())
+      );
+      setResults(filtered);
+      setShowResults(true);
     } else {
       setResults([]);
+      setShowResults(false);
     }
   }, [query]);
 
   return (
-    <div className="fixed bottom-10 right-10 z-[80] font-sora">
-      {/* Floating Button */}
-      <button 
-        onClick={() => setIsOpen(!isOpen)}
-        className={`w-20 h-20 rounded-full flex items-center justify-center transition-all duration-500 shadow-2xl group ${isOpen ? 'bg-incap-black rotate-90' : 'bg-incap-blue hover:scale-110'}`}
-      >
-        {isOpen ? (
-          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-        ) : (
-          <div className="relative">
-            <div className="absolute inset-0 bg-incap-green rounded-full animate-ping opacity-20"></div>
-            <svg className="w-10 h-10 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
-          </div>
-        )}
-      </button>
-
-      {/* Advisor Window */}
-      <div className={`absolute bottom-24 right-0 w-[450px] bg-white rounded-[2.5rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.3)] border border-slate-100 transition-all duration-500 transform origin-bottom-right ${isOpen ? 'scale-100 opacity-100 translate-y-0' : 'scale-0 opacity-0 translate-y-10'}`}>
-        <div className="p-8 bg-incap-black rounded-t-[2.5rem] relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-incap-blue/20 blur-3xl rounded-full"></div>
-          <h3 className="text-white text-2xl font-black uppercase tracking-tighter mb-2 relative z-10">Asesor Técnico IA</h3>
-          <p className="text-slate-400 text-xs font-bold uppercase tracking-widest relative z-10">Incap Intelligent Solutions</p>
+    <div className="fixed bottom-10 right-10 z-[60]">
+      <div className={`absolute bottom-full right-0 mb-6 w-96 bg-white rounded-3xl shadow-2xl transition-all duration-500 transform ${showResults ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'}`}>
+        <div className="p-6 border-b border-slate-100 bg-incap-blue rounded-t-3xl shadow-lg">
+          <h4 className="text-white font-black uppercase tracking-widest text-sm">Asistente Técnico</h4>
+          <p className="text-white/60 text-[10px] mt-1 font-bold uppercase tracking-widest">Encuentra tu solución adhesiva</p>
         </div>
-        
-        <div className="p-10">
-          <p className="text-incap-black font-bold text-lg mb-6 leading-tight">¿Qué reto técnico tienes hoy?</p>
-          <div className="relative mb-10">
-            <textarea 
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Ej: Necesito pegar caucho con madera en un ambiente de mucho calor..."
-              className="w-full h-32 bg-slate-50 border-2 border-slate-100 rounded-2xl p-6 text-incap-black font-medium focus:border-incap-blue focus:outline-none transition-all resize-none placeholder:text-slate-300"
-            />
-            {isSearching && (
-              <div className="absolute bottom-4 right-4 flex gap-1">
-                <div className="w-2 h-2 bg-incap-blue rounded-full animate-bounce"></div>
-                <div className="w-2 h-2 bg-incap-blue rounded-full animate-bounce delay-100"></div>
-                <div className="w-2 h-2 bg-incap-blue rounded-full animate-bounce delay-200"></div>
+        <div className="max-h-[400px] overflow-y-auto p-4 space-y-3">
+          {results.length > 0 ? results.map(p => (
+            <div 
+              key={p.slug} 
+              onClick={() => { onProductClick(p); setShowResults(false); setQuery(''); }}
+              className="flex items-center gap-4 p-3 rounded-2xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-100"
+            >
+              <div className="w-12 h-12 rounded-xl bg-slate-100 flex-shrink-0 overflow-hidden">
+                <img src={p.image} className="w-full h-full object-cover" />
               </div>
-            )}
-          </div>
-
-          <div className="space-y-6">
-            {results.length > 0 ? (
-              <>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Soluciones Recomendadas</p>
-                {results.map(prod => (
-                  <button 
-                    key={prod.id}
-                    onClick={() => { onProductClick(prod); setIsOpen(false); }}
-                    className="w-full flex items-center gap-6 p-4 rounded-2xl hover:bg-slate-50 transition-all group text-left border border-transparent hover:border-slate-100"
-                  >
-                    <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
-                      <img src={prod.image} className="w-full h-full object-cover" alt="" />
-                    </div>
-                    <div>
-                      <h4 className="font-black text-incap-black uppercase text-sm group-hover:text-incap-blue transition-colors">{prod.name}</h4>
-                      <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">{prod.cat}</p>
-                    </div>
-                    <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
-                      <svg className="w-5 h-5 text-incap-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7" /></svg>
-                    </div>
-                  </button>
-                ))}
-              </>
-            ) : query.length > 3 && !isSearching ? (
-              <div className="text-center py-10">
-                <p className="text-slate-400 font-medium italic">No encontré una coincidencia exacta, intenta describiendo los materiales...</p>
+              <div>
+                <h5 className="font-black text-incap-blue text-sm uppercase">{p.name}</h5>
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{p.category}</p>
               </div>
-            ) : null}
-          </div>
+            </div>
+          )) : (
+            <p className="text-center py-10 text-slate-400 text-xs font-bold uppercase tracking-widest">No se encontraron resultados</p>
+          )}
         </div>
-        
-        <div className="p-8 border-t border-slate-50 text-center">
-          <button className="text-incap-blue font-black text-xs uppercase tracking-widest hover:text-incap-black transition-colors">Ver todos los productos →</button>
-        </div>
+      </div>
+      
+      <div className="flex items-center gap-4 bg-white/90 backdrop-blur-md rounded-full shadow-2xl p-2 border border-slate-100 group">
+        <input 
+          type="text" 
+          placeholder="¿QUÉ NECESITAS PEGAR?" 
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="bg-transparent border-none focus:ring-0 text-[10px] font-black uppercase tracking-widest w-48 pl-6 placeholder:text-slate-300"
+        />
+        <button className="w-12 h-12 rounded-full bg-incap-blue text-white flex items-center justify-center hover:bg-incap-green hover:text-incap-black transition-all transform group-hover:rotate-90">
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </button>
       </div>
     </div>
   );
 };
-
-// --- Home Components ---
 
 const HeroHome = ({ setPage }) => {
   const [active, setActive] = useState(false);
   useEffect(() => { setTimeout(() => setActive(true), 100); }, []);
 
   return (
-    <div className={`relative bg-incap-black min-h-screen flex items-center overflow-hidden ${active ? 'hero-active' : ''}`}>
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=2070" className="w-full h-full object-cover opacity-30 bg-zoom" alt="Hero" />
+    <section className={`relative h-screen flex items-center overflow-hidden bg-incap-black ${active ? 'hero-active' : ''}`}>
+      <div className="absolute inset-0">
+        <img 
+          src="/images/Banner_Home_Principal.png" 
+          className="w-full h-full object-cover bg-zoom"
+          alt="Hero background"
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-incap-black via-incap-black/60 to-transparent"></div>
       </div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full pt-20">
-        <div className={`max-w-4xl transition-all duration-1000 transform ${active ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0'}`}>
-          <div className="inline-block bg-white/5 backdrop-blur-xl border border-white/10 px-6 py-2 rounded-full mb-8">
-             <span className="text-incap-green font-black text-[10px] uppercase tracking-[0.4em]">ARQUETIPO: HÉROE Y CREADOR</span>
+      
+      <div className="relative max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className={`max-w-3xl transition-all duration-1000 transform ${active ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0'}`}>
+          <div className="inline-flex items-center space-x-4 mb-8 bg-white/10 backdrop-blur-md px-6 py-2 rounded-full border border-white/20">
+            <div className="w-2 h-2 rounded-full bg-incap-green animate-pulse"></div>
+            <span className="text-white text-[10px] font-black uppercase tracking-[0.4em]">Soluciones Industriales 2026</span>
           </div>
-          <h1 className="text-6xl md:text-9xl font-black text-white leading-[0.9] mb-10 font-sora tracking-tighter uppercase">
-            LA QUÍMICA QUE <br/> <span className="text-incap-green italic">CONSTRUYE PAÍS</span>
+          <h1 className="text-[clamp(3rem,8vw,6rem)] font-black text-white leading-[0.9] mb-10 font-sora">
+            CALIDAD QUE <br />
+            <span className="text-incap-green">SE REPITE.</span>
           </h1>
-          <p className="text-xl md:text-3xl text-slate-400 mb-12 max-w-2xl font-inter font-light leading-relaxed">
-            Más que adhesivos, somos el respaldo técnico que garantiza la estructura de la industria nacional.
+          <p className="text-xl md:text-2xl text-slate-300 mb-14 leading-relaxed font-medium max-w-2xl">
+            Líderes en ingeniería de adhesivos. Innovamos para que tu producción nunca se detenga.
           </p>
-          <div className="flex flex-wrap gap-8">
-            <button onClick={() => { setPage('madera'); window.scrollTo(0,0); }} className="bg-incap-blue text-white px-12 py-6 rounded-sm font-black text-xl hover:bg-white hover:text-incap-blue transition-all duration-500 shadow-2xl shadow-incap-blue/30 group uppercase tracking-tighter font-sora">
-              Explorar Soluciones <span className="inline-block ml-3 group-hover:translate-x-2 transition-transform">→</span>
+          <div className="flex flex-col sm:flex-row gap-6">
+            <button 
+              onClick={() => setPage('madera')}
+              className="px-12 py-6 bg-incap-green text-incap-black rounded-2xl font-black uppercase tracking-[0.2em] hover:bg-white transition-all transform hover:-translate-y-1 shadow-2xl text-xs"
+            >
+              Explorar Catálogo
             </button>
-            <button className="border-2 border-white/20 text-white px-12 py-6 rounded-sm font-black text-xl hover:bg-white hover:text-incap-black transition-all duration-500 backdrop-blur-sm uppercase tracking-tighter font-sora">
-              Auditoría en Planta
+            <button className="px-12 py-6 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-2xl font-black uppercase tracking-[0.2em] hover:bg-white/20 transition-all text-xs">
+              Asesoría Técnica
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
 const IndustrySectionHome = ({ setPage }) => {
-  const reveal = useReveal();
-  const industries = [
-    { id: 'madera', name: 'Madera y Muebles', text: 'Ensamble estructural y laminado fino con tecnología PVA de alta ingeniería.', image: 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&q=80&w=2070' },
-    { id: 'colchones', name: 'Colchones y Espumas', text: 'Adhesivos libres de tolueno diseñados para el confort y la salud de tu equipo.', image: 'https://images.unsplash.com/photo-1631679706909-1844bbd07221?auto=format&fit=crop&q=80&w=2070' },
-    { id: 'calzado', name: 'Calzado y Marroquinería', text: 'Sistemas completos de pegado para las fábricas más exigentes del país.', image: 'https://images.unsplash.com/photo-1544006659-f0b21f04cb1d?auto=format&fit=crop&q=80&w=2070' },
-  ];
-
+  const { ref, className } = useReveal();
+  
   return (
-    <section id="industrias" className="py-40 bg-white relative overflow-hidden" ref={reveal.ref}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className={`flex flex-col md:flex-row justify-between items-end mb-24 gap-10 ${reveal.className}`}>
+    <section ref={ref} className={`py-32 bg-white ${className}`}>
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-10">
           <div className="max-w-2xl">
-            <h2 className="text-6xl md:text-8xl font-black text-incap-black font-sora mb-8 leading-none uppercase tracking-tighter">Industrias que <br/><span className="text-incap-blue">Impulsamos</span></h2>
-            <div className="w-40 h-3 bg-incap-green"></div>
+            <span className="text-incap-blue/30 text-xs font-black uppercase tracking-[0.5em] block mb-4">INDUSTRIAS</span>
+            <h2 className="text-6xl font-black text-incap-blue leading-tight uppercase">Soluciones Especializadas</h2>
           </div>
-          <a href="#" className="text-incap-blue font-black text-xl hover:text-incap-green transition-colors font-sora flex items-center gap-4 group">
-            VER TODO EL PORTAFOLIO <span className="group-hover:translate-x-2 transition-transform">→</span>
-          </a>
+          <p className="text-slate-500 font-bold uppercase tracking-widest text-sm max-w-sm text-right leading-loose border-r-4 border-incap-green pr-8">
+            Diseñamos fórmulas específicas para los retos más exigentes de cada sector.
+          </p>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {industries.map((ind, idx) => (
-            <div key={idx} className={`group relative bg-white rounded-[2rem] overflow-hidden shadow-2xl hover:shadow-[0_40px_80px_-15px_rgba(42,72,153,0.15)] transition-all duration-700 border border-slate-100 flex flex-col hover-lift ${reveal.className} reveal-stagger-${idx+1}`}>
-              <div className="relative h-96 overflow-hidden">
-                <img src={ind.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt={ind.name} />
-                <div className="absolute inset-0 bg-gradient-to-t from-incap-black/80 via-transparent to-transparent"></div>
-                <div className="absolute bottom-8 left-8">
-                   <h3 className="text-4xl font-black text-white font-sora uppercase leading-none tracking-tighter">{ind.name}</h3>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {Object.entries(INDUSTRIES_DATA).map(([id, data]) => (
+            <div 
+              key={id}
+              onClick={() => setPage(id)}
+              className="group relative h-[600px] rounded-[2.5rem] overflow-hidden cursor-pointer transition-all duration-700 hover:scale-[0.98]"
+            >
+              <img src={data.heroImage} className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt={data.name} />
+              <div className="absolute inset-0 bg-gradient-to-t from-incap-blue via-incap-blue/20 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-100"></div>
+              
+              <div className="absolute inset-0 p-10 flex flex-col justify-end transform transition-transform duration-500 group-hover:translate-y-[-20px]">
+                <div className="flex space-x-2 mb-6">
+                  {data.icons.slice(0, 2).map((icon, idx) => (
+                    <div key={idx} className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md p-2 flex items-center justify-center">
+                      <img src={icon} className="w-full h-full invert brightness-0" alt="icon" />
+                    </div>
+                  ))}
                 </div>
-              </div>
-              <div className="p-10 flex-grow flex flex-col justify-between">
-                <p className="text-slate-500 font-inter leading-relaxed mb-10 text-xl font-medium">{ind.text}</p>
-                <button onClick={() => { setPage(ind.id); window.scrollTo(0,0); }} className="w-full py-6 rounded-2xl border-2 border-incap-blue text-incap-blue font-black text-sm uppercase tracking-[0.2em] hover:bg-incap-blue hover:text-white transition-all duration-500 font-sora">Ver Soluciones Especializadas</button>
+                <h3 className="text-3xl font-black text-white mb-4 leading-none uppercase tracking-tighter">{data.name}</h3>
+                <p className="text-white/60 text-sm font-medium line-clamp-2 mb-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                  {data.description}
+                </p>
+                <div className="w-12 h-12 rounded-full border-2 border-white/30 flex items-center justify-center transition-all duration-500 group-hover:w-full group-hover:bg-incap-green group-hover:border-incap-green">
+                  <svg className="w-6 h-6 text-white group-hover:text-incap-black transform group-hover:rotate-[-45deg] transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </div>
               </div>
             </div>
           ))}
@@ -394,189 +314,507 @@ const IndustrySectionHome = ({ setPage }) => {
 };
 
 const HistorySection = () => {
-  const reveal = useReveal();
+  const { ref, className } = useReveal();
   return (
-    <section id="historia" className="py-40 bg-slate-50 relative overflow-hidden" ref={reveal.ref}>
-       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center mb-40">
-             <div className={`${reveal.className}`}>
-                <h2 className="text-incap-blue font-black text-sm mb-6 tracking-[0.4em] uppercase font-sora">Nuestra Historia y Propósito</h2>
-                <h3 className="text-6xl md:text-8xl font-black text-incap-black font-sora mb-12 leading-[0.9] uppercase tracking-tighter">Uniendo el legado <br/>de la <span className="text-incap-green italic">industria</span></h3>
-                <p className="text-2xl text-slate-500 font-inter font-light leading-relaxed mb-8">
-                   Desde 1969, entendemos que detrás de cada adhesivo hay una familia y una fábrica que compite a nivel global.
-                </p>
-             </div>
-             <div className={`relative ${reveal.className} reveal-stagger-2`}>
-                <div className="aspect-w-4 aspect-h-5 rounded-[3rem] overflow-hidden shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-700">
-                   <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=2070" className="w-full h-full object-cover" alt="Legacy" />
-                </div>
-                <div className="absolute -bottom-16 -left-16 bg-incap-blue text-white p-14 rounded-3xl shadow-2xl hidden md:block animate-pulse">
-                   <span className="block text-7xl font-black font-sora mb-2">+56</span>
-                   <span className="text-xs font-black uppercase tracking-[0.3em] font-sora opacity-80">Años de Maestría Técnica</span>
-                </div>
-             </div>
+    <section ref={ref} className={`py-32 bg-slate-50 relative overflow-hidden ${className}`}>
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="flex flex-col lg:flex-row items-center gap-20">
+          <div className="lg:w-1/2">
+            <div className="relative">
+              <div className="absolute -top-10 -left-10 w-40 h-40 bg-incap-green/20 rounded-full blur-3xl"></div>
+              <img 
+                src="/images/Uniendo_Legado_Home.png" 
+                className="rounded-[3rem] shadow-2xl relative z-10 w-full"
+                alt="Historia Incap"
+              />
+              <div className="absolute -bottom-8 -right-8 bg-incap-blue p-10 rounded-[2rem] shadow-2xl z-20">
+                <div className="text-incap-green text-5xl font-black mb-2">1980</div>
+                <div className="text-white text-xs font-black uppercase tracking-widest">FUNDACIÓN</div>
+              </div>
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-             {[ {t:'Ingeniería con Rostro Humano', d:'No creemos en catálogos fríos. Creemos en la presencia real en tu planta.'}, {t:'Innovación con Responsabilidad', d:'Lideramos con fórmulas Libres de Tolueno (LT) para proteger a tus operarios.'}, {t:'Compromiso Generacional', d:'Somos el puente entre la experiencia y la visión de futuro industrial.'} ].map((p,i)=>(
-                <div key={i} className={`bg-white p-14 rounded-[2.5rem] shadow-xl border border-slate-50 hover:border-incap-green hover:shadow-2xl transition-all duration-500 group ${reveal.className} reveal-stagger-${i+1}`}>
-                   <div className="text-incap-green text-4xl font-black mb-10 group-hover:scale-110 transition-transform">0{i+1}.</div>
-                   <h4 className="text-2xl font-black mb-6 font-sora text-incap-black uppercase tracking-tight">{p.t}</h4>
-                   <p className="text-slate-400 font-inter text-lg leading-relaxed font-medium">{p.d}</p>
-                </div>
-             ))}
+          <div className="lg:w-1/2">
+            <span className="text-incap-blue/30 text-xs font-black uppercase tracking-[0.5em] block mb-4">NUESTRO LEGADO</span>
+            <h2 className="text-6xl font-black text-incap-blue mb-10 leading-tight uppercase">Uniendo el país desde hace más de <span className="text-incap-green underline decoration-8 underline-offset-8">40 años.</span></h2>
+            <p className="text-slate-600 text-xl leading-relaxed mb-10 font-medium">
+              Lo que comenzó como un sueño familiar en Medellín, hoy es el estándar de calidad en la industria colombiana. Entendemos que cada pegue es un compromiso de confianza.
+            </p>
           </div>
-       </div>
+        </div>
+      </div>
     </section>
   );
 };
 
-const AuthoritySection = () => {
-  const logos = ['/logos/Logo Kenda Farben.svg', '/logos/Logo CT Point.svg', '/logos/Logo Intercom.svg', '/logos/Logo Tecno GI.svg', '/logos/TECNOGI.png', '/logos/Kenda Farben.png'];
-  return (
-    <section className="py-32 bg-white border-y border-slate-100 overflow-hidden">
-       <div className="max-w-7xl mx-auto px-4 text-center mb-16">
-          <h3 className="text-xs font-black text-slate-300 uppercase tracking-[0.5em]">Líderes que confían en nuestra química</h3>
-       </div>
-       <div className="relative group">
-          <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-white to-transparent z-10"></div>
-          <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-white to-transparent z-10"></div>
-          <div className="flex gap-24 animate-infiniteScroll whitespace-nowrap items-center py-10 grayscale hover:grayscale-0 transition-all duration-1000 opacity-30 hover:opacity-100">
-             {[...logos, ...logos, ...logos].map((logo, i) => (
-               <img key={i} src={logo} className="h-20 w-auto object-contain flex-shrink-0 mx-10 transition-transform hover:scale-110" alt="Aliado" />
-             ))}
-          </div>
-       </div>
-    </section>
-  );
-};
+const AuthoritySection = () => (
+  <section className="py-20 bg-incap-black border-y border-white/5">
+    <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <div className="flex space-x-16 md:space-x-32 animate-marquee whitespace-nowrap">
+        {['ISO 9001', 'CALIDAD CERTIFICADA', 'TECNOLOGÍA ITALIANA', 'SENA ALIADO', 'FENALCO', 'ISO 9001', 'CALIDAD CERTIFICADA', 'TECNOLOGÍA ITALIANA', 'SENA ALIADO', 'FENALCO'].map((brand, i) => (
+          <div key={i} className="text-white/30 font-black text-xl tracking-[0.3em] uppercase hover:text-incap-green transition-colors cursor-default">{brand}</div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
 
 const WhyIncap = () => {
-  const reveal = useReveal();
+  const { ref, className } = useReveal();
   return (
-    <section className="py-40 bg-incap-black text-white relative overflow-hidden" ref={reveal.ref}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-         <h2 className={`text-6xl md:text-9xl font-black font-sora mb-24 uppercase tracking-tighter ${reveal.className}`}>Por qué <span className="text-incap-green italic underline decoration-8 underline-offset-[20px]">INCAP</span>?</h2>
-         <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
-            {[ {t:'Asesoría en Campo', d:'Nuestros técnicos no solo entregan canecas, optimizan tus procesos in-situ.'}, {t:'Innovación Segura', d:'Desarrollamos adhesivos de alto rendimiento para reducir el riesgo laboral.'}, {t:'Red Nacional', d:'Distribución estratégica para que tu línea de producción nunca se detenga.'} ].map((w,i)=>(
-               <div key={i} className={`flex flex-col items-center text-center group ${reveal.className} reveal-stagger-${i+1}`}>
-                  <div className="w-24 h-24 bg-white/5 border border-white/10 rounded-[2rem] flex items-center justify-center mb-10 group-hover:bg-incap-green group-hover:rotate-12 transition-all duration-700">
-                     <svg className="w-12 h-12 text-incap-green group-hover:text-incap-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                  </div>
-                  <h3 className="text-3xl font-black mb-6 font-sora uppercase tracking-tight">{w.t}</h3>
-                  <p className="text-slate-400 font-inter text-xl leading-relaxed font-light">{w.d}</p>
-               </div>
-            ))}
-         </div>
+    <section ref={ref} className={`py-32 bg-white ${className}`}>
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-24">
+          <h2 className="text-5xl font-black text-incap-blue uppercase tracking-tighter">¿POR QUÉ ELEGIR <span className="text-incap-green">INCAP?</span></h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+          {[
+            { title: 'Innovación Constante', desc: 'Laboratorio propio de I+D para desarrollar soluciones a medida.' },
+            { title: 'Soporte en Planta', desc: 'Asesoría técnica presencial para optimizar tus procesos de pegue.' },
+            { title: 'Stock Garantizado', desc: 'Cadena de suministro robusta para que nunca te falte producto.' }
+          ].map((item, i) => (
+            <div key={i} className="text-center group">
+              <div className="w-24 h-24 bg-slate-50 rounded-3xl mx-auto mb-8 flex items-center justify-center transform transition-transform group-hover:rotate-12 group-hover:bg-incap-green">
+                <div className="w-10 h-10 border-4 border-incap-blue group-hover:border-incap-black"></div>
+              </div>
+              <h3 className="text-2xl font-black text-incap-blue mb-4 uppercase">{item.title}</h3>
+              <p className="text-slate-500 font-medium leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
 };
 
 const ConversionFooter = () => (
-  <section className="bg-incap-blue py-40 text-white relative overflow-hidden">
-     <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
-     <div className="max-w-5xl mx-auto px-4 text-center relative z-10">
-        <h2 className="text-5xl md:text-8xl font-black font-sora mb-12 uppercase tracking-tighter leading-none">Fallas de Pegue?</h2>
-        <p className="text-2xl text-blue-100/70 mb-16 font-inter font-light max-w-3xl mx-auto leading-relaxed">
-           Recibe un diagnóstico técnico gratuito en menos de 24 horas. Protege la calidad de tu producto final.
-        </p>
-        <a href="https://wa.me/573123786868" className="inline-flex bg-incap-green text-incap-black px-16 py-8 rounded-full font-black text-2xl hover:bg-white hover:scale-110 transition-all duration-500 shadow-[0_20px_50px_-10px_rgba(133,198,57,0.5)] items-center gap-6 uppercase tracking-tighter glow-on-hover">
-           HABLAR CON UN EXPERTO
-        </a>
-     </div>
+  <section className="relative py-32 bg-incap-blue overflow-hidden">
+    <div className="absolute inset-0 opacity-10">
+      <div className="absolute top-0 left-0 w-full h-full border-[100px] border-white rounded-full translate-x-1/2 translate-y-1/2 scale-150"></div>
+    </div>
+    <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
+      <h2 className="text-6xl font-black text-white mb-10 leading-tight uppercase">¿Listo para optimizar tu producción?</h2>
+      <p className="text-white/70 text-xl mb-14 font-medium">Solicita una visita técnica o una muestra de nuestros productos líderes.</p>
+      <div className="flex flex-col sm:flex-row justify-center gap-6">
+        <button className="px-12 py-6 bg-incap-green text-incap-black rounded-2xl font-black uppercase tracking-widest hover:scale-105 transition-transform shadow-2xl text-xs">Hablar con un Experto</button>
+        <button className="px-12 py-6 border-2 border-white/30 text-white rounded-2xl font-black uppercase tracking-widest hover:bg-white hover:text-incap-blue transition-all text-xs">Ver Distribuidores</button>
+      </div>
+    </div>
   </section>
 );
 
-// --- Industry Detail Page ---
-
 const IndustryPage = ({ data, onProductClick }) => (
   <div className="min-h-screen animate-fadeIn bg-white">
-    <div className="relative h-[70vh] flex items-center overflow-hidden bg-incap-black">
-      <img src={data.heroImage} className="absolute inset-0 w-full h-full object-cover opacity-40 scale-105" alt={data.name} />
-      <div className="absolute inset-0 bg-gradient-to-t from-incap-black via-incap-black/40 to-transparent"></div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <span className="text-incap-green font-black uppercase tracking-[0.5em] text-xs mb-6 block font-sora">Sistemas de Adherencia</span>
-        <h1 className="text-7xl md:text-9xl font-black text-white font-sora mb-8 leading-none uppercase tracking-tighter">{data.name}</h1>
-        <p className="text-3xl text-slate-300 max-w-4xl font-inter font-light leading-relaxed">{data.description}</p>
+    <section className="relative h-[80vh] flex items-center overflow-hidden">
+      <div className="absolute inset-0">
+        <img src={data.heroImage} className="w-full h-full object-cover" alt={data.name} />
+        <div className="absolute inset-0 bg-incap-blue/40 backdrop-blur-[2px]"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
       </div>
-    </div>
-    <section className="py-32 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-24">
-        <div className="lg:col-span-1">
-           <h2 className="text-5xl font-black text-incap-black font-sora mb-8 uppercase tracking-tighter leading-none">Aplicaciones <br/>de Planta</h2>
-           <div className="w-24 h-2 bg-incap-blue mb-10"></div>
+      <div className="relative max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="max-w-3xl">
+          <div className="flex space-x-4 mb-8">
+            {data.icons.map((icon, i) => (
+              <div key={i} className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl p-3 flex items-center justify-center border border-white/30">
+                <img src={icon} className="w-full h-full invert brightness-0" alt="icon" />
+              </div>
+            ))}
+          </div>
+          <h1 className="text-8xl font-black text-white mb-6 uppercase tracking-tighter leading-[0.8]">{data.name}</h1>
+          <p className="text-2xl text-white/90 font-medium leading-relaxed">{data.description}</p>
         </div>
-        <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-10">
+      </div>
+    </section>
+
+    <section className="py-32">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {data.applications.map((app, i) => (
-            <div key={i} className="p-12 bg-slate-50 rounded-[2.5rem] hover:bg-incap-blue hover:text-white transition-all duration-500 group hover-lift">
-              <h3 className="text-3xl font-black mb-6 font-sora uppercase tracking-tight">{app.title}</h3>
-              <p className="font-inter text-xl group-hover:text-white/80 transition-colors font-medium">{app.desc}</p>
+            <div key={i} className="p-10 rounded-[3rem] bg-slate-50 hover:bg-white hover:shadow-2xl transition-all duration-500 group border border-transparent hover:border-slate-100">
+              <div className="text-incap-green font-black text-6xl mb-6 opacity-20 group-hover:opacity-100 transition-opacity">0{i+1}</div>
+              <h3 className="text-2xl font-black text-incap-blue mb-4 uppercase">{app.title}</h3>
+              <p className="text-slate-500 font-medium leading-relaxed">{app.desc}</p>
             </div>
           ))}
         </div>
       </div>
     </section>
-    <section className="py-32 bg-slate-50 border-t border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-         <h2 className="text-6xl font-black text-incap-black font-sora mb-24 uppercase text-center tracking-tighter">Portafolio Técnico</h2>
-         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {data.products.map((prod) => (
-              <div key={prod.id} onClick={() => onProductClick(prod)} className="bg-white p-0 rounded-[2.5rem] shadow-xl border border-slate-100 hover:shadow-2xl transition-all cursor-pointer group overflow-hidden hover-lift">
-                <div className="h-80 overflow-hidden"><img src={prod.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt={prod.name} /></div>
-                <div className="p-12">
-                  <span className="text-incap-blue font-black text-[10px] uppercase tracking-[0.4em] mb-4 block">{prod.cat}</span>
-                  <h3 className="text-3xl font-black mb-6 font-sora text-incap-black group-hover:text-incap-blue transition-colors uppercase tracking-tight leading-none">{prod.name}</h3>
-                  <div className="inline-block px-4 py-2 bg-slate-50 rounded-lg text-[10px] font-black text-slate-400 mb-10 uppercase tracking-[0.3em]">{prod.feature}</div>
-                  <div className="flex items-center justify-between">
-                     <span className="text-incap-blue font-black font-sora text-sm uppercase tracking-widest">Detalles</span>
-                     <div className="w-14 h-14 rounded-full border-2 border-slate-100 flex items-center justify-center group-hover:bg-incap-blue group-hover:text-white transition-all duration-500">→</div>
-                  </div>
+
+    <section className="py-32 bg-incap-blue rounded-t-[5rem]">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-end mb-20">
+          <h2 className="text-6xl font-black text-white uppercase tracking-tighter">Portafolio <br /><span className="text-incap-green">Especializado</span></h2>
+          <div className="text-white/40 font-black uppercase tracking-[0.5em] text-xs">Desliza para ver más</div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {PRODUCTS.filter(p => p.category === data.id).map((prod) => (
+            <div 
+              key={prod.slug}
+              onClick={() => onProductClick(prod)}
+              className="group bg-white/5 backdrop-blur-md rounded-[3rem] p-8 border border-white/10 hover:bg-white transition-all duration-700 cursor-pointer"
+            >
+              <div className="h-64 rounded-[2rem] overflow-hidden mb-8 relative">
+                <img src={prod.image} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt={prod.name} />
+                <div className="absolute top-4 right-4 bg-white/90 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest text-incap-blue">
+                  {prod.feature}
                 </div>
               </div>
-            ))}
-         </div>
+              <span className="text-incap-green text-[10px] font-black uppercase tracking-[0.4em] mb-3 block">{prod.cat}</span>
+              <h3 className="text-2xl font-black text-white group-hover:text-incap-blue mb-4 uppercase transition-colors">{prod.name}</h3>
+              <p className="text-white/50 group-hover:text-slate-500 text-sm mb-8 line-clamp-3 font-medium transition-colors">{prod.description}</p>
+              <div className="flex items-center text-white group-hover:text-incap-blue font-black uppercase tracking-widest text-[10px] space-x-3 transition-colors">
+                <span>Ver Detalles</span>
+                <svg className="w-4 h-4 transform group-hover:translate-x-2 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
+
     <ConversionFooter />
   </div>
 );
 
+const GHSPictogram = ({ code }) => {
+  const pictograms = {
+    'GHS02': { icon: '🔥', label: 'Inflamable' },
+    'GHS05': { icon: '🧪', label: 'Corrosivo' },
+    'GHS07': { icon: '⚠️', label: 'Irritante' },
+    'GHS08': { icon: '🫁', label: 'Peligro Salud' },
+    'GHS09': { icon: '🐟', label: 'Ecotóxico' }
+  };
+  const item = pictograms[code] || { icon: '❓', label: code };
+  return (
+    <div className="flex flex-col items-center gap-2 p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-incap-green transition-colors group">
+      <span className="text-3xl grayscale group-hover:grayscale-0 transition-all cursor-default transform group-hover:scale-110 duration-300">{item.icon}</span>
+      <span className="text-[9px] font-black uppercase tracking-tighter text-slate-400 group-hover:text-incap-blue transition-colors">{item.label}</span>
+    </div>
+  );
+};
+
+const ProductDetailPage = ({ product, setPage }) => {
+  const [selectedVariant, setSelectedVariant] = useState(product.variants ? product.variants[0] : null);
+  const [activeTab, setActiveTab] = useState('tech');
+
+  return (
+    <div className="min-h-screen bg-slate-50 pt-32 pb-24 animate-fadeIn">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Breadcrumbs */}
+        <nav className="mb-12 flex items-center space-x-4 text-[10px] font-black uppercase tracking-[0.3em]">
+          <button onClick={() => setPage('home')} className="text-slate-400 hover:text-incap-blue transition-colors">Inicio</button>
+          <span className="text-slate-300">/</span>
+          <button onClick={() => setPage(product.category)} className="text-slate-400 hover:text-incap-blue transition-colors uppercase">{product.category}</button>
+          <span className="text-slate-300">/</span>
+          <span className="text-incap-blue">{product.name}</span>
+        </nav>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+          {/* Gallery Column */}
+          <div className="lg:col-span-7">
+            <div className="bg-white rounded-[3rem] overflow-hidden shadow-2xl group relative h-[700px] border border-slate-100">
+              <img src={selectedVariant?.image || product.image} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt={product.name} />
+              <div className="absolute inset-0 bg-gradient-to-t from-incap-black/60 via-transparent to-transparent"></div>
+              <div className="absolute bottom-10 left-10 right-10 flex justify-between items-end">
+                <div>
+                  <h1 className="text-6xl font-black text-white uppercase tracking-tighter leading-none mb-4">{product.name}</h1>
+                  <p className="text-incap-green font-black uppercase tracking-[0.4em] text-xs">{product.feature}</p>
+                </div>
+                <div className="bg-white/95 backdrop-blur-md px-8 py-6 rounded-[2rem] shadow-2xl border border-white/20 transform hover:scale-105 transition-transform">
+                  <div className="text-slate-400 text-[8px] font-black uppercase tracking-[0.5em] mb-2">CÓDIGO SAP</div>
+                  <div className="text-incap-blue font-black text-2xl font-sora">{selectedVariant?.sap || 'N/A'}</div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Gallery Thumbs */}
+            <div className="grid grid-cols-4 gap-4 mt-6">
+              {product.variants?.map((v, i) => (
+                <button 
+                  key={i}
+                  onClick={() => setSelectedVariant(v)}
+                  className={`h-24 rounded-[1.5rem] overflow-hidden border-4 transition-all duration-300 ${selectedVariant?.sku === v.sku ? 'border-incap-green scale-95 shadow-inner' : 'border-transparent opacity-60 hover:opacity-100 hover:scale-105'}`}
+                >
+                  <img src={v.image || product.image} className="w-full h-full object-cover" alt={v.name} />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Info Column */}
+          <div className="lg:col-span-5 space-y-10">
+            <div className="bg-white rounded-[3rem] p-10 shadow-2xl border border-slate-100 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-incap-green/10 rounded-full translate-x-10 -translate-y-10"></div>
+              
+              <div className="flex items-center justify-between mb-10 relative z-10">
+                <span className="bg-incap-blue text-white text-[10px] font-black px-6 py-2.5 rounded-full uppercase tracking-[0.3em]">{product.cat}</span>
+                <span className="text-slate-400 font-black text-[10px] uppercase tracking-widest">SKU: {selectedVariant?.sku || product.sku}</span>
+              </div>
+
+              <p className="text-slate-600 text-xl leading-relaxed mb-12 font-medium relative z-10">{product.description}</p>
+
+              {product.variants && (
+                <div className="mb-12 relative z-10">
+                  <h4 className="text-incap-blue font-black uppercase tracking-[0.3em] text-[10px] mb-8 flex items-center">
+                    <span className="w-2 h-2 rounded-full bg-incap-green mr-4 animate-pulse"></span>Seleccionar Presentación
+                  </h4>
+                  <div className="grid grid-cols-2 gap-4">
+                    {product.variants.map((v) => (
+                      <button key={v.sku} onClick={() => setSelectedVariant(v)} className={`py-5 px-8 rounded-2xl border-2 font-black uppercase tracking-widest text-[10px] transition-all duration-300 flex items-center justify-between group ${selectedVariant?.sku === v.sku ? 'border-incap-blue bg-incap-blue text-white shadow-xl scale-[1.02]' : 'border-slate-100 text-slate-400 hover:border-slate-200 hover:bg-slate-50'}`}>
+                        {v.name}
+                        {selectedVariant?.sku === v.sku && <svg className="w-4 h-4 text-incap-green" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex flex-col gap-4 relative z-10">
+                <button className="w-full py-7 bg-incap-blue text-white rounded-[2rem] font-black uppercase tracking-[0.2em] hover:bg-incap-green hover:text-incap-black transition-all transform hover:-translate-y-2 shadow-2xl text-[11px] flex items-center justify-center gap-4 group">
+                  <svg className="w-6 h-6 transition-transform group-hover:rotate-12" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.232 3.484 8.412-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.309 1.656zm6.224-3.82l.303.174c1.46.843 3.147 1.288 4.871 1.289 5.432 0 9.851-4.419 9.854-9.853.002-2.633-1.023-5.11-2.887-6.974-1.864-1.864-4.341-2.887-6.973-2.888-5.433 0-9.852 4.419-9.855 9.853-.001 2.052.54 4.05 1.564 5.776l.192.323-1.01 3.687 3.782-.992z"/></svg>
+                  Cotizar por WhatsApp
+                </button>
+                <button className="w-full py-6 border-2 border-slate-100 text-incap-blue rounded-[2rem] font-black uppercase tracking-[0.2em] hover:bg-slate-50 transition-all text-[11px]">Descargar Ficha Técnica</button>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-[3rem] p-10 shadow-2xl border border-slate-100">
+              <h4 className="text-incap-blue font-black uppercase tracking-[0.3em] text-[10px] mb-10 flex items-center">
+                <span className="w-2 h-2 rounded-full bg-incap-green mr-4 animate-pulse"></span>Información de Seguridad (GHS)
+              </h4>
+              <div className="grid grid-cols-4 gap-6">
+                {product.safety?.map((code) => <GHSPictogram key={code} code={code} />)}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Technical Tabs Section */}
+        <div className="mt-24">
+          <div className="flex space-x-12 border-b border-slate-200 mb-12">
+            {[
+              { id: 'tech', label: 'Información Técnica' },
+              { id: 'safety', label: 'Seguridad y Manejo' }
+            ].map(tab => (
+              <button 
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`pb-8 text-[11px] font-black uppercase tracking-[0.4em] transition-all relative ${activeTab === tab.id ? 'text-incap-blue' : 'text-slate-400 hover:text-slate-600'}`}
+              >
+                {tab.label}
+                {activeTab === tab.id && <div className="absolute bottom-0 left-0 w-full h-1 bg-incap-green rounded-full animate-fadeIn"></div>}
+              </button>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+            <div className="lg:col-span-8 bg-white rounded-[3rem] p-12 shadow-2xl border border-slate-100">
+              {activeTab === 'tech' ? (
+                <div className="animate-fadeIn">
+                  <h3 className="text-4xl font-black text-incap-blue mb-12 uppercase tracking-tighter">Instrucciones de Uso</h3>
+                  <div className="space-y-12">
+                    {product.instructions.split('.').filter(s => s.trim()).map((step, i) => (
+                      <div key={i} className="flex gap-10 group">
+                        <div className="flex-shrink-0 w-14 h-14 rounded-full bg-slate-50 text-incap-blue font-black text-xl flex items-center justify-center border-2 border-transparent group-hover:border-incap-green group-hover:bg-incap-green group-hover:text-incap-black transition-all duration-500 transform group-hover:rotate-6 shadow-sm">
+                          {i + 1}
+                        </div>
+                        <div>
+                          <p className="text-slate-600 font-medium leading-relaxed text-xl group-hover:text-incap-blue transition-colors">{step.trim()}.</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="animate-fadeIn">
+                  <h3 className="text-4xl font-black text-incap-blue mb-12 uppercase tracking-tighter">Manejo de Seguridad</h3>
+                  <div className="space-y-8">
+                    <p className="text-slate-600 text-lg leading-relaxed font-medium">Este producto cumple con los estándares internacionales de seguridad industrial. Se recomienda el uso de EPP (Equipo de Protección Personal) adecuado.</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+                      <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:border-incap-green transition-colors">
+                        <h4 className="text-incap-blue font-black text-sm uppercase mb-4 tracking-widest">Almacenamiento</h4>
+                        <p className="text-slate-500 text-sm leading-relaxed font-medium">Mantener en lugar fresco y seco, entre 15°C y 25°C. Evitar la exposición directa al sol.</p>
+                      </div>
+                      <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:border-incap-green transition-colors">
+                        <h4 className="text-incap-blue font-black text-sm uppercase mb-4 tracking-widest">Precauciones</h4>
+                        <p className="text-slate-500 text-sm leading-relaxed font-medium">No inhalar vapores. En caso de contacto con los ojos, lavar con abundante agua y consultar al médico.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="lg:col-span-4 space-y-10">
+              <div className="bg-incap-blue rounded-[3rem] p-12 text-white shadow-2xl relative overflow-hidden group">
+                <div className="relative z-10">
+                  <h3 className="text-3xl font-black mb-8 uppercase tracking-tighter">Soporte Técnico</h3>
+                  <p className="text-white/70 font-medium mb-12 leading-relaxed text-lg">¿Dudas sobre el rendimiento o la aplicación en tu línea de producción?</p>
+                  <button className="w-full py-6 bg-incap-green text-incap-black rounded-2xl font-black uppercase tracking-widest hover:bg-white transition-all transform hover:-translate-y-2 shadow-xl text-xs">Contactar Técnico</button>
+                </div>
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full translate-x-20 -translate-y-20 group-hover:scale-110 transition-transform duration-1000"></div>
+              </div>
+
+              <div className="bg-white rounded-[3rem] p-12 shadow-2xl border border-slate-100">
+                <h3 className="text-2xl font-black text-incap-blue mb-10 uppercase tracking-tighter">Preguntas Frecuentes</h3>
+                <div className="space-y-8">
+                  {product.faqs?.map((faq, i) => (
+                    <details key={i} className="group cursor-pointer">
+                      <summary className="list-none flex justify-between items-center font-black uppercase tracking-[0.2em] text-[10px] text-slate-400 group-hover:text-incap-blue transition-colors">
+                        {faq.q}
+                        <span className="transform group-open:rotate-180 transition-transform duration-300">▼</span>
+                      </summary>
+                      <p className="mt-6 text-slate-500 font-medium text-base leading-relaxed border-l-4 border-incap-green pl-6 animate-fadeIn">
+                        {faq.a}
+                      </p>
+                    </details>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// --- Utilities (SEO & Schema) ---
+
+const updateMetaDescription = (desc) => {
+  if (typeof document === 'undefined') return;
+  let meta = document.querySelector('meta[name="description"]');
+  if (!meta) {
+    meta = document.createElement('meta');
+    meta.setAttribute('name', 'description');
+    document.head.appendChild(meta);
+  }
+  meta.setAttribute('content', desc);
+};
+
+const injectJSONLD = (data) => {
+  if (typeof document === 'undefined') return;
+  let script = document.getElementById('json-ld');
+  if (!script) {
+    script = document.createElement('script');
+    script.id = 'json-ld';
+    script.type = 'application/ld+json';
+    document.head.appendChild(script);
+  }
+  script.textContent = JSON.stringify(data);
+};
+
+const getOrgSchema = () => ({ "@context": "https://schema.org", "@type": "Organization", "name": "INCAP S.A.", "url": "http://localhost:5173", "logo": "http://localhost:5173/logo.png" });
+const getIndustrySchema = (data) => ({ "@context": "https://schema.org", "@type": "Service", "name": data.name, "description": data.description });
+const getProductSchema = (product) => ({ "@context": "https://schema.org", "@type": "Product", "name": product.name, "description": product.description, "sku": product.sku });
+const getFAQSchema = (product) => ({ "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": product.faqs?.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } })) });
+
 // --- Main App Controller ---
 
 export default function App() {
-  const [page, setPage] = useState('home'); 
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [page, setPageState] = useState(() => {
+    const path = window.location.pathname;
+    const parts = path.split('/').filter(Boolean);
+    if (parts[0]?.startsWith('industria')) {
+      if (parts.length === 2) return parts[1].replace(/s$/, '');
+      if (parts.length === 3) return 'product-detail';
+    }
+    if (path.startsWith('/producto/')) return 'product-detail';
+    return 'home';
+  }); 
+
+  const [selectedProduct, setSelectedProduct] = useState(() => {
+    const path = window.location.pathname;
+    const parts = path.split('/').filter(Boolean);
+    if (parts[0]?.startsWith('industria') && parts.length === 3) {
+      return PRODUCTS.find(p => p.slug === parts[2]) || null;
+    }
+    if (path.startsWith('/producto/')) {
+      const slug = path.replace('/producto/', '');
+      return PRODUCTS.find(p => p.slug === slug) || null;
+    }
+    return null;
+  });
+
+  const setPage = (newPage, product = null) => {
+    let url = '/';
+    if (newPage === 'product-detail' && product) {
+      const cat = product.category === 'madera' ? 'maderas' : product.category + 's';
+      url = `/industrias/${cat}/${product.slug}`;
+      setSelectedProduct(product);
+    } else if (newPage !== 'home') {
+      const cat = newPage === 'madera' ? 'maderas' : newPage + 's';
+      url = `/industrias/${cat}`;
+      setSelectedProduct(null);
+    } else {
+      setSelectedProduct(null);
+    }
+    window.history.pushState({ page: newPage, productSlug: product?.slug }, '', url);
+    setPageState(newPage);
+    window.scrollTo(0, 0);
+  };
 
   useEffect(() => {
-    const hash = window.location.hash;
-    if (hash && page === 'home') {
-      const el = document.querySelector(hash);
-      el?.scrollIntoView({ behavior: 'smooth' });
+    const handlePopState = () => {
+      const path = window.location.pathname;
+      const parts = path.split('/').filter(Boolean);
+      if (parts[0]?.startsWith('industria')) {
+        if (parts.length === 2) { setPageState(parts[1].replace(/s$/, '')); setSelectedProduct(null); }
+        else if (parts.length === 3) { setSelectedProduct(PRODUCTS.find(p => p.slug === parts[2]) || null); setPageState('product-detail'); }
+      } else if (path.startsWith('/producto/')) {
+        setSelectedProduct(PRODUCTS.find(p => p.slug === path.replace('/producto/', '')) || null); setPageState('product-detail');
+      } else { setPageState('home'); setSelectedProduct(null); }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  useEffect(() => {
+    if (page === 'home') {
+      document.title = 'INCAP | Calidad que se repite | Adhesivos Industriales';
+      updateMetaDescription('Líder en soluciones de adhesivos industriales para madera, colchones, calzado y hogar.');
+      injectJSONLD(getOrgSchema());
+    } else if (page === 'product-detail' && selectedProduct) {
+      document.title = `${selectedProduct.name} | Ficha Técnica | INCAP`;
+      updateMetaDescription(selectedProduct.description);
+      injectJSONLD([getProductSchema(selectedProduct), getFAQSchema(selectedProduct)]);
+    } else if (INDUSTRIES_DATA[page]) {
+      document.title = `${INDUSTRIES_DATA[page].name} | Soluciones Técnicas INCAP`;
+      updateMetaDescription(INDUSTRIES_DATA[page].description);
+      injectJSONLD(getIndustrySchema(INDUSTRIES_DATA[page]));
     }
-  }, [page]);
+  }, [page, selectedProduct?.slug]);
 
   return (
     <div className="min-h-screen bg-white selection:bg-incap-green selection:text-incap-black">
-      <Header setPage={setPage} />
+      <Header setPage={setPage} currentPage={page} />
       {page === 'home' ? (
-        <main>
-          <HeroHome setPage={setPage} />
-          <AuthoritySection />
-          <IndustrySectionHome setPage={setPage} />
-          <HistorySection />
-          <WhyIncap />
-          <ConversionFooter />
-        </main>
+        <main><HeroHome setPage={setPage} /><AuthoritySection /><IndustrySectionHome setPage={setPage} /><HistorySection /><WhyIncap /><ConversionFooter /></main>
+      ) : page === 'product-detail' && selectedProduct ? (
+        <main><ProductDetailPage product={selectedProduct} setPage={setPage} /></main>
+      ) : INDUSTRIES_DATA[page] ? (
+        <main><IndustryPage data={INDUSTRIES_DATA[page]} onProductClick={(p) => setPage('product-detail', p)} /></main>
       ) : (
-        <main>
-          <IndustryPage data={INDUSTRIES_DATA[page]} onProductClick={setSelectedProduct} />
-        </main>
+        <div className="min-h-screen flex items-center justify-center flex-col gap-10 bg-slate-50">
+          <div className="relative">
+            <h1 className="text-[12rem] font-black text-incap-blue/5 leading-none font-sora">404</h1>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <h2 className="text-4xl font-black text-incap-blue uppercase tracking-tighter">No encontrado</h2>
+            </div>
+          </div>
+          <button onClick={() => setPage('home')} className="px-14 py-6 bg-incap-blue text-white rounded-[2rem] font-black uppercase tracking-[0.2em] hover:scale-105 transition-transform shadow-2xl text-xs">Volver al Inicio</button>
+        </div>
       )}
-      {selectedProduct && <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />}
-      <TechnicalAdvisor onProductClick={setSelectedProduct} />
-      <footer className="bg-incap-black py-24 text-slate-600 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-10">
+      <TechnicalAdvisor onProductClick={(p) => setPage('product-detail', p)} />
+      <footer className="bg-incap-black py-32 text-slate-600 border-t border-white/5">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-16">
           <Logo color="#444" />
+          <div className="flex gap-12 text-[10px] font-black uppercase tracking-[0.4em]">
+            <a href="#" className="hover:text-white transition-colors">Términos</a>
+            <a href="#" className="hover:text-white transition-colors">Privacidad</a>
+            <a href="#" className="hover:text-white transition-colors">Soporte</a>
+          </div>
           <p className="text-[10px] uppercase tracking-[0.5em] font-black">© 2026 INCAP S.A. | CALIDAD QUE SE REPITE</p>
         </div>
       </footer>

@@ -1,120 +1,129 @@
 import React from 'react';
+import { useReveal } from '../../hooks/useReveal';
 
 const industries = [
   {
     id: 'madera',
     title: 'Madera y Muebles',
-    description: 'De la ebanistería fina a la producción en serie. Asegura ensambles indestructibles y acabados de exportación con nuestra línea de PVA y sistemas de aspersión.',
-    cta: 'Ver soluciones para Madera',
-    href: '/catalog?industry=madera',
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-      </svg>
-    ),
-    lines: ['PVA', 'Madefort', 'Incaspray'],
-    accentColor: '#85C639',
+    description: 'Ensamble estructural y laminado fino con tecnología PVA de alta ingeniería.',
+    href: '/industrias/madera',
+    image: '/images/Banner_Maderas_Muebles.png',
+    icons: [
+      { src: '/images/Icono_Categoria_Madera_Muebles.svg', label: 'Maderas' },
+      { src: '/images/Icono_Categoria_Madera_Muebles_2.svg', label: 'Muebles' }
+    ],
   },
   {
     id: 'colchones',
     title: 'Colchones y Espumas',
-    description: 'Ingeniería para el descanso. Adhesivos libres de tolueno y de alta adherencia inicial que optimizan tu línea de producción y protegen la salud de tu equipo.',
-    cta: 'Ver soluciones para Colchones',
-    href: '/catalog?industry=colchones',
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-      </svg>
-    ),
-    lines: ['Incafom'],
-    accentColor: '#2A4899',
+    description: 'Adhesivos libres de tolueno diseñados para el confort y la salud de tu equipo.',
+    href: '/industrias/colchones',
+    image: '/images/Banner_Colchones.png',
+    icons: [
+      { src: '/images/INCAP_Icono_colchones_Espumas.svg', label: 'Colchones' },
+      { src: '/images/INCAP_Icono_colchones_Espumas_2.svg', label: 'Espumas' }
+    ],
   },
   {
     id: 'calzado',
     title: 'Calzado y Marroquinería',
-    description: 'El estándar de las grandes fábricas. Un ecosistema completo diseñado para reducir garantías y acelerar el tiempo de salida por par.',
-    cta: 'Ver soluciones para Calzado',
-    href: '/catalog?industry=calzado',
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-    ),
-    lines: ['JAB', 'Kenda Farben', 'Tecnogi'],
-    accentColor: '#85C639',
+    description: 'Sistemas completos de pegado para las fábricas más exigentes del país.',
+    href: '/industrias/calzado',
+    image: '/images/Banner_Calzado_Marroquineria.png',
+    icons: [
+      { src: '/images/INCAP_Icono_Calzado%20y%20Marroquinera_2.svg', label: 'Marroquinería' },
+      { src: '/images/INCAP_Icono_Calzado%20y%20Marroquinera_2%20(1).svg', label: 'Calzado' }
+    ],
   },
   {
     id: 'hogar',
     title: 'Hogar y Multiusos',
-    description: 'Soluciones versátiles para manualidades, reparaciones del hogar y proyectos creativos. Fácil aplicación y resultados profesionales.',
-    cta: 'Ver soluciones Multiusos',
-    href: '/catalog?industry=hogar',
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
-      </svg>
-    ),
-    lines: ['Nuevos Desarrollos'],
-    accentColor: '#2A4899',
+    description: 'Soluciones versátiles para reparaciones del hogar y proyectos creativos.',
+    href: '/industrias/hogar',
+    image: '/images/Banner_Hogar_Multiusos.png',
+    icons: [
+      { src: '/images/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg', label: 'Hogar' },
+      { src: '/images/INCAP_Icono_Hogar_Manualidades_y_Multisuos_2.svg', label: 'Manualidades' },
+      { src: '/images/INCAP_Icono_Hogar_Manualidades_y_Multisuos_3.svg', label: 'Multiusos' }
+    ],
   },
 ];
 
 export default function IndustriesSection() {
+  const reveal = useReveal();
   return (
-    <section className="bg-[#f8f9fa] py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-14">
-          <span className="text-[#2A4899] text-sm font-semibold tracking-widest uppercase">Soluciones Especializadas</span>
-          <h2 className="mt-2 text-3xl sm:text-4xl font-extrabold text-[#181B1C]" style={{ fontFamily: 'Sora, sans-serif' }}>
-            Adhesivos para cada industria
-          </h2>
-          <p className="mt-4 text-slate-500 max-w-2xl mx-auto">
-            Desarrollamos formulaciones específicas para los desafíos de cada sector productivo.
-          </p>
+    <section className={`bg-[#f8f9fa] py-24 px-4 sm:px-6 lg:px-8 ${reveal.className}`} ref={reveal.ref}>
+      <div className="w-full max-w-[1920px] mx-auto">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
+          <div>
+            <h2 className="text-5xl md:text-7xl font-black text-[#181B1C] leading-[0.9] uppercase font-sora">
+              INDUSTRIAS<br />
+              QUE<br />
+              <span className="text-[#2A4899]">IMPULSAMOS</span>
+            </h2>
+            <div className="w-24 h-2 bg-[#85C639] mt-6"></div>
+          </div>
+          
+          <a
+            href="/catalog"
+            className="mt-8 md:mt-0 text-[10px] font-black text-[#2A4899] hover:text-[#85C639] tracking-[0.2em] uppercase flex items-center gap-2 transition-all group"
+          >
+            VER TODO EL PORTAFOLIO
+            <span className="group-hover:translate-x-2 transition-transform">→</span>
+          </a>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {industries.map((ind) => (
-            <a
+        {/* Cards grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {industries.map((ind, idx) => (
+            <div
               key={ind.id}
-              href={ind.href}
-              className="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl border border-transparent hover:border-[#2A4899]/20 transition-all duration-300 flex flex-col"
+              className={`flex flex-col bg-white rounded-3xl overflow-hidden shadow-xl shadow-slate-200/40 border border-slate-100 reveal reveal-stagger-${idx + 1} active group`}
             >
-              {/* Icon */}
-              <div
-                className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 transition-colors duration-300"
-                style={{ backgroundColor: `${ind.accentColor}15`, color: ind.accentColor }}
-              >
-                {ind.icon}
+              {/* Image Area with Overlay */}
+              <div className="relative h-[280px] overflow-hidden bg-slate-100">
+                <img
+                  src={ind.image}
+                  alt={ind.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#181B1C]/90 via-[#181B1C]/20 to-transparent" />
+                
+                {/* Vertical Blue Icon Ribbon */}
+                <div className="absolute top-0 left-6 bg-[#2A4899] w-[72px] rounded-b-2xl flex flex-col items-center py-5 gap-5 shadow-lg z-10">
+                  {ind.icons.map((icon, i) => (
+                    <div key={i} className="flex flex-col items-center gap-1.5 w-full px-1">
+                      <img src={icon.src} className="w-8 h-8 object-contain" alt={icon.label} />
+                      <span className="text-[8px] font-bold text-white uppercase tracking-wider text-center leading-tight">
+                        {icon.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Title inside image */}
+                <div className="absolute bottom-5 left-6 right-6 z-10">
+                  <h3 className="text-xl md:text-2xl font-black text-white uppercase leading-tight tracking-tight font-sora shadow-sm">
+                    {ind.title}
+                  </h3>
+                </div>
               </div>
 
-              <h3 className="text-lg font-bold text-[#181B1C] mb-2" style={{ fontFamily: 'Sora, sans-serif' }}>
-                {ind.title}
-              </h3>
-              <p className="text-sm text-slate-500 leading-relaxed flex-1">
-                {ind.description}
-              </p>
-
-              {/* Product lines */}
-              <div className="flex flex-wrap gap-1.5 mt-4">
-                {ind.lines.map((line) => (
-                  <span
-                    key={line}
-                    className="text-xs px-2 py-0.5 rounded-full font-medium"
-                    style={{ backgroundColor: `${ind.accentColor}15`, color: ind.accentColor }}
-                  >
-                    {line}
-                  </span>
-                ))}
+              {/* Content below image */}
+              <div className="p-6 flex flex-col flex-1">
+                <p className="text-slate-500 text-xs md:text-sm font-medium leading-relaxed mb-6 flex-1">
+                  {ind.description}
+                </p>
+                
+                <a 
+                  href={ind.href}
+                  className="w-full py-3 border border-[#2A4899] text-[#2A4899] rounded-xl text-[10px] md:text-xs font-bold uppercase tracking-widest text-center hover:bg-[#2A4899] hover:text-white transition-all duration-300"
+                >
+                  VER SOLUCIONES ESPECIALIZADAS
+                </a>
               </div>
-
-              <div className="mt-5 flex items-center gap-2 text-[#2A4899] text-sm font-semibold group-hover:gap-3 transition-all duration-300">
-                {ind.cta}
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </a>
+            </div>
           ))}
         </div>
       </div>

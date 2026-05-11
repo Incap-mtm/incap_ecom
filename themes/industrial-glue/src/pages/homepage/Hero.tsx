@@ -1,61 +1,65 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const WHATSAPP_NUMBER = '5491112345678'; // Cambiar por el número real
+const WHATSAPP_NUMBER = '5491112345678';
 
 export default function Hero() {
+  const [active, setActive] = useState(false);
   const waMessage = encodeURIComponent('Hola INCAP! Quiero solicitar una auditoría técnica en planta.');
 
+  useEffect(() => {
+    const timer = setTimeout(() => setActive(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <section className="relative bg-[#181B1C] overflow-hidden min-h-[600px] flex items-center">
-      {/* Background image */}
-      <div className="absolute inset-0">
+    <section className={`relative bg-[#181B1C] min-h-[90vh] flex items-center overflow-hidden hero-section ${active ? 'hero-active' : ''}`}>
+      {/* Background image with zoom effect */}
+      <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&q=80&w=2070"
+          src="/images/Banner_Home_Principal.png"
           alt="Producción industrial INCAP"
-          className="w-full h-full object-cover opacity-30"
+          className="w-full h-full object-cover opacity-40 hero-zoom"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#181B1C] via-[#181B1C]/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#181B1C] via-[#181B1C]/70 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-[#181B1C]/90 to-transparent z-10" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
-        <div className="max-w-2xl">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-[#2A4899]/20 border border-[#2A4899]/40 rounded-full px-4 py-1.5 mb-6">
-            <span className="w-2 h-2 rounded-full bg-[#85C639] animate-pulse" />
-            <span className="text-[#85C639] text-sm font-medium tracking-wide">+56 años respaldando la industria colombiana</span>
+      <div className="relative z-10 max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12 w-full pt-32">
+        <div className={`max-w-5xl transition-all duration-1000 transform ${active ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0'}`}>
+          {/* Archetype Tag */}
+          <div className="inline-block bg-white/5 backdrop-blur-3xl border border-white/10 px-8 py-3 rounded-full mb-12 reveal reveal-stagger-1 active">
+            <span className="text-[#85C639] font-black text-[11px] uppercase tracking-[0.5em] font-sora">
+              Respaldo Técnico • Calidad Industrial
+            </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight" style={{ fontFamily: 'Sora, sans-serif' }}>
-            La química exacta<br />
-            <span className="text-[#85C639]">detrás de las marcas</span><br />
-            que construyen país.
+          <h1 className="text-7xl md:text-9xl lg:text-[11rem] font-black text-white leading-[0.8] mb-12 font-sora tracking-tighter uppercase reveal reveal-stagger-2 active">
+            La química que <br />
+            <span className="text-[#85C639] italic">construye país</span>
           </h1>
 
-          <p className="mt-6 text-lg text-slate-300 leading-relaxed max-w-xl">
-            Más que adhesivos, somos el respaldo técnico que garantiza la estructura de tus muebles, el confort de tus colchones y la durabilidad de tu calzado.
+          <p className="text-xl md:text-3xl text-slate-400 mb-16 max-w-3xl font-inter font-light leading-relaxed reveal reveal-stagger-3 active">
+            Somos el socio estratégico que garantiza la eficiencia de tu planta y la durabilidad de cada producto que fabricas.
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-wrap gap-6 reveal reveal-stagger-3 active" style={{ transitionDelay: '0.6s' }}>
             <a
               href="/catalog"
-              className="inline-flex items-center justify-center px-8 py-4 bg-[#2A4899] hover:bg-[#1e3a7a] text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-[#2A4899]/30"
+              className="btn-incap btn-primary-incap text-lg px-12 py-6"
             >
-              Explorar Soluciones por Industria
+              Explorar Catálogo <span className="inline-block ml-3">→</span>
             </a>
             <a
               href={`https://wa.me/${WHATSAPP_NUMBER}?text=${waMessage}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-8 py-4 border-2 border-white/30 hover:border-white text-white font-semibold rounded-lg transition-all duration-300 backdrop-blur-sm"
+              className="btn-incap border-2 border-white/20 text-white text-lg px-12 py-6 hover:bg-white hover:text-black"
             >
-              Solicitar Auditoría Técnica en Planta
+              Asesoría Técnica
             </a>
           </div>
         </div>
       </div>
-
-      {/* Decorative accent line */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#2A4899] via-[#85C639] to-[#2A4899]" />
     </section>
   );
 }
