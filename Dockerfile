@@ -26,7 +26,8 @@ COPY --from=builder /app/public ./public
 # Directorio de media — Railway lo sobreescribe con su Volume
 RUN mkdir -p /app/media
 
+ENV PORT=3000
 EXPOSE 3000
 
-# En Railway: configura "Deploy Command" como `npm run setup` solo la primera vez
-CMD ["npm", "start"]
+# Comando para inicializar la DB y arrancar
+CMD ["sh", "-c", "npm run setup && npm start"]
