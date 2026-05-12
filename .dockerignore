@@ -2,7 +2,7 @@ node_modules
 .env
 .git
 .gitignore
-media
+media-default
 mock-preview
 docs
 *.log

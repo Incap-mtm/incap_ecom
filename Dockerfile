@@ -23,11 +23,16 @@ COPY --from=builder /app/extensions ./extensions
 COPY --from=builder /app/config ./config
 COPY --from=builder /app/public ./public
 
+# Imágenes por defecto — se copian al volumen si está vacío en el primer arranque
+COPY --from=builder /app/media /app/media-default/
+
 # Directorio de media — Railway lo sobreescribe con su Volume
 RUN mkdir -p /app/media
+
+COPY scripts/start.sh ./scripts/start.sh
+RUN chmod +x ./scripts/start.sh
 
 ENV PORT=3000
 EXPOSE 3000
 
-# Comando para inicializar la DB y arrancar
-CMD ["sh", "-c", "npm run setup && npm start"]
+CMD ["sh", "scripts/start.sh"]
