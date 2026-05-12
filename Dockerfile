@@ -4,6 +4,9 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
+# Cache bust: 2026-05-12-C — forces rebuild of all subsequent layers
+RUN echo "build ok"
+
 COPY . .
 RUN mkdir -p public && ls -la
 RUN npm run build
