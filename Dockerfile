@@ -30,4 +30,4 @@ ENV PORT=3000
 EXPOSE 3000
 
 # Comando para inicializar la DB y arrancar
-CMD ["sh", "-c", "npm run setup && npm start"]
+CMD ["npm", "start"]
