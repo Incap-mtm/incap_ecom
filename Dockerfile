@@ -26,8 +26,10 @@ COPY --from=builder /app/public ./public
 # Directorio de media — Railway lo sobreescribe con su Volume
 RUN mkdir -p /app/media
 
+COPY scripts/start.sh ./scripts/start.sh
+RUN chmod +x ./scripts/start.sh
+
 ENV PORT=3000
 EXPOSE 3000
 
-# Comando para inicializar la DB y arrancar
-CMD ["npm", "start"]
+CMD ["sh", "scripts/start.sh"]
