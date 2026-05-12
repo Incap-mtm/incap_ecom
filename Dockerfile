@@ -23,6 +23,9 @@ COPY --from=builder /app/extensions ./extensions
 COPY --from=builder /app/config ./config
 COPY --from=builder /app/public ./public
 
+# Imágenes por defecto — se copian al volumen si está vacío en el primer arranque
+COPY --from=builder /app/media /app/media-default/
+
 # Directorio de media — Railway lo sobreescribe con su Volume
 RUN mkdir -p /app/media
 
