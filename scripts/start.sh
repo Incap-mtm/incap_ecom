@@ -20,8 +20,9 @@ s.on('error', () => process.exit(1));
 done
 echo "Database is ready."
 
-# Seed media volume on first run (volume is empty initially)
-if [ -z "$(ls -A /app/media 2>/dev/null)" ]; then
+# Seed media volume on first run — use file count to ignore lost+found from ext4 volumes
+MEDIA_FILES=$(find /app/media -maxdepth 4 -type f 2>/dev/null | wc -l)
+if [ "$MEDIA_FILES" -eq 0 ]; then
   if [ -d /app/media-default ]; then
     echo "Seeding media volume from image..."
     cp -r /app/media-default/. /app/media/
