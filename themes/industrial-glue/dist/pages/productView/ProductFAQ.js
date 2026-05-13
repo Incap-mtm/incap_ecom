@@ -1,88 +1,94 @@
 import React, { useState } from 'react';
-function AccordionItem({ item, index }) {
-    const [open, setOpen] = useState(index === 0);
+function AccordionItem({ item, isOpen, onToggle }) {
     return /*#__PURE__*/ React.createElement("div", {
-        className: "border-b border-slate-100 last:border-0"
+        className: "border-b border-white/10 last:border-0"
     }, /*#__PURE__*/ React.createElement("button", {
-        onClick: ()=>setOpen(!open),
-        className: "w-full flex items-center justify-between py-5 text-left gap-4 group",
-        "aria-expanded": open
+        onClick: onToggle,
+        className: "w-full flex items-center justify-between py-6 text-left gap-4 group",
+        "aria-expanded": isOpen
     }, /*#__PURE__*/ React.createElement("span", {
-        className: "font-semibold text-[#181B1C] group-hover:text-[#2A4899] transition-colors duration-200",
-        style: {
-            fontFamily: 'Sora, sans-serif'
-        }
-    }, item.question), /*#__PURE__*/ React.createElement("svg", {
-        className: `w-5 h-5 text-[#2A4899] flex-shrink-0 transition-transform duration-300 ${open ? 'rotate-180' : ''}`,
+        className: "text-sm font-bold text-white group-hover:text-[#85C639] transition-colors duration-200 font-sora uppercase tracking-wide"
+    }, item.question), /*#__PURE__*/ React.createElement("span", {
+        className: `flex-shrink-0 w-7 h-7 rounded-full border border-white/20 flex items-center justify-center transition-all duration-300 ${isOpen ? 'bg-[#85C639] border-[#85C639]' : 'group-hover:border-[#85C639]'}`
+    }, /*#__PURE__*/ React.createElement("svg", {
+        className: `w-3.5 h-3.5 transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#181B1C]' : 'text-white/60'}`,
         fill: "none",
         stroke: "currentColor",
         viewBox: "0 0 24 24"
     }, /*#__PURE__*/ React.createElement("path", {
         strokeLinecap: "round",
         strokeLinejoin: "round",
-        strokeWidth: 2,
+        strokeWidth: 2.5,
         d: "M19 9l-7 7-7-7"
-    }))), open && /*#__PURE__*/ React.createElement("div", {
-        className: "pb-5 text-slate-600 leading-relaxed text-sm"
+    })))), isOpen && /*#__PURE__*/ React.createElement("div", {
+        className: "pb-6 pr-10 text-white/50 text-sm leading-relaxed font-inter"
     }, item.answer));
 }
 export default function ProductFAQ({ product }) {
-    const faqAttr = product?.attributes?.find((a)=>a.attribute_code === 'preguntas_frecuentes');
+    const faqAttr = product?.attributes?.find((a)=>a.attributeCode === 'preguntas_frecuentes');
     let faqs = [];
-    if (faqAttr?.attribute_value) {
+    if (faqAttr?.optionText) {
         try {
-            faqs = JSON.parse(faqAttr.attribute_value);
-        } catch  {
-        // Malformed JSON — skip silently
-        }
+            faqs = JSON.parse(faqAttr.optionText);
+        } catch  {}
     }
-    // Fallback defaults for the demo to ensure the section renders like the mock
     if (faqs.length === 0) {
         faqs = [
             {
-                question: '¿Tiempo de secado?',
-                answer: 'El tiempo de secado inicial es de 15 minutos, con curado total en 24 horas.'
+                question: '¿Cuál es el tiempo de secado?',
+                answer: 'El tiempo de secado inicial es de 15 minutos, con curado completo a las 24 horas bajo condiciones normales de temperatura y humedad.'
             },
             {
-                question: '¿Rendimiento por galón?',
-                answer: 'Aproximadamente 4 a 5 metros cuadrados dependiendo de la porosidad del material.'
+                question: '¿Cuál es el rendimiento por galón?',
+                answer: 'Aproximadamente 4 a 5 m² por galón, dependiendo de la porosidad del sustrato y el método de aplicación.'
+            },
+            {
+                question: '¿Cómo se debe almacenar?',
+                answer: 'En lugar fresco y seco (15–25 °C), alejado de luz solar directa y fuentes de calor. Mantener el envase bien cerrado.'
             }
         ];
     }
-    return /*#__PURE__*/ React.createElement("div", {
-        className: "mt-24 py-24 bg-slate-50 border-y border-slate-100"
+    const [openIndex, setOpenIndex] = useState(0);
+    const toggle = (i)=>setOpenIndex(openIndex === i ? null : i);
+    return /*#__PURE__*/ React.createElement("section", {
+        className: "bg-[#181B1C] py-20 relative overflow-hidden"
     }, /*#__PURE__*/ React.createElement("div", {
-        className: "max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12"
+        className: "absolute bottom-0 left-0 w-96 h-96 bg-[#85C639]/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none"
+    }), /*#__PURE__*/ React.createElement("div", {
+        className: "max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12 relative z-10"
     }, /*#__PURE__*/ React.createElement("div", {
-        className: "grid grid-cols-1 lg:grid-cols-3 gap-16"
+        className: "grid grid-cols-1 lg:grid-cols-5 gap-16"
     }, /*#__PURE__*/ React.createElement("div", {
-        className: "lg:col-span-1"
+        className: "lg:col-span-2"
     }, /*#__PURE__*/ React.createElement("h2", {
-        className: "text-3xl font-black text-[#181B1C] font-sora mb-6 uppercase tracking-tighter leading-tight"
-    }, "Preguntas Frecuentes"), /*#__PURE__*/ React.createElement("p", {
-        className: "text-sm text-slate-400 font-medium leading-relaxed"
+        className: "text-4xl md:text-5xl font-black text-white uppercase tracking-tight font-sora mb-2"
+    }, "Preguntas", /*#__PURE__*/ React.createElement("br", null), /*#__PURE__*/ React.createElement("span", {
+        className: "text-[#85C639] italic"
+    }, "Frecuentes")), /*#__PURE__*/ React.createElement("div", {
+        className: "w-24 h-2 bg-[#85C639] mb-6"
+    }), /*#__PURE__*/ React.createElement("p", {
+        className: "text-sm text-white/40 leading-relaxed font-inter"
     }, "Información técnica esencial para optimizar el uso de este producto en sus procesos industriales.")), /*#__PURE__*/ React.createElement("div", {
-        className: "lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4"
-    }, faqs.map((faq, i)=>/*#__PURE__*/ React.createElement("div", {
+        className: "lg:col-span-3"
+    }, faqs.map((faq, i)=>/*#__PURE__*/ React.createElement(AccordionItem, {
             key: i,
-            className: "p-6 bg-white rounded-2xl border border-slate-100 hover:shadow-lg transition-all group"
-        }, /*#__PURE__*/ React.createElement("h4", {
-            className: "text-sm font-black text-[#181B1C] mb-3 flex gap-3"
-        }, /*#__PURE__*/ React.createElement("span", {
-            className: "text-[#2A4899]"
-        }, "Q."), " ", faq.question), /*#__PURE__*/ React.createElement("p", {
-            className: "text-xs text-slate-500 leading-relaxed font-medium"
-        }, faq.answer))), /*#__PURE__*/ React.createElement("div", {
-        className: "p-6 bg-white rounded-2xl border border-slate-100 hover:shadow-lg transition-all group"
-    }, /*#__PURE__*/ React.createElement("h4", {
-        className: "text-sm font-black text-[#181B1C] mb-3 flex gap-3"
-    }, /*#__PURE__*/ React.createElement("span", {
-        className: "text-[#2A4899]"
-    }, "Q."), " Almacenamiento"), /*#__PURE__*/ React.createElement("p", {
-        className: "text-xs text-slate-500 leading-relaxed font-medium"
-    }, "Lugar fresco y seco, lejos de la luz solar directa y fuentes de calor extremas."))))));
+            item: faq,
+            isOpen: openIndex === i,
+            onToggle: ()=>toggle(i)
+        }))))));
 }
 export const layout = {
     areaId: 'productPageBottom',
     sortOrder: 20
 };
+export const query = `
+query Query {
+    product: currentProduct {
+      attributes: attributeIndex {
+        attributeCode
+        optionText
+      }
+    }
+}
+`;
+

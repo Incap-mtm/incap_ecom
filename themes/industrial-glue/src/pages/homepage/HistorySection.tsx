@@ -22,7 +22,7 @@ export default function HistorySection() {
              <div className={`relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0`}>
                 {/* Main rotated image container */}
                 <div className="rounded-[3rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] transform rotate-3 hover:rotate-0 transition-transform duration-700 w-full relative z-0">
-                   <img src="/images/Uniendo_Legado_Home.png" className="w-full h-auto object-cover" alt="INCAP Mascota Legacy" />
+                   <img src="/images/sections/Uniendo_Legado_Home.png" className="w-full h-auto object-cover" alt="INCAP Mascota Legacy" />
                 </div>
                 
                 {/* Overlapping Badge */}

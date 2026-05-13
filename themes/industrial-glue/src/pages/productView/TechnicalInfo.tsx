@@ -1,121 +1,131 @@
 import React from 'react';
 
+interface Attribute { attributeCode: string; optionText: string; }
 interface ProductProps {
   product?: {
-    attributes?: Array<{ attribute_code: string; attribute_value: string }>;
+    attributes?: Attribute[];
   };
 }
 
-const GHSPictogram = ({ code }: { code: string }) => {
-  const pictograms: Record<string, { name: string, color: string, icon: string }> = {
-    GHS02: { name: 'Inflamable', color: 'bg-red-50 text-red-600', icon: '🔥' },
-    GHS07: { name: 'Irritante', color: 'bg-orange-50 text-orange-600', icon: '⚠️' },
-    GHS08: { name: 'Riesgo Salud', color: 'bg-blue-50 text-blue-600', icon: '👤' },
-  };
-  const p = pictograms[code] || { name: code, color: 'bg-slate-100', icon: '?' };
+const GHS_META: Record<string, { name: string; icon: string }> = {
+  GHS01: { name: 'Explosivo',      icon: '💥' },
+  GHS02: { name: 'Inflamable',     icon: '🔥' },
+  GHS03: { name: 'Comburente',     icon: '🔆' },
+  GHS04: { name: 'Gas comprimido', icon: '🔵' },
+  GHS05: { name: 'Corrosivo',      icon: '⚗️'  },
+  GHS06: { name: 'Tóxico',         icon: '☠️'  },
+  GHS07: { name: 'Irritante',      icon: '⚠️'  },
+  GHS08: { name: 'Riesgo salud',   icon: '👤'  },
+  GHS09: { name: 'Medioambiente',  icon: '🌿'  },
+};
+
+const GHSBadge = ({ code }: { code: string }) => {
+  const p = GHS_META[code] || { name: code, icon: '?' };
   return (
-    <div className={`flex flex-col items-center gap-2 p-4 rounded-2xl ${p.color} border border-current/10 w-24`}>
-      <span className="text-3xl">{p.icon}</span>
-      <span className="text-[8px] font-black uppercase tracking-tighter text-center">{p.name}</span>
+    <div className="flex items-center gap-3 px-4 py-3 border border-white/10 rounded-2xl bg-white/5">
+      <span className="text-2xl leading-none">{p.icon}</span>
+      <div>
+        <p className="text-[9px] font-black uppercase tracking-wider text-white/40">{code}</p>
+        <p className="text-sm font-bold text-white leading-tight">{p.name}</p>
+      </div>
     </div>
   );
 };
 
 export default function TechnicalInfo({ product }: ProductProps) {
-  const [activeTab, setActiveTab] = React.useState('tech');
-  const getAttr = (code: string) => product?.attributes?.find(a => a.attribute_code === code)?.attribute_value;
+  const get = (code: string) =>
+    product?.attributes?.find(a => a.attributeCode === code)?.optionText;
 
-  const instructionsRaw = getAttr('modo_empleo') || '';
-  const instructionsList = instructionsRaw.replace(/<[^>]*>?/gm, '').split('.').filter((s: string) => s.trim().length > 0);
-
-  const safetyH = getAttr('safety_h') || 'Puede causar irritación cutánea o ocular leve en caso de exposición prolongada.';
-  const safetyP = getAttr('safety_p') || 'Usar equipo de protección. Evitar inhalación de vapores.';
-  const safetyPictograms = ['GHS02', 'GHS07', 'GHS08']; 
+  const steps    = (get('modo_empleo') || '').split('|').map(s => s.trim()).filter(Boolean);
+  const ghsCodes = (get('ghs_pictogramas') || '').split('|').map(s => s.trim()).filter(Boolean);
+  const precH    = get('precauciones_h') || '';
+  const consP    = get('consejos_prudencia_p') || '';
+  const hasSafety = ghsCodes.length > 0 || precH || consP;
 
   return (
-    <div className="mt-24 border-t border-slate-100 pt-16">
-      {/* Tabs Selector */}
-      <div className="flex space-x-12 border-b border-slate-200 mb-12">
-        {[
-          { id: 'tech', label: 'Información Técnica' },
-          { id: 'safety', label: 'Seguridad y Manejo' }
-        ].map(tab => (
-          <button 
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`pb-8 text-[11px] font-black uppercase tracking-[0.4em] transition-all relative ${activeTab === tab.id ? 'text-[#2A4899]' : 'text-slate-400 hover:text-slate-600'}`}
-          >
-            {tab.label}
-            {activeTab === tab.id && <div className="absolute bottom-0 left-0 w-full h-1 bg-[#85C639] rounded-full"></div>}
-          </button>
-        ))}
-      </div>
+    <>
+      {/* ── Modo de Empleo — fondo gris claro ── */}
+      {steps.length > 0 && (
+        <section className="bg-[#f8f9fa] py-20">
+          <div className="max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12">
+            <h2 className="text-4xl md:text-5xl font-black text-[#181B1C] uppercase tracking-tight font-sora mb-2">
+              Modo de Empleo
+            </h2>
+            <div className="w-24 h-2 bg-[#85C639] mb-12"></div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-        <div className="lg:col-span-8 bg-white rounded-[3rem] p-12 shadow-2xl border border-slate-100">
-          {activeTab === 'tech' ? (
-            <div className="animate-fadeIn">
-              <h3 className="text-4xl font-black text-[#2A4899] mb-12 uppercase tracking-tighter font-sora">Instrucciones de Uso</h3>
-              <div className="space-y-12">
-                {instructionsList.length > 0 ? (
-                  instructionsList.map((step: string, i: number) => (
-                    <div key={i} className="flex gap-10 group">
-                      <div className="flex-shrink-0 w-14 h-14 rounded-full bg-slate-50 text-[#2A4899] font-black text-xl flex items-center justify-center border-2 border-transparent group-hover:border-[#85C639] group-hover:bg-[#85C639] group-hover:text-[#181B1C] transition-all duration-500 transform group-hover:rotate-6 shadow-sm">
-                        {i + 1}
-                      </div>
-                      <div>
-                        <p className="text-slate-600 font-medium leading-relaxed text-xl group-hover:text-[#2A4899] transition-colors">{step.trim()}.</p>
-                      </div>
+            <ol className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {steps.map((step, i) => {
+                const colonIdx = step.indexOf(':');
+                const label    = colonIdx > -1 ? step.slice(0, colonIdx).trim() : `Paso ${i + 1}`;
+                const detail   = colonIdx > -1 ? step.slice(colonIdx + 1).trim() : step;
+                return (
+                  <li key={i} className="flex gap-5 bg-white rounded-3xl p-6 border border-slate-100 shadow-sm">
+                    <span className="flex-shrink-0 w-10 h-10 rounded-full bg-[#181B1C] flex items-center justify-center text-sm font-black text-white font-sora">
+                      {i + 1}
+                    </span>
+                    <div>
+                      <p className="font-black text-[#181B1C] text-sm uppercase tracking-wide font-sora mb-1">{label}</p>
+                      <p className="text-slate-500 text-sm leading-relaxed font-inter">{detail}</p>
                     </div>
-                  ))
-                ) : (
-                  <p className="text-slate-500 italic">Consultar el manual técnico para este producto.</p>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="animate-fadeIn">
-              <h3 className="text-4xl font-black text-[#2A4899] mb-12 uppercase tracking-tighter font-sora">Manejo de Seguridad</h3>
-              <div className="space-y-8">
-                <p className="text-slate-600 text-lg leading-relaxed font-medium">Este producto cumple con los estándares internacionales de seguridad industrial. Se recomienda el uso de EPP adecuado.</p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
-                  <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:border-[#85C639] transition-colors">
-                    <h4 className="text-[#2A4899] font-black text-sm uppercase mb-4 tracking-widest">Advertencias (H)</h4>
-                    <p className="text-slate-500 text-sm leading-relaxed font-medium">{safetyH}</p>
-                  </div>
-                  <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:border-[#85C639] transition-colors">
-                    <h4 className="text-[#2A4899] font-black text-sm uppercase mb-4 tracking-widest">Precauciones (P)</h4>
-                    <p className="text-slate-500 text-sm leading-relaxed font-medium">{safetyP}</p>
-                  </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        </section>
+      )}
+
+      {/* ── Seguridad y Manejo — fondo oscuro ── */}
+      {hasSafety && (
+        <section className="bg-[#181B1C] py-20 relative overflow-hidden">
+          {/* Background decoration */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#2A4899]/10 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+
+          <div className="max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+            <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight font-sora mb-2">
+              Seguridad y Manejo
+            </h2>
+            <div className="w-24 h-2 bg-[#85C639] mb-12"></div>
+
+            {/* GHS Badges */}
+            {ghsCodes.length > 0 && (
+              <div className="mb-10">
+                <p className="text-[9px] font-black text-[#85C639] uppercase tracking-[0.3em] font-sora mb-4">
+                  Pictogramas GHS
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {ghsCodes.map(c => <GHSBadge key={c} code={c} />)}
                 </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
 
-        <div className="lg:col-span-4 space-y-10">
-          <div className="bg-[#181B1C] rounded-[3rem] p-10 text-white shadow-2xl relative overflow-hidden group">
-            <h4 className="text-[#2A4899] font-black uppercase tracking-[0.3em] text-[10px] mb-10 flex items-center">
-              <span className="w-2 h-2 rounded-full bg-[#85C639] mr-4 animate-pulse"></span>Información de Seguridad (GHS)
-            </h4>
-            <div className="grid grid-cols-3 gap-4 mb-10 relative z-10">
-              {safetyPictograms.map(p => <GHSPictogram key={p} code={p} />)}
+            {/* H & P */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {precH && (
+                <div className="bg-white/5 border border-white/10 rounded-3xl p-6">
+                  <p className="text-[9px] font-black text-[#85C639] uppercase tracking-[0.3em] font-sora mb-3">
+                    Precauciones H
+                  </p>
+                  <p className="text-sm text-white/70 leading-relaxed font-inter">{precH}</p>
+                </div>
+              )}
+              {consP && (
+                <div className="bg-white/5 border border-white/10 rounded-3xl p-6">
+                  <p className="text-[9px] font-black text-[#85C639] uppercase tracking-[0.3em] font-sora mb-3">
+                    Consejos de Prudencia P
+                  </p>
+                  <p className="text-sm text-white/70 leading-relaxed font-inter">{consP}</p>
+                </div>
+              )}
             </div>
-            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest leading-relaxed">Consulte la hoja de seguridad completa antes de manipular este adhesivo.</p>
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full translate-x-20 -translate-y-20 group-hover:scale-110 transition-transform duration-1000"></div>
+
+            <p className="mt-8 text-xs text-white/25 font-inter">
+              Consulte la hoja de seguridad completa (SDS) antes de manipular este producto. Use siempre el equipo de protección personal (EPP) adecuado.
+            </p>
           </div>
-          
-          <div className="bg-[#2A4899] rounded-[3rem] p-12 text-white shadow-2xl relative overflow-hidden group">
-             <div className="relative z-10">
-                <h3 className="text-3xl font-black mb-8 uppercase tracking-tighter">Soporte Técnico</h3>
-                <p className="text-white/70 font-medium mb-12 leading-relaxed text-lg">¿Dudas sobre el rendimiento o la aplicación en tu línea de producción?</p>
-                <button className="w-full py-6 bg-[#85C639] text-[#181B1C] rounded-2xl font-black uppercase tracking-widest hover:bg-white transition-all transform hover:-translate-y-2 shadow-xl text-xs">Contactar Técnico</button>
-             </div>
-             <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full translate-x-20 -translate-y-20 group-hover:scale-110 transition-transform duration-1000"></div>
-          </div>
-        </div>
-      </div>
-    </div>
+        </section>
+      )}
+    </>
   );
 }
 
@@ -124,3 +134,13 @@ export const layout = {
   sortOrder: 15
 };
 
+export const query = `
+query Query {
+    product: currentProduct {
+      attributes: attributeIndex {
+        attributeCode
+        optionText
+      }
+    }
+}
+`;

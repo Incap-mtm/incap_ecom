@@ -6,14 +6,14 @@ const industries = [
         title: 'Madera y Muebles',
         description: 'Ensamble estructural y laminado fino con tecnología PVA de alta ingeniería.',
         href: '/industrias/madera',
-        image: '/images/Banner_Maderas_Muebles.png',
+        image: '/images/sections/Categoria_Maderas_Muebles_Seccion_Home.webp',
         icons: [
             {
-                src: '/images/Icono_Categoria_Madera_Muebles.svg',
+                src: '/images/icons/Icono_Categoria_Madera_Muebles.svg',
                 label: 'Maderas'
             },
             {
-                src: '/images/Icono_Categoria_Madera_Muebles_2.svg',
+                src: '/images/icons/Icono_Categoria_Madera_Muebles_2.svg',
                 label: 'Muebles'
             }
         ]
@@ -23,14 +23,14 @@ const industries = [
         title: 'Colchones y Espumas',
         description: 'Adhesivos libres de tolueno diseñados para el confort y la salud de tu equipo.',
         href: '/industrias/colchones',
-        image: '/images/Banner_Colchones.png',
+        image: '/images/sections/Colchones_Seccion_Home.webp',
         icons: [
             {
-                src: '/images/INCAP_Icono_colchones_Espumas.svg',
+                src: '/images/icons/INCAP_Icono_colchones_Espumas.svg',
                 label: 'Colchones'
             },
             {
-                src: '/images/INCAP_Icono_colchones_Espumas_2.svg',
+                src: '/images/icons/INCAP_Icono_colchones_Espumas_2.svg',
                 label: 'Espumas'
             }
         ]
@@ -40,14 +40,14 @@ const industries = [
         title: 'Calzado y Marroquinería',
         description: 'Sistemas completos de pegado para las fábricas más exigentes del país.',
         href: '/industrias/calzado',
-        image: '/images/Banner_Calzado_Marroquineria.png',
+        image: '/images/sections/Calzado_Marroquinera_Seccion_Home.webp',
         icons: [
             {
-                src: '/images/INCAP_Icono_Calzado%20y%20Marroquinera_2.svg',
+                src: '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2.svg',
                 label: 'Marroquinería'
             },
             {
-                src: '/images/INCAP_Icono_Calzado%20y%20Marroquinera_2%20(1).svg',
+                src: '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2_alt.svg',
                 label: 'Calzado'
             }
         ]
@@ -57,18 +57,18 @@ const industries = [
         title: 'Hogar y Multiusos',
         description: 'Soluciones versátiles para reparaciones del hogar y proyectos creativos.',
         href: '/industrias/hogar',
-        image: '/images/Banner_Hogar_Multiusos.png',
+        image: '/images/sections/Hogar_Multiusos_Seccion_Home.webp',
         icons: [
             {
-                src: '/images/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg',
+                src: '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg',
                 label: 'Hogar'
             },
             {
-                src: '/images/INCAP_Icono_Hogar_Manualidades_y_Multisuos_2.svg',
+                src: '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos_2.svg',
                 label: 'Manualidades'
             },
             {
-                src: '/images/INCAP_Icono_Hogar_Manualidades_y_Multisuos_3.svg',
+                src: '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos_3.svg',
                 label: 'Multiusos'
             }
         ]

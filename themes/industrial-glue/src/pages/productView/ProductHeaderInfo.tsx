@@ -1,29 +1,48 @@
 import React from 'react';
 
+interface Attribute { attributeCode: string; optionText: string; }
 interface ProductProps {
   product?: {
-    attributes?: Array<{ attribute_code: string; attribute_value: string }>;
+    sku?: string;
+    attributes?: Attribute[];
   };
 }
 
 export default function ProductHeaderInfo({ product }: ProductProps) {
-  const getAttr = (code: string) => product?.attributes?.find(a => a.attribute_code === code)?.attribute_value;
+  const get = (code: string) =>
+    product?.attributes?.find(a => a.attributeCode === code)?.optionText;
 
-  const feature = getAttr('feature_principal') || 'Calidad Industrial';
-  const sapCode = getAttr('codigo_sap') || 'N/A';
+  const usos             = get('usos');
+  const codigoIndustrial = get('codigo_industrial');
+  const sku              = product?.sku;
 
   return (
-    <div className="mb-8 flex justify-between items-start animate-fadeIn">
-      <div className="flex flex-col gap-2">
-        <div className="inline-flex items-center space-x-3 bg-[#85C639]/10 px-4 py-1.5 rounded-full border border-[#85C639]/20">
-          <div className="w-1.5 h-1.5 rounded-full bg-[#85C639] animate-pulse"></div>
-          <span className="text-[#181B1C] text-[9px] font-black uppercase tracking-[0.3em] font-inter">{feature}</span>
+    <div className="mb-3">
+      {usos && (
+        <div className="inline-block bg-[#2A4899]/8 border border-[#2A4899]/20 px-4 py-1.5 rounded-full mb-4">
+          <span className="text-[10px] font-black text-[#2A4899] uppercase tracking-[0.3em] font-sora">
+            {usos}
+          </span>
         </div>
-      </div>
-      <div className="bg-white/80 backdrop-blur-md px-6 py-4 rounded-2xl shadow-xl border border-slate-100 flex flex-col items-end transform hover:scale-105 transition-transform duration-300">
-        <span className="text-slate-400 text-[8px] font-black uppercase tracking-[0.5em] mb-1">CÓDIGO SAP</span>
-        <span className="text-[#2A4899] font-black text-xl font-sora tracking-tighter">{sapCode}</span>
-      </div>
+      )}
+
+      {(sku || codigoIndustrial) && (
+        <div className="flex items-center flex-wrap gap-x-4 gap-y-1 text-xs text-slate-400 font-inter">
+          {sku && (
+            <span>
+              SKU{' '}
+              <strong className="text-[#181B1C] font-bold">{sku}</strong>
+            </span>
+          )}
+          {sku && codigoIndustrial && <span className="text-slate-200">·</span>}
+          {codigoIndustrial && (
+            <span>
+              Ref. industrial{' '}
+              <strong className="text-[#181B1C] font-bold">{codigoIndustrial}</strong>
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -32,3 +51,15 @@ export const layout = {
   areaId: 'productPageMiddleRight',
   sortOrder: 1
 };
+
+export const query = `
+query Query {
+    product: currentProduct {
+      sku
+      attributes: attributeIndex {
+        attributeCode
+        optionText
+      }
+    }
+}
+`;

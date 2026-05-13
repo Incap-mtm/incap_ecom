@@ -16,7 +16,7 @@ export default function Hero() {
       {/* Background image with zoom effect */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/images/Banner_Home_Principal.png"
+          src="/images/banners/Banner_Home_Principal.webp"
           alt="Producción industrial INCAP"
           className="w-full h-full object-cover opacity-40 hero-zoom"
         />

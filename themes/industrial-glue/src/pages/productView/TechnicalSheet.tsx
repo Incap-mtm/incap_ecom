@@ -3,16 +3,15 @@ import React from 'react';
 interface ProductProps {
   product?: {
     name?: string;
-    attributes?: Array<{ attribute_code: string; attribute_value: string }>;
+    attributes?: Array<{ attributeCode: string; optionText: string }>;
   };
 }
 
 export default function TechnicalSheet({ product }: ProductProps) {
-  // Reads from custom attribute 'ficha_tecnica' set in EverShop admin
   const fichaAttr = product?.attributes?.find(
-    (a) => a.attribute_code === 'ficha_tecnica'
+    (a) => a.attributeCode === 'ficha_tecnica'
   );
-  const fichaUrl = fichaAttr?.attribute_value;
+  const fichaUrl = fichaAttr?.optionText;
 
   // Don't render if no technical sheet is configured
   if (!fichaUrl) return null;
@@ -47,3 +46,14 @@ export const layout = {
   areaId: 'productPageBottom',
   sortOrder: 10
 };
+
+export const query = `
+query Query {
+    product: currentProduct {
+      attributes: attributeIndex {
+        attributeCode
+        optionText
+      }
+    }
+}
+`;

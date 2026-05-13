@@ -3,22 +3,22 @@ const industries = [
     {
         name: 'Madera y Muebles',
         href: '/industrias/madera',
-        icon: '/images/Icono_Categoria_Madera_Muebles.svg'
+        icon: '/images/icons/Icono_Categoria_Madera_Muebles.svg'
     },
     {
         name: 'Colchones y Espumas',
         href: '/industrias/colchones',
-        icon: '/images/INCAP_Icono_colchones_Espumas.svg'
+        icon: '/images/icons/INCAP_Icono_colchones_Espumas.svg'
     },
     {
         name: 'Calzado y Marroquinería',
         href: '/industrias/calzado',
-        icon: '/images/INCAP_Icono_Calzado%20y%20Marroquinera_2.svg'
+        icon: '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2.svg'
     },
     {
         name: 'Hogar y Multiusos',
         href: '/industrias/hogar',
-        icon: '/images/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg'
+        icon: '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg'
     }
 ];
 export default function Navbar() {

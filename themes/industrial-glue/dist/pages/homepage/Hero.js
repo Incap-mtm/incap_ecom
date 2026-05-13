@@ -12,7 +12,7 @@ export default function Hero() {
     }, /*#__PURE__*/ React.createElement("div", {
         className: "absolute inset-0 z-0"
     }, /*#__PURE__*/ React.createElement("img", {
-        src: "/images/Banner_Home_Principal.png",
+        src: "/images/banners/Banner_Home_Principal.webp",
         alt: "Producción industrial INCAP",
         className: "w-full h-full object-cover opacity-40 hero-zoom"
     }), /*#__PURE__*/ React.createElement("div", {

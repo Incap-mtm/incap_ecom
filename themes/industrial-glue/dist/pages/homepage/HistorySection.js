@@ -25,7 +25,7 @@ export default function HistorySection() {
     }, /*#__PURE__*/ React.createElement("div", {
         className: "rounded-[3rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] transform rotate-3 hover:rotate-0 transition-transform duration-700 w-full relative z-0"
     }, /*#__PURE__*/ React.createElement("img", {
-        src: "/images/Uniendo_Legado_Home.png",
+        src: "/images/sections/Uniendo_Legado_Home.png",
         className: "w-full h-auto object-cover",
         alt: "INCAP Mascota Legacy"
     })), /*#__PURE__*/ React.createElement("div", {

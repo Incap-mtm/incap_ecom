@@ -38,6 +38,9 @@ export default function Head() {
         .header__middle { display: none !important; }
         .header { padding: 0 !important; background: transparent !important; position: fixed; width: 100%; top: 0; z-index: 100; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
 
+        /* Compensar navbar fija en páginas de producto y categoría */
+        body.productView, body.categoryView { padding-top: 110px; }
+
         /* Custom navbar styles with transparency/glassmorphism */
         .incap-navbar {
           transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -306,6 +309,124 @@ export default function Head() {
         }
         .animate-marquee {
           animation: marquee 25s linear infinite;
+        }
+
+        /* ── Product Description — jerarquía Airbnb ── */
+
+        /* Ocultar el container nativo (reemplazado por ProductDescription en productPageBottom) */
+        .product__single__description { display: none !important; }
+
+        /* Estilos del componente custom ProductDescription */
+
+        /* h3 — título de sección principal */
+        .incap-desc h3 {
+          font-size: 1.375rem;
+          font-weight: 700;
+          color: #181B1C;
+          font-family: 'Sora', sans-serif;
+          letter-spacing: -0.02em;
+          line-height: 1.3;
+          margin-top: 0;
+          margin-bottom: 0.875rem;
+        }
+
+        /* h4 — subsección con acento verde */
+        .incap-desc h4 {
+          font-size: 0.6875rem;
+          font-weight: 700;
+          color: #181B1C;
+          text-transform: uppercase;
+          letter-spacing: 0.18em;
+          margin-top: 1.75rem;
+          margin-bottom: 0.625rem;
+          padding-bottom: 0.375rem;
+          border-bottom: 2px solid #85C639;
+          display: inline-block;
+        }
+
+        /* Párrafos */
+        .incap-desc p {
+          font-size: 0.9375rem;
+          color: #4b5563;
+          line-height: 1.8;
+          margin-bottom: 0.875rem;
+          font-family: 'Inter', sans-serif;
+        }
+
+        /* Listas */
+        .incap-desc ul,
+        .incap-desc ol  { list-style: none; padding-left: 0; margin-bottom: 1rem; }
+
+        .incap-desc li {
+          position: relative;
+          padding-left: 1.375rem;
+          font-size: 0.9375rem;
+          color: #4b5563;
+          line-height: 1.7;
+          margin-bottom: 0.375rem;
+          font-family: 'Inter', sans-serif;
+        }
+        .incap-desc ul li::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0.65rem;
+          width: 0.3125rem;
+          height: 0.3125rem;
+          border-radius: 50%;
+          background-color: #85C639;
+        }
+        .incap-desc ol { counter-reset: incap-ol; }
+        .incap-desc ol li { counter-increment: incap-ol; padding-left: 1.75rem; }
+        .incap-desc ol li::before {
+          content: counter(incap-ol) ".";
+          position: absolute;
+          left: 0;
+          font-weight: 700;
+          color: #2A4899;
+          font-size: 0.8125rem;
+        }
+
+        /* strong/em */
+        .incap-desc strong { font-weight: 700; color: #181B1C; }
+        .incap-desc em     { font-style: italic; color: #374151; }
+
+        /* ── Variant Selector (presentaciones) — INCAP style ── */
+        .variant__container {
+          border-top: 1px solid #f1f5f9 !important;
+          padding-top: 1.5rem !important;
+          margin-top: 1rem !important;
+        }
+        .variant__container .text-textSubdued {
+          font-size: 9px !important;
+          font-weight: 900 !important;
+          color: #85C639 !important;
+          text-transform: uppercase !important;
+          letter-spacing: 0.3em !important;
+          font-family: 'Sora', sans-serif !important;
+          margin-bottom: 0.75rem !important;
+        }
+        .variant-option-list li button {
+          padding: 0.5rem 1rem !important;
+          border-radius: 0.75rem !important;
+          font-size: 0.75rem !important;
+          font-weight: 900 !important;
+          font-family: 'Sora', sans-serif !important;
+          text-transform: uppercase !important;
+          letter-spacing: 0.1em !important;
+          border: 2px solid #e2e8f0 !important;
+          background: #ffffff !important;
+          color: #181B1C !important;
+          transition: border-color 0.15s ease !important;
+          cursor: pointer !important;
+        }
+        .variant-option-list li button:hover {
+          border-color: #181B1C !important;
+        }
+        .variant-option-list li.selected button {
+          background: #181B1C !important;
+          color: #ffffff !important;
+          border-color: #181B1C !important;
         }
       `}</style>
     </>

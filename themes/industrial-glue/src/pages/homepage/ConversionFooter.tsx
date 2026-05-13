@@ -35,13 +35,15 @@ export default function ConversionFooter() {
           <div className="relative group hidden lg:flex justify-center">
              <div className="relative max-w-md w-full">
                 <div className="absolute -inset-10 bg-[#2A4899]/20 rounded-[4rem] blur-3xl group-hover:bg-[#2A4899]/30 transition-all duration-700"></div>
-                <div className="relative rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl shadow-black/50">
-                   <img 
-                    src="/images/Fallas_De_Pegue_contacto.png" 
-                    className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-1000" 
-                    alt="Técnico INCAP en planta" 
-                   />
-                   <div className="absolute inset-0 bg-gradient-to-t from-[#181B1C]/60 to-transparent"></div>
+                <div className="relative rounded-[3rem] border border-white/10 shadow-2xl shadow-black/50 p-6">
+                   <div className="rounded-2xl overflow-hidden">
+                     <img
+                      src="/images/sections/Fallas_De_Pegue_contacto.png"
+                      className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-1000"
+                      alt="Técnico INCAP en planta"
+                     />
+                     <div className="absolute inset-0 bg-gradient-to-t from-[#181B1C]/60 to-transparent"></div>
+                   </div>
                 </div>
              </div>
           </div>

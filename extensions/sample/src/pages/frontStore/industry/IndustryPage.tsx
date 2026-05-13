@@ -5,32 +5,32 @@ const INDUSTRIES_DATA: Record<string, any> = {
     id: 'madera',
     slugs: ['madera', 'maderas', 'muebles'],
     name: 'Madera y Muebles',
-    heroImage: '/images/Banner_Maderas_Muebles.png',
-    icons: ['/images/Icono_Categoria_Madera_Muebles.svg', '/images/Icono_Categoria_Madera_Muebles_2.svg'],
+    heroImage: '/images/banners/Banner_Maderas_Muebles.webp',
+    icons: ['/images/icons/Icono_Categoria_Madera_Muebles.svg', '/images/icons/Icono_Categoria_Madera_Muebles_2.svg'],
     description: 'Soluciones adhesivas de alta ingeniería para la industria del mueble. De la ebanistería fina a la producción en serie.',
   },
   colchones: {
     id: 'colchones',
     slugs: ['colchones', 'espumas'],
     name: 'Colchones y Espumas',
-    heroImage: '/images/Banner_Colchones.png',
-    icons: ['/images/INCAP_Icono_colchones_Espumas.svg', '/images/INCAP_Icono_colchones_Espumas_2.svg'],
+    heroImage: '/images/banners/Banner_Colchones.webp',
+    icons: ['/images/icons/INCAP_Icono_colchones_Espumas.svg', '/images/icons/INCAP_Icono_colchones_Espumas_2.svg'],
     description: 'Ingeniería para el descanso. Adhesivos que optimizan tu línea de producción y protegen la salud de tu equipo.',
   },
   calzado: {
     id: 'calzado',
     slugs: ['calzado', 'marroquineria'],
     name: 'Calzado y Marroquinería',
-    heroImage: '/images/Banner_Calzado_Marroquineria.png',
-    icons: ['/images/INCAP_Icono_Calzado%20y%20Marroquinera_2.svg', '/images/INCAP_Icono_Calzado%20y%20Marroquinera_2%20(1).svg'],
+    heroImage: '/images/banners/Banner_Calzado_Marroquineria.webp',
+    icons: ['/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2.svg', '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2_alt.svg'],
     description: 'El estándar de las grandes fábricas. Un ecosistema completo para reducir garantías.',
   },
   hogar: {
     id: 'hogar',
     slugs: ['hogar', 'multiusos', 'manualidades'],
     name: 'Hogar y Multiusos',
-    heroImage: '/images/Banner_Hogar_Multiusos.png',
-    icons: ['/images/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg', '/images/INCAP_Icono_Hogar_Manualidades_y_Multisuos_2.svg', '/images/INCAP_Icono_Hogar_Manualidades_y_Multisuos_3.svg'],
+    heroImage: '/images/banners/Banner_Hogar_Multiusos.webp',
+    icons: ['/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg', '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos_2.svg', '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos_3.svg'],
     description: 'Soluciones versátiles para el día a día. Reparaciones rápidas y proyectos creativos con calidad industrial.',
   }
 };
@@ -57,7 +57,7 @@ const ConversionFooter = () => (
            <div className="relative max-w-md w-full">
               <div className="absolute -inset-10 bg-[#2A4899]/20 rounded-[4rem] blur-3xl group-hover:bg-[#2A4899]/30 transition-all duration-700"></div>
               <div className="relative rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl">
-                 <img src="/images/Fallas_De_Pegue_contacto.png" className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-1000" alt="Soporte" />
+                 <img src="/images/sections/Fallas_De_Pegue_contacto.png" className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-1000" alt="Soporte" />
                  <div className="absolute inset-0 bg-gradient-to-t from-[#181B1C]/60 to-transparent"></div>
               </div>
            </div>
@@ -77,6 +77,7 @@ const PRODUCTS_QUERY = `
         products {
           items {
             productId
+            uuid
             name
             status
             price {
@@ -150,7 +151,7 @@ export default function IndustryPage() {
            ) : realProducts.length > 0 ? (
              <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                 {realProducts.map((prod: any) => (
-                  <a href={prod.url} key={prod.productId} className="bg-white p-0 rounded-[2.5rem] shadow-xl border border-slate-100 hover:shadow-2xl transition-all cursor-pointer group overflow-hidden block">
+                  <a href={`/product/${prod.uuid}`} key={prod.productId} className="bg-white p-0 rounded-[2.5rem] shadow-xl border border-slate-100 hover:shadow-2xl transition-all cursor-pointer group overflow-hidden block">
                     <div className="h-80 overflow-hidden bg-slate-100">
                       {prod.image?.url ? (
                         <img src={prod.image.url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt={prod.name} />

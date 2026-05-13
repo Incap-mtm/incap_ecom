@@ -8,10 +8,10 @@ const INDUSTRIES_DATA = {
             'muebles'
         ],
         name: 'Madera y Muebles',
-        heroImage: '/images/Banner_Maderas_Muebles.png',
+        heroImage: '/images/banners/Banner_Maderas_Muebles.webp',
         icons: [
-            '/images/Icono_Categoria_Madera_Muebles.svg',
-            '/images/Icono_Categoria_Madera_Muebles_2.svg'
+            '/images/icons/Icono_Categoria_Madera_Muebles.svg',
+            '/images/icons/Icono_Categoria_Madera_Muebles_2.svg'
         ],
         description: 'Soluciones adhesivas de alta ingeniería para la industria del mueble. De la ebanistería fina a la producción en serie.'
     },
@@ -22,10 +22,10 @@ const INDUSTRIES_DATA = {
             'espumas'
         ],
         name: 'Colchones y Espumas',
-        heroImage: '/images/Banner_Colchones.png',
+        heroImage: '/images/banners/Banner_Colchones.webp',
         icons: [
-            '/images/INCAP_Icono_colchones_Espumas.svg',
-            '/images/INCAP_Icono_colchones_Espumas_2.svg'
+            '/images/icons/INCAP_Icono_colchones_Espumas.svg',
+            '/images/icons/INCAP_Icono_colchones_Espumas_2.svg'
         ],
         description: 'Ingeniería para el descanso. Adhesivos que optimizan tu línea de producción y protegen la salud de tu equipo.'
     },
@@ -36,10 +36,10 @@ const INDUSTRIES_DATA = {
             'marroquineria'
         ],
         name: 'Calzado y Marroquinería',
-        heroImage: '/images/Banner_Calzado_Marroquineria.png',
+        heroImage: '/images/banners/Banner_Calzado_Marroquineria.webp',
         icons: [
-            '/images/INCAP_Icono_Calzado%20y%20Marroquinera_2.svg',
-            '/images/INCAP_Icono_Calzado%20y%20Marroquinera_2%20(1).svg'
+            '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2.svg',
+            '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2_alt.svg'
         ],
         description: 'El estándar de las grandes fábricas. Un ecosistema completo para reducir garantías.'
     },
@@ -51,11 +51,11 @@ const INDUSTRIES_DATA = {
             'manualidades'
         ],
         name: 'Hogar y Multiusos',
-        heroImage: '/images/Banner_Hogar_Multiusos.png',
+        heroImage: '/images/banners/Banner_Hogar_Multiusos.webp',
         icons: [
-            '/images/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg',
-            '/images/INCAP_Icono_Hogar_Manualidades_y_Multisuos_2.svg',
-            '/images/INCAP_Icono_Hogar_Manualidades_y_Multisuos_3.svg'
+            '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg',
+            '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos_2.svg',
+            '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos_3.svg'
         ],
         description: 'Soluciones versátiles para el día a día. Reparaciones rápidas y proyectos creativos con calidad industrial.'
     }
@@ -90,7 +90,7 @@ const ConversionFooter = ()=>/*#__PURE__*/ React.createElement("section", {
     }), /*#__PURE__*/ React.createElement("div", {
         className: "relative rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl"
     }, /*#__PURE__*/ React.createElement("img", {
-        src: "/images/Fallas_De_Pegue_contacto.png",
+        src: "/images/sections/Fallas_De_Pegue_contacto.png",
         className: "w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-1000",
         alt: "Soporte"
     }), /*#__PURE__*/ React.createElement("div", {
@@ -105,6 +105,7 @@ const PRODUCTS_QUERY = `
         products {
           items {
             productId
+            uuid
             name
             status
             price {
@@ -185,7 +186,7 @@ export default function IndustryPage() {
     }, "Cargando portafolio...") : realProducts.length > 0 ? /*#__PURE__*/ React.createElement("div", {
         className: "grid grid-cols-1 md:grid-cols-3 gap-12"
     }, realProducts.map((prod)=>/*#__PURE__*/ React.createElement("a", {
-            href: prod.url,
+            href: `/product/${prod.uuid}`,
             key: prod.productId,
             className: "bg-white p-0 rounded-[2.5rem] shadow-xl border border-slate-100 hover:shadow-2xl transition-all cursor-pointer group overflow-hidden block"
         }, /*#__PURE__*/ React.createElement("div", {

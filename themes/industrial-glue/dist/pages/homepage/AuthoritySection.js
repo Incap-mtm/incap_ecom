@@ -1,10 +1,10 @@
 import React from 'react';
 export default function AuthoritySection() {
     const logos = [
-        '/Logo%20Aliados/Logo%20Kenda%20Farben.svg',
-        '/Logo%20Aliados/Logo%20CT%20Point.svg',
-        '/Logo%20Aliados/Logo%20Intercom.svg',
-        '/Logo%20Aliados/Logo%20Tecno%20GI.svg'
+        '/images/logos/Logo_Kenda_Farben.svg',
+        '/images/logos/Logo_CT_Point.svg',
+        '/images/logos/Logo_Intercom.svg',
+        '/images/logos/Logo_Tecno_GI.svg'
     ];
     return /*#__PURE__*/ React.createElement("section", {
         className: "py-24 bg-white border-y border-slate-100 overflow-hidden"

@@ -2,19 +2,19 @@ import React from 'react';
 const logos = [
     {
         name: 'Kenda Farben',
-        src: '/Logo Aliados/Logo Kenda Farben.svg'
+        src: '/images/logos/Logo_Kenda_Farben.svg'
     },
     {
         name: 'Intercom',
-        src: '/Logo Aliados/Logo Intercom.svg'
+        src: '/images/logos/Logo_Intercom.svg'
     },
     {
         name: 'Tecno GI',
-        src: '/Logo Aliados/Logo Tecno GI.svg'
+        src: '/images/logos/Logo_Tecno_GI.svg'
     },
     {
         name: 'CT Point',
-        src: '/Logo Aliados/Logo CT Point.svg'
+        src: '/images/logos/Logo_CT_Point.svg'
     }
 ];
 export default function LogoStrip() {
