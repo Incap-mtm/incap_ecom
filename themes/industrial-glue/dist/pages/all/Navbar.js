@@ -86,16 +86,7 @@ export default function Navbar() {
             src: ind.icon,
             className: "h-6 w-6 object-contain opacity-60 group-hover/item:opacity-100 group-hover/item:scale-110 transition-all",
             alt: ""
-        }))))), /*#__PURE__*/ React.createElement("a", {
-        href: "/nosotros",
-        className: "incap-navbar__link"
-    }, "Nosotros"), /*#__PURE__*/ React.createElement("a", {
-        href: "/catalog",
-        className: "incap-navbar__link"
-    }, "Catálogo"), /*#__PURE__*/ React.createElement("a", {
-        href: "/contacto",
-        className: "incap-navbar__link"
-    }, "Contacto")), /*#__PURE__*/ React.createElement("a", {
+        })))))), /*#__PURE__*/ React.createElement("a", {
         href: "/catalog",
         className: "btn-incap btn-primary-incap text-[10px] py-3 px-6"
     }, "Solicitar Asesoría"), /*#__PURE__*/ React.createElement("button", {
@@ -131,15 +122,6 @@ export default function Navbar() {
             href: ind.href,
             className: "incap-navbar__mobile-link pl-8 text-white"
         }, ind.name)))), /*#__PURE__*/ React.createElement("a", {
-        href: "/nosotros",
-        className: "incap-navbar__mobile-link text-white"
-    }, "Nosotros"), /*#__PURE__*/ React.createElement("a", {
-        href: "/catalog",
-        className: "incap-navbar__mobile-link text-white"
-    }, "Catálogo"), /*#__PURE__*/ React.createElement("a", {
-        href: "/contacto",
-        className: "incap-navbar__mobile-link text-white"
-    }, "Contacto"), /*#__PURE__*/ React.createElement("a", {
         href: "/catalog",
         className: "btn-incap btn-primary-incap mt-6 justify-center"
     }, "Solicitar Asesoría")));
@@ -148,3 +130,4 @@ export const layout = {
     areaId: 'headerTop',
     sortOrder: 1
 };
+

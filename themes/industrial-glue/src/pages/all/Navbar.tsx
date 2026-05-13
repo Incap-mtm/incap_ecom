@@ -70,9 +70,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          <a href="/nosotros" className="incap-navbar__link">Nosotros</a>
-          <a href="/catalog" className="incap-navbar__link">Catálogo</a>
-          <a href="/contacto" className="incap-navbar__link">Contacto</a>
         </div>
 
         {/* CTA */}
@@ -107,9 +104,6 @@ export default function Navbar() {
               ))}
             </div>
           </div>
-          <a href="/nosotros" className="incap-navbar__mobile-link text-white">Nosotros</a>
-          <a href="/catalog" className="incap-navbar__mobile-link text-white">Catálogo</a>
-          <a href="/contacto" className="incap-navbar__mobile-link text-white">Contacto</a>
           <a href="/catalog" className="btn-incap btn-primary-incap mt-6 justify-center">
             Solicitar Asesoría
           </a>
