@@ -8,7 +8,7 @@ RUN npm ci
 RUN echo "build ok"
 
 COPY . .
-RUN mkdir -p public && ls -la
+RUN mkdir -p public media && ls -la
 RUN npm run build
 
 # ── Runtime ──────────────────────────────────────────────
