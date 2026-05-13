@@ -20,7 +20,7 @@ export default function Footer() {
         
         {/* Copyright Text */}
         <div className="text-[10px] font-black text-[#475569] uppercase tracking-[0.3em] font-sora flex items-center gap-2">
-          © {currentYear} INCAP S.A. <span className="opacity-50">|</span> CALIDAD QUE SE REPITE
+          © {currentYear} Incap <span className="opacity-50">|</span> CALIDAD QUE SE REPITE
         </div>
       </div>
     </footer>

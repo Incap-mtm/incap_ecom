@@ -22,7 +22,7 @@ export default function Footer() {
         d: "M228.4,6.2c-2.4-2.5-5.2-4.1-8.6-4.7c-3.4-0.6-7.8-0.9-13.4-0.9h-24.6h0v43.3h14.7c2.1,0,3.8-1.7,3.8-3.8v-4.8 h6.1c5.6,0,10.1-0.3,13.5-0.8c3.4-0.5,6.2-2.1,8.5-4.6c2.3-2.5,3.5-6.4,3.5-11.8C231.9,12.7,230.8,8.7,228.4,6.2z M211.9,21.9 c-1,0.6-2.8,0.9-5.5,0.9v0h-6.1v-8.7h6.1c2.7,0,4.5,0.3,5.5,0.9c1,0.6,1.5,1.8,1.5,3.4C213.4,20.2,212.9,21.3,211.9,21.9z"
     }))), /*#__PURE__*/ React.createElement("div", {
         className: "text-[10px] font-black text-[#475569] uppercase tracking-[0.3em] font-sora flex items-center gap-2"
-    }, "© ", currentYear, " INCAP S.A. ", /*#__PURE__*/ React.createElement("span", {
+    }, "© ", currentYear, " Incap ", /*#__PURE__*/ React.createElement("span", {
         className: "opacity-50"
     }, "|"), " CALIDAD QUE SE REPITE")));
 }
@@ -30,3 +30,4 @@ export const layout = {
     areaId: 'footer',
     sortOrder: 10
 };
+
