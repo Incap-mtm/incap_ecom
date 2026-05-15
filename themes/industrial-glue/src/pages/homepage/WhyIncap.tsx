@@ -4,7 +4,7 @@ import { useReveal } from '../../hooks/useReveal';
 export default function WhyIncap() {
   const reveal = useReveal();
   return (
-    <section className="py-32 bg-[#181B1C] text-white relative overflow-hidden" ref={reveal.ref}>
+    <section className="py-32 bg-[#2A4899] text-white relative overflow-hidden" ref={reveal.ref}>
       <div className="max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12 text-center relative z-10">
          <h2 className={`text-6xl md:text-[10rem] font-black font-sora mb-24 uppercase tracking-tighter leading-none ${reveal.className}`}>
            ¿Por qué <br />

@@ -20,7 +20,7 @@ export default function Hero() {
     }), /*#__PURE__*/ React.createElement("div", {
         className: "absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-[#181B1C]/90 to-transparent z-10"
     })), /*#__PURE__*/ React.createElement("div", {
-        className: "relative z-10 max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12 w-full pt-32"
+        className: "relative z-10 max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12 w-full pt-32 pb-[9.6rem]"
     }, /*#__PURE__*/ React.createElement("div", {
         className: `max-w-5xl transition-all duration-1000 transform ${active ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0'}`
     }, /*#__PURE__*/ React.createElement("div", {
@@ -28,11 +28,11 @@ export default function Hero() {
     }, /*#__PURE__*/ React.createElement("span", {
         className: "text-[#85C639] font-black text-[11px] uppercase tracking-[0.5em] font-sora"
     }, "Respaldo Técnico • Calidad Industrial")), /*#__PURE__*/ React.createElement("h1", {
-        className: "text-7xl md:text-9xl lg:text-[11rem] font-black text-white leading-[0.8] mb-12 font-sora tracking-tighter uppercase reveal reveal-stagger-2 active"
+        className: "text-[3.15rem] md:text-[4.725rem] lg:text-[9.45rem] font-black text-white leading-[0.8] mb-12 font-sora tracking-tighter uppercase reveal reveal-stagger-2 active"
     }, "La química que ", /*#__PURE__*/ React.createElement("br", null), /*#__PURE__*/ React.createElement("span", {
         className: "text-[#85C639] italic"
     }, "construye país")), /*#__PURE__*/ React.createElement("p", {
-        className: "text-xl md:text-3xl text-slate-400 mb-16 max-w-3xl font-inter font-light leading-relaxed reveal reveal-stagger-3 active"
+        className: "text-[1.05rem] md:text-[1.3125rem] text-slate-400 mb-8 max-w-3xl font-inter font-light leading-relaxed reveal reveal-stagger-3 active"
     }, "Somos el socio estratégico que garantiza la eficiencia de tu planta y la durabilidad de cada producto que fabricas."), /*#__PURE__*/ React.createElement("div", {
         className: "flex flex-wrap gap-6 reveal reveal-stagger-3 active",
         style: {
@@ -54,3 +54,4 @@ export const layout = {
     areaId: 'content',
     sortOrder: 1
 };
+

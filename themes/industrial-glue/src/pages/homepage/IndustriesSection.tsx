@@ -58,8 +58,7 @@ export default function IndustriesSection() {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
           <div>
             <h2 className="text-5xl md:text-7xl font-black text-[#181B1C] leading-[0.9] uppercase font-sora">
-              INDUSTRIAS<br />
-              QUE<br />
+              INDUSTRIAS QUE<br />
               <span className="text-[#2A4899]">IMPULSAMOS</span>
             </h2>
             <div className="w-24 h-2 bg-[#85C639] mt-6"></div>

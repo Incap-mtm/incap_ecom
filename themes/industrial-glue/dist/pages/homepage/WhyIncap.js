@@ -3,7 +3,7 @@ import { useReveal } from '../../hooks/useReveal';
 export default function WhyIncap() {
     const reveal = useReveal();
     return /*#__PURE__*/ React.createElement("section", {
-        className: "py-32 bg-[#181B1C] text-white relative overflow-hidden",
+        className: "py-32 bg-[#2A4899] text-white relative overflow-hidden",
         ref: reveal.ref
     }, /*#__PURE__*/ React.createElement("div", {
         className: "max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12 text-center relative z-10"
@@ -56,3 +56,4 @@ export const layout = {
     areaId: 'content',
     sortOrder: 20
 };
+

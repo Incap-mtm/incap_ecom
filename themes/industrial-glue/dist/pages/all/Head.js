@@ -43,32 +43,38 @@ export default function Head() {
         .header__middle { display: none !important; }
         .header { padding: 0 !important; background: transparent !important; position: fixed; width: 100%; top: 0; z-index: 100; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
 
+        /* Override Evershop default footer */
+        .footer, footer.footer { background: #181B1C !important; margin-top: 0 !important; margin-bottom: 0 !important; padding: 0 !important; border: none !important; }
+        .footer__top { padding: 0 !important; margin: 0 !important; }
+        .footer__bottom, .footer__middle { display: none !important; }
+        footer.footer.mt-24 { margin-top: 0 !important; }
+
         /* Compensar navbar fija en páginas de producto y categoría */
         body.productView, body.categoryView { padding-top: 110px; }
 
-        /* Custom navbar styles with transparency/glassmorphism */
+        /* Custom navbar styles */
         .incap-navbar {
-          transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-          background: linear-gradient(to bottom, rgba(24, 27, 28, 0.9) 0%, rgba(24, 27, 28, 0) 100%);
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          background: linear-gradient(160deg, #2A4899 0%, #1e3576 100%);
+          border-bottom: 1px solid rgba(255,255,255,0.08);
         }
         .incap-navbar.scrolled {
-          background-color: rgba(24, 27, 28, 0.92);
-          backdrop-filter: blur(20px);
-          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-          padding: 0.25rem 0;
+          background: #2A4899;
+          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.28);
+          border-bottom: none;
         }
         .incap-navbar__inner {
-          max-width: 1536px; /* 8xl equivalent */
+          max-width: 1536px;
           margin: 0 auto;
           padding: 0 2rem;
-          height: 90px;
+          height: 80px;
           display: flex;
           align-items: center;
-          gap: 3rem;
+          gap: 2.5rem;
           transition: height 0.4s ease;
         }
         .incap-navbar.scrolled .incap-navbar__inner {
-          height: 72px;
+          height: 64px;
         }
 
         /* Advanced Animations & Effects from Mock */
@@ -143,22 +149,13 @@ export default function Head() {
         .breadcrumb { padding: 1rem 0; font-size: 0.85rem; color: #666; }
         .breadcrumb a { color: var(--color-incap-blue); font-weight: 600; }
         .breadcrumb .active { color: var(--color-incap-black); }
-        .incap-navbar__inner {
-          max-width: 1440px;
-          margin: 0 auto;
-          padding: 0 1.5rem;
-          height: 72px;
-          display: flex;
-          align-items: center;
-          gap: 2rem;
-        }
         .incap-navbar__logo {
           display: flex;
           align-items: center;
           flex-shrink: 0;
         }
         .incap-navbar__logo img {
-          height: 40px;
+          height: 36px;
           width: auto;
           object-fit: contain;
           filter: brightness(0) invert(1);
@@ -175,10 +172,10 @@ export default function Head() {
           align-items: center;
           gap: 4px;
           padding: 0.5rem 0.875rem;
-          color: rgba(255,255,255,0.85);
-          font-size: 0.8125rem;
-          font-weight: 600;
-          letter-spacing: 0.08em;
+          color: rgba(255,255,255,0.9);
+          font-size: 0.875rem;
+          font-weight: 700;
+          letter-spacing: 0.07em;
           text-transform: uppercase;
           text-decoration: none;
           font-family: 'Sora', sans-serif;
@@ -187,12 +184,9 @@ export default function Head() {
         }
         .incap-navbar__link:hover {
           color: #ffffff;
-          background: rgba(255,255,255,0.07);
+          background: rgba(255,255,255,0.1);
         }
-        .incap-navbar__chevron {
-          opacity: 0.6;
-          flex-shrink: 0;
-        }
+        .incap-navbar__chevron { opacity: 0.6; flex-shrink: 0; }
         .incap-navbar__cta {
           display: inline-flex;
           align-items: center;
@@ -201,7 +195,7 @@ export default function Head() {
           color: #181B1C;
           font-size: 0.8125rem;
           font-weight: 700;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.07em;
           text-transform: uppercase;
           text-decoration: none;
           border-radius: 8px;
@@ -220,32 +214,43 @@ export default function Head() {
           border: none;
           color: white;
           cursor: pointer;
-          margin-left: auto;
+          padding: 0.25rem;
         }
         .incap-navbar__mobile {
           display: flex;
           flex-direction: column;
-          background: #1f2325;
-          padding: 1rem 1.5rem;
-          gap: 0.25rem;
+          background: linear-gradient(180deg, #1e3576 0%, #162c65 100%);
+          border-top: 1px solid rgba(255,255,255,0.1);
+          padding: 1.25rem 1.5rem 2rem;
+          gap: 0;
         }
         .incap-navbar__mobile-link {
-          display: block;
-          padding: 0.75rem 0;
-          color: rgba(255,255,255,0.85);
-          font-size: 0.9375rem;
-          font-weight: 600;
-          letter-spacing: 0.06em;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 1rem 0.5rem;
+          color: rgba(255,255,255,0.9);
+          font-size: 1rem;
+          font-weight: 700;
+          letter-spacing: 0.05em;
           text-transform: uppercase;
           text-decoration: none;
           font-family: 'Sora', sans-serif;
-          border-bottom: 1px solid rgba(255,255,255,0.06);
+          border-bottom: 1px solid rgba(255,255,255,0.08);
+          transition: color 0.2s, padding-left 0.2s;
         }
+        .incap-navbar__mobile-link:hover { color: #85C639; padding-left: 0.75rem; }
         .incap-navbar__cta--mobile {
-          margin-top: 0.75rem;
+          margin-top: 1.5rem;
           justify-content: center;
+          width: 100%;
+          padding: 1rem;
+          font-size: 0.9375rem;
+          border-radius: 12px;
         }
         @media (max-width: 768px) {
+          .incap-navbar__inner { height: 64px; padding: 0 1.25rem; gap: 1rem; }
+          .incap-navbar.scrolled .incap-navbar__inner { height: 56px; }
           .incap-navbar__links { display: none; }
           .incap-navbar__cta:not(.incap-navbar__cta--mobile) { display: none; }
           .incap-navbar__toggle { display: block; }

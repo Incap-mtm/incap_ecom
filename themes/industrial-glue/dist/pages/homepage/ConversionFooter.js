@@ -3,7 +3,10 @@ const WHATSAPP_NUMBER = '5491112345678';
 export default function ConversionFooter() {
     const message = encodeURIComponent('Hola INCAP! Tengo un problema técnico de pegue en mi planta y necesito asesoría.');
     return /*#__PURE__*/ React.createElement("section", {
-        className: "py-32 bg-[#181B1C] relative overflow-hidden border-t border-white/5"
+        className: "py-32 bg-[#181B1C] relative overflow-hidden border-t border-white/5",
+        style: {
+            marginBottom: '-35px'
+        }
     }, /*#__PURE__*/ React.createElement("div", {
         className: "max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12 relative z-10"
     }, /*#__PURE__*/ React.createElement("div", {
@@ -37,7 +40,7 @@ export default function ConversionFooter() {
         className: "rounded-2xl overflow-hidden"
     }, /*#__PURE__*/ React.createElement("img", {
         src: "/images/sections/Fallas_De_Pegue_contacto.png",
-        className: "w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-1000",
+        className: "w-full h-auto object-cover transform scale-90 group-hover:scale-[0.945] transition-transform duration-1000",
         alt: "Técnico INCAP en planta"
     }), /*#__PURE__*/ React.createElement("div", {
         className: "absolute inset-0 bg-gradient-to-t from-[#181B1C]/60 to-transparent"
@@ -47,3 +50,4 @@ export const layout = {
     areaId: 'content',
     sortOrder: 25
 };
+
