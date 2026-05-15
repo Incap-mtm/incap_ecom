@@ -92,7 +92,10 @@ export default function Navbar() {
             strokeLinejoin: "round",
             strokeWidth: 2.5,
             d: "M9 5l7 7-7 7"
-        }))))))), /*#__PURE__*/ React.createElement("a", {
+        })))))), /*#__PURE__*/ React.createElement("a", {
+        href: "/distribuidores",
+        className: "incap-navbar__link"
+    }, "Distribuidores")), /*#__PURE__*/ React.createElement("a", {
         href: "/catalog",
         className: "btn-incap btn-primary-incap text-xs py-3 px-6"
     }, "Solicitar Asesoría"), /*#__PURE__*/ React.createElement("button", {
@@ -138,6 +141,19 @@ export default function Navbar() {
             strokeWidth: 2.5,
             d: "M9 5l7 7-7 7"
         })))))), /*#__PURE__*/ React.createElement("a", {
+        href: "/distribuidores",
+        className: "incap-navbar__mobile-link"
+    }, "Distribuidores", /*#__PURE__*/ React.createElement("svg", {
+        className: "h-4 w-4 text-[#85C639] flex-shrink-0",
+        fill: "none",
+        stroke: "currentColor",
+        viewBox: "0 0 24 24"
+    }, /*#__PURE__*/ React.createElement("path", {
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        strokeWidth: 2.5,
+        d: "M9 5l7 7-7 7"
+    }))), /*#__PURE__*/ React.createElement("a", {
         href: "/catalog",
         className: "btn-incap btn-primary-incap mt-6 justify-center"
     }, "Solicitar Asesoría")));
@@ -146,4 +162,3 @@ export const layout = {
     areaId: 'headerTop',
     sortOrder: 1
 };
-
