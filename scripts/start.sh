@@ -20,34 +20,21 @@ s.on('error', () => process.exit(1));
 done
 echo "Database is ready."
 
-# Seed media volume — full seed if empty, products-only if products folder is missing
-MEDIA_FILES=$(find /app/media -maxdepth 4 -type f 2>/dev/null | wc -l)
+# Seed product images from GitHub archive if missing from volume
 PRODUCT_FILES=$(find /app/media/products -maxdepth 1 -type d 2>/dev/null | wc -l)
-if [ "$MEDIA_FILES" -eq 0 ] || [ "$PRODUCT_FILES" -le 1 ]; then
-  if [ -d /app/media-default ]; then
-    echo "Seeding media volume from image..."
-    cp -r /app/media-default/. /app/media/
-    echo "Media seeded: $(find /app/media -type f | wc -l) files."
-  else
-    echo "Seeding media volume from GitHub..."
-    REPO="https://raw.githubusercontent.com/Incap-mtm/incap_ecom/main/media"
-    mkdir -p /app/media/home /app/media/industrias/Maderas_y_muebles \
-              "/app/media/industrias/Calzados_y_marroquineria" \
-              "/app/media/industrias/Colchones" \
-              "/app/media/industrias/hoga_manualidades_multiuso"
-    wget -q "${REPO}/home/Banner_Home_Principal.png"            -O "/app/media/home/Banner_Home_Principal.png" || true
-    wget -q "${REPO}/home/Uniendo_Legado_Home.png"              -O "/app/media/home/Uniendo_Legado_Home.png" || true
-    wget -q "${REPO}/home/Fallas_De_Pegue%20-contacto.png"      -O "/app/media/home/Fallas_De_Pegue -contacto.png" || true
-    wget -q "${REPO}/industrias/Maderas_y_muebles/Banner_maderas_y_muebles.png" \
-                                                                -O "/app/media/industrias/Maderas_y_muebles/Banner_maderas_y_muebles.png" || true
-    wget -q "${REPO}/industrias/Calzados_y_marroquineria/Banner_Calzado_Marroquiner%C3%ADa.png" \
-                                                                -O "/app/media/industrias/Calzados_y_marroquineria/Banner_Calzado_Marroquinería.png" || true
-    wget -q "${REPO}/industrias/Colchones/Banner_Colchones_Secci%C3%B3n.png" \
-                                                                -O "/app/media/industrias/Colchones/Banner_Colchones_Sección.png" || true
-    wget -q "${REPO}/industrias/hoga_manualidades_multiuso/Banner_Hogar_Multiusos.png" \
-                                                                -O "/app/media/industrias/hoga_manualidades_multiuso/Banner_Hogar_Multiusos.png" || true
-    echo "Media seeded: $(find /app/media -type f | wc -l) files."
+if [ "$PRODUCT_FILES" -le 1 ]; then
+  echo "Product images missing — downloading from GitHub..."
+  mkdir -p /app/media/products /tmp/mediaseed
+  cd /tmp/mediaseed
+  wget -q "https://github.com/gerriarte/Incap/archive/refs/heads/main.tar.gz" -O repo.tar.gz
+  tar -xzf repo.tar.gz --wildcards 'Incap-main/media/products/*' --strip-components=3 -C /app/media/products/ 2>/dev/null || \
+  tar -xzf repo.tar.gz -C /tmp/mediaseed/
+  if [ -d /tmp/mediaseed/Incap-main/media/products ]; then
+    cp -r /tmp/mediaseed/Incap-main/media/products/. /app/media/products/
   fi
+  rm -rf /tmp/mediaseed
+  cd /app
+  echo "Product images seeded: $(find /app/media/products -type f | wc -l) files."
 fi
 
 # Create admin user if credentials are set (idempotent — uses INSERT ON CONFLICT)
