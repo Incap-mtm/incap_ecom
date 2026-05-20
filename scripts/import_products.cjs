@@ -46,26 +46,37 @@ function slugify(text) {
 }
 
 function parseCSV(content) {
-  const lines = content.split(/\r?\n/).filter(l => l.trim());
-  if (!lines.length) return [];
-  const split = line => {
-    const res = []; let cur = ''; let inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const c = line[i];
-      if (c === '"') { if (inQ && line[i+1] === '"') { cur += '"'; i++; } else inQ = !inQ; }
-      else if (c === ',' && !inQ) { res.push(cur); cur = ''; }
-      else cur += c;
+  // Char-by-char parser — handles quoted fields with embedded newlines
+  const records = [];
+  let fields = [];
+  let cur = '';
+  let inQ = false;
+  let i = 0;
+  while (i < content.length) {
+    const c = content[i];
+    if (inQ) {
+      if (c === '"') {
+        if (content[i + 1] === '"') { cur += '"'; i += 2; continue; }
+        inQ = false; i++; continue;
+      }
+      cur += c; i++; continue;
     }
-    res.push(cur);
-    return res;
-  };
-  const headers = split(lines[0]).map(h => h.trim().replace(/^"|"$/g, ''));
-  return lines.slice(1).map(line => {
-    const vals = split(line);
-    const obj = {};
-    headers.forEach((h, i) => { obj[h] = (vals[i] || '').trim().replace(/^"|"$/g, ''); });
-    return obj;
-  });
+    if (c === '"') { inQ = true; i++; continue; }
+    if (c === ',') { fields.push(cur.trim()); cur = ''; i++; continue; }
+    if (c === '\r' && content[i + 1] === '\n') { fields.push(cur.trim()); records.push(fields); fields = []; cur = ''; i += 2; continue; }
+    if (c === '\n') { fields.push(cur.trim()); records.push(fields); fields = []; cur = ''; i++; continue; }
+    cur += c; i++;
+  }
+  if (cur.trim() || fields.length) { fields.push(cur.trim()); records.push(fields); }
+  if (!records.length) return [];
+  const headers = records[0].map(h => h.replace(/^"|"$/g, ''));
+  return records.slice(1)
+    .filter(r => r.some(f => f))
+    .map(vals => {
+      const obj = {};
+      headers.forEach((h, idx) => { obj[h] = (vals[idx] || '').replace(/^"|"$/g, ''); });
+      return obj;
+    });
 }
 
 async function query(client, sql, params = []) {
