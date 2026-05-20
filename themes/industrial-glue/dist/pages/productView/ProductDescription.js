@@ -56,4 +56,3 @@ query Query {
     }
 }
 `;
-

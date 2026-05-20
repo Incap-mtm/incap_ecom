@@ -444,4 +444,3 @@ export const layout = {
     areaId: 'head',
     sortOrder: 1
 };
-

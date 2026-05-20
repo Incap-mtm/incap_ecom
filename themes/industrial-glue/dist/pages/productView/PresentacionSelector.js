@@ -6,4 +6,3 @@ export const layout = {
     areaId: 'productPageMiddleRight',
     sortOrder: 3
 };
-
