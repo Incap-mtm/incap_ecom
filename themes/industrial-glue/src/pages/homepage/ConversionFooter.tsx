@@ -6,7 +6,7 @@ export default function ConversionFooter() {
   const message = encodeURIComponent('Hola INCAP! Tengo un problema técnico de pegue en mi planta y necesito asesoría.');
   
   return (
-    <section className="py-32 bg-[#181B1C] relative overflow-hidden border-t border-white/5" style={{ marginBottom: '-35px' }}>
+    <section className="py-32 bg-[#181B1C] relative overflow-hidden border-t border-white/5">
       <div className="max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           {/* Left Side */}

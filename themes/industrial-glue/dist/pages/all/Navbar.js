@@ -162,4 +162,3 @@ export const layout = {
     areaId: 'headerTop',
     sortOrder: 1
 };
-

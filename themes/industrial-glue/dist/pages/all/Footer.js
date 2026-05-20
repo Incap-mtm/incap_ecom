@@ -4,7 +4,7 @@ export default function Footer() {
     return /*#__PURE__*/ React.createElement("footer", {
         style: {
             backgroundColor: '#181B1C',
-            borderTop: '1px solid rgba(42,72,153,0.3)'
+            marginTop: '-35px'
         },
         className: "py-10 relative z-40"
     }, /*#__PURE__*/ React.createElement("div", {
@@ -54,7 +54,20 @@ export default function Footer() {
         style: {
             opacity: 0.4
         }
-    }, "|"), " Calidad que se repite")));
+    }, "|"), " Calidad que se repite"), /*#__PURE__*/ React.createElement("a", {
+        href: "/politica-de-datos",
+        style: {
+            color: 'rgba(42,72,153,0.5)',
+            fontSize: '9px',
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.25em',
+            fontFamily: 'Sora, sans-serif',
+            transition: 'color 0.3s'
+        },
+        onMouseEnter: (e)=>e.currentTarget.style.color = '#2A4899',
+        onMouseLeave: (e)=>e.currentTarget.style.color = 'rgba(42,72,153,0.5)'
+    }, "Política de tratamiento de datos")));
 }
 export const layout = {
     areaId: 'footerTop',

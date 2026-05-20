@@ -233,9 +233,6 @@ async function main() {
           : parentCatId;
       }
 
-      // ── Variant group ────────────────────────────────────────────────────
-      const vgId = await getOrCreateVariantGroup(client, groupKey, attrGroupId, presentacionAttrId);
-
       // ── Product ──────────────────────────────────────────────────────────
       const existingProd = await client.query(
         `SELECT product_id FROM product WHERE sku = $1`, [sku]
@@ -246,25 +243,32 @@ async function main() {
         productId = existingProd.rows[0].product_id;
         await query(client,
           `UPDATE product SET
-             variant_group_id = $1, group_id = $2, price = $3, qty = $4,
-             manage_stock = $5, stock_availability = $6, weight = $7,
-             status = true, visibility = true
-           WHERE product_id = $8`,
-          [vgId, attrGroupId, price, qty, manageStock, qty > 0, weight, productId]
+             group_id = $1, price = $2, weight = $3,
+             status = true, visibility = true, category_id = $4
+           WHERE product_id = $5`,
+          [attrGroupId, price, weight, categoryId, productId]
         );
         updated++;
       } else {
         const res = await query(client,
           `INSERT INTO product
-             (type, variant_group_id, visibility, group_id, sku, price, qty,
-              weight, manage_stock, stock_availability, status)
-           VALUES ('simple', $1, true, $2, $3, $4, $5, $6, $7, $8, true)
+             (type, visibility, group_id, sku, price, weight, status, category_id)
+           VALUES ('simple', true, $1, $2, $3, $4, true, $5)
            RETURNING product_id`,
-          [vgId, attrGroupId, sku, price, qty, weight, manageStock, qty > 0]
+          [attrGroupId, sku, price, weight, categoryId]
         );
         productId = res.rows[0]?.product_id || 0;
         inserted++;
       }
+
+      // ── Inventory ────────────────────────────────────────────────────────
+      await query(client,
+        `INSERT INTO product_inventory (product_inventory_product_id, qty, manage_stock, stock_availability)
+         VALUES ($1, $2, $3, $4)
+         ON CONFLICT (product_inventory_product_id)
+           DO UPDATE SET qty = EXCLUDED.qty, manage_stock = EXCLUDED.manage_stock, stock_availability = EXCLUDED.stock_availability`,
+        [productId, qty, manageStock, qty > 0]
+      );
 
       // ── Product description ──────────────────────────────────────────────
       const productName = `${nombre} - ${presentacion}`;
@@ -288,15 +292,6 @@ async function main() {
            DO UPDATE SET name = EXCLUDED.name, description = EXCLUDED.description`,
         [productId, productName, urlKey, descHTML || null, productName]
       );
-
-      // ── Category link ────────────────────────────────────────────────────
-      if (categoryId) {
-        await query(client,
-          `INSERT INTO product_category (category_id, product_id)
-           VALUES ($1, $2) ON CONFLICT DO NOTHING`,
-          [categoryId, productId]
-        );
-      }
 
       // ── Images ──────────────────────────────────────────────────────────
       if (productId && row.imagen_principal) {
@@ -340,11 +335,12 @@ async function main() {
       for (const [code, val] of Object.entries(attrValues)) {
         if (!val || !allAttrIds[code]) continue;
         await query(client,
-          `INSERT INTO product_attribute_value_index
-             (product_id, attribute_id, option_id, option_text)
-           VALUES ($1, $2, NULL, $3)
-           ON CONFLICT (product_id, attribute_id)
-             DO UPDATE SET option_text = EXCLUDED.option_text`,
+          `DELETE FROM product_attribute_value_index WHERE product_id = $1 AND attribute_id = $2 AND option_id IS NULL`,
+          [productId, allAttrIds[code]]
+        );
+        await query(client,
+          `INSERT INTO product_attribute_value_index (product_id, attribute_id, option_id, option_text)
+           VALUES ($1, $2, NULL, $3)`,
           [productId, allAttrIds[code], val]
         );
       }

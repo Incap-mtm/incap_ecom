@@ -3,10 +3,7 @@ const WHATSAPP_NUMBER = '5491112345678';
 export default function ConversionFooter() {
     const message = encodeURIComponent('Hola INCAP! Tengo un problema técnico de pegue en mi planta y necesito asesoría.');
     return /*#__PURE__*/ React.createElement("section", {
-        className: "py-32 bg-[#181B1C] relative overflow-hidden border-t border-white/5",
-        style: {
-            marginBottom: '-35px'
-        }
+        className: "py-32 bg-[#181B1C] relative overflow-hidden border-t border-white/5"
     }, /*#__PURE__*/ React.createElement("div", {
         className: "max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12 relative z-10"
     }, /*#__PURE__*/ React.createElement("div", {
