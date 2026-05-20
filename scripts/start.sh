@@ -20,9 +20,10 @@ s.on('error', () => process.exit(1));
 done
 echo "Database is ready."
 
-# Seed media volume on first run — use file count to ignore lost+found from ext4 volumes
+# Seed media volume — full seed if empty, products-only if products folder is missing
 MEDIA_FILES=$(find /app/media -maxdepth 4 -type f 2>/dev/null | wc -l)
-if [ "$MEDIA_FILES" -eq 0 ]; then
+PRODUCT_FILES=$(find /app/media/products -maxdepth 1 -type d 2>/dev/null | wc -l)
+if [ "$MEDIA_FILES" -eq 0 ] || [ "$PRODUCT_FILES" -le 1 ]; then
   if [ -d /app/media-default ]; then
     echo "Seeding media volume from image..."
     cp -r /app/media-default/. /app/media/
