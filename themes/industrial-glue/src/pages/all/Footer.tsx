@@ -4,7 +4,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer style={{ backgroundColor: '#181B1C', marginTop: '-35px' }} className="py-10 relative z-40">
+    <footer style={{ backgroundColor: '#181B1C' }} className="py-10 relative z-40">
       <div className="max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12 flex flex-col md:flex-row justify-center items-center gap-8">
         {/* Logo */}
         <a href="/" style={{ opacity: 0.75, transition: 'opacity 0.3s' }} onMouseEnter={e => (e.currentTarget.style.opacity = '1')} onMouseLeave={e => (e.currentTarget.style.opacity = '0.75')}>
@@ -25,9 +25,9 @@ export default function Footer() {
         {/* Legal link */}
         <a
           href="/politica-de-datos"
-          style={{ color: 'rgba(42,72,153,0.5)', fontSize: '9px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.25em', fontFamily: 'Sora, sans-serif', transition: 'color 0.3s' }}
-          onMouseEnter={e => (e.currentTarget.style.color = '#2A4899')}
-          onMouseLeave={e => (e.currentTarget.style.color = 'rgba(42,72,153,0.5)')}
+          style={{ color: 'rgba(255,255,255,0.4)', fontSize: '9px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.25em', fontFamily: 'Sora, sans-serif', transition: 'color 0.3s' }}
+          onMouseEnter={e => (e.currentTarget.style.color = '#ffffff')}
+          onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.4)')}
         >
           Política de tratamiento de datos
         </a>

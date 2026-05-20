@@ -38,11 +38,14 @@ export default function Head() {
         .header__middle { display: none !important; }
         .header { padding: 0 !important; background: transparent !important; position: fixed; width: 100%; top: 0; z-index: 100; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        /* Override Evershop default footer */
+        /* Override Evershop default footer — sin separación con la sección anterior */
         .footer, footer.footer { background: #181B1C !important; margin-top: 0 !important; margin-bottom: 0 !important; padding: 0 !important; border: none !important; }
         .footer__top { padding: 0 !important; margin: 0 !important; }
         .footer__bottom, .footer__middle { display: none !important; }
-        footer.footer.mt-24 { margin-top: 0 !important; }
+        footer.footer.mt-24, footer[class*="mt-"] { margin-top: 0 !important; }
+        /* Eliminar padding/margin del wrapper de página antes del footer */
+        .page-wrapper, .page-content, main { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+        .product__page__bottom { margin-bottom: 0 !important; padding-bottom: 0 !important; }
 
         /* Compensar navbar fija en páginas de producto y categoría */
         body.productView, body.categoryView { padding-top: 110px; }
