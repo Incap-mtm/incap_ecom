@@ -10,11 +10,11 @@ const industries = [
         icons: [
             {
                 src: '/images/icons/Icono_Categoria_Madera_Muebles.svg',
-                label: ''
+                label: 'Maderas'
             },
             {
                 src: '/images/icons/Icono_Categoria_Madera_Muebles_2.svg',
-                label: ''
+                label: 'Muebles'
             }
         ]
     },
@@ -27,11 +27,11 @@ const industries = [
         icons: [
             {
                 src: '/images/icons/INCAP_Icono_colchones_Espumas.svg',
-                label: ''
+                label: 'Colchones'
             },
             {
                 src: '/images/icons/INCAP_Icono_colchones_Espumas_2.svg',
-                label: ''
+                label: 'Espumas'
             }
         ]
     },
@@ -44,11 +44,7 @@ const industries = [
         icons: [
             {
                 src: '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2.svg',
-                label: ''
-            },
-            {
-                src: '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2_alt.svg',
-                label: ''
+                label: 'Calzado y Marroquinería'
             }
         ]
     },
@@ -61,15 +57,15 @@ const industries = [
         icons: [
             {
                 src: '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg',
-                label: ''
+                label: 'Hogar'
             },
             {
                 src: '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos_2.svg',
-                label: ''
+                label: 'Manualidades'
             },
             {
                 src: '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos_3.svg',
-                label: ''
+                label: 'Multiusos'
             }
         ]
     }
@@ -96,40 +92,36 @@ export default function IndustriesSection() {
         className: "group-hover:translate-x-2 transition-transform"
     }, "→"))), /*#__PURE__*/ React.createElement("div", {
         className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-    }, industries.map((ind, idx) =>/*#__PURE__*/ React.createElement("div", {
-        key: ind.id,
-        className: `flex flex-col bg-white rounded-3xl overflow-hidden shadow-xl shadow-slate-200/40 border border-slate-100 reveal reveal-stagger-${idx + 1} active group`
-    }, /*#__PURE__*/ React.createElement("div", {
-        className: "relative h-[280px] overflow-hidden bg-slate-100"
-    }, /*#__PURE__*/ React.createElement("img", {
-        src: ind.image,
-        alt: ind.title,
-        className: "w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-    }), /*#__PURE__*/ React.createElement("div", {
-        className: "absolute inset-0 bg-gradient-to-t from-[#181B1C]/90 via-[#181B1C]/20 to-transparent"
-    }), /*#__PURE__*/ React.createElement("div", {
-        className: "absolute top-0 left-6 bg-[#2A4899] w-[72px] rounded-b-2xl flex flex-col items-center py-5 gap-5 shadow-lg z-10"
-    }, ind.icons.map((icon, i) =>/*#__PURE__*/ React.createElement("div", {
-        key: i,
-        className: "flex flex-col items-center gap-1.5 w-full px-1"
-    }, /*#__PURE__*/ React.createElement("img", {
-        src: icon.src,
-        className: "w-8 h-8 object-contain",
-        alt: icon.label
-    }), /*#__PURE__*/ React.createElement("span", {
-        className: "text-[8px] font-bold text-white uppercase tracking-wider text-center leading-tight"
-    }, icon.label)))), /*#__PURE__*/ React.createElement("div", {
-        className: "absolute bottom-5 left-6 right-6 z-10"
-    }, /*#__PURE__*/ React.createElement("h3", {
-        className: "text-xl md:text-2xl font-black text-white uppercase leading-tight tracking-tight font-sora shadow-sm"
-    }, ind.title))), /*#__PURE__*/ React.createElement("div", {
-        className: "p-6 flex flex-col flex-1"
-    }, /*#__PURE__*/ React.createElement("p", {
-        className: "text-slate-500 text-xs md:text-sm font-medium leading-relaxed mb-6 flex-1"
-    }, ind.description), /*#__PURE__*/ React.createElement("a", {
-        href: ind.href,
-        className: "w-full py-3 border border-[#2A4899] text-[#2A4899] rounded-xl text-[10px] md:text-xs font-bold uppercase tracking-widest text-center hover:bg-[#2A4899] hover:text-white transition-all duration-300"
-    }, "VER SOLUCIONES ESPECIALIZADAS")))))));
+    }, industries.map((ind, idx)=>/*#__PURE__*/ React.createElement("div", {
+            key: ind.id,
+            className: `flex flex-col bg-white rounded-3xl overflow-hidden shadow-xl shadow-slate-200/40 border border-slate-100 reveal reveal-stagger-${idx + 1} active group`
+        }, /*#__PURE__*/ React.createElement("div", {
+            className: "relative h-[280px] overflow-hidden bg-slate-100"
+        }, /*#__PURE__*/ React.createElement("img", {
+            src: ind.image,
+            alt: ind.title,
+            className: "w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        }), /*#__PURE__*/ React.createElement("div", {
+            className: "absolute inset-0 bg-gradient-to-t from-[#181B1C]/90 via-[#181B1C]/20 to-transparent"
+        }), /*#__PURE__*/ React.createElement("div", {
+            className: "absolute top-0 left-6 bg-[#2A4899] w-[72px] rounded-b-2xl flex flex-col items-center py-5 gap-5 shadow-lg z-10"
+        }, ind.icons.map((icon, i)=>/*#__PURE__*/ React.createElement("img", {
+                key: i,
+                src: icon.src,
+                className: "w-8 h-8 object-contain",
+                alt: icon.label
+            }))), /*#__PURE__*/ React.createElement("div", {
+            className: "absolute bottom-5 left-6 right-6 z-10"
+        }, /*#__PURE__*/ React.createElement("h3", {
+            className: "text-xl md:text-2xl font-black text-white uppercase leading-tight tracking-tight font-sora shadow-sm"
+        }, ind.title))), /*#__PURE__*/ React.createElement("div", {
+            className: "p-6 flex flex-col flex-1"
+        }, /*#__PURE__*/ React.createElement("p", {
+            className: "text-slate-500 text-xs md:text-sm font-medium leading-relaxed mb-6 flex-1"
+        }, ind.description), /*#__PURE__*/ React.createElement("a", {
+            href: ind.href,
+            className: "w-full py-3 border border-[#2A4899] text-[#2A4899] rounded-xl text-[10px] md:text-xs font-bold uppercase tracking-widest text-center hover:bg-[#2A4899] hover:text-white transition-all duration-300"
+        }, "VER SOLUCIONES ESPECIALIZADAS")))))));
 }
 export const layout = {
     areaId: 'content',
