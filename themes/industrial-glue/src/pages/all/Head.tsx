@@ -318,8 +318,10 @@ export default function Head() {
 
         /* ── Product Description — jerarquía Airbnb ── */
 
-        /* Ocultar el container nativo (reemplazado por ProductDescription en productPageBottom) */
+        /* Ocultar componentes nativos reemplazados por los del theme */
         .product__single__description { display: none !important; }
+        .product__single__name { display: none !important; }
+        .product__single__attributes { display: none !important; }
 
         /* Estilos del componente custom ProductDescription */
 
