@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "setup": "evershop install",
-    "start": "node scripts/seed_railway.cjs && evershop start",
+    "start": "evershop start",
     "build": "evershop build",
     "dev": "evershop dev"
   },
