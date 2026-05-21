@@ -14,7 +14,8 @@
     "@parcel/watcher": "2.5.6"
   },
   "overrides": {
-    "webpack": "5.88.2"
+    "webpack": "5.88.2",
+    "pg": "8.16.3"
   },
   "devDependencies": {
     "@types/config": "3.3.5",
