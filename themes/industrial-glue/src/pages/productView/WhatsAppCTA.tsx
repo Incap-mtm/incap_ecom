@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const WHATSAPP_NUMBER = '573123786868';
+const WHATSAPP_NUMBER = '573002171521';
 
 interface ProductProps {
   product?: {

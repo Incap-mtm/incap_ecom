@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-const WHATSAPP_NUMBER = '5491112345678';
+const WHATSAPP_NUMBER = '573002171521';
 export default function Hero() {
     const [active, setActive] = useState(false);
     const waMessage = encodeURIComponent('Hola INCAP! Quiero solicitar una auditoría técnica en planta.');
