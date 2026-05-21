@@ -212,70 +212,76 @@ export default function IndustryPage() {
 
                  {/* Familia */}
                  {families.length > 1 && (
-                   <div style={{ position: 'relative', flexShrink: 0 }}>
-                     <select
-                       value={activeFamily}
-                       onChange={e => { setActiveFamily(e.target.value); setActivePresentation(''); }}
-                       style={{
-                         appearance: 'none', WebkitAppearance: 'none',
-                         padding: '7px 32px 7px 12px', borderRadius: '8px', border: 'none',
-                         background: activeFamily ? '#2A4899' : '#f8fafc',
-                         color: activeFamily ? '#fff' : '#374151',
-                         fontSize: '12px', fontWeight: 700, cursor: 'pointer',
-                         fontFamily: 'Sora, sans-serif', outline: 'none',
-                       }}
-                     >
-                       <option value="">Familia</option>
-                       {families.map(([fam, count]) => (
-                         <option key={fam} value={fam}>{fam} ({count})</option>
-                       ))}
-                     </select>
-                     <svg style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} width="10" height="10" fill="none" stroke={activeFamily ? '#fff' : '#94a3b8'} viewBox="0 0 24 24">
-                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                     </svg>
+                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
+                     <div style={{ position: 'relative' }}>
+                       <select
+                         value={activeFamily}
+                         onChange={e => { setActiveFamily(e.target.value); setActivePresentation(''); }}
+                         style={{
+                           appearance: 'none', WebkitAppearance: 'none',
+                           padding: '7px 32px 7px 12px', borderRadius: '8px', border: 'none',
+                           background: activeFamily ? '#2A4899' : '#f8fafc',
+                           color: activeFamily ? '#fff' : '#374151',
+                           fontSize: '12px', fontWeight: 700, cursor: 'pointer',
+                           fontFamily: 'Sora, sans-serif', outline: 'none',
+                         }}
+                       >
+                         <option value="">Familia</option>
+                         {families.map(([fam, count]) => (
+                           <option key={fam} value={fam}>{fam} ({count})</option>
+                         ))}
+                       </select>
+                       <svg style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} width="10" height="10" fill="none" stroke={activeFamily ? '#fff' : '#94a3b8'} viewBox="0 0 24 24">
+                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                       </svg>
+                     </div>
+                     {activeFamily && (
+                       <button onClick={() => { setActiveFamily(''); setActivePresentation(''); }}
+                         style={{ width: '22px', height: '22px', borderRadius: '50%', border: 'none', background: '#e2e8f0', color: '#64748b', cursor: 'pointer', fontSize: '13px', lineHeight: 1, padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>
+                         ×
+                       </button>
+                     )}
                    </div>
                  )}
 
                  {/* Presentación */}
                  {presentations.length > 1 && (
-                   <div style={{ position: 'relative', flexShrink: 0 }}>
-                     <select
-                       value={activePresentation}
-                       onChange={e => setActivePresentation(e.target.value)}
-                       style={{
-                         appearance: 'none', WebkitAppearance: 'none',
-                         padding: '7px 32px 7px 12px', borderRadius: '8px', border: 'none',
-                         background: activePresentation ? '#2A4899' : '#f8fafc',
-                         color: activePresentation ? '#fff' : '#374151',
-                         fontSize: '12px', fontWeight: 700, cursor: 'pointer',
-                         fontFamily: 'Sora, sans-serif', outline: 'none',
-                       }}
-                     >
-                       <option value="">Presentación</option>
-                       {presentations.map(p => (
-                         <option key={p} value={p}>{p}</option>
-                       ))}
-                     </select>
-                     <svg style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} width="10" height="10" fill="none" stroke={activePresentation ? '#fff' : '#94a3b8'} viewBox="0 0 24 24">
-                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                     </svg>
+                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
+                     <div style={{ position: 'relative' }}>
+                       <select
+                         value={activePresentation}
+                         onChange={e => setActivePresentation(e.target.value)}
+                         style={{
+                           appearance: 'none', WebkitAppearance: 'none',
+                           padding: '7px 32px 7px 12px', borderRadius: '8px', border: 'none',
+                           background: activePresentation ? '#2A4899' : '#f8fafc',
+                           color: activePresentation ? '#fff' : '#374151',
+                           fontSize: '12px', fontWeight: 700, cursor: 'pointer',
+                           fontFamily: 'Sora, sans-serif', outline: 'none',
+                         }}
+                       >
+                         <option value="">Presentación</option>
+                         {presentations.map(p => (
+                           <option key={p} value={p}>{p}</option>
+                         ))}
+                       </select>
+                       <svg style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} width="10" height="10" fill="none" stroke={activePresentation ? '#fff' : '#94a3b8'} viewBox="0 0 24 24">
+                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                       </svg>
+                     </div>
+                     {activePresentation && (
+                       <button onClick={() => setActivePresentation('')}
+                         style={{ width: '22px', height: '22px', borderRadius: '50%', border: 'none', background: '#e2e8f0', color: '#64748b', cursor: 'pointer', fontSize: '13px', lineHeight: 1, padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>
+                         ×
+                       </button>
+                     )}
                    </div>
                  )}
 
-                 {/* Contador + limpiar */}
-                 <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                   <span style={{ fontSize: '11px', color: '#94a3b8', fontWeight: 600 }}>
-                     {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''}
-                   </span>
-                   {(activeFamily || activePresentation) && (
-                     <button
-                       onClick={() => { setActiveFamily(''); setActivePresentation(''); }}
-                       style={{ fontSize: '11px', fontWeight: 700, color: '#2A4899', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
-                     >
-                       Limpiar ×
-                     </button>
-                   )}
-                 </div>
+                 {/* Contador */}
+                 <span style={{ marginLeft: 'auto', fontSize: '11px', color: '#94a3b8', fontWeight: 600 }}>
+                   {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''}
+                 </span>
                </div>
              </div>
            )}
