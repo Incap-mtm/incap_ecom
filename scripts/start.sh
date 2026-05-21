@@ -20,21 +20,30 @@ s.on('error', () => process.exit(1));
 done
 echo "Database is ready."
 
-# Seed product images from GitHub archive if missing from volume
+# Seed product images if missing from volume.
+# Preferencia 1: copiar desde /app/media-default/products (viene del build = repo principal).
+# Preferencia 2 (fallback): descargar tarball de gerriarte/Incap.
 PRODUCT_FILES=$(find /app/media/products -maxdepth 1 -type d 2>/dev/null | wc -l)
 if [ "$PRODUCT_FILES" -le 1 ]; then
-  echo "Product images missing — downloading from GitHub..."
-  mkdir -p /app/media/products /tmp/mediaseed
-  cd /tmp/mediaseed
-  wget -q "https://github.com/gerriarte/Incap/archive/refs/heads/main.tar.gz" -O repo.tar.gz
-  tar -xzf repo.tar.gz --wildcards 'Incap-main/media/products/*' --strip-components=3 -C /app/media/products/ 2>/dev/null || \
-  tar -xzf repo.tar.gz -C /tmp/mediaseed/
-  if [ -d /tmp/mediaseed/Incap-main/media/products ]; then
-    cp -r /tmp/mediaseed/Incap-main/media/products/. /app/media/products/
+  if [ -d /app/media-default/products ] && [ "$(find /app/media-default/products -type f 2>/dev/null | wc -l)" -gt 0 ]; then
+    echo "Product images missing — copying from /app/media-default/products..."
+    mkdir -p /app/media/products
+    cp -r /app/media-default/products/. /app/media/products/
+    echo "Product images seeded from media-default: $(find /app/media/products -type f | wc -l) files."
+  else
+    echo "Product images missing — downloading from GitHub fallback..."
+    mkdir -p /app/media/products /tmp/mediaseed
+    cd /tmp/mediaseed
+    wget -q "https://github.com/gerriarte/Incap/archive/refs/heads/main.tar.gz" -O repo.tar.gz
+    tar -xzf repo.tar.gz --wildcards 'Incap-main/media/products/*' --strip-components=3 -C /app/media/products/ 2>/dev/null || \
+    tar -xzf repo.tar.gz -C /tmp/mediaseed/
+    if [ -d /tmp/mediaseed/Incap-main/media/products ]; then
+      cp -r /tmp/mediaseed/Incap-main/media/products/. /app/media/products/
+    fi
+    rm -rf /tmp/mediaseed
+    cd /app
+    echo "Product images seeded from GitHub: $(find /app/media/products -type f | wc -l) files."
   fi
-  rm -rf /tmp/mediaseed
-  cd /app
-  echo "Product images seeded: $(find /app/media/products -type f | wc -l) files."
 fi
 
 # Create admin user if credentials are set (idempotent — uses INSERT ON CONFLICT)
