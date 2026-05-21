@@ -79,10 +79,10 @@ import { useQuery } from 'urql';
 
 const PRODUCTS_QUERY = `
   query {
-    categories {
+    categories(filters: [{ key: "limit", operation: eq, value: "100" }]) {
       items {
         urlKey
-        products {
+        products(filters: [{ key: "limit", operation: eq, value: "500" }]) {
           items {
             productId
             uuid
