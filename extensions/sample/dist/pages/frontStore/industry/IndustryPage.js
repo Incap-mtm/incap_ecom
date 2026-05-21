@@ -115,8 +115,17 @@ export default function IndustryPage() {
         return Object.entries(counts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
     }, [realProducts]);
     const [activeFamily, setActiveFamily] = useState(null);
-    // Reset filter al cambiar industria
-    useEffect(() => { setActiveFamily(null); }, [data.id]);
+    // Al cambiar de industria, intentar leer ?familia= del URL; si no, reset a null
+    useEffect(() => {
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const fam = params.get('familia');
+            setActiveFamily(fam || null);
+        }
+        catch (_a) {
+            setActiveFamily(null);
+        }
+    }, [data.id]);
     const filteredProducts = activeFamily
         ? realProducts.filter((p) => getFamily(p.name) === activeFamily)
         : realProducts;

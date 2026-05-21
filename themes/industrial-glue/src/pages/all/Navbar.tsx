@@ -1,14 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useQuery } from 'urql';
 
-const industries = [
-  { name: 'Madera y Muebles', href: '/industrias/madera', icon: '/images/icons/Icono_Categoria_Madera_Muebles.svg' },
-  { name: 'Colchones y Espumas', href: '/industrias/colchones', icon: '/images/icons/INCAP_Icono_colchones_Espumas.svg' },
-  { name: 'Calzado y Marroquinería', href: '/industrias/calzado', icon: '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2.svg' },
-  { name: 'Hogar y Multiusos', href: '/industrias/hogar', icon: '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg' },
+interface Industry {
+  id: 'madera' | 'colchones' | 'calzado' | 'hogar';
+  name: string;
+  href: string;
+  icon: string;
+  catUrlKey: string; // url_key de la categoría DB
+}
+
+const industries: Industry[] = [
+  { id: 'madera',    name: 'Madera y Muebles',        href: '/industrias/madera',    icon: '/images/icons/Icono_Categoria_Madera_Muebles.svg',           catUrlKey: 'madera' },
+  { id: 'colchones', name: 'Colchones y Espumas',     href: '/industrias/colchones', icon: '/images/icons/INCAP_Icono_colchones_Espumas.svg',            catUrlKey: 'colchones' },
+  { id: 'calzado',   name: 'Calzado y Marroquinería', href: '/industrias/calzado',   icon: '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2.svg',     catUrlKey: 'calzado' },
+  { id: 'hogar',     name: 'Hogar y Multiusos',       href: '/industrias/hogar',     icon: '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg', catUrlKey: 'multiusos' },
 ];
+
+// Deriva la "familia" de un producto a partir de su nombre.
+function getFamily(name: string): string {
+  if (!name) return '';
+  const idx = name.lastIndexOf(' - ');
+  return (idx === -1 ? name : name.substring(0, idx)).trim();
+}
+
+const FAMILIES_QUERY = `
+  query {
+    categories(filters: [{ key: "limit", operation: eq, value: "100" }]) {
+      items {
+        urlKey
+        products(filters: [{ key: "limit", operation: eq, value: "500" }]) {
+          items { name status }
+        }
+      }
+    }
+  }
+`;
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileExpandedInd, setMobileExpandedInd] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -17,6 +47,27 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const [result] = useQuery({ query: FAMILIES_QUERY });
+
+  // Construir map: industria.id → [{family, count}]
+  const familiesByIndustry = useMemo(() => {
+    const out: Record<string, { family: string; count: number }[]> = {};
+    const cats = result.data?.categories?.items || [];
+    for (const ind of industries) {
+      const cat = cats.find((c: any) => c.urlKey === ind.catUrlKey);
+      const products = (cat?.products?.items || []).filter((p: any) => p.status === 1);
+      const counts: Record<string, number> = {};
+      products.forEach((p: any) => {
+        const f = getFamily(p.name);
+        if (f) counts[f] = (counts[f] || 0) + 1;
+      });
+      out[ind.id] = Object.entries(counts)
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+        .map(([family, count]) => ({ family, count }));
+    }
+    return out;
+  }, [result.data]);
 
   return (
     <nav className={`incap-navbar ${scrolled ? 'scrolled' : ''}`}>
@@ -34,39 +85,65 @@ export default function Navbar() {
 
         {/* Desktop links */}
         <div className="incap-navbar__links">
-          <div 
-            className="relative group/industries"
+          <div
+            className="relative"
             onMouseEnter={() => setDropdownOpen(true)}
             onMouseLeave={() => setDropdownOpen(false)}
           >
             <a href="#" className="incap-navbar__link flex items-center gap-2">
               Industrias
-              <svg 
-                className={`transition-transform duration-300 ${dropdownOpen ? 'rotate-180' : ''}`} 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24" 
-                width="14" 
-                height="14"
+              <svg
+                className={`transition-transform duration-300 ${dropdownOpen ? 'rotate-180' : ''}`}
+                fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
               </svg>
             </a>
-            
-            {/* Dropdown Menu */}
-            <div className={`absolute top-full left-0 w-72 bg-white shadow-2xl rounded-2xl border-t-4 border-[#2A4899] p-2 mt-2 transition-all duration-300 ${dropdownOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-4'}`}>
-              {industries.map((ind) => (
-                <a 
-                  key={ind.name} 
-                  href={ind.href} 
-                  className="flex items-center justify-between px-5 py-4 text-[10px] font-black uppercase tracking-widest text-[#181B1C] hover:bg-slate-50 hover:text-[#2A4899] rounded-xl transition-all group/item"
-                >
-                  {ind.name}
-                  <svg className="h-4 w-4 text-[#2A4899] group-hover/item:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                  </svg>
-                </a>
-              ))}
+
+            {/* Mega-menú */}
+            <div
+              className={`fixed left-1/2 -translate-x-1/2 top-[80px] bg-white shadow-2xl border-t-4 border-[#2A4899] transition-all duration-300 ${dropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+              style={{ width: 'min(1200px, 95vw)', maxHeight: 'calc(100vh - 100px)', overflowY: 'auto' }}
+            >
+              <div className="grid grid-cols-4 gap-0 p-6">
+                {industries.map((ind) => {
+                  const fams = familiesByIndustry[ind.id] || [];
+                  return (
+                    <div key={ind.id} className="px-4 border-r border-slate-100 last:border-r-0">
+                      <a
+                        href={ind.href}
+                        className="flex items-center gap-3 mb-4 group/header"
+                      >
+                        <div className="bg-[#2A4899] rounded-lg p-2 w-10 h-10 flex items-center justify-center flex-shrink-0">
+                          <img src={ind.icon} className="w-full h-full object-contain" alt="" />
+                        </div>
+                        <span className="text-[11px] font-black uppercase tracking-[0.15em] text-[#181B1C] leading-tight group-hover/header:text-[#2A4899] transition-colors">
+                          {ind.name}
+                        </span>
+                      </a>
+                      <ul className="space-y-1">
+                        {fams.length === 0 && !result.fetching && (
+                          <li className="text-[10px] text-slate-400 px-2 py-1">Sin productos</li>
+                        )}
+                        {result.fetching && fams.length === 0 && (
+                          <li className="text-[10px] text-slate-400 px-2 py-1">Cargando…</li>
+                        )}
+                        {fams.map(({ family, count }) => (
+                          <li key={family}>
+                            <a
+                              href={`${ind.href}?familia=${encodeURIComponent(family)}`}
+                              className="flex items-center justify-between px-2 py-1.5 text-[11px] font-semibold text-slate-700 hover:text-[#2A4899] hover:bg-slate-50 rounded transition-all font-sora"
+                            >
+                              <span className="truncate">{family}</span>
+                              <span className="text-[9px] text-slate-400 ml-2 font-bold">({count})</span>
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
@@ -99,15 +176,35 @@ export default function Navbar() {
         <div className="incap-navbar__mobile glass-header">
           <div className="pb-6">
             <p className="text-[11px] font-black uppercase tracking-[0.3em] text-white/40 mb-4 px-2">Industrias</p>
-            <div className="grid grid-cols-1 gap-2">
-              {industries.map((ind) => (
-                <a key={ind.name} href={ind.href} className="incap-navbar__mobile-link">
-                  {ind.name}
-                  <svg className="h-4 w-4 text-[#85C639] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                  </svg>
-                </a>
-              ))}
+            <div className="grid grid-cols-1 gap-1">
+              {industries.map((ind) => {
+                const fams = familiesByIndustry[ind.id] || [];
+                const expanded = mobileExpandedInd === ind.id;
+                return (
+                  <div key={ind.id}>
+                    <div className="incap-navbar__mobile-link justify-between" style={{ cursor: 'pointer' }} onClick={() => setMobileExpandedInd(expanded ? null : ind.id)}>
+                      <a href={ind.href} className="flex-1 text-white" onClick={(e) => e.stopPropagation()}>{ind.name}</a>
+                      <svg className={`h-4 w-4 text-[#85C639] flex-shrink-0 transition-transform ${expanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                    {expanded && (
+                      <div className="pl-4 pb-2">
+                        {fams.length === 0 && <p className="text-[11px] text-white/40 py-2">Sin familias</p>}
+                        {fams.map(({ family, count }) => (
+                          <a
+                            key={family}
+                            href={`${ind.href}?familia=${encodeURIComponent(family)}`}
+                            className="block text-[12px] text-white/80 hover:text-[#85C639] py-2 font-sora"
+                          >
+                            {family} <span className="text-white/40 text-[10px]">({count})</span>
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
           <a href="/distribuidores" className="incap-navbar__mobile-link">

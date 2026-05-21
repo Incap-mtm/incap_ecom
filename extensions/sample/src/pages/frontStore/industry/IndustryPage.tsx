@@ -141,8 +141,16 @@ export default function IndustryPage() {
 
   const [activeFamily, setActiveFamily] = useState<string | null>(null);
 
-  // Reset filter al cambiar industria
-  useEffect(() => { setActiveFamily(null); }, [data.id]);
+  // Al cambiar de industria, intentar leer ?familia= del URL; si no, reset a null
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const fam = params.get('familia');
+      setActiveFamily(fam || null);
+    } catch {
+      setActiveFamily(null);
+    }
+  }, [data.id]);
 
   const filteredProducts = activeFamily
     ? realProducts.filter((p: any) => getFamily(p.name) === activeFamily)
