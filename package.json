@@ -15,7 +15,7 @@
   },
   "overrides": {
     "webpack": "5.88.2",
-    "pg": "8.16.3"
+    "pg": "8.20.0"
   },
   "devDependencies": {
     "@types/config": "3.3.5",

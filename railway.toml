@@ -6,6 +6,6 @@ dockerfilePath = "Dockerfile"
 [deploy]
 startCommand = "sh scripts/start.sh"
 healthcheckPath = "/"
-healthcheckTimeout = 300
+healthcheckTimeout = 600
 restartPolicyType = "always"
 restartPolicyMaxRetries = 10
