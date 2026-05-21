@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
-// Deriva la "familia" de un producto a partir de su nombre.
-// Ej: "Super PVA - 20kg" -> "Super PVA"; "Activador I-111 - 750cc" -> "Activador I-111".
 function getFamily(name) {
     if (!name)
         return '';
     const idx = name.lastIndexOf(' - ');
     return (idx === -1 ? name : name.substring(0, idx)).trim();
+}
+function getPresentation(name) {
+    if (!name)
+        return '';
+    const idx = name.lastIndexOf(' - ');
+    return idx === -1 ? '' : name.substring(idx + 3).trim();
 }
 const INDUSTRIES_DATA = {
     madera: {
@@ -105,7 +109,6 @@ export default function IndustryPage() {
     // 2. Filtramos los productos para mostrar SÓLO los que estén activos (status === 1)
     const uniqueProducts = Array.from(new Map(realProductsRaw.map((p) => [p.productId, p])).values());
     const realProducts = uniqueProducts.filter((p) => p.status === 1);
-    // Calcular familias y conteo por familia
     const families = useMemo(() => {
         const counts = {};
         realProducts.forEach((p) => {
@@ -114,21 +117,37 @@ export default function IndustryPage() {
         });
         return Object.entries(counts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
     }, [realProducts]);
-    const [activeFamily, setActiveFamily] = useState(null);
-    // Al cambiar de industria, intentar leer ?familia= del URL; si no, reset a null
+    const [activeFamily, setActiveFamily] = useState('');
+    const [activePresentation, setActivePresentation] = useState('');
     useEffect(() => {
         try {
             const params = new URLSearchParams(window.location.search);
-            const fam = params.get('familia');
-            setActiveFamily(fam || null);
+            setActiveFamily(params.get('familia') || '');
+            setActivePresentation('');
         }
         catch (_a) {
-            setActiveFamily(null);
+            setActiveFamily('');
+            setActivePresentation('');
         }
     }, [data.id]);
-    const filteredProducts = activeFamily
+    const filteredByFamily = activeFamily
         ? realProducts.filter((p) => getFamily(p.name) === activeFamily)
         : realProducts;
+    const presentations = useMemo(() => {
+        const seen = new Set();
+        filteredByFamily.forEach((p) => {
+            const pres = getPresentation(p.name);
+            if (pres)
+                seen.add(pres);
+        });
+        return Array.from(seen).sort((a, b) => {
+            const num = (s) => parseFloat(s.replace(/[^\d.]/g, '')) || 0;
+            return num(a) - num(b);
+        });
+    }, [filteredByFamily]);
+    const filteredProducts = activePresentation
+        ? filteredByFamily.filter((p) => getPresentation(p.name) === activePresentation)
+        : filteredByFamily;
     return (React.createElement("div", { className: "min-h-screen animate-fadeIn bg-white font-sora -mt-[90px]" },
         React.createElement("div", { className: "relative min-h-[60vh] md:min-h-[70vh] lg:min-h-[80vh] flex items-center overflow-hidden bg-[#181B1C] pt-[90px]" },
             React.createElement("img", { src: data.heroImage, className: "absolute inset-0 w-full h-full object-cover object-center opacity-50", alt: data.name }),
@@ -144,27 +163,46 @@ export default function IndustryPage() {
         React.createElement("section", { className: "py-16 md:py-32 bg-slate-50" },
             React.createElement("div", { className: "max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8" },
                 React.createElement("h2", { className: "text-3xl sm:text-5xl md:text-6xl font-black text-[#181B1C] font-sora mb-8 md:mb-12 uppercase text-center tracking-tighter" }, "Portafolio T\u00E9cnico"),
-                !result.fetching && families.length > 1 && (React.createElement("div", { className: "mb-10 md:mb-16" },
-                    React.createElement("div", { className: "text-center mb-4" },
-                        React.createElement("span", { className: "text-[#85C639] font-black text-[10px] uppercase tracking-[0.4em] font-sora" }, "Filtrar por familia")),
-                    React.createElement("div", { className: "flex flex-wrap justify-center gap-2 md:gap-3" },
-                        React.createElement("button", { onClick: () => setActiveFamily(null), className: `px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[11px] md:text-xs font-black uppercase tracking-widest font-sora transition-all border-2 ${activeFamily === null
-                                ? 'bg-[#2A4899] text-white border-[#2A4899] shadow-lg'
-                                : 'bg-white text-slate-600 border-slate-200 hover:border-[#2A4899] hover:text-[#2A4899]'}` },
-                            "Todas ",
-                            React.createElement("span", { className: "opacity-60 ml-1" },
-                                "(",
-                                realProducts.length,
-                                ")")),
-                        families.map(([fam, count]) => (React.createElement("button", { key: fam, onClick: () => setActiveFamily(fam), className: `px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[11px] md:text-xs font-black uppercase tracking-widest font-sora transition-all border-2 ${activeFamily === fam
-                                ? 'bg-[#2A4899] text-white border-[#2A4899] shadow-lg'
-                                : 'bg-white text-slate-600 border-slate-200 hover:border-[#2A4899] hover:text-[#2A4899]'}` },
-                            fam,
-                            " ",
-                            React.createElement("span", { className: "opacity-60 ml-1" },
-                                "(",
-                                count,
-                                ")"))))))),
+                !result.fetching && realProducts.length > 0 && (React.createElement("div", { style: { marginBottom: '40px' } },
+                    React.createElement("div", { style: { display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '12px 16px' } },
+                        React.createElement("span", { style: { fontSize: '9px', fontWeight: 800, color: '#94a3b8', letterSpacing: '0.25em', textTransform: 'uppercase', flexShrink: 0 } }, "Filtrar"),
+                        React.createElement("div", { style: { width: '1px', height: '20px', background: '#e2e8f0', flexShrink: 0 } }),
+                        families.length > 1 && (React.createElement("div", { style: { position: 'relative', flexShrink: 0 } },
+                            React.createElement("select", { value: activeFamily, onChange: e => { setActiveFamily(e.target.value); setActivePresentation(''); }, style: {
+                                    appearance: 'none', WebkitAppearance: 'none',
+                                    padding: '7px 32px 7px 12px', borderRadius: '8px', border: 'none',
+                                    background: activeFamily ? '#2A4899' : '#f8fafc',
+                                    color: activeFamily ? '#fff' : '#374151',
+                                    fontSize: '12px', fontWeight: 700, cursor: 'pointer',
+                                    fontFamily: 'Sora, sans-serif', outline: 'none',
+                                } },
+                                React.createElement("option", { value: "" }, "Familia"),
+                                families.map(([fam, count]) => (React.createElement("option", { key: fam, value: fam },
+                                    fam,
+                                    " (",
+                                    count,
+                                    ")")))),
+                            React.createElement("svg", { style: { position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }, width: "10", height: "10", fill: "none", stroke: activeFamily ? '#fff' : '#94a3b8', viewBox: "0 0 24 24" },
+                                React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M19 9l-7 7-7-7" })))),
+                        presentations.length > 1 && (React.createElement("div", { style: { position: 'relative', flexShrink: 0 } },
+                            React.createElement("select", { value: activePresentation, onChange: e => setActivePresentation(e.target.value), style: {
+                                    appearance: 'none', WebkitAppearance: 'none',
+                                    padding: '7px 32px 7px 12px', borderRadius: '8px', border: 'none',
+                                    background: activePresentation ? '#2A4899' : '#f8fafc',
+                                    color: activePresentation ? '#fff' : '#374151',
+                                    fontSize: '12px', fontWeight: 700, cursor: 'pointer',
+                                    fontFamily: 'Sora, sans-serif', outline: 'none',
+                                } },
+                                React.createElement("option", { value: "" }, "Presentaci\u00F3n"),
+                                presentations.map(p => (React.createElement("option", { key: p, value: p }, p)))),
+                            React.createElement("svg", { style: { position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }, width: "10", height: "10", fill: "none", stroke: activePresentation ? '#fff' : '#94a3b8', viewBox: "0 0 24 24" },
+                                React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M19 9l-7 7-7-7" })))),
+                        React.createElement("div", { style: { marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '12px' } },
+                            React.createElement("span", { style: { fontSize: '11px', color: '#94a3b8', fontWeight: 600 } },
+                                filteredProducts.length,
+                                " producto",
+                                filteredProducts.length !== 1 ? 's' : ''),
+                            (activeFamily || activePresentation) && (React.createElement("button", { onClick: () => { setActiveFamily(''); setActivePresentation(''); }, style: { fontSize: '11px', fontWeight: 700, color: '#2A4899', background: 'none', border: 'none', cursor: 'pointer', padding: 0 } }, "Limpiar \u00D7")))))),
                 result.fetching ? (React.createElement("div", { className: "text-center py-20 text-slate-400" }, "Cargando portafolio...")) : filteredProducts.length > 0 ? (React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12" }, filteredProducts.map((prod) => {
                     var _a, _b, _c;
                     return (React.createElement("a", { href: `/product/${prod.uuid}`, key: prod.productId, className: "bg-white p-0 rounded-[2rem] md:rounded-[2.5rem] shadow-xl border border-slate-100 hover:shadow-2xl transition-all cursor-pointer group overflow-hidden block" },
