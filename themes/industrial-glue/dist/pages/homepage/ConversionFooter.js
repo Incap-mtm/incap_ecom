@@ -1,5 +1,5 @@
 import React from 'react';
-const WHATSAPP_NUMBER = '5491112345678';
+const WHATSAPP_NUMBER = '573002171521';
 export default function ConversionFooter() {
     const message = encodeURIComponent('Hola INCAP! Tengo un problema técnico de pegue en mi planta y necesito asesoría.');
     return (React.createElement("section", { className: "py-32 bg-[#181B1C] relative overflow-hidden border-t border-white/5" },

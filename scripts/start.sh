@@ -31,18 +31,8 @@ if [ "$PRODUCT_FILES" -le 1 ]; then
     cp -r /app/media-default/products/. /app/media/products/
     echo "Product images seeded from media-default: $(find /app/media/products -type f | wc -l) files."
   else
-    echo "Product images missing — downloading from GitHub fallback..."
-    mkdir -p /app/media/products /tmp/mediaseed
-    cd /tmp/mediaseed
-    wget -q "https://github.com/gerriarte/Incap/archive/refs/heads/main.tar.gz" -O repo.tar.gz
-    tar -xzf repo.tar.gz --wildcards 'Incap-main/media/products/*' --strip-components=3 -C /app/media/products/ 2>/dev/null || \
-    tar -xzf repo.tar.gz -C /tmp/mediaseed/
-    if [ -d /tmp/mediaseed/Incap-main/media/products ]; then
-      cp -r /tmp/mediaseed/Incap-main/media/products/. /app/media/products/
-    fi
-    rm -rf /tmp/mediaseed
-    cd /app
-    echo "Product images seeded from GitHub: $(find /app/media/products -type f | wc -l) files."
+    echo "No hay imágenes de productos en media-default — se omite descarga. Subir imágenes via admin."
+    mkdir -p /app/media/products
   fi
 fi
 
