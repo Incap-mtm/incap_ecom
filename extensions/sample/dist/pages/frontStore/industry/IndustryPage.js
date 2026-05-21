@@ -1,4 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+// Deriva la "familia" de un producto a partir de su nombre.
+// Ej: "Super PVA - 20kg" -> "Super PVA"; "Activador I-111 - 750cc" -> "Activador I-111".
+function getFamily(name) {
+    if (!name)
+        return '';
+    const idx = name.lastIndexOf(' - ');
+    return (idx === -1 ? name : name.substring(0, idx)).trim();
+}
 const INDUSTRIES_DATA = {
     madera: {
         id: 'madera',
@@ -97,6 +105,21 @@ export default function IndustryPage() {
     // 2. Filtramos los productos para mostrar SÓLO los que estén activos (status === 1)
     const uniqueProducts = Array.from(new Map(realProductsRaw.map((p) => [p.productId, p])).values());
     const realProducts = uniqueProducts.filter((p) => p.status === 1);
+    // Calcular familias y conteo por familia
+    const families = useMemo(() => {
+        const counts = {};
+        realProducts.forEach((p) => {
+            const fam = getFamily(p.name);
+            counts[fam] = (counts[fam] || 0) + 1;
+        });
+        return Object.entries(counts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+    }, [realProducts]);
+    const [activeFamily, setActiveFamily] = useState(null);
+    // Reset filter al cambiar industria
+    useEffect(() => { setActiveFamily(null); }, [data.id]);
+    const filteredProducts = activeFamily
+        ? realProducts.filter((p) => getFamily(p.name) === activeFamily)
+        : realProducts;
     return (React.createElement("div", { className: "min-h-screen animate-fadeIn bg-white font-sora -mt-[90px]" },
         React.createElement("div", { className: "relative min-h-[60vh] md:min-h-[70vh] lg:min-h-[80vh] flex items-center overflow-hidden bg-[#181B1C] pt-[90px]" },
             React.createElement("img", { src: data.heroImage, className: "absolute inset-0 w-full h-full object-cover object-center opacity-50", alt: data.name }),
@@ -111,8 +134,29 @@ export default function IndustryPage() {
                 React.createElement("p", { className: "text-base sm:text-xl md:text-3xl text-slate-300 max-w-4xl font-inter font-light leading-relaxed" }, data.description))),
         React.createElement("section", { className: "py-16 md:py-32 bg-slate-50" },
             React.createElement("div", { className: "max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8" },
-                React.createElement("h2", { className: "text-3xl sm:text-5xl md:text-6xl font-black text-[#181B1C] font-sora mb-10 md:mb-24 uppercase text-center tracking-tighter" }, "Portafolio T\u00E9cnico"),
-                result.fetching ? (React.createElement("div", { className: "text-center py-20 text-slate-400" }, "Cargando portafolio...")) : realProducts.length > 0 ? (React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12" }, realProducts.map((prod) => {
+                React.createElement("h2", { className: "text-3xl sm:text-5xl md:text-6xl font-black text-[#181B1C] font-sora mb-8 md:mb-12 uppercase text-center tracking-tighter" }, "Portafolio T\u00E9cnico"),
+                !result.fetching && families.length > 1 && (React.createElement("div", { className: "mb-10 md:mb-16" },
+                    React.createElement("div", { className: "text-center mb-4" },
+                        React.createElement("span", { className: "text-[#85C639] font-black text-[10px] uppercase tracking-[0.4em] font-sora" }, "Filtrar por familia")),
+                    React.createElement("div", { className: "flex flex-wrap justify-center gap-2 md:gap-3" },
+                        React.createElement("button", { onClick: () => setActiveFamily(null), className: `px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[11px] md:text-xs font-black uppercase tracking-widest font-sora transition-all border-2 ${activeFamily === null
+                                ? 'bg-[#2A4899] text-white border-[#2A4899] shadow-lg'
+                                : 'bg-white text-slate-600 border-slate-200 hover:border-[#2A4899] hover:text-[#2A4899]'}` },
+                            "Todas ",
+                            React.createElement("span", { className: "opacity-60 ml-1" },
+                                "(",
+                                realProducts.length,
+                                ")")),
+                        families.map(([fam, count]) => (React.createElement("button", { key: fam, onClick: () => setActiveFamily(fam), className: `px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[11px] md:text-xs font-black uppercase tracking-widest font-sora transition-all border-2 ${activeFamily === fam
+                                ? 'bg-[#2A4899] text-white border-[#2A4899] shadow-lg'
+                                : 'bg-white text-slate-600 border-slate-200 hover:border-[#2A4899] hover:text-[#2A4899]'}` },
+                            fam,
+                            " ",
+                            React.createElement("span", { className: "opacity-60 ml-1" },
+                                "(",
+                                count,
+                                ")"))))))),
+                result.fetching ? (React.createElement("div", { className: "text-center py-20 text-slate-400" }, "Cargando portafolio...")) : filteredProducts.length > 0 ? (React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12" }, filteredProducts.map((prod) => {
                     var _a, _b, _c;
                     return (React.createElement("a", { href: `/product/${prod.uuid}`, key: prod.productId, className: "bg-white p-0 rounded-[2rem] md:rounded-[2.5rem] shadow-xl border border-slate-100 hover:shadow-2xl transition-all cursor-pointer group overflow-hidden block" },
                         React.createElement("div", { className: "h-52 md:h-80 overflow-hidden bg-slate-100" }, ((_a = prod.image) === null || _a === void 0 ? void 0 : _a.url) ? (React.createElement("img", { src: prod.image.url, className: "w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000", alt: prod.name })) : (React.createElement("div", { className: "w-full h-full flex items-center justify-center text-slate-300 font-sora font-black uppercase tracking-widest text-base md:text-xl" }, "Sin Imagen"))),
