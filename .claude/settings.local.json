@@ -6,7 +6,25 @@
       "Bash(Get-ChildItem -Path \"D:\\\\Dev AI\\\\GitHub\\\\glue-ecommerce\\\\node_modules\\\\@evershop\\\\evershop\\\\src\" -Directory)",
       "Bash(Select-Object -First 20)",
       "mcp__claude_ai_Google_Drive__read_file_content",
-      "PowerShell(npm run *)"
+      "PowerShell(npm run *)",
+      "Bash(railway environment *)",
+      "Bash(railway logs *)",
+      "Bash(railway variables *)",
+      "Bash(Get-ChildItem -Path \"D:\\\\Dev AI\\\\GitHub\\\\glue-ecommerce\\\\themes\\\\industrial-glue\\\\src\\\\pages\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(node_modules/.bin/babel extensions/sample/src/pages/frontStore/distribuidores/DistribuidoresPage.tsx --presets @babel/preset-react,@babel/preset-typescript --plugins @babel/plugin-transform-modules-commonjs)",
+      "Bash(npm run *)",
+      "Bash(echo \"PID: $!\")",
+      "Bash(curl -s http://localhost:4000/distribuidores)",
+      "Bash(git push *)",
+      "Bash(git checkout *)",
+      "Bash(python3 -)",
+      "Bash(python3 *)",
+      "Bash(docker compose *)",
+      "Bash(netstat -ano)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git cherry-pick *)"
     ]
   }
 }

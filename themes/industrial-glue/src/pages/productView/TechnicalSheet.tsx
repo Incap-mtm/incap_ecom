@@ -8,8 +8,9 @@ interface ProductProps {
 }
 
 export default function TechnicalSheet({ product }: ProductProps) {
+  // Acepta tanto 'ficha_tecnica_url' (atributo nuevo del CSV) como 'ficha_tecnica' (legacy)
   const fichaAttr = product?.attributes?.find(
-    (a) => a.attributeCode === 'ficha_tecnica'
+    (a) => a.attributeCode === 'ficha_tecnica_url' || a.attributeCode === 'ficha_tecnica'
   );
   const fichaUrl = fichaAttr?.optionText;
 

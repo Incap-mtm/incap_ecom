@@ -1,0 +1,8 @@
+node_modules
+.evershop
+.git
+mock-preview
+docs
+*.sql
+*.csv
+Captura*

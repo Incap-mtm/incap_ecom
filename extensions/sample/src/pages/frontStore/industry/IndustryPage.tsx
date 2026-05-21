@@ -1,4 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+
+// Deriva la "familia" de un producto a partir de su nombre.
+// Ej: "Super PVA - 20kg" -> "Super PVA"; "Activador I-111 - 750cc" -> "Activador I-111".
+function getFamily(name: string): string {
+  if (!name) return '';
+  const idx = name.lastIndexOf(' - ');
+  return (idx === -1 ? name : name.substring(0, idx)).trim();
+}
 
 const INDUSTRIES_DATA: Record<string, any> = {
   madera: {
@@ -71,10 +79,10 @@ import { useQuery } from 'urql';
 
 const PRODUCTS_QUERY = `
   query {
-    categories {
+    categories(filters: [{ key: "limit", operation: eq, value: "100" }]) {
       items {
         urlKey
-        products {
+        products(filters: [{ key: "limit", operation: eq, value: "500" }]) {
           items {
             productId
             uuid
@@ -121,6 +129,33 @@ export default function IndustryPage() {
   const uniqueProducts = Array.from(new Map(realProductsRaw.map((p: any) => [p.productId, p])).values());
   const realProducts = uniqueProducts.filter((p: any) => p.status === 1);
 
+  // Calcular familias y conteo por familia
+  const families = useMemo(() => {
+    const counts: Record<string, number> = {};
+    realProducts.forEach((p: any) => {
+      const fam = getFamily(p.name);
+      counts[fam] = (counts[fam] || 0) + 1;
+    });
+    return Object.entries(counts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  }, [realProducts]);
+
+  const [activeFamily, setActiveFamily] = useState<string | null>(null);
+
+  // Al cambiar de industria, intentar leer ?familia= del URL; si no, reset a null
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const fam = params.get('familia');
+      setActiveFamily(fam || null);
+    } catch {
+      setActiveFamily(null);
+    }
+  }, [data.id]);
+
+  const filteredProducts = activeFamily
+    ? realProducts.filter((p: any) => getFamily(p.name) === activeFamily)
+    : realProducts;
+
   return (
     <div className="min-h-screen animate-fadeIn bg-white font-sora -mt-[90px]">
       <div className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-[80vh] flex items-center overflow-hidden bg-[#181B1C] pt-[90px]">
@@ -144,13 +179,47 @@ export default function IndustryPage() {
       </div>
       <section className="py-16 md:py-32 bg-slate-50">
         <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-           <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-[#181B1C] font-sora mb-10 md:mb-24 uppercase text-center tracking-tighter">Portafolio Técnico</h2>
-           
+           <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-[#181B1C] font-sora mb-8 md:mb-12 uppercase text-center tracking-tighter">Portafolio Técnico</h2>
+
+           {/* Filtro por Familia */}
+           {!result.fetching && families.length > 1 && (
+             <div className="mb-10 md:mb-16">
+               <div className="text-center mb-4">
+                 <span className="text-[#85C639] font-black text-[10px] uppercase tracking-[0.4em] font-sora">Filtrar por familia</span>
+               </div>
+               <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+                 <button
+                   onClick={() => setActiveFamily(null)}
+                   className={`px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[11px] md:text-xs font-black uppercase tracking-widest font-sora transition-all border-2 ${
+                     activeFamily === null
+                       ? 'bg-[#2A4899] text-white border-[#2A4899] shadow-lg'
+                       : 'bg-white text-slate-600 border-slate-200 hover:border-[#2A4899] hover:text-[#2A4899]'
+                   }`}
+                 >
+                   Todas <span className="opacity-60 ml-1">({realProducts.length})</span>
+                 </button>
+                 {families.map(([fam, count]) => (
+                   <button
+                     key={fam}
+                     onClick={() => setActiveFamily(fam)}
+                     className={`px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[11px] md:text-xs font-black uppercase tracking-widest font-sora transition-all border-2 ${
+                       activeFamily === fam
+                         ? 'bg-[#2A4899] text-white border-[#2A4899] shadow-lg'
+                         : 'bg-white text-slate-600 border-slate-200 hover:border-[#2A4899] hover:text-[#2A4899]'
+                     }`}
+                   >
+                     {fam} <span className="opacity-60 ml-1">({count})</span>
+                   </button>
+                 ))}
+               </div>
+             </div>
+           )}
+
            {result.fetching ? (
              <div className="text-center py-20 text-slate-400">Cargando portafolio...</div>
-           ) : realProducts.length > 0 ? (
+           ) : filteredProducts.length > 0 ? (
              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12">
-                {realProducts.map((prod: any) => (
+                {filteredProducts.map((prod: any) => (
                   <a href={`/product/${prod.uuid}`} key={prod.productId} className="bg-white p-0 rounded-[2rem] md:rounded-[2.5rem] shadow-xl border border-slate-100 hover:shadow-2xl transition-all cursor-pointer group overflow-hidden block">
                     <div className="h-52 md:h-80 overflow-hidden bg-slate-100">
                       {prod.image?.url ? (

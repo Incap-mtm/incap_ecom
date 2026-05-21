@@ -31,8 +31,7 @@ const industries = [
     href: '/industrias/calzado',
     image: '/images/sections/Calzado_Marroquinera_Seccion_Home.webp',
     icons: [
-      { src: '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2.svg', label: 'Marroquinería' },
-      { src: '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2_alt.svg', label: 'Calzado' }
+      { src: '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2.svg', label: 'Calzado y Marroquinería' },
     ],
   },
   {
@@ -92,12 +91,7 @@ export default function IndustriesSection() {
                 {/* Vertical Blue Icon Ribbon */}
                 <div className="absolute top-0 left-6 bg-[#2A4899] w-[72px] rounded-b-2xl flex flex-col items-center py-5 gap-5 shadow-lg z-10">
                   {ind.icons.map((icon, i) => (
-                    <div key={i} className="flex flex-col items-center gap-1.5 w-full px-1">
-                      <img src={icon.src} className="w-8 h-8 object-contain" alt={icon.label} />
-                      <span className="text-[8px] font-bold text-white uppercase tracking-wider text-center leading-tight">
-                        {icon.label}
-                      </span>
-                    </div>
+                    <img key={i} src={icon.src} className="w-8 h-8 object-contain" alt={icon.label} />
                   ))}
                 </div>
 

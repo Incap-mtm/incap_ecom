@@ -1,18 +1,11 @@
 import React from 'react';
 export default function Head() {
-    return /*#__PURE__*/ React.createElement(React.Fragment, null, /*#__PURE__*/ React.createElement("link", {
-        rel: "preconnect",
-        href: "https://fonts.googleapis.com"
-    }), /*#__PURE__*/ React.createElement("link", {
-        rel: "preconnect",
-        href: "https://fonts.gstatic.com",
-        crossOrigin: "anonymous"
-    }), /*#__PURE__*/ React.createElement("link", {
-        href: "https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap",
-        rel: "stylesheet"
-    }), /*#__PURE__*/ React.createElement("script", {
-        src: "https://cdn.tailwindcss.com"
-    }), /*#__PURE__*/ React.createElement("style", null, `
+    return (React.createElement(React.Fragment, null,
+        React.createElement("link", { rel: "preconnect", href: "https://fonts.googleapis.com" }),
+        React.createElement("link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" }),
+        React.createElement("link", { href: "https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap", rel: "stylesheet" }),
+        React.createElement("script", { src: "https://cdn.tailwindcss.com" }),
+        React.createElement("style", null, `
         :root {
           --color-incap-blue: #2A4899;
           --color-incap-green: #85C639;
@@ -43,14 +36,26 @@ export default function Head() {
         .header__middle { display: none !important; }
         .header { padding: 0 !important; background: transparent !important; position: fixed; width: 100%; top: 0; z-index: 100; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        /* Override Evershop default footer */
+        /* Override Evershop default footer — sin separación con la sección anterior */
         .footer, footer.footer { background: #181B1C !important; margin-top: 0 !important; margin-bottom: 0 !important; padding: 0 !important; border: none !important; }
         .footer__top { padding: 0 !important; margin: 0 !important; }
         .footer__bottom, .footer__middle { display: none !important; }
-        footer.footer.mt-24 { margin-top: 0 !important; }
+        footer.footer.mt-24, footer[class*="mt-"] { margin-top: 0 !important; }
+        /* Eliminar padding/margin del wrapper de página antes del footer */
+        .page-wrapper, .page-content, main { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+        .product__page__bottom { margin-bottom: 0 !important; padding-bottom: 0 !important; }
 
         /* Compensar navbar fija en páginas de producto y categoría */
         body.productView, body.categoryView { padding-top: 110px; }
+
+        /* Ocultar breadcrumb nativo de Evershop en páginas de producto */
+        body.productView .breadcrumb-list,
+        body.productView .breadcrumb-separator,
+        body.productView .breadcrumb-item,
+        body.productView .breadcrumb-page { display: none !important; }
+        body.productView nav.breadcrumb { display: none !important; }
+
+        /* Ocultar nombre y atributos nativos reemplazados por ProductHeaderInfo (ver también línea ~336) */
 
         /* Custom navbar styles */
         .incap-navbar {
@@ -323,8 +328,10 @@ export default function Head() {
 
         /* ── Product Description — jerarquía Airbnb ── */
 
-        /* Ocultar el container nativo (reemplazado por ProductDescription en productPageBottom) */
+        /* Ocultar componentes nativos reemplazados por los del theme */
         .product__single__description { display: none !important; }
+        .product__single__name { display: none !important; }
+        .product__single__attributes { display: none !important; }
 
         /* Estilos del componente custom ProductDescription */
 
@@ -438,10 +445,9 @@ export default function Head() {
           color: #ffffff !important;
           border-color: #181B1C !important;
         }
-      `));
+      `)));
 }
 export const layout = {
     areaId: 'head',
     sortOrder: 1
 };
-
