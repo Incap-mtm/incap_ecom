@@ -1,7 +1,8 @@
 import React from 'react';
 export default function TechnicalSheet({ product }) {
     var _a;
-    const fichaAttr = (_a = product === null || product === void 0 ? void 0 : product.attributes) === null || _a === void 0 ? void 0 : _a.find((a) => a.attributeCode === 'ficha_tecnica');
+    // Acepta tanto 'ficha_tecnica_url' (atributo nuevo del CSV) como 'ficha_tecnica' (legacy)
+    const fichaAttr = (_a = product === null || product === void 0 ? void 0 : product.attributes) === null || _a === void 0 ? void 0 : _a.find((a) => a.attributeCode === 'ficha_tecnica_url' || a.attributeCode === 'ficha_tecnica');
     const fichaUrl = fichaAttr === null || fichaAttr === void 0 ? void 0 : fichaAttr.optionText;
     // Don't render if no technical sheet is configured
     if (!fichaUrl)
