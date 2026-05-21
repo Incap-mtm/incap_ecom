@@ -1,17 +1,11 @@
 import React from 'react';
+import { useProduct } from '@components/frontStore/catalog/ProductContext.js';
 
-interface Attribute { attributeCode: string; optionText: string; }
-interface ProductProps {
-  product?: {
-    name?: string;
-    sku?: string;
-    attributes?: Attribute[];
-  };
-}
+export default function ProductHeaderInfo() {
+  const product = useProduct();
 
-export default function ProductHeaderInfo({ product }: ProductProps) {
   const get = (code: string) =>
-    product?.attributes?.find(a => a.attributeCode === code)?.optionText;
+    product?.attributes?.find((a: { attributeCode: string; optionText: string }) => a.attributeCode === code)?.optionText;
 
   const usos             = get('usos');
   const codigoIndustrial = get('codigo_industrial');
@@ -63,8 +57,6 @@ export const layout = {
 export const query = `
 query Query {
     product: currentProduct {
-      name
-      sku
       attributes: attributeIndex {
         attributeCode
         optionText

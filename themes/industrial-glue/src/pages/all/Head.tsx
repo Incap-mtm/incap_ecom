@@ -50,6 +50,15 @@ export default function Head() {
         /* Compensar navbar fija en páginas de producto y categoría */
         body.productView, body.categoryView { padding-top: 110px; }
 
+        /* Ocultar breadcrumb nativo de Evershop en páginas de producto */
+        body.productView .breadcrumb-list,
+        body.productView .breadcrumb-separator,
+        body.productView .breadcrumb-item,
+        body.productView .breadcrumb-page { display: none !important; }
+        body.productView nav.breadcrumb { display: none !important; }
+
+        /* Ocultar nombre y atributos nativos reemplazados por ProductHeaderInfo (ver también línea ~336) */
+
         /* Custom navbar styles */
         .incap-navbar {
           transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
