@@ -221,9 +221,9 @@ export default function IndustryPage() {
              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12">
                 {filteredProducts.map((prod: any) => (
                   <a href={`/product/${prod.uuid}`} key={prod.productId} className="bg-white p-0 rounded-[2rem] md:rounded-[2.5rem] shadow-xl border border-slate-100 hover:shadow-2xl transition-all cursor-pointer group overflow-hidden block">
-                    <div className="h-52 md:h-80 overflow-hidden bg-slate-100">
+                    <div className="h-52 md:h-72 overflow-hidden bg-white flex items-center justify-center p-4">
                       {prod.image?.url ? (
-                        <img src={prod.image.url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt={prod.name} />
+                        <img src={prod.image.url} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700" alt={prod.name} />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-slate-300 font-sora font-black uppercase tracking-widest text-base md:text-xl">Sin Imagen</div>
                       )}
