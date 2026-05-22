@@ -44,22 +44,7 @@ export default function ProductFAQ({ product }: ProductProps) {
     try { faqs = JSON.parse(faqAttr.optionText); } catch {}
   }
 
-  if (faqs.length === 0) {
-    faqs = [
-      {
-        question: '¿Cuál es el tiempo de secado?',
-        answer: 'El tiempo de secado inicial es de 15 minutos, con curado completo a las 24 horas bajo condiciones normales de temperatura y humedad.'
-      },
-      {
-        question: '¿Cuál es el rendimiento por galón?',
-        answer: 'Aproximadamente 4 a 5 m² por galón, dependiendo de la porosidad del sustrato y el método de aplicación.'
-      },
-      {
-        question: '¿Cómo se debe almacenar?',
-        answer: 'En lugar fresco y seco (15–25 °C), alejado de luz solar directa y fuentes de calor. Mantener el envase bien cerrado.'
-      },
-    ];
-  }
+  if (faqs.length === 0) return null;
 
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i);

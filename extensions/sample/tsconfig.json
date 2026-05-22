@@ -17,6 +17,7 @@
     "allowArbitraryExtensions": true,
     "strictNullChecks": true,
     "isolatedModules": false,
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "rootDir": "./src"
   },

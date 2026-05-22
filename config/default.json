@@ -1,7 +1,7 @@
 {
   "shop": {
-    "language": "en",
-    "currency": "USD",
+    "language": "es",
+    "currency": "COP",
     "homeUrl": "https://www.grupoincap.com.co"
   },
   "system": {
