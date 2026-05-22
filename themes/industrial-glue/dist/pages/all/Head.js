@@ -3,7 +3,7 @@ export default function Head() {
     return (React.createElement(React.Fragment, null,
         React.createElement("link", { rel: "preconnect", href: "https://fonts.googleapis.com" }),
         React.createElement("link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" }),
-        React.createElement("link", { href: "https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap", rel: "stylesheet" }),
+        React.createElement("link", { href: "https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap", rel: "stylesheet" }),
         React.createElement("script", { src: "https://cdn.tailwindcss.com" }),
         React.createElement("style", null, `
         :root {
@@ -21,9 +21,12 @@ export default function Head() {
           overflow-x: hidden;
         }
         h1, h2, h3, h4, h5, h6 {
-          font-family: var(--font-heading);
+          font-family: var(--font-heading) !important;
           letter-spacing: -0.02em;
         }
+        h1 { font-weight: 800 !important; }
+        h2 { font-weight: 700 !important; }
+        h3 { font-weight: 700 !important; }
         .bg-incap-blue { background-color: var(--color-incap-blue); }
         .bg-incap-green { background-color: var(--color-incap-green); }
         .text-incap-blue { color: var(--color-incap-blue); }
@@ -77,6 +80,7 @@ export default function Head() {
           align-items: center;
           gap: 2.5rem;
           transition: height 0.4s ease;
+          position: relative;
         }
         .incap-navbar.scrolled .incap-navbar__inner {
           height: 64px;
@@ -158,6 +162,10 @@ export default function Head() {
           display: flex;
           align-items: center;
           flex-shrink: 0;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 1;
         }
         .incap-navbar__logo img {
           height: 36px;
@@ -170,7 +178,7 @@ export default function Head() {
           align-items: center;
           gap: 0.25rem;
           flex: 1;
-          justify-content: center;
+          justify-content: flex-start;
         }
         .incap-navbar__link {
           display: inline-flex;
