@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
 
-// Deriva la "familia" de un producto a partir de su nombre.
-// Ej: "Super PVA - 20kg" -> "Super PVA"; "Activador I-111 - 750cc" -> "Activador I-111".
 function getFamily(name: string): string {
   if (!name) return '';
   const idx = name.lastIndexOf(' - ');
   return (idx === -1 ? name : name.substring(0, idx)).trim();
+}
+
+function getPresentation(name: string): string {
+  if (!name) return '';
+  const idx = name.lastIndexOf(' - ');
+  return idx === -1 ? '' : name.substring(idx + 3).trim();
 }
 
 const INDUSTRIES_DATA: Record<string, any> = {
@@ -56,7 +60,7 @@ const ConversionFooter = () => (
            <p className="text-base md:text-2xl text-slate-400 mb-8 md:mb-16 font-inter font-light max-w-2xl leading-relaxed">
               Recibe un diagnóstico técnico gratuito en menos de 24 horas. Protege la calidad de tu producto final con expertos de planta.
            </p>
-           <a href="https://wa.me/573123786868" className="inline-flex bg-[#85C639] text-[#181B1C] px-8 md:px-16 py-5 md:py-8 rounded-full font-black text-base md:text-2xl hover:bg-white hover:scale-105 transition-all duration-500 shadow-[0_20px_50px_-10px_rgba(133,198,57,0.5)] items-center gap-3 md:gap-6 uppercase tracking-tighter">
+           <a href="https://wa.me/573002171521?text=Quiero%20m%C3%A1s%20informaci%C3%B3n" className="inline-flex bg-[#85C639] text-[#181B1C] px-8 md:px-16 py-5 md:py-8 rounded-full font-black text-base md:text-2xl hover:bg-white hover:scale-105 transition-all duration-500 shadow-[0_20px_50px_-10px_rgba(133,198,57,0.5)] items-center gap-3 md:gap-6 uppercase tracking-tighter">
               HABLAR CON UN EXPERTO
            </a>
         </div>
@@ -129,7 +133,6 @@ export default function IndustryPage() {
   const uniqueProducts = Array.from(new Map(realProductsRaw.map((p: any) => [p.productId, p])).values());
   const realProducts = uniqueProducts.filter((p: any) => p.status === 1);
 
-  // Calcular familias y conteo por familia
   const families = useMemo(() => {
     const counts: Record<string, number> = {};
     realProducts.forEach((p: any) => {
@@ -139,22 +142,39 @@ export default function IndustryPage() {
     return Object.entries(counts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
   }, [realProducts]);
 
-  const [activeFamily, setActiveFamily] = useState<string | null>(null);
+  const [activeFamily, setActiveFamily] = useState<string>('');
+  const [activePresentation, setActivePresentation] = useState<string>('');
 
-  // Al cambiar de industria, intentar leer ?familia= del URL; si no, reset a null
   useEffect(() => {
     try {
       const params = new URLSearchParams(window.location.search);
-      const fam = params.get('familia');
-      setActiveFamily(fam || null);
+      setActiveFamily(params.get('familia') || '');
+      setActivePresentation('');
     } catch {
-      setActiveFamily(null);
+      setActiveFamily('');
+      setActivePresentation('');
     }
   }, [data.id]);
 
-  const filteredProducts = activeFamily
+  const filteredByFamily = activeFamily
     ? realProducts.filter((p: any) => getFamily(p.name) === activeFamily)
     : realProducts;
+
+  const presentations = useMemo(() => {
+    const seen = new Set<string>();
+    filteredByFamily.forEach((p: any) => {
+      const pres = getPresentation(p.name);
+      if (pres) seen.add(pres);
+    });
+    return Array.from(seen).sort((a, b) => {
+      const num = (s: string) => parseFloat(s.replace(/[^\d.]/g, '')) || 0;
+      return num(a) - num(b);
+    });
+  }, [filteredByFamily]);
+
+  const filteredProducts = activePresentation
+    ? filteredByFamily.filter((p: any) => getPresentation(p.name) === activePresentation)
+    : filteredByFamily;
 
   return (
     <div className="min-h-screen animate-fadeIn bg-white font-sora -mt-[90px]">
@@ -181,36 +201,87 @@ export default function IndustryPage() {
         <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
            <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-[#181B1C] font-sora mb-8 md:mb-12 uppercase text-center tracking-tighter">Portafolio Técnico</h2>
 
-           {/* Filtro por Familia */}
-           {!result.fetching && families.length > 1 && (
-             <div className="mb-10 md:mb-16">
-               <div className="text-center mb-4">
-                 <span className="text-[#85C639] font-black text-[10px] uppercase tracking-[0.4em] font-sora">Filtrar por familia</span>
-               </div>
-               <div className="flex flex-wrap justify-center gap-2 md:gap-3">
-                 <button
-                   onClick={() => setActiveFamily(null)}
-                   className={`px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[11px] md:text-xs font-black uppercase tracking-widest font-sora transition-all border-2 ${
-                     activeFamily === null
-                       ? 'bg-[#2A4899] text-white border-[#2A4899] shadow-lg'
-                       : 'bg-white text-slate-600 border-slate-200 hover:border-[#2A4899] hover:text-[#2A4899]'
-                   }`}
-                 >
-                   Todas <span className="opacity-60 ml-1">({realProducts.length})</span>
-                 </button>
-                 {families.map(([fam, count]) => (
-                   <button
-                     key={fam}
-                     onClick={() => setActiveFamily(fam)}
-                     className={`px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[11px] md:text-xs font-black uppercase tracking-widest font-sora transition-all border-2 ${
-                       activeFamily === fam
-                         ? 'bg-[#2A4899] text-white border-[#2A4899] shadow-lg'
-                         : 'bg-white text-slate-600 border-slate-200 hover:border-[#2A4899] hover:text-[#2A4899]'
-                     }`}
-                   >
-                     {fam} <span className="opacity-60 ml-1">({count})</span>
-                   </button>
-                 ))}
+           {/* Barra de filtros */}
+           {!result.fetching && realProducts.length > 0 && (
+             <div style={{ marginBottom: '40px' }}>
+               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '12px 16px' }}>
+                 {/* Label */}
+                 <span style={{ fontSize: '9px', fontWeight: 800, color: '#94a3b8', letterSpacing: '0.25em', textTransform: 'uppercase', flexShrink: 0 }}>Filtrar</span>
+
+                 <div style={{ width: '1px', height: '20px', background: '#e2e8f0', flexShrink: 0 }} />
+
+                 {/* Familia */}
+                 {families.length > 1 && (
+                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
+                     <div style={{ position: 'relative' }}>
+                       <select
+                         value={activeFamily}
+                         onChange={e => { setActiveFamily(e.target.value); setActivePresentation(''); }}
+                         style={{
+                           appearance: 'none', WebkitAppearance: 'none',
+                           padding: '7px 32px 7px 12px', borderRadius: '8px', border: 'none',
+                           background: activeFamily ? '#2A4899' : '#f8fafc',
+                           color: activeFamily ? '#fff' : '#374151',
+                           fontSize: '12px', fontWeight: 700, cursor: 'pointer',
+                           fontFamily: 'Sora, sans-serif', outline: 'none',
+                         }}
+                       >
+                         <option value="">Familia</option>
+                         {families.map(([fam, count]) => (
+                           <option key={fam} value={fam}>{fam} ({count})</option>
+                         ))}
+                       </select>
+                       <svg style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} width="10" height="10" fill="none" stroke={activeFamily ? '#fff' : '#94a3b8'} viewBox="0 0 24 24">
+                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                       </svg>
+                     </div>
+                     {activeFamily && (
+                       <button onClick={() => { setActiveFamily(''); setActivePresentation(''); }}
+                         style={{ width: '22px', height: '22px', borderRadius: '50%', border: 'none', background: '#e2e8f0', color: '#64748b', cursor: 'pointer', fontSize: '13px', lineHeight: 1, padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>
+                         ×
+                       </button>
+                     )}
+                   </div>
+                 )}
+
+                 {/* Presentación */}
+                 {presentations.length > 1 && (
+                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
+                     <div style={{ position: 'relative' }}>
+                       <select
+                         value={activePresentation}
+                         onChange={e => setActivePresentation(e.target.value)}
+                         style={{
+                           appearance: 'none', WebkitAppearance: 'none',
+                           padding: '7px 32px 7px 12px', borderRadius: '8px', border: 'none',
+                           background: activePresentation ? '#2A4899' : '#f8fafc',
+                           color: activePresentation ? '#fff' : '#374151',
+                           fontSize: '12px', fontWeight: 700, cursor: 'pointer',
+                           fontFamily: 'Sora, sans-serif', outline: 'none',
+                         }}
+                       >
+                         <option value="">Presentación</option>
+                         {presentations.map(p => (
+                           <option key={p} value={p}>{p}</option>
+                         ))}
+                       </select>
+                       <svg style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} width="10" height="10" fill="none" stroke={activePresentation ? '#fff' : '#94a3b8'} viewBox="0 0 24 24">
+                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                       </svg>
+                     </div>
+                     {activePresentation && (
+                       <button onClick={() => setActivePresentation('')}
+                         style={{ width: '22px', height: '22px', borderRadius: '50%', border: 'none', background: '#e2e8f0', color: '#64748b', cursor: 'pointer', fontSize: '13px', lineHeight: 1, padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>
+                         ×
+                       </button>
+                     )}
+                   </div>
+                 )}
+
+                 {/* Contador */}
+                 <span style={{ marginLeft: 'auto', fontSize: '11px', color: '#94a3b8', fontWeight: 600 }}>
+                   {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''}
+                 </span>
                </div>
              </div>
            )}
@@ -221,9 +292,9 @@ export default function IndustryPage() {
              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12">
                 {filteredProducts.map((prod: any) => (
                   <a href={`/product/${prod.uuid}`} key={prod.productId} className="bg-white p-0 rounded-[2rem] md:rounded-[2.5rem] shadow-xl border border-slate-100 hover:shadow-2xl transition-all cursor-pointer group overflow-hidden block">
-                    <div className="h-52 md:h-80 overflow-hidden bg-slate-100">
+                    <div className="h-52 md:h-72 overflow-hidden bg-white flex items-center justify-center p-4">
                       {prod.image?.url ? (
-                        <img src={prod.image.url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt={prod.name} />
+                        <img src={prod.image.url} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700" alt={prod.name} />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-slate-300 font-sora font-black uppercase tracking-widest text-base md:text-xl">Sin Imagen</div>
                       )}
