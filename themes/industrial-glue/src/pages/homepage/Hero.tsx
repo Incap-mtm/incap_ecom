@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-const WHATSAPP_NUMBER = '573002171521';
+interface HeroProps {
+  setting?: { storeWhatsappNumber?: string };
+}
 
-export default function Hero() {
+export default function Hero({ setting }: HeroProps) {
   const [active, setActive] = useState(false);
+  const whatsappNumber = setting?.storeWhatsappNumber ?? '573002171521';
   const waMessage = encodeURIComponent('Hola INCAP! Quiero solicitar una auditoría técnica en planta.');
 
   useEffect(() => {
@@ -50,7 +53,7 @@ export default function Hero() {
               Explorar Catálogo <span className="inline-block ml-3">→</span>
             </a>
             <a
-              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${waMessage}`}
+              href={`https://wa.me/${whatsappNumber}?text=${waMessage}`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-incap border-2 border-white/20 text-white text-lg px-12 py-6 hover:bg-white hover:text-black"
@@ -68,3 +71,5 @@ export const layout = {
   areaId: 'content',
   sortOrder: 1
 };
+
+export const query = `query { setting { storeWhatsappNumber } }`;

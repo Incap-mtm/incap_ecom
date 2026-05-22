@@ -1,8 +1,11 @@
 import React from 'react';
 
-const WHATSAPP_NUMBER = '573002171521';
+interface ConversionFooterProps {
+  setting?: { storeWhatsappNumber?: string };
+}
 
-export default function ConversionFooter() {
+export default function ConversionFooter({ setting }: ConversionFooterProps) {
+  const whatsappNumber = setting?.storeWhatsappNumber ?? '573002171521';
   const message = encodeURIComponent('Hola INCAP! Tengo un problema técnico de pegue en mi planta y necesito asesoría.');
   
   return (
@@ -22,7 +25,7 @@ export default function ConversionFooter() {
                 Recibe un diagnóstico técnico gratuito en menos de 24 horas. Protege la calidad de tu producto final con expertos que entienden tu maquinaria.
              </p>
              <a 
-              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`}
+              href={`https://wa.me/${whatsappNumber}?text=${message}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex bg-[#85C639] text-[#181B1C] px-16 py-8 rounded-full font-black text-2xl hover:bg-white hover:scale-110 transition-all duration-500 shadow-[0_20px_50px_-10px_rgba(133,198,57,0.4)] items-center gap-6 uppercase tracking-tighter"
@@ -57,3 +60,5 @@ export const layout = {
   areaId: 'content',
   sortOrder: 25
 };
+
+export const query = `query { setting { storeWhatsappNumber } }`;

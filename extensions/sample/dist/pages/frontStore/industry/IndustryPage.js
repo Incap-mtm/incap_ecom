@@ -1,16 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-function getFamily(name) {
-    if (!name)
-        return '';
-    const idx = name.lastIndexOf(' - ');
-    return (idx === -1 ? name : name.substring(0, idx)).trim();
-}
-function getPresentation(name) {
-    if (!name)
-        return '';
-    const idx = name.lastIndexOf(' - ');
-    return idx === -1 ? '' : name.substring(idx + 3).trim();
-}
+import { useQuery } from 'urql';
+import { getFamily, getPresentation } from '../../../utils/family.js';
 const INDUSTRIES_DATA = {
     madera: {
         id: 'madera',
@@ -45,7 +35,7 @@ const INDUSTRIES_DATA = {
         description: 'Soluciones versátiles para el día a día. Reparaciones rápidas y proyectos creativos con calidad industrial.',
     }
 };
-const ConversionFooter = () => (React.createElement("section", { className: "py-16 md:py-32 bg-[#181B1C] relative overflow-hidden font-sora" },
+const ConversionFooter = ({ whatsappNumber }) => (React.createElement("section", { className: "py-16 md:py-32 bg-[#181B1C] relative overflow-hidden font-sora" },
     React.createElement("div", { className: "max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10" },
         React.createElement("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 items-center" },
             React.createElement("div", { className: "text-left" },
@@ -56,16 +46,18 @@ const ConversionFooter = () => (React.createElement("section", { className: "py-
                     React.createElement("br", null),
                     React.createElement("span", { className: "text-[#85C639]" }, "Pegue?")),
                 React.createElement("p", { className: "text-base md:text-2xl text-slate-400 mb-8 md:mb-16 font-inter font-light max-w-2xl leading-relaxed" }, "Recibe un diagn\u00F3stico t\u00E9cnico gratuito en menos de 24 horas. Protege la calidad de tu producto final con expertos de planta."),
-                React.createElement("a", { href: "https://wa.me/573002171521?text=Quiero%20m%C3%A1s%20informaci%C3%B3n", className: "inline-flex bg-[#85C639] text-[#181B1C] px-8 md:px-16 py-5 md:py-8 rounded-full font-black text-base md:text-2xl hover:bg-white hover:scale-105 transition-all duration-500 shadow-[0_20px_50px_-10px_rgba(133,198,57,0.5)] items-center gap-3 md:gap-6 uppercase tracking-tighter" }, "HABLAR CON UN EXPERTO")),
+                React.createElement("a", { href: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Quiero más información')}`, className: "inline-flex bg-[#85C639] text-[#181B1C] px-8 md:px-16 py-5 md:py-8 rounded-full font-black text-base md:text-2xl hover:bg-white hover:scale-105 transition-all duration-500 shadow-[0_20px_50px_-10px_rgba(133,198,57,0.5)] items-center gap-3 md:gap-6 uppercase tracking-tighter" }, "HABLAR CON UN EXPERTO")),
             React.createElement("div", { className: "relative group flex justify-center lg:justify-start" },
                 React.createElement("div", { className: "relative max-w-md w-full" },
                     React.createElement("div", { className: "absolute -inset-10 bg-[#2A4899]/20 rounded-[4rem] blur-3xl group-hover:bg-[#2A4899]/30 transition-all duration-700" }),
                     React.createElement("div", { className: "relative rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl" },
                         React.createElement("img", { src: "/images/sections/Fallas_De_Pegue_contacto.png", className: "w-full h-auto object-cover transform scale-90 group-hover:scale-[0.945] transition-transform duration-1000", alt: "Soporte" }),
                         React.createElement("div", { className: "absolute inset-0 bg-gradient-to-t from-[#181B1C]/60 to-transparent" }))))))));
-import { useQuery } from 'urql';
 const PRODUCTS_QUERY = `
   query {
+    setting {
+      storeWhatsappNumber
+    }
     categories(filters: [{ key: "limit", operation: eq, value: "100" }]) {
       items {
         urlKey
@@ -87,7 +79,7 @@ const PRODUCTS_QUERY = `
   }
 `;
 export default function IndustryPage() {
-    var _a, _b;
+    var _a, _b, _c, _d, _e;
     const [data, setData] = useState(INDUSTRIES_DATA.madera);
     useEffect(() => {
         // Extract ID from the path: /industrias/madera -> madera
@@ -101,7 +93,8 @@ export default function IndustryPage() {
         query: PRODUCTS_QUERY,
         requestPolicy: 'network-only' // Fuerza a ignorar el caché y siempre pedir los datos más recientes a la base de datos
     });
-    const allCategories = ((_b = (_a = result.data) === null || _a === void 0 ? void 0 : _a.categories) === null || _b === void 0 ? void 0 : _b.items) || [];
+    const whatsappNumber = (_c = (_b = (_a = result.data) === null || _a === void 0 ? void 0 : _a.setting) === null || _b === void 0 ? void 0 : _b.storeWhatsappNumber) !== null && _c !== void 0 ? _c : '573002171521';
+    const allCategories = ((_e = (_d = result.data) === null || _d === void 0 ? void 0 : _d.categories) === null || _e === void 0 ? void 0 : _e.items) || [];
     // Extraemos todos los productos que pertenezcan a las categorías (urlKey) mapeadas en nuestros slugs
     const matchedCategories = allCategories.filter((cat) => data.slugs.includes(cat.urlKey));
     const realProductsRaw = matchedCategories.flatMap((cat) => { var _a; return ((_a = cat.products) === null || _a === void 0 ? void 0 : _a.items) || []; });
@@ -222,7 +215,7 @@ export default function IndustryPage() {
                         React.createElement("strong", null, data.name),
                         " en el cat\u00E1logo."),
                     React.createElement("a", { href: "/admin/products", className: "inline-block px-8 py-4 bg-[#2A4899] text-white rounded-full font-black text-xs uppercase tracking-widest hover:bg-[#181B1C] transition-colors" }, "A\u00F1adir Productos"))))),
-        React.createElement(ConversionFooter, null)));
+        React.createElement(ConversionFooter, { whatsappNumber: whatsappNumber })));
 }
 export const layout = {
     areaId: 'content',

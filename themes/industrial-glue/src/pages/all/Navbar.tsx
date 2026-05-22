@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useQuery } from 'urql';
+import { getFamily } from '../../utils/family.js';
 
 interface Industry {
   id: 'madera' | 'colchones' | 'calzado' | 'hogar';
@@ -16,12 +17,6 @@ const industries: Industry[] = [
   { id: 'hogar',     name: 'Hogar y Multiusos',       href: '/industrias/hogar',     icon: '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg', catUrlKey: 'multiusos' },
 ];
 
-// Deriva la "familia" de un producto a partir de su nombre.
-function getFamily(name: string): string {
-  if (!name) return '';
-  const idx = name.lastIndexOf(' - ');
-  return (idx === -1 ? name : name.substring(0, idx)).trim();
-}
 
 const FAMILIES_QUERY = `
   query {

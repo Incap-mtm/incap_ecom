@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
-const WHATSAPP_NUMBER = '573002171521';
-
 interface ProductProps {
   product?: {
     name?: string;
     sku?: string;
   };
+  setting?: { storeWhatsappNumber?: string };
 }
 
-export default function WhatsAppCTA({ product }: ProductProps) {
+export default function WhatsAppCTA({ product, setting }: ProductProps) {
+  const whatsappNumber = setting?.storeWhatsappNumber ?? '573002171521';
   const [productName, setProductName] = useState('');
   const [productSku, setProductSku]   = useState('');
 
@@ -49,7 +49,7 @@ export default function WhatsAppCTA({ product }: ProductProps) {
 
         {/* CTA principal — verde */}
         <a
-          href={`https://wa.me/${WHATSAPP_NUMBER}?text=${waMessage}`}
+          href={`https://wa.me/${whatsappNumber}?text=${waMessage}`}
           target="_blank"
           rel="noopener noreferrer"
           className="w-full flex items-center justify-center gap-3 py-4 bg-[#85C639] text-[#181B1C] rounded-xl font-black text-xs uppercase tracking-widest font-sora hover:bg-[#74b030] transition-all duration-200 hover:scale-[1.02]"
@@ -62,7 +62,7 @@ export default function WhatsAppCTA({ product }: ProductProps) {
 
         {/* CTA secundario — azul outlined */}
         <a
-          href={`https://wa.me/${WHATSAPP_NUMBER}?text=${techMessage}`}
+          href={`https://wa.me/${whatsappNumber}?text=${techMessage}`}
           target="_blank"
           rel="noopener noreferrer"
           className="w-full flex items-center justify-center mt-3 py-4 border border-white/20 text-white rounded-xl font-black text-xs uppercase tracking-widest font-sora hover:border-[#2A4899] hover:bg-[#2A4899]/20 transition-all duration-200"
@@ -85,6 +85,9 @@ export const layout = {
 
 export const query = `
 query Query {
+    setting {
+      storeWhatsappNumber
+    }
     product: currentProduct {
       name
       sku

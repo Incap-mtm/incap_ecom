@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-const WHATSAPP_NUMBER = '573002171521';
-export default function Hero() {
+export default function Hero({ setting }) {
+    var _a;
     const [active, setActive] = useState(false);
+    const whatsappNumber = (_a = setting === null || setting === void 0 ? void 0 : setting.storeWhatsappNumber) !== null && _a !== void 0 ? _a : '573002171521';
     const waMessage = encodeURIComponent('Hola INCAP! Quiero solicitar una auditoría técnica en planta.');
     useEffect(() => {
         const timer = setTimeout(() => setActive(true), 100);
@@ -25,9 +26,10 @@ export default function Hero() {
                     React.createElement("a", { href: "/catalog", className: "btn-incap btn-primary-incap text-lg px-12 py-6" },
                         "Explorar Cat\u00E1logo ",
                         React.createElement("span", { className: "inline-block ml-3" }, "\u2192")),
-                    React.createElement("a", { href: `https://wa.me/${WHATSAPP_NUMBER}?text=${waMessage}`, target: "_blank", rel: "noopener noreferrer", className: "btn-incap border-2 border-white/20 text-white text-lg px-12 py-6 hover:bg-white hover:text-black" }, "Asesor\u00EDa T\u00E9cnica"))))));
+                    React.createElement("a", { href: `https://wa.me/${whatsappNumber}?text=${waMessage}`, target: "_blank", rel: "noopener noreferrer", className: "btn-incap border-2 border-white/20 text-white text-lg px-12 py-6 hover:bg-white hover:text-black" }, "Asesor\u00EDa T\u00E9cnica"))))));
 }
 export const layout = {
     areaId: 'content',
     sortOrder: 1
 };
+export const query = `query { setting { storeWhatsappNumber } }`;

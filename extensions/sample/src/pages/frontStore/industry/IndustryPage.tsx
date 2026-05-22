@@ -1,16 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-
-function getFamily(name: string): string {
-  if (!name) return '';
-  const idx = name.lastIndexOf(' - ');
-  return (idx === -1 ? name : name.substring(0, idx)).trim();
-}
-
-function getPresentation(name: string): string {
-  if (!name) return '';
-  const idx = name.lastIndexOf(' - ');
-  return idx === -1 ? '' : name.substring(idx + 3).trim();
-}
+import { useQuery } from 'urql';
+import { getFamily, getPresentation } from '../../../utils/family.js';
 
 const INDUSTRIES_DATA: Record<string, any> = {
   madera: {
@@ -47,7 +37,7 @@ const INDUSTRIES_DATA: Record<string, any> = {
   }
 };
 
-const ConversionFooter = () => (
+const ConversionFooter = ({ whatsappNumber }: { whatsappNumber: string }) => (
   <section className="py-16 md:py-32 bg-[#181B1C] relative overflow-hidden font-sora">
     <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 items-center">
@@ -60,7 +50,7 @@ const ConversionFooter = () => (
            <p className="text-base md:text-2xl text-slate-400 mb-8 md:mb-16 font-inter font-light max-w-2xl leading-relaxed">
               Recibe un diagnóstico técnico gratuito en menos de 24 horas. Protege la calidad de tu producto final con expertos de planta.
            </p>
-           <a href="https://wa.me/573002171521?text=Quiero%20m%C3%A1s%20informaci%C3%B3n" className="inline-flex bg-[#85C639] text-[#181B1C] px-8 md:px-16 py-5 md:py-8 rounded-full font-black text-base md:text-2xl hover:bg-white hover:scale-105 transition-all duration-500 shadow-[0_20px_50px_-10px_rgba(133,198,57,0.5)] items-center gap-3 md:gap-6 uppercase tracking-tighter">
+           <a href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Quiero más información')}`} className="inline-flex bg-[#85C639] text-[#181B1C] px-8 md:px-16 py-5 md:py-8 rounded-full font-black text-base md:text-2xl hover:bg-white hover:scale-105 transition-all duration-500 shadow-[0_20px_50px_-10px_rgba(133,198,57,0.5)] items-center gap-3 md:gap-6 uppercase tracking-tighter">
               HABLAR CON UN EXPERTO
            </a>
         </div>
@@ -79,10 +69,11 @@ const ConversionFooter = () => (
   </section>
 );
 
-import { useQuery } from 'urql';
-
 const PRODUCTS_QUERY = `
   query {
+    setting {
+      storeWhatsappNumber
+    }
     categories(filters: [{ key: "limit", operation: eq, value: "100" }]) {
       items {
         urlKey
@@ -122,6 +113,7 @@ export default function IndustryPage() {
     requestPolicy: 'network-only' // Fuerza a ignorar el caché y siempre pedir los datos más recientes a la base de datos
   });
 
+  const whatsappNumber = result.data?.setting?.storeWhatsappNumber ?? '573002171521';
   const allCategories = result.data?.categories?.items || [];
   
   // Extraemos todos los productos que pertenezcan a las categorías (urlKey) mapeadas en nuestros slugs
@@ -319,7 +311,7 @@ export default function IndustryPage() {
            )}
         </div>
       </section>
-      <ConversionFooter />
+      <ConversionFooter whatsappNumber={whatsappNumber} />
     </div>
   );
 }

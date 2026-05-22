@@ -1,6 +1,7 @@
 import React from 'react';
-const WHATSAPP_NUMBER = '573002171521';
-export default function ConversionFooter() {
+export default function ConversionFooter({ setting }) {
+    var _a;
+    const whatsappNumber = (_a = setting === null || setting === void 0 ? void 0 : setting.storeWhatsappNumber) !== null && _a !== void 0 ? _a : '573002171521';
     const message = encodeURIComponent('Hola INCAP! Tengo un problema técnico de pegue en mi planta y necesito asesoría.');
     return (React.createElement("section", { className: "py-32 bg-[#181B1C] relative overflow-hidden border-t border-white/5" },
         React.createElement("div", { className: "max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12 relative z-10" },
@@ -13,7 +14,7 @@ export default function ConversionFooter() {
                         React.createElement("br", null),
                         React.createElement("span", { className: "text-[#85C639]" }, "Pegue?")),
                     React.createElement("p", { className: "text-2xl text-slate-400 mb-16 font-inter font-light max-w-2xl leading-relaxed" }, "Recibe un diagn\u00F3stico t\u00E9cnico gratuito en menos de 24 horas. Protege la calidad de tu producto final con expertos que entienden tu maquinaria."),
-                    React.createElement("a", { href: `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, target: "_blank", rel: "noopener noreferrer", className: "inline-flex bg-[#85C639] text-[#181B1C] px-16 py-8 rounded-full font-black text-2xl hover:bg-white hover:scale-110 transition-all duration-500 shadow-[0_20px_50px_-10px_rgba(133,198,57,0.4)] items-center gap-6 uppercase tracking-tighter" }, "HABLAR CON UN EXPERTO")),
+                    React.createElement("a", { href: `https://wa.me/${whatsappNumber}?text=${message}`, target: "_blank", rel: "noopener noreferrer", className: "inline-flex bg-[#85C639] text-[#181B1C] px-16 py-8 rounded-full font-black text-2xl hover:bg-white hover:scale-110 transition-all duration-500 shadow-[0_20px_50px_-10px_rgba(133,198,57,0.4)] items-center gap-6 uppercase tracking-tighter" }, "HABLAR CON UN EXPERTO")),
                 React.createElement("div", { className: "relative group hidden lg:flex justify-center" },
                     React.createElement("div", { className: "relative max-w-md w-full" },
                         React.createElement("div", { className: "absolute -inset-10 bg-[#2A4899]/20 rounded-[4rem] blur-3xl group-hover:bg-[#2A4899]/30 transition-all duration-700" }),
@@ -26,3 +27,4 @@ export const layout = {
     areaId: 'content',
     sortOrder: 25
 };
+export const query = `query { setting { storeWhatsappNumber } }`;
