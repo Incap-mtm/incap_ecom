@@ -1,10 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
+const AGENT_IMG = '/images/icons/imagen-chatflotante.png';
 const CHIPS = [
     { label: '🔧 Tengo fallas de pegue', prompt: 'Tengo problemas de adhesión, el pegue está fallando. ¿Qué puede estar causando esto y qué producto me recomiendas?' },
     { label: '🧱 Necesito pegar materiales', prompt: 'Necesito pegar dos materiales específicos.' },
     { label: '🏭 ¿Qué producto para mi industria?', prompt: 'Trabajo en la industria de adhesivos y necesito orientación sobre qué producto usar.' },
     { label: '💬 Consulta libre', prompt: '' },
 ];
+function AgentAvatar({ size }) {
+    return (React.createElement("div", { style: { width: size, height: size, borderRadius: '50%', flexShrink: 0, overflow: 'hidden' } },
+        React.createElement("img", { src: AGENT_IMG, alt: "Asesor INCAP", style: { width: '100%', height: '100%', objectFit: 'cover' } })));
+}
 function UserBubble({ content }) {
     return (React.createElement("div", { style: { display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' } },
         React.createElement("div", { style: { background: '#2A4899', color: '#fff', borderRadius: '16px 16px 4px 16px', padding: '10px 14px', maxWidth: '80%', fontSize: '13px', lineHeight: 1.5 } }, content)));
@@ -12,9 +17,7 @@ function UserBubble({ content }) {
 function AssistantBubble({ content, products }) {
     return (React.createElement("div", { style: { marginBottom: '12px' } },
         React.createElement("div", { style: { display: 'flex', gap: '8px', alignItems: 'flex-start' } },
-            React.createElement("div", { style: { width: '28px', height: '28px', borderRadius: '50%', background: '#2A4899', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' } },
-                React.createElement("svg", { width: "14", height: "14", fill: "none", stroke: "#fff", viewBox: "0 0 24 24" },
-                    React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" }))),
+            React.createElement(AgentAvatar, { size: 28 }),
             React.createElement("div", { style: { background: '#f8fafc', borderRadius: '4px 16px 16px 16px', padding: '10px 14px', maxWidth: '85%', fontSize: '13px', lineHeight: 1.6, color: '#374151', border: '1px solid #e2e8f0' } }, content)),
         products && products.length > 0 && (React.createElement("div", { style: { marginLeft: '36px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '6px' } }, products.map(p => (React.createElement("a", { key: p.sku, href: p.url, style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '10px', textDecoration: 'none', transition: 'all 0.15s' }, onMouseEnter: e => { e.currentTarget.style.borderColor = '#2A4899'; e.currentTarget.style.background = '#f0f5ff'; }, onMouseLeave: e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.background = '#fff'; } },
             React.createElement("div", null,
@@ -25,9 +28,7 @@ function AssistantBubble({ content, products }) {
 }
 function TypingIndicator() {
     return (React.createElement("div", { style: { display: 'flex', gap: '8px', alignItems: 'flex-start', marginBottom: '12px' } },
-        React.createElement("div", { style: { width: '28px', height: '28px', borderRadius: '50%', background: '#2A4899', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' } },
-            React.createElement("svg", { width: "14", height: "14", fill: "none", stroke: "#fff", viewBox: "0 0 24 24" },
-                React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" }))),
+        React.createElement(AgentAvatar, { size: 28 }),
         React.createElement("div", { style: { background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '4px 16px 16px 16px', padding: '12px 16px', display: 'flex', gap: '4px', alignItems: 'center' } }, [0, 1, 2].map(i => (React.createElement("div", { key: i, style: { width: '6px', height: '6px', borderRadius: '50%', background: '#2A4899', animation: 'bounce 1.2s infinite', animationDelay: `${i * 0.2}s`, opacity: 0.7 } }))))));
 }
 export default function TechnicalAdvisor() {
@@ -96,9 +97,7 @@ export default function TechnicalAdvisor() {
       `),
         isOpen && (React.createElement("div", { style: { position: 'absolute', bottom: '72px', right: 0, width: '360px', maxWidth: 'calc(100vw - 32px)', background: '#fff', borderRadius: '20px', boxShadow: '0 24px 64px rgba(0,0,0,0.18)', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', overflow: 'hidden', animation: 'fadeUp 0.25s ease' } },
             React.createElement("div", { style: { background: 'linear-gradient(135deg, #2A4899 0%, #1e3576 100%)', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '10px' } },
-                React.createElement("div", { style: { width: '34px', height: '34px', borderRadius: '50%', background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 } },
-                    React.createElement("svg", { width: "18", height: "18", fill: "none", stroke: "#85C639", viewBox: "0 0 24 24" },
-                        React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" }))),
+                React.createElement(AgentAvatar, { size: 34 }),
                 React.createElement("div", { style: { flex: 1 } },
                     React.createElement("div", { style: { color: '#fff', fontWeight: 800, fontSize: '13px' } }, "Asesor T\u00E9cnico INCAP"),
                     React.createElement("div", { style: { color: 'rgba(255,255,255,0.5)', fontSize: '10px', fontWeight: 600 } }, "IA \u00B7 Respuesta inmediata")),
@@ -116,11 +115,10 @@ export default function TechnicalAdvisor() {
                 React.createElement("button", { onClick: () => sendMessage(input), disabled: loading || !input.trim(), style: { width: '36px', height: '36px', borderRadius: '10px', border: 'none', background: loading || !input.trim() ? '#e2e8f0' : '#2A4899', color: '#fff', cursor: loading || !input.trim() ? 'default' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'background 0.15s' } },
                     React.createElement("svg", { width: "16", height: "16", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
                         React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M12 19l9 2-9-18-9 18 9-2zm0 0v-8" })))))),
-        React.createElement("button", { onClick: () => setIsOpen(!isOpen), style: { width: '56px', height: '56px', borderRadius: '50%', border: 'none', background: isOpen ? '#181B1C' : '#2A4899', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(42,72,153,0.4)', transition: 'all 0.3s', transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)', position: 'relative' } },
+        React.createElement("button", { onClick: () => setIsOpen(!isOpen), style: { width: '56px', height: '56px', borderRadius: '50%', border: 'none', background: isOpen ? '#181B1C' : 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(42,72,153,0.4)', transition: 'all 0.3s', position: 'relative', padding: 0, overflow: 'hidden' } },
             !isOpen && (React.createElement("div", { style: { position: 'absolute', inset: 0, borderRadius: '50%', background: '#85C639', animation: 'ping 2s cubic-bezier(0,0,0.2,1) infinite', opacity: 0.25 } })),
             isOpen ? (React.createElement("svg", { width: "20", height: "20", fill: "none", stroke: "#fff", viewBox: "0 0 24 24" },
-                React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M6 18L18 6M6 6l12 12" }))) : (React.createElement("svg", { width: "22", height: "22", fill: "none", stroke: "#fff", viewBox: "0 0 24 24" },
-                React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" }))))));
+                React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M6 18L18 6M6 6l12 12" }))) : (React.createElement("img", { src: AGENT_IMG, alt: "Asesor T\u00E9cnico INCAP", style: { width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' } })))));
 }
 export const layout = {
     areaId: 'content',
