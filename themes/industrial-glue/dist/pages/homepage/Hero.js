@@ -1,35 +1,49 @@
 import React, { useState, useEffect } from 'react';
-export default function Hero({ setting }) {
-    var _a;
-    const [active, setActive] = useState(false);
-    const whatsappNumber = (_a = setting === null || setting === void 0 ? void 0 : setting.storeWhatsappNumber) !== null && _a !== void 0 ? _a : '573002171521';
-    const waMessage = encodeURIComponent('Hola INCAP! Quiero solicitar una auditoría técnica en planta.');
+const slides = [
+    {
+        desk: '/images/banners/Hero/banner-01-desk.png',
+        mobile: '/images/banners/Hero/banner-01-mobile.png',
+        alt: 'Adhesivos industriales INCAP — Calidad y respaldo técnico',
+    },
+    {
+        desk: '/images/banners/Hero/banner-02-desk.png',
+        mobile: '/images/banners/Hero/banner-02-mobile.png',
+        alt: 'Soluciones de pegado para la industria colombiana',
+    },
+    {
+        desk: '/images/banners/Hero/banner-03-desk.png',
+        mobile: '/images/banners/Hero/banner-03-mobile.png',
+        alt: 'INCAP — La química que construye país',
+    },
+    {
+        desk: '/images/banners/Hero/banner-04-desk.png',
+        mobile: '/images/banners/Hero/banner-04-mobile.png',
+        alt: 'Grupo INCAP — Fabricantes de adhesivos industriales',
+    },
+];
+const INTERVAL_MS = 5000;
+export default function Hero() {
+    const [current, setCurrent] = useState(0);
     useEffect(() => {
-        const timer = setTimeout(() => setActive(true), 100);
-        return () => clearTimeout(timer);
+        const timer = setInterval(() => {
+            setCurrent(prev => (prev + 1) % slides.length);
+        }, INTERVAL_MS);
+        return () => clearInterval(timer);
     }, []);
-    return (React.createElement("section", { className: `relative bg-[#181B1C] min-h-[90vh] flex items-center overflow-hidden hero-section ${active ? 'hero-active' : ''}` },
-        React.createElement("div", { className: "absolute inset-0 z-0" },
-            React.createElement("img", { src: "/images/banners/Banner_Home_Principal.webp", alt: "Producci\u00F3n industrial INCAP", className: "w-full h-full object-cover opacity-40 hero-zoom" }),
-            React.createElement("div", { className: "absolute inset-0 bg-gradient-to-r from-[#181B1C] via-[#181B1C]/70 to-transparent" }),
-            React.createElement("div", { className: "absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-[#181B1C]/90 to-transparent z-10" })),
-        React.createElement("div", { className: "relative z-10 max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12 w-full pt-32 pb-[9.6rem]" },
-            React.createElement("div", { className: `max-w-5xl transition-all duration-1000 transform ${active ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0'}` },
-                React.createElement("div", { className: "inline-block bg-white/5 backdrop-blur-3xl border border-white/10 px-8 py-3 rounded-full mb-12 reveal reveal-stagger-1 active" },
-                    React.createElement("span", { className: "text-[#85C639] font-black text-[11px] uppercase tracking-[0.5em] font-sora" }, "Respaldo T\u00E9cnico \u2022 Calidad Industrial")),
-                React.createElement("h1", { className: "text-[3.15rem] md:text-[4.725rem] lg:text-[9.45rem] font-black text-white leading-[0.8] mb-12 font-sora tracking-tighter uppercase reveal reveal-stagger-2 active" },
-                    "La qu\u00EDmica que ",
-                    React.createElement("br", null),
-                    React.createElement("span", { className: "text-[#85C639] italic" }, "construye pa\u00EDs")),
-                React.createElement("p", { className: "text-[1.05rem] md:text-[1.3125rem] text-slate-400 mb-8 max-w-3xl font-inter font-light leading-relaxed reveal reveal-stagger-3 active" }, "Somos el socio estrat\u00E9gico que garantiza la eficiencia de tu planta y la durabilidad de cada producto que fabricas."),
-                React.createElement("div", { className: "flex flex-wrap gap-6 reveal reveal-stagger-3 active", style: { transitionDelay: '0.6s' } },
-                    React.createElement("a", { href: "/catalog", className: "btn-incap btn-primary-incap text-lg px-12 py-6" },
-                        "Explorar Cat\u00E1logo ",
-                        React.createElement("span", { className: "inline-block ml-3" }, "\u2192")),
-                    React.createElement("a", { href: `https://wa.me/${whatsappNumber}?text=${waMessage}`, target: "_blank", rel: "noopener noreferrer", className: "btn-incap border-2 border-white/20 text-white text-lg px-12 py-6 hover:bg-white hover:text-black" }, "Asesor\u00EDa T\u00E9cnica"))))));
+    const prev = () => setCurrent(c => (c - 1 + slides.length) % slides.length);
+    const next = () => setCurrent(c => (c + 1) % slides.length);
+    return (React.createElement("section", { className: "relative w-full overflow-hidden bg-[#181B1C]", style: { height: '90vh', minHeight: '560px' } },
+        slides.map((slide, i) => (React.createElement("div", { key: i, "aria-hidden": i !== current, className: "absolute inset-0 transition-opacity duration-700", style: { opacity: i === current ? 1 : 0, zIndex: i === current ? 1 : 0 } },
+            React.createElement("picture", null,
+                React.createElement("source", { media: "(max-width: 768px)", srcSet: slide.mobile }),
+                React.createElement("img", { src: slide.desk, alt: slide.alt, className: "w-full h-full object-cover", loading: i === 0 ? 'eager' : 'lazy' }))))),
+        React.createElement("button", { onClick: prev, className: "absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-black/30 hover:bg-black/60 text-white text-3xl flex items-center justify-center transition-colors", "aria-label": "Banner anterior" }, "\u2039"),
+        React.createElement("button", { onClick: next, className: "absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-black/30 hover:bg-black/60 text-white text-3xl flex items-center justify-center transition-colors", "aria-label": "Siguiente banner" }, "\u203A"),
+        React.createElement("div", { className: "absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2" }, slides.map((_, i) => (React.createElement("button", { key: i, onClick: () => setCurrent(i), className: `rounded-full transition-all duration-300 ${i === current
+                ? 'w-8 h-3 bg-[#85C639]'
+                : 'w-3 h-3 bg-white/50 hover:bg-white/80'}`, "aria-label": `Ir a slide ${i + 1}` }))))));
 }
 export const layout = {
     areaId: 'content',
-    sortOrder: 1
+    sortOrder: 1,
 };
-export const query = `query { setting { storeWhatsappNumber } }`;
