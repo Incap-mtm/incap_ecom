@@ -6,7 +6,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const jsonPath = join(__dirname, '../themes/industrial-glue/public/data/distribuidores.json');
 const data = JSON.parse(readFileSync(jsonPath, 'utf8'));
 
-const API_KEY = process.env.GOOGLE_MAPS_API_KEY || 'AIzaSyBgAPlNxa43i6XQNlUz_AfwEBC104y0pns';
+const API_KEY = process.env.GOOGLE_MAPS_API_KEY;
+if (!API_KEY) {
+  console.error('Error: define GOOGLE_MAPS_API_KEY en el entorno antes de ejecutar.');
+  process.exit(1);
+}
 
 async function geocode(direccion, ciudad, pais = 'Colombia') {
   const query = encodeURIComponent(`${direccion}, ${ciudad}, ${pais}`);
