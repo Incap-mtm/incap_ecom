@@ -30,8 +30,8 @@ const industries = [
         href: '/industrias/calzado',
         image: '/images/sections/Calzado_Marroquinera_Seccion_Home.webp',
         icons: [
-            { src: '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2.svg', label: 'Calzado y Marroquinería' },
             { src: '/images/icons/Icono_Calzado.png', label: 'Calzado' },
+            { src: '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2_alt.svg', label: 'Marroquinería' },
         ],
     },
     {

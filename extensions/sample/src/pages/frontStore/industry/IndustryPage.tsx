@@ -24,7 +24,7 @@ const INDUSTRIES_DATA: Record<string, any> = {
     slugs: ['calzado', 'marroquineria'],
     name: 'Calzado y Marroquinería',
     heroImage: '/images/banners/Banner_Calzado_Marroquineria.webp',
-    icons: ['/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2.svg', '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2_alt.svg'],
+    icons: ['/images/icons/Icono_Calzado.png', '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2_alt.svg'],
     description: 'El estándar de las grandes fábricas. Un ecosistema completo para reducir garantías.',
   },
   hogar: {
