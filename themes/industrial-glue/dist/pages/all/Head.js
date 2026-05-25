@@ -76,11 +76,10 @@ export default function Head() {
           margin: 0 auto;
           padding: 0 2rem;
           height: 80px;
-          display: flex;
+          display: grid;
+          grid-template-columns: 1fr auto 1fr;
           align-items: center;
-          gap: 2.5rem;
           transition: height 0.4s ease;
-          position: relative;
         }
         .incap-navbar.scrolled .incap-navbar__inner {
           height: 64px;
@@ -161,11 +160,7 @@ export default function Head() {
         .incap-navbar__logo {
           display: flex;
           align-items: center;
-          flex-shrink: 0;
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
-          z-index: 1;
+          justify-self: start;
         }
         .incap-navbar__logo img {
           height: 36px;
@@ -177,8 +172,13 @@ export default function Head() {
           display: flex;
           align-items: center;
           gap: 0.25rem;
-          flex: 1;
-          justify-content: flex-start;
+          justify-content: center;
+        }
+        .incap-navbar__right {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          gap: 1rem;
         }
         .incap-navbar__link {
           display: inline-flex;
@@ -262,10 +262,10 @@ export default function Head() {
           border-radius: 12px;
         }
         @media (max-width: 768px) {
-          .incap-navbar__inner { height: 64px; padding: 0 1.25rem; gap: 1rem; }
+          .incap-navbar__inner { height: 64px; padding: 0 1.25rem; grid-template-columns: auto 1fr auto; }
           .incap-navbar.scrolled .incap-navbar__inner { height: 56px; }
           .incap-navbar__links { display: none; }
-          .incap-navbar__cta:not(.incap-navbar__cta--mobile) { display: none; }
+          .incap-navbar__right .btn-incap { display: none; }
           .incap-navbar__toggle { display: block; }
         }
 

@@ -120,11 +120,12 @@ export default function Navbar() {
                                                 React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M9 5l7 7-7 7" }))))));
                             })()))),
                 React.createElement("a", { href: "/distribuidores", className: "incap-navbar__link" }, "Distribuidores")),
-            React.createElement("a", { href: "/catalog", className: "btn-incap btn-primary-incap text-xs py-3 px-6" }, "Solicitar Asesor\u00EDa"),
-            React.createElement("button", { className: "incap-navbar__toggle", onClick: () => setMobileOpen(!mobileOpen), "aria-label": "Men\u00FA" },
-                React.createElement("svg", { fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", width: "28", height: "28" }, mobileOpen
-                    ? React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M6 18L18 6M6 6l12 12" })
-                    : React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M4 6h16M4 12h16M4 18h16" })))),
+            React.createElement("div", { className: "incap-navbar__right" },
+                React.createElement("a", { href: "/catalog", className: "btn-incap btn-primary-incap text-xs py-3 px-6" }, "Solicitar Asesor\u00EDa"),
+                React.createElement("button", { className: "incap-navbar__toggle", onClick: () => setMobileOpen(!mobileOpen), "aria-label": "Men\u00FA" },
+                    React.createElement("svg", { fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", width: "28", height: "28" }, mobileOpen
+                        ? React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M6 18L18 6M6 6l12 12" })
+                        : React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M4 6h16M4 12h16M4 18h16" }))))),
         mobileOpen && (React.createElement("div", { className: "incap-navbar__mobile glass-header" },
             React.createElement("div", { className: "pb-6" },
                 React.createElement("p", { className: "text-[11px] font-black uppercase tracking-[0.3em] text-white/40 mb-4 px-2" }, "Industrias"),
