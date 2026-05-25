@@ -35,24 +35,28 @@ export default function ProductBreadcrumb({ pageInfo, product: productProp }: Pr
   const name = productCtx?.name;
   const crumbs = pageInfo?.breadcrumbs ?? [];
 
-  // Product URL: from GraphQL prop (url field), or last breadcrumb
   const productUrl = productProp?.url
     ?? (crumbs.length > 0 ? crumbs[crumbs.length - 1]?.url : undefined);
 
-  // Find industry from category breadcrumbs — scan from right (most specific) to left
-  const categoryCrumbs = crumbs.slice(1, crumbs.length > 1 ? -1 : undefined);
+  // Derive industry from product URL segments (e.g. /industrias/colchones/slug → colchones)
   let industry: { url: string; name: string } | undefined;
-  for (let i = categoryCrumbs.length - 1; i >= 0; i--) {
-    const key = categoryCrumbs[i].url.split('/').filter(Boolean).pop() ?? '';
-    if (CATEGORY_TO_INDUSTRY[key]) {
-      industry = CATEGORY_TO_INDUSTRY[key];
-      break;
+  const urlSegments = (productUrl ?? '').split('/').filter(Boolean);
+  for (const seg of urlSegments) {
+    if (CATEGORY_TO_INDUSTRY[seg]) { industry = CATEGORY_TO_INDUSTRY[seg]; break; }
+  }
+  // Fallback: scan pageInfo breadcrumbs
+  if (!industry) {
+    const categoryCrumbs = crumbs.slice(1, crumbs.length > 1 ? -1 : undefined);
+    for (let i = categoryCrumbs.length - 1; i >= 0; i--) {
+      const key = categoryCrumbs[i].url.split('/').filter(Boolean).pop() ?? '';
+      if (CATEGORY_TO_INDUSTRY[key]) { industry = CATEGORY_TO_INDUSTRY[key]; break; }
     }
   }
 
   return (
     <nav className="incap-breadcrumb pt-4 pb-2">
-      <ol className="page-width flex items-center gap-2 text-xs text-slate-400 font-inter flex-wrap">
+      <div className="page-width">
+      <ol className="flex items-center gap-2 text-xs text-slate-400 font-inter flex-wrap">
         <li>
           <a href="/" className="hover:text-[#2A4899] transition-colors font-semibold">Inicio</a>
         </li>
@@ -79,6 +83,7 @@ export default function ProductBreadcrumb({ pageInfo, product: productProp }: Pr
           </>
         )}
       </ol>
+      </div>
     </nav>
   );
 }
