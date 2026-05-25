@@ -45,16 +45,16 @@ Antes de implementar, se realizó auditoría técnica completa y se estableciero
 | # | Tarea | Estado |
 |---|-------|--------|
 | F2.1 | Rate limiting endpoint /api/technical-advisor (10 req/min por IP) | ✅ Hecho |
-| F2.2 | Crear atributos ficha_tecnica_url y preguntas_frecuentes en DB | ⏳ Pendiente |
+| F2.2 | Crear atributos ficha_tecnica_url y preguntas_frecuentes en DB | ✅ Hecho — migración automática en deploy (commit c4229a6) |
 
 ### FASE 3 — Migración al CMS de EverShop
 | # | Tarea | Estado |
 |---|-------|--------|
-| F3.1 | Utility family.ts centralizada (eliminar 3 copias duplicadas de getFamily()) | ⏳ Pendiente |
-| F3.2 | WhatsApp + contacto → EverShop Settings (Hero, Footer, WhatsAppCTA, ConversionFooter) | ⏳ Pendiente |
-| F3.3 | Quiénes Somos → CMS Page nativa (/quienes-somos) | ⏳ Pendiente |
-| F3.4 | 4 Páginas de Políticas → CMS Pages nativas | ⏳ Pendiente |
-| F3.5 | Distribuidores → tabla DB + admin CRUD (desbloquea cuando haya API Key + listado) | ⏳ Pendiente |
+| F3.1 | Utility family.ts centralizada (eliminar 3 copias duplicadas de getFamily()) | ✅ Hecho (commit 8a2e8d3) |
+| F3.2 | WhatsApp + contacto → EverShop Settings (Hero, Footer, WhatsAppCTA, ConversionFooter) | ✅ Hecho (commit 8a2e8d3) |
+| F3.3 | Quiénes Somos → página custom /quienes-somos con stats, marcas, misión/visión | ✅ Hecho (commit ddc76b3) |
+| F3.4 | 4 Páginas de Políticas → CMS Pages nativas | ⏳ Pendiente — bloqueado por contenido legal |
+| F3.5 | Distribuidores → tabla DB + admin CRUD | ⏳ Pendiente — mapa integrado con JSON+Nominatim; DB CRUD para autogestión desde admin aún no |
 
 ---
 
@@ -66,37 +66,37 @@ Tipografía y Branding
  1. Aplicar tipografía Sora Titulares. H1, H2, H3 en todo el sitio. ✅ Hecho 2026-05-22
  2. Centrar el logo en header horizontalmente y aumentar tamaño un 10% ✅ Hecho 2026-05-22
  3. En el footer el logo debe ser completamente Blanco (actualmente tiene una capa css que cambia la C a verde) ✅ Hecho 2026-05-22
- 4. Agregar icono de Calzado en card de industria en Home (themes\industrial-glue\public\images\icons\Icono_Calzado.png)
+ 4. Agregar icono de Calzado en card de industria en Home (themes\industrial-glue\public\images\icons\Icono_Calzado.png) ✅ Hecho — IndustriesSection usa Icono_Calzado.png en ribbon de la card Calzado
 
 Páginas del sitio
 
-1.  Agregar página "Quiénes Somos" con el copy provisto: quienes_somos.md → VÍA CMS PAGE NATIVA (ver F3.3)
-2. En el home agregar sección de  "soluciones de pegado", estas soluciones explican los iconos en la carpeta theme/public/images/icons : Ubicación Despues de la sección de uniendo el legado de la industria y antes de los logos de clientes. ( En soluciones_pegado.md está la información y la indicacion de iconos) → HARDCODEADO en componente (contenido estático)
-3.  Actualizar foto del agente en el chat con: theme/public/images/icons/imagen_chatflotante.png
-4. Verificar y corregir link de WhatsApp del chat: debe estar en todos los botones de contacto y en el botón en el header. → VÍA SETTINGS (ver F3.2)
+1.  Agregar página "Quiénes Somos" con el copy provisto: quienes_somos.md ✅ Hecho — página /quienes-somos con stats, marcas, misión/visión y pilares (ver F3.3)
+2. En el home agregar sección de "soluciones de pegado" ✅ Hecho — componente SolucionesPegado.tsx, sortOrder 12 (después de HistorySection)
+3.  Actualizar foto del agente en el chat con: theme/public/images/icons/imagen_chatflotante.png ✅ Hecho — TechnicalAdvisor.tsx usa imagen-chatflotante.png
+4. Verificar y corregir link de WhatsApp del chat: debe estar en todos los botones de contacto y en el botón en el header. ✅ Hecho — número 573002171521 desde EverShop Settings (ver F3.2)
 https://api.whatsapp.com/send?phone=+573002171521&text=Quiero%20m%C3%A1s%20informaci%C3%B3n
-5. Agregar página "Fabricantes" en Header: El contenido son todos los productos donde su atributo su tamaño sea en Galones o Gal. → PÁGINA CUSTOM con GraphQL (como IndustryPage, NO CMS Page)
+5. Agregar página "Fabricantes" en Header ✅ Hecho — página custom /fabricantes con GraphQL (filtra por presentación en galones), link en navbar desktop y mobile
 
 
-Rediseño Footer
+Rediseño Footer ✅ Hecho
 
- Rediseñar Footer completo con 4 columnas:
- NOTA: Col 1 redes sociales y Col 4 contacto vienen de EverShop Settings — implementar DESPUÉS de F3.2
+ Rediseñar Footer completo con 4 columnas — IMPLEMENTADO, pendiente solo URLs de redes sociales del cliente
 
-Col 1: Logo INCAP blanco + íconos de redes sociales (Instagram, Tiktok, Linkedin, Facebook) → URLs desde Settings (store_instagram, store_tiktok, store_linkedin, store_facebook) — BLOQUEADO: falta URLs cliente
-Col 2: Links Menú principal (Inicio, Quiénes somos, Fabricantes, Industrias, Blog, Contacto)
-Col 3: Links por industria (Maderas y Muebles, Colchones y Espumas, Calzado y Marroquinería, Hogar y Multiusos)
-Col 4: Dirección (Cra. 72 No. 62-27 Sur, Bogotá) + teléfono (+57 312 378 6835) → desde Settings storeAddress + storePhoneNumber
-Barra inferior: Copyright © 2026 Grupo INCAP · Dev: MTM Marca tu marca · Política de privacidad · Términos y condiciones · Badge "Fabricado en Colombia"
+Col 1: Logo INCAP blanco + íconos de redes sociales ✅ estructura hecha — Instagram/Facebook con href="#" hasta que cliente provea URLs
+Col 2: Links Menú principal (Inicio, Quiénes somos, Fabricantes, Industrias, Blog, Contacto) ✅
+Col 3: Links por industria (Maderas y Muebles, Colchones y Espumas, Calzado y Marroquinería, Hogar y Multiusos) ✅
+Col 4: Dirección + teléfono → desde Settings storeAddress + storePhoneNumber ✅
+Barra inferior: Copyright © Grupo INCAP · Dev: MTM Marca tu Marca · A:BRA · 🇨🇴 Hecho en Colombia ✅
+   → Pendiente: agregar links Términos y Condiciones cuando estén disponibles
 
 
 
-Agregar secciones de  Políticas (contenido a redactar o proveer) → VÍA CMS PAGES (ver F3.4)
+Agregar secciones de Políticas (contenido a redactar o proveer) → VÍA CMS PAGES (ver F3.4)
 
- Crear página: Política de Devoluciones
- Crear página: Política de Compras
- Crear página: Política de Pagos
- Crear página: Política de Garantías
+ Crear página: Política de Devoluciones — ⏳ Bloqueado por contenido
+ Crear página: Política de Compras — ⏳ Bloqueado por contenido
+ Crear página: Política de Pagos — ⏳ Bloqueado por contenido
+ Crear página: Política de Garantías — ⏳ Bloqueado por contenido
 
 
 🟡 MEDIA COMPLEJIDAD
@@ -116,31 +116,30 @@ Banners Rotativos (Home)
       Prioridad: media. Implementar cuando el cliente confirme que necesita autogestión.
  2. En le header a la derecha arriba, discretamente Agregar dos link de catálogo Pdf y Nuevos productos en Header lado Derecho - (descarga de PDF) → URLs de PDF desde Settings cuando estén disponibles. BLOQUEADO: catálogo digital no finalizado
  3. En el detalle de Producto: 
-    1. Quitar temporalmente Cantidad, Precio y add to cart
-    2. Mover la Descripción a Debajo del Título
-    3. Agregar un boton de "Descargar Ficha Técnica" (Al hacer clic, abre un formulario con los cambos Nombre completo, Correo electrónico, Teléfono. Al completar descarga la Ficha Técica, el boton aparece si hay asignado una ficha técnica desde admin), Se envía a correo inicialmente, y el pdf si se almacena en app/media → REQUIERE F2.2 primero (atributo ficha_tecnica_url en DB)
-4. Integrar página de distribuidores con Google Maps para la posición de pines en puntos exactos
+    1. Quitar temporalmente Cantidad, Precio y add to cart ⏳ Pendiente
+    2. Mover la Descripción a Debajo del Título ⏳ Pendiente
+    3. Agregar un boton de "Descargar Ficha Técnica" (Al hacer clic, abre un formulario con los cambos Nombre completo, Correo electrónico, Teléfono. Al completar descarga la Ficha Técica, el boton aparece si hay asignado una ficha técnica desde admin), Se envía a correo inicialmente, y el pdf si se almacena en app/media → F2.2 ya hecho (atributo ficha_tecnica_url disponible en DB); pendiente implementar UI del botón y formulario
+4. Integrar página de distribuidores con Google Maps ✅ Hecho — mapa Google Maps JS API con pines por ciudad, panel lateral con búsqueda y filtros; coordenadas geocodificadas con Nominatim (28 exactas, 53 por ciudad)
 
 
-Menú de Navegación
+Menú de Navegación ✅ Hecho
 
  Actualizar estructura del menú principal:
 
-Quiénes Somos ( página nueva) → requiere F3.3
-Fabricantes (nueva sección — página custom GraphQL)
-Industria (mantener como está)
-Distribuidores (requiere integración de mapa — ver Alta)
-Catálogo (nueva sección con filtros — ver Alta)
-Blog (nueva sección) → URL desde Settings (store_blog_url) — BLOQUEADO: WordPress pendiente de crear
+Quiénes Somos ✅ — link en navbar desktop y mobile, página /quienes-somos activa
+Fabricantes ✅ — link en navbar desktop y mobile, página custom /fabricantes activa
+Industria ✅ — mega-menú con familias dinámicas por categoría
+Distribuidores ✅ — link en navbar desktop y mobile, página /distribuidores activa
+Catálogo ✅ — link /catalog en navbar y footer
+Blog ⏳ BLOQUEADO — link apunta a /blog pero WordPress pendiente de crear
 
 
 
-Crear Link a Blog ( esto será un wordpress) → URL desde Setting store_blog_url
+Crear Link a Blog ( esto será un wordpress) → URL desde Setting store_blog_url ⏳ BLOQUEADO: WordPress pendiente de crear
 
 
 
-
- Agregar botones CTA al final de "Industrias que servimos" que redirijan a cada industria individual
+ Agregar botones CTA al final de "Industrias que servimos" que redirijan a cada industria individual ✅ Hecho — fila de pills por industria + botón "VER SOLUCIONES ESPECIALIZADAS" en cada card
 
 
 🔴 ALTA COMPLEJIDAD
@@ -150,12 +149,12 @@ Catálogo con Filtros
 DECISIÓN ARQUITECTURAL: Migrar al sistema nativo de variantes de EverShop ANTES de implementar filtros.
 Script de migración sobre 322 productos: crea productos padre + vincula variantes de Tamaño.
 
-1 Agrupar Productos por variantes: Las variantes serán Tamaño y Color
+1 Agrupar Productos por variantes: Las variantes serán Tamaño y Color ⏳ Pendiente
     Convención nombres: [Nombre completo] - [Tamaño] (ej: "MAXON Blanco - 1 Galón"). "Blanco" es parte del nombre.
     Familias = productos con mismo nombre base (izquierda del " - "). Ej: todos los "MAXON Blanco" = 1 familia.
     Todos los nombres de familias y productos en MAYÚSCULAS
 
-2. En la industria Calzados y Marroquinería: Se debe crear las categorías
+2. En la industria Calzados y Marroquinería: Se debe crear las categorías ⏳ Pendiente
     Adhesivos → variante de tamaños
     Tintas → variante de colores + tamaño (No visible en el front por el momento, si en DB)
     Cordones (No visible en el front por el momento, si en DB)
@@ -164,10 +163,10 @@ Script de migración sobre 322 productos: crea productos padre + vincula variant
     Suelas(No visible en el front por el momento, si en DB)
 
 
-3 Crear un Buscador General, este será una barra debajo del header:  
+3 Crear un Buscador General, este será una barra debajo del header: ⏳ Pendiente
     Busca por nombre, atributo o uso
 
-4 Distribuidores — Integración Google Maps (pendiente de api) → ver F3.5
+4 Distribuidores — Integración Google Maps ✅ Hecho — ver Media complejidad ítem 4
 
 
 ⚠️ PENDIENTES / BLOQUEADOS
@@ -176,8 +175,8 @@ Script de migración sobre 322 productos: crea productos padre + vincula variant
 | Ítem | Bloqueado por |
 |------|--------------|
 | Botones catálogo/nuevos productos (header) | Catálogo digital PDF no finalizado |
-| Sección Distribuidores (mapa) | Falta API Key Google Maps + listado de distribuidores |
 | Catálogo completo con filtros | Requiere migración variantes EverShop primero |
 | Páginas de Políticas | Falta contenido / redacción legal |
-| Redes sociales (Footer Col 1) | Falta URLs de perfiles oficiales |
+| Redes sociales (Footer Col 1) | Falta URLs de perfiles oficiales del cliente |
 | Blog link (Navbar) | WordPress pendiente de crear |
+| Ficha Técnica — botón en producto | F2.2 ✅ listo; pendiente implementar UI del formulario de descarga |

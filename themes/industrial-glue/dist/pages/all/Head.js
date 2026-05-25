@@ -1,32 +1,15 @@
 import React from 'react';
 export default function Head() {
-    return /*#__PURE__*/ React.createElement(React.Fragment, null, /*#__PURE__*/ React.createElement("link", {
-        rel: "icon",
-        type: "image/png",
-        href: "/images/icons/imagen-chatflotante.png"
-    }), /*#__PURE__*/ React.createElement("link", {
-        rel: "shortcut icon",
-        href: "/images/icons/imagen-chatflotante.png"
-    }), /*#__PURE__*/ React.createElement("link", {
-        rel: "apple-touch-icon",
-        href: "/images/icons/imagen-chatflotante.png"
-    }), /*#__PURE__*/ React.createElement("script", {
-        dangerouslySetInnerHTML: {
-            __html: `(function(){var t=document.title;if(t&&!t.startsWith('INCAP')){document.title='INCAP | '+t;}else if(!t){document.title='INCAP';}})();`
-        }
-    }), /*#__PURE__*/ React.createElement("link", {
-        rel: "preconnect",
-        href: "https://fonts.googleapis.com"
-    }), /*#__PURE__*/ React.createElement("link", {
-        rel: "preconnect",
-        href: "https://fonts.gstatic.com",
-        crossOrigin: "anonymous"
-    }), /*#__PURE__*/ React.createElement("link", {
-        href: "https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap",
-        rel: "stylesheet"
-    }), /*#__PURE__*/ React.createElement("script", {
-        src: "https://cdn.tailwindcss.com"
-    }), /*#__PURE__*/ React.createElement("style", null, `
+    return (React.createElement(React.Fragment, null,
+        React.createElement("link", { rel: "icon", type: "image/png", href: "/images/icons/imagen-chatflotante.png" }),
+        React.createElement("link", { rel: "shortcut icon", href: "/images/icons/imagen-chatflotante.png" }),
+        React.createElement("link", { rel: "apple-touch-icon", href: "/images/icons/imagen-chatflotante.png" }),
+        React.createElement("script", { dangerouslySetInnerHTML: { __html: `(function(){var t=document.title;if(t&&!t.startsWith('INCAP')){document.title='INCAP | '+t;}else if(!t){document.title='INCAP';}})();` } }),
+        React.createElement("link", { rel: "preconnect", href: "https://fonts.googleapis.com" }),
+        React.createElement("link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" }),
+        React.createElement("link", { href: "https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap", rel: "stylesheet" }),
+        React.createElement("script", { src: "https://cdn.tailwindcss.com" }),
+        React.createElement("style", null, `
         :root {
           --color-incap-blue: #2A4899;
           --color-incap-green: #85C639;
@@ -482,7 +465,7 @@ export default function Head() {
           color: #ffffff !important;
           border-color: #181B1C !important;
         }
-      `));
+      `)));
 }
 export const layout = {
     areaId: 'head',
