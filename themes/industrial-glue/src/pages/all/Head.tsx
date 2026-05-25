@@ -3,6 +3,10 @@ import React from 'react';
 export default function Head() {
   return (
     <>
+      <link rel="icon" type="image/png" href="/images/icons/imagen-chatflotante.png" />
+      <link rel="shortcut icon" href="/images/icons/imagen-chatflotante.png" />
+      <link rel="apple-touch-icon" href="/images/icons/imagen-chatflotante.png" />
+      <script dangerouslySetInnerHTML={{ __html: `(function(){var t=document.title;if(t&&!t.startsWith('INCAP')){document.title='INCAP | '+t;}else if(!t){document.title='INCAP';}})();` }} />
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
