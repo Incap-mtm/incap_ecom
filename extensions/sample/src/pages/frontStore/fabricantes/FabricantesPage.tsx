@@ -200,7 +200,7 @@ export default function FabricantesPage() {
         ) : filteredProducts.length > 0 ? (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1.5rem' }}>
             {filteredProducts.map((prod: any) => (
-              <a href={`/product/${prod.uuid}`} key={prod.productId}
+              <a href={prod.url ?? `/product/${prod.uuid}`} key={prod.productId}
                 style={{ display: 'flex', flexDirection: 'column', background: '#fff', borderRadius: '20px', border: '1px solid #e2e8f0', overflow: 'hidden', boxShadow: '0 1px 8px rgba(42,72,153,0.06)', textDecoration: 'none', transition: 'box-shadow 0.2s, transform 0.2s' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 8px 30px rgba(42,72,153,0.15)'; (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(-2px)'; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 1px 8px rgba(42,72,153,0.06)'; (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(0)'; }}>
