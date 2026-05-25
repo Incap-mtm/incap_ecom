@@ -73,6 +73,20 @@ export default function IndustriesSection() {
           </a>
         </div>
 
+        {/* CTA rápidos por industria */}
+        <div className="flex flex-wrap gap-3 mb-10">
+          {industries.map((ind) => (
+            <a
+              key={ind.id}
+              href={ind.href}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#2A4899]/30 text-[#2A4899] text-xs font-black uppercase tracking-wider hover:bg-[#2A4899] hover:text-white hover:border-[#2A4899] transition-all duration-200 font-sora"
+            >
+              {ind.title}
+              <span className="text-[#85C639]">→</span>
+            </a>
+          ))}
+        </div>
+
         {/* Cards grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {industries.map((ind, idx) => (

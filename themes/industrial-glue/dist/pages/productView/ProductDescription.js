@@ -42,14 +42,12 @@ export default function ProductDescription({ product }) {
     const html = toHtml(product === null || product === void 0 ? void 0 : product.description).trim();
     if (!html)
         return null;
-    return (React.createElement("div", { className: "max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12 py-16 border-t border-slate-100" },
-        React.createElement("h2", { className: "text-3xl md:text-4xl font-black text-[#181B1C] uppercase tracking-tight font-sora mb-2" }, "Descripci\u00F3n"),
-        React.createElement("div", { className: "w-16 h-1.5 bg-[#85C639] mb-8" }),
-        React.createElement("div", { className: "incap-desc max-w-3xl", dangerouslySetInnerHTML: { __html: html } })));
+    return (React.createElement("div", { className: "pb-4 border-b border-slate-100 mb-2" },
+        React.createElement("div", { className: "incap-desc text-slate-600 text-sm leading-relaxed", dangerouslySetInnerHTML: { __html: html } })));
 }
 export const layout = {
-    areaId: 'productPageBottom',
-    sortOrder: 1
+    areaId: 'productPageMiddleRight',
+    sortOrder: 3,
 };
 export const query = `
 query Query {

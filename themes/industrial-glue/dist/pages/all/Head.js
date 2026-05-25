@@ -340,6 +340,8 @@ export default function Head() {
         .product__single__description { display: none !important; }
         .product__single__name { display: none !important; }
         .product__single__attributes { display: none !important; }
+        /* Temporal: ocultar precio, cantidad y carrito — se usa WhatsApp como CTA */
+        #productForm { display: none !important; }
 
         /* Estilos del componente custom ProductDescription */
 
