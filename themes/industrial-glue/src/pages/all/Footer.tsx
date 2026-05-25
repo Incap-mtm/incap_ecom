@@ -205,14 +205,22 @@ export default function Footer({ setting }: FooterProps) {
             ))}
           </div>
 
-          {/* Right: MTM credit + Colombia badge */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {/* Right: credits + Colombia badge */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
             <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.2)', fontFamily: 'Inter, sans-serif' }}>
               Desarrollado por{' '}
-              <a href="https://mtm.com.co" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.35)', textDecoration: 'none', fontWeight: 700 }}
+              <a href="https://mtmmarcatumarca.com" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.35)', textDecoration: 'none', fontWeight: 700 }}
                 onMouseEnter={e => (e.currentTarget.style.color = '#85C639')}
                 onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.35)')}>
-                MTM
+                MTM Marca tu Marca
+              </a>
+            </span>
+            <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.15)', fontFamily: 'Inter, sans-serif' }}>·</span>
+            <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.2)', fontFamily: 'Inter, sans-serif' }}>
+              <a href="https://abralatam.com" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.35)', textDecoration: 'none', fontWeight: 700 }}
+                onMouseEnter={e => (e.currentTarget.style.color = '#85C639')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.35)')}>
+                A:BRA
               </a>
             </span>
             <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.2)', fontFamily: 'Inter, sans-serif' }}>

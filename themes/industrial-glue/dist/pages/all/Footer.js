@@ -100,11 +100,14 @@ export default function Footer({ setting }) {
                     currentYear,
                     " Grupo INCAP \u00B7 Calidad que se repite"),
                 React.createElement("div", { style: { display: 'flex', gap: '1.5rem' } }, legalLinks.map(link => (React.createElement("a", { key: link.href, href: link.href, style: { fontSize: '10px', color: 'rgba(255,255,255,0.3)', fontFamily: 'Sora, sans-serif', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', textDecoration: 'none', transition: 'color 0.2s' }, onMouseEnter: e => (e.currentTarget.style.color = 'rgba(255,255,255,0.7)'), onMouseLeave: e => (e.currentTarget.style.color = 'rgba(255,255,255,0.3)') }, link.label)))),
-                React.createElement("div", { style: { display: 'flex', alignItems: 'center', gap: '12px' } },
+                React.createElement("div", { style: { display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' } },
                     React.createElement("span", { style: { fontSize: '10px', color: 'rgba(255,255,255,0.2)', fontFamily: 'Inter, sans-serif' } },
                         "Desarrollado por",
                         ' ',
-                        React.createElement("a", { href: "https://mtm.com.co", target: "_blank", rel: "noopener noreferrer", style: { color: 'rgba(255,255,255,0.35)', textDecoration: 'none', fontWeight: 700 }, onMouseEnter: e => (e.currentTarget.style.color = '#85C639'), onMouseLeave: e => (e.currentTarget.style.color = 'rgba(255,255,255,0.35)') }, "MTM")),
+                        React.createElement("a", { href: "https://mtmmarcatumarca.com", target: "_blank", rel: "noopener noreferrer", style: { color: 'rgba(255,255,255,0.35)', textDecoration: 'none', fontWeight: 700 }, onMouseEnter: e => (e.currentTarget.style.color = '#85C639'), onMouseLeave: e => (e.currentTarget.style.color = 'rgba(255,255,255,0.35)') }, "MTM Marca tu Marca")),
+                    React.createElement("span", { style: { fontSize: '10px', color: 'rgba(255,255,255,0.15)', fontFamily: 'Inter, sans-serif' } }, "\u00B7"),
+                    React.createElement("span", { style: { fontSize: '10px', color: 'rgba(255,255,255,0.2)', fontFamily: 'Inter, sans-serif' } },
+                        React.createElement("a", { href: "https://abralatam.com", target: "_blank", rel: "noopener noreferrer", style: { color: 'rgba(255,255,255,0.35)', textDecoration: 'none', fontWeight: 700 }, onMouseEnter: e => (e.currentTarget.style.color = '#85C639'), onMouseLeave: e => (e.currentTarget.style.color = 'rgba(255,255,255,0.35)') }, "A:BRA")),
                     React.createElement("span", { style: { fontSize: '10px', color: 'rgba(255,255,255,0.2)', fontFamily: 'Inter, sans-serif' } }, "\uD83C\uDDE8\uD83C\uDDF4 Hecho en Colombia"))))));
 }
 export const layout = {
