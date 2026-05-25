@@ -6,24 +6,30 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const jsonPath = join(__dirname, '../themes/industrial-glue/public/data/distribuidores.json');
 const data = JSON.parse(readFileSync(jsonPath, 'utf8'));
 
+const API_KEY = process.env.GOOGLE_MAPS_API_KEY || 'AIzaSyBgAPlNxa43i6XQNlUz_AfwEBC104y0pns';
+
 async function geocode(direccion, ciudad, pais = 'Colombia') {
   const query = encodeURIComponent(`${direccion}, ${ciudad}, ${pais}`);
-  const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1&countrycodes=co`;
-  const res = await fetch(url, {
-    headers: { 'User-Agent': 'INCAP-Geocoder/1.0 (grupoincap.com.co)' }
-  });
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${API_KEY}&region=co&language=es`;
+  const res = await fetch(url);
   const json = await res.json();
-  if (json.length > 0) {
-    return { lat: parseFloat(json[0].lat), lng: parseFloat(json[0].lon) };
+
+  if (json.status === 'OK' && json.results.length > 0) {
+    const { lat, lng } = json.results[0].geometry.location;
+    return { lat, lng };
   }
+
   // Fallback: solo ciudad
   const fallback = encodeURIComponent(`${ciudad}, ${pais}`);
-  const url2 = `https://nominatim.openstreetmap.org/search?q=${fallback}&format=json&limit=1&countrycodes=co`;
-  const res2 = await fetch(url2, { headers: { 'User-Agent': 'INCAP-Geocoder/1.0 (grupoincap.com.co)' } });
+  const url2 = `https://maps.googleapis.com/maps/api/geocode/json?address=${fallback}&key=${API_KEY}&region=co&language=es`;
+  const res2 = await fetch(url2);
   const json2 = await res2.json();
-  if (json2.length > 0) {
-    return { lat: parseFloat(json2[0].lat), lng: parseFloat(json2[0].lon), fallback: true };
+
+  if (json2.status === 'OK' && json2.results.length > 0) {
+    const { lat, lng } = json2.results[0].geometry.location;
+    return { lat, lng, fallback: true };
   }
+
   return null;
 }
 
@@ -31,8 +37,8 @@ function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
 
-console.log(`Geocodificando ${data.length} distribuidores con OpenStreetMap...`);
-let updated = 0;
+console.log(`Geocodificando ${data.length} distribuidores con Google Maps API...`);
+let exact = 0;
 let fallbacks = 0;
 let failed = 0;
 
@@ -49,17 +55,17 @@ for (let i = 0; i < data.length; i++) {
       fallbacks++;
     } else {
       console.log(`✓ ${coords.lat.toFixed(4)}, ${coords.lng.toFixed(4)}`);
-      updated++;
+      exact++;
     }
   } else {
     console.log(`✗ sin resultado`);
     failed++;
   }
 
-  // Nominatim requiere max 1 req/s
-  await sleep(1100);
+  // Pequeña pausa para no saturar la API
+  await sleep(100);
 }
 
 writeFileSync(jsonPath, JSON.stringify(data, null, 2), 'utf8');
-console.log(`\nListo: ${updated} exactos, ${fallbacks} por ciudad, ${failed} sin resultado.`);
+console.log(`\nListo: ${exact} exactos, ${fallbacks} por ciudad, ${failed} sin resultado.`);
 console.log(`Archivo guardado: ${jsonPath}`);
