@@ -39,8 +39,8 @@ export default function ProductBreadcrumb({ pageInfo, product: productProp }) {
             break;
         }
     }
-    return (React.createElement("nav", { className: "incap-breadcrumb px-4 md:px-0 pt-4 pb-2" },
-        React.createElement("ol", { className: "flex items-center gap-2 text-xs text-slate-400 font-inter flex-wrap" },
+    return (React.createElement("nav", { className: "incap-breadcrumb pt-4 pb-2" },
+        React.createElement("ol", { className: "page-width flex items-center gap-2 text-xs text-slate-400 font-inter flex-wrap" },
             React.createElement("li", null,
                 React.createElement("a", { href: "/", className: "hover:text-[#2A4899] transition-colors font-semibold" }, "Inicio")),
             industry && (React.createElement(React.Fragment, null,
