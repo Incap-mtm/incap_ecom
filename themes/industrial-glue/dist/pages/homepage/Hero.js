@@ -3,47 +3,75 @@ const slides = [
     {
         desk: '/images/banners/Hero/banner-01-desk.png',
         mobile: '/images/banners/Hero/banner-01-mobile.png',
-        alt: 'Adhesivos industriales INCAP — Calidad y respaldo técnico',
+        alt: 'Adhesivos industriales INCAP — Calidad y respaldo técnico'
     },
     {
         desk: '/images/banners/Hero/banner-02-desk.png',
         mobile: '/images/banners/Hero/banner-02-mobile.png',
-        alt: 'Soluciones de pegado para la industria colombiana',
+        alt: 'Soluciones de pegado para la industria colombiana'
     },
     {
         desk: '/images/banners/Hero/banner-03-desk.png',
         mobile: '/images/banners/Hero/banner-03-mobile.png',
-        alt: 'INCAP — La química que construye país',
+        alt: 'INCAP — La química que construye país'
     },
     {
         desk: '/images/banners/Hero/banner-04-desk.png',
         mobile: '/images/banners/Hero/banner-04-mobile.png',
-        alt: 'Grupo INCAP — Fabricantes de adhesivos industriales',
-    },
+        alt: 'Grupo INCAP — Fabricantes de adhesivos industriales'
+    }
 ];
 const INTERVAL_MS = 5000;
 export default function Hero() {
     const [current, setCurrent] = useState(0);
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrent(prev => (prev + 1) % slides.length);
+    useEffect(()=>{
+        const timer = setInterval(()=>{
+            setCurrent((prev)=>(prev + 1) % slides.length);
         }, INTERVAL_MS);
-        return () => clearInterval(timer);
+        return ()=>clearInterval(timer);
     }, []);
-    const prev = () => setCurrent(c => (c - 1 + slides.length) % slides.length);
-    const next = () => setCurrent(c => (c + 1) % slides.length);
-    return (React.createElement("section", { className: "relative w-full overflow-hidden bg-[#181B1C]", style: { height: '90vh', minHeight: '560px' } },
-        slides.map((slide, i) => (React.createElement("div", { key: i, "aria-hidden": i !== current, className: "absolute inset-0 transition-opacity duration-700", style: { opacity: i === current ? 1 : 0, zIndex: i === current ? 1 : 0 } },
-            React.createElement("picture", null,
-                React.createElement("source", { media: "(max-width: 768px)", srcSet: slide.mobile }),
-                React.createElement("img", { src: slide.desk, alt: slide.alt, className: "w-full h-full object-cover", loading: i === 0 ? 'eager' : 'lazy' }))))),
-        React.createElement("button", { onClick: prev, className: "absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-black/30 hover:bg-black/60 text-white text-3xl flex items-center justify-center transition-colors", "aria-label": "Banner anterior" }, "\u2039"),
-        React.createElement("button", { onClick: next, className: "absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-black/30 hover:bg-black/60 text-white text-3xl flex items-center justify-center transition-colors", "aria-label": "Siguiente banner" }, "\u203A"),
-        React.createElement("div", { className: "absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2" }, slides.map((_, i) => (React.createElement("button", { key: i, onClick: () => setCurrent(i), className: `rounded-full transition-all duration-300 ${i === current
-                ? 'w-8 h-3 bg-[#85C639]'
-                : 'w-3 h-3 bg-white/50 hover:bg-white/80'}`, "aria-label": `Ir a slide ${i + 1}` }))))));
+    const prev = ()=>setCurrent((c)=>(c - 1 + slides.length) % slides.length);
+    const next = ()=>setCurrent((c)=>(c + 1) % slides.length);
+    return /*#__PURE__*/ React.createElement("section", {
+        className: "relative w-full overflow-hidden bg-[#181B1C]",
+        style: {
+            height: '90vh',
+            minHeight: '560px'
+        }
+    }, slides.map((slide, i)=>/*#__PURE__*/ React.createElement("div", {
+            key: i,
+            "aria-hidden": i !== current,
+            className: "absolute inset-0 transition-opacity duration-700",
+            style: {
+                opacity: i === current ? 1 : 0,
+                zIndex: i === current ? 1 : 0
+            }
+        }, /*#__PURE__*/ React.createElement("picture", null, /*#__PURE__*/ React.createElement("source", {
+            media: "(max-width: 768px)",
+            srcSet: slide.mobile
+        }), /*#__PURE__*/ React.createElement("img", {
+            src: slide.desk,
+            alt: slide.alt,
+            className: "w-full h-full object-cover",
+            loading: i === 0 ? 'eager' : 'lazy'
+        })))), /*#__PURE__*/ React.createElement("button", {
+        onClick: prev,
+        className: "absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-black/30 hover:bg-black/60 text-white text-3xl flex items-center justify-center transition-colors",
+        "aria-label": "Banner anterior"
+    }, "‹"), /*#__PURE__*/ React.createElement("button", {
+        onClick: next,
+        className: "absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-black/30 hover:bg-black/60 text-white text-3xl flex items-center justify-center transition-colors",
+        "aria-label": "Siguiente banner"
+    }, "›"), /*#__PURE__*/ React.createElement("div", {
+        className: "absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2"
+    }, slides.map((_, i)=>/*#__PURE__*/ React.createElement("button", {
+            key: i,
+            onClick: ()=>setCurrent(i),
+            className: `rounded-full transition-all duration-300 ${i === current ? 'w-8 h-3 bg-[#85C639]' : 'w-3 h-3 bg-white/50 hover:bg-white/80'}`,
+            "aria-label": `Ir a slide ${i + 1}`
+        }))));
 }
 export const layout = {
     areaId: 'content',
-    sortOrder: 1,
+    sortOrder: 1
 };

@@ -44,7 +44,7 @@ Antes de implementar, se realizó auditoría técnica completa y se estableciero
 ### FASE 2 — Seguridad y atributos DB
 | # | Tarea | Estado |
 |---|-------|--------|
-| F2.1 | Rate limiting endpoint /api/technical-advisor (10 req/min por IP) | ⏳ Pendiente |
+| F2.1 | Rate limiting endpoint /api/technical-advisor (10 req/min por IP) | ✅ Hecho |
 | F2.2 | Crear atributos ficha_tecnica_url y preguntas_frecuentes en DB | ⏳ Pendiente |
 
 ### FASE 3 — Migración al CMS de EverShop
@@ -103,12 +103,23 @@ Agregar secciones de  Políticas (contenido a redactar o proveer) → VÍA CMS P
 Requiere lógica de UI, integración de assets externos o configuración de componentes.
 Banners Rotativos (Home)
 
- 1. Crear carrusel/slider de imágenes responsive, este debe ser administrable desde el Admin. → USAR WIDGET simple_slider NATIVO de EverShop. Solo estilizar con brand INCAP. Imágenes en (themes\industrial-glue\public\images\banners\Hero)
+ 1. Crear carrusel/slider de imágenes responsive. ✅ Hecho 2026-05-25 — implementado en Hero.tsx con 4 banners, fade cross, dots INCAP, responsive desktop/mobile via `<picture>`.
+    → BACKLOG: Widget personalizado `hero_slider` para gestión desde Admin → CMS → Widgets.
+      Justificación: banners se cambiarán ~mensualmente. El widget nativo (simple_slider) no soporta imagen desktop+mobile por slide.
+      Diseño del widget custom:
+        - Por slide: imagen desktop (URL/media picker), imagen mobile (URL/media picker), alt text
+        - Slides reordenables, cantidad variable
+        - Opción velocidad autoplay (ms)
+        - Se registra en extensions/sample/bootstrap con registerWidget({ type: 'hero_slider', ... })
+        - Componente admin: extensions/sample/src/components/admin/HeroSliderSetting.tsx
+        - Componente front: themes/industrial-glue/src/pages/homepage/Hero.tsx lee datos del widget vía GraphQL
+      Prioridad: media. Implementar cuando el cliente confirme que necesita autogestión.
  2. En le header a la derecha arriba, discretamente Agregar dos link de catálogo Pdf y Nuevos productos en Header lado Derecho - (descarga de PDF) → URLs de PDF desde Settings cuando estén disponibles. BLOQUEADO: catálogo digital no finalizado
  3. En el detalle de Producto: 
     1. Quitar temporalmente Cantidad, Precio y add to cart
     2. Mover la Descripción a Debajo del Título
     3. Agregar un boton de "Descargar Ficha Técnica" (Al hacer clic, abre un formulario con los cambos Nombre completo, Correo electrónico, Teléfono. Al completar descarga la Ficha Técica, el boton aparece si hay asignado una ficha técnica desde admin), Se envía a correo inicialmente, y el pdf si se almacena en app/media → REQUIERE F2.2 primero (atributo ficha_tecnica_url en DB)
+4. Integrar página de distribuidores con Google Maps para la posición de pines en puntos exactos
 
 
 Menú de Navegación

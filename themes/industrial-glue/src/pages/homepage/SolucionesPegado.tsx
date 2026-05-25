@@ -96,5 +96,5 @@ export default function SolucionesPegado() {
 
 export const layout = {
   areaId: 'content',
-  sortOrder: 7,
+  sortOrder: 12,
 };

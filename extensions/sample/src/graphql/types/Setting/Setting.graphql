@@ -1,3 +1,4 @@
 extend type Setting {
   storeWhatsappNumber: String
+  googleMapsKey: String
 }

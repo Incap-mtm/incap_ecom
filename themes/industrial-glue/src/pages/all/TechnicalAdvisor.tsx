@@ -119,9 +119,17 @@ export default function TechnicalAdvisor() {
         body: JSON.stringify({ messages: history.map(m => ({ role: m.role, content: m.content })) }),
       });
       const data = await res.json();
+      let reply = data.reply;
+      if (!reply) {
+        if (data.error === 'Servicio no configurado') {
+          reply = 'El servicio de IA no está disponible en este momento. Contáctanos por WhatsApp para asesoría.';
+        } else {
+          reply = data.error || 'No pude procesar tu consulta. Intenta de nuevo.';
+        }
+      }
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: data.reply || 'No pude procesar tu consulta. Intenta de nuevo.',
+        content: reply,
         products: data.products || [],
       }]);
     } catch {

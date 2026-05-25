@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 const LABEL_INDUSTRIA = {
     'PELETERIAS': 'Peletería',
     'PLASTICOS': 'Plásticos',
@@ -16,61 +16,70 @@ const LABEL_REGION = {
     'SANTANDERES': 'Santanderes',
     'SUR DEL PAIS': 'Sur del País',
 };
-const MAP_W = 400, MAP_H = 500;
-const LAT_MAX = 12.8, LAT_MIN = -4.5, LNG_MIN = -79.0, LNG_MAX = -66.5;
-const ZOOM_SCALE = 3.2;
-function lngToX(lng) { return ((lng - LNG_MIN) / (LNG_MAX - LNG_MIN)) * MAP_W; }
-function latToY(lat) { return ((LAT_MAX - lat) / (LAT_MAX - LAT_MIN)) * MAP_H; }
-const CITIES = {
-    'MEDELLIN': { lat: 6.2518, lng: -75.5636 },
-    'BOGOTA': { lat: 4.7110, lng: -74.0721 },
-    'IBAGUE': { lat: 4.4389, lng: -75.2322 },
-    'NEIVA': { lat: 2.9273, lng: -75.2819 },
-    'SANTA MARTA': { lat: 11.2408, lng: -74.1990 },
-    'VILLAVICENCIO': { lat: 4.1420, lng: -73.6266 },
-    'YOPAL': { lat: 5.3389, lng: -72.3953 },
-    'BARRANQUILLA': { lat: 10.9639, lng: -74.7964 },
-    'MANIZALES': { lat: 5.0703, lng: -75.5138 },
-    'ARMENIA': { lat: 4.5339, lng: -75.6811 },
-    'PEREIRA': { lat: 4.8133, lng: -75.6961 },
-    'BUCARAMANGA': { lat: 7.1193, lng: -73.1227 },
-    'CUCUTA': { lat: 7.8939, lng: -72.5078 },
-    'VIILLA DEL ROSARIO': { lat: 7.8333, lng: -72.4703 },
-    'CALI': { lat: 3.4516, lng: -76.5320 },
-    'POPAYAN': { lat: 2.4448, lng: -76.6147 },
-};
-const COLOMBIA_PATH = `M 245,10 L 270,15 L 320,30 L 340,50 L 330,75 L 350,90 L 370,100 L 380,130
-  L 360,155 L 370,180 L 355,200 L 340,195 L 320,210 L 300,240 L 280,260 L 270,290
-  L 255,310 L 240,340 L 230,370 L 215,390 L 200,410 L 185,430 L 170,450 L 150,460
-  L 130,455 L 110,440 L 90,420 L 75,395 L 65,370 L 60,340 L 55,310 L 50,280
-  L 45,250 L 40,220 L 38,190 L 42,160 L 50,135 L 65,115 L 80,100 L 95,85
-  L 110,70 L 120,55 L 140,40 L 165,25 L 195,15 L 220,10 Z`;
-// Map pin: point at (0,0), body rises upward. r=11 circle head, 28px tall total.
-function MapPin({ cx, cy, active, onClick }) {
-    const fill = active ? '#85C639' : '#2A4899';
-    const stroke = '#fff';
-    return (React.createElement("g", { transform: `translate(${cx},${cy})`, onClick: onClick, style: { cursor: 'pointer' } },
-        React.createElement("ellipse", { cx: 0, cy: 3, rx: 6, ry: 2.5, fill: "rgba(0,0,0,0.2)" }),
-        React.createElement("path", { d: "M -6,-10 Q 0,4 0,0 Q 0,4 6,-10 Z", fill: fill }),
-        React.createElement("circle", { cx: 0, cy: -21, r: 13, fill: fill, stroke: stroke, strokeWidth: 2 }),
-        React.createElement("circle", { cx: 0, cy: -21, r: 4, fill: stroke, opacity: 0.9 }),
-        active && (React.createElement("circle", { cx: 0, cy: -21, r: 17, fill: "none", stroke: "#85C639", strokeWidth: 1.5, strokeDasharray: "4 2", opacity: 0.8 }))));
+const MAP_STYLES = [
+    { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#bfdbfe' }] },
+    { featureType: 'landscape', elementType: 'geometry', stylers: [{ color: '#f8fafc' }] },
+    { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#e2e8f0' }] },
+    { featureType: 'road.local', elementType: 'geometry', stylers: [{ color: '#f1f5f9' }] },
+    { featureType: 'poi', stylers: [{ visibility: 'off' }] },
+    { featureType: 'transit', stylers: [{ visibility: 'off' }] },
+    { featureType: 'administrative.country', elementType: 'geometry.stroke', stylers: [{ color: '#93c5fd' }, { weight: 1.5 }] },
+    { featureType: 'administrative.province', elementType: 'geometry.stroke', stylers: [{ color: '#cbd5e1' }, { weight: 0.5 }] },
+    { featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{ color: '#475569' }] },
+];
+function markerSvg(count, active) {
+    const color = active ? '#85C639' : '#2A4899';
+    const border = active ? '#fff' : '#fff';
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="44" height="56" viewBox="0 0 44 56">
+    <circle cx="22" cy="22" r="21" fill="${color}" stroke="${border}" stroke-width="2.5"/>
+    <text x="22" y="27" text-anchor="middle" fill="white" font-size="13" font-weight="800" font-family="Sora,sans-serif">${count}</text>
+    <path d="M15,40 L29,40 L22,54 Z" fill="${color}"/>
+  </svg>`;
 }
-export default function DistribuidoresPage() {
+const inputStyle = {
+    width: '100%', padding: '9px 13px', borderRadius: '10px',
+    border: '1.5px solid #e2e8f0', fontSize: '13px', fontFamily: 'Sora, sans-serif',
+    color: '#181B1C', background: '#fff', boxSizing: 'border-box', outline: 'none',
+};
+const labelStyle = {
+    fontSize: '10px', fontWeight: 700, color: '#2A4899',
+    textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '5px', display: 'block',
+};
+export default function DistribuidoresPage({ setting }) {
     var _a, _b;
+    const apiKey = (setting === null || setting === void 0 ? void 0 : setting.googleMapsKey) || '';
+    const [data, setData] = useState([]);
+    const [loaded, setLoaded] = useState(false);
     const [search, setSearch] = useState('');
     const [region, setRegion] = useState('');
     const [industria, setIndustria] = useState('');
     const [activeCity, setActiveCity] = useState(null);
-    const [hoveredEntry, setHoveredEntry] = useState(null);
-    const [data, setData] = useState([]);
-    const [loaded, setLoaded] = useState(false);
-    React.useEffect(() => {
+    const [mapReady, setMapReady] = useState(false);
+    const mapRef = useRef(null);
+    const gMapRef = useRef(null);
+    const markersRef = useRef(new Map());
+    useEffect(() => {
         fetch('/data/distribuidores.json')
             .then(r => r.json())
             .then((d) => { setData(d); setLoaded(true); })
             .catch(() => setLoaded(true));
     }, []);
+    useEffect(() => {
+        var _a;
+        if (!apiKey) {
+            setMapReady(true);
+            return;
+        }
+        if ((_a = window.google) === null || _a === void 0 ? void 0 : _a.maps) {
+            setMapReady(true);
+            return;
+        }
+        window.__mapsReady = () => setMapReady(true);
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=__mapsReady`;
+        script.async = true;
+        document.head.appendChild(script);
+    }, [apiKey]);
     const filtered = useMemo(() => {
         const q = search.toLowerCase();
         return data.filter(d => {
@@ -94,134 +103,204 @@ export default function DistribuidoresPage() {
     }, [filtered]);
     const uniqueRegiones = useMemo(() => [...new Set(data.map(d => d.region))].sort(), [data]);
     const uniqueIndustrias = useMemo(() => [...new Set(data.map(d => d.industria))].filter(Boolean).sort(), [data]);
+    // Initialize map
+    useEffect(() => {
+        var _a;
+        if (!mapReady || !mapRef.current || !apiKey || !((_a = window.google) === null || _a === void 0 ? void 0 : _a.maps))
+            return;
+        if (gMapRef.current)
+            return;
+        gMapRef.current = new google.maps.Map(mapRef.current, {
+            center: { lat: 4.5709, lng: -74.2973 },
+            zoom: 6,
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: false,
+            zoomControl: true,
+            styles: MAP_STYLES,
+        });
+    }, [mapReady, apiKey]);
+    // Sync markers when filtered data or active city changes
+    useEffect(() => {
+        if (!gMapRef.current)
+            return;
+        markersRef.current.forEach(m => m.setMap(null));
+        markersRef.current.clear();
+        Object.entries(byCity).forEach(([city, dists]) => {
+            const first = dists[0];
+            const isActive = city === activeCity;
+            const svg = markerSvg(dists.length, isActive);
+            const marker = new google.maps.Marker({
+                position: { lat: first.lat, lng: first.lng },
+                map: gMapRef.current,
+                title: city,
+                icon: {
+                    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg),
+                    anchor: new google.maps.Point(22, 54),
+                },
+                zIndex: isActive ? 10 : 1,
+            });
+            marker.addListener('click', () => {
+                setActiveCity(prev => {
+                    const next = prev === city ? null : city;
+                    if (next) {
+                        gMapRef.current.panTo({ lat: first.lat, lng: first.lng });
+                        gMapRef.current.setZoom(11);
+                    }
+                    else {
+                        gMapRef.current.setCenter({ lat: 4.5709, lng: -74.2973 });
+                        gMapRef.current.setZoom(6);
+                    }
+                    return next;
+                });
+            });
+            markersRef.current.set(city, marker);
+        });
+    }, [byCity, activeCity]);
     const activeCityData = activeCity ? byCity[activeCity] : null;
-    const activeCityCoords = activeCity ? CITIES[activeCity.toUpperCase()] : null;
-    const zoomTransform = activeCityCoords
-        ? `translate(${MAP_W / 2 - lngToX(activeCityCoords.lng) * ZOOM_SCALE}px, ${MAP_H / 2 - latToY(activeCityCoords.lat) * ZOOM_SCALE}px) scale(${ZOOM_SCALE})`
-        : 'translate(0px,0px) scale(1)';
-    const inputStyle = {
-        width: '100%', padding: '10px 14px', borderRadius: '10px',
-        border: '1.5px solid #e2e8f0', fontSize: '13px', fontFamily: 'Sora, sans-serif',
-        color: '#181B1C', background: '#fff', boxSizing: 'border-box', outline: 'none',
-    };
-    const labelStyle = {
-        fontSize: '10px', fontWeight: 700, color: '#2A4899',
-        textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '5px', display: 'block',
-    };
-    return (React.createElement("div", { style: { fontFamily: 'Sora, Inter, sans-serif', background: '#f8fafc' } },
-        React.createElement("div", { style: { background: 'linear-gradient(135deg, #2A4899 0%, #1e3576 100%)', padding: '3rem 2rem 2.5rem', textAlign: 'center' } },
-            React.createElement("div", { style: { fontSize: '10px', fontWeight: 700, color: '#85C639', letterSpacing: '0.35em', textTransform: 'uppercase', marginBottom: '12px' } }, "Red de Distribuci\u00F3n"),
+    const clearFilters = () => { setSearch(''); setRegion(''); setIndustria(''); setActiveCity(null); };
+    return (React.createElement("div", { style: { fontFamily: 'Sora, Inter, sans-serif', background: '#f8fafc', display: 'flex', flexDirection: 'column', minHeight: '100vh' } },
+        React.createElement("style", null, `
+        @keyframes slideIn { from { opacity:0; transform:translateX(20px) } to { opacity:1; transform:translateX(0) } }
+        @keyframes fadeUp  { from { opacity:0; transform:translateY(8px) }  to { opacity:1; transform:translateY(0) } }
+      `),
+        React.createElement("div", { style: { background: 'linear-gradient(135deg, #2A4899 0%, #1e3576 100%)', padding: '3rem 2rem 2.5rem', textAlign: 'center', flexShrink: 0 } },
+            React.createElement("div", { style: { fontSize: '10px', fontWeight: 700, color: '#85C639', letterSpacing: '0.35em', textTransform: 'uppercase', marginBottom: '12px' } }, "Red de Distribuci\u00F3n Nacional"),
             React.createElement("h1", { style: { fontSize: 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 900, color: '#fff', margin: 0, letterSpacing: '-0.02em', textTransform: 'uppercase' } }, "Distribuidores INCAP"),
-            React.createElement("p", { style: { color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginTop: '10px' } }, loaded ? `${data.length} distribuidores en todo el país` : 'Cargando...')),
-        React.createElement("div", { style: { display: 'flex', minHeight: '680px' } },
-            React.createElement("div", { style: { width: '380px', minWidth: '300px', display: 'flex', flexDirection: 'column', background: '#fff', borderRight: '1px solid #e2e8f0' } },
+            React.createElement("p", { style: { color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginTop: '10px', fontFamily: 'Inter, sans-serif' } }, loaded ? `${data.length} distribuidores autorizados en Colombia` : 'Cargando...')),
+        React.createElement("div", { style: { display: 'flex', flex: 1, minHeight: '680px' } },
+            React.createElement("div", { style: { width: '340px', minWidth: '280px', display: 'flex', flexDirection: 'column', background: '#fff', borderRight: '1px solid #e2e8f0', flexShrink: 0 } },
                 React.createElement("div", { style: { padding: '16px', borderBottom: '1px solid #e2e8f0', flexShrink: 0 } },
                     React.createElement("div", { style: { marginBottom: '10px' } },
-                        React.createElement("span", { style: labelStyle }, "Buscar distribuidor"),
+                        React.createElement("span", { style: labelStyle }, "Buscar"),
                         React.createElement("input", { type: "text", placeholder: "Nombre o ciudad...", value: search, onChange: e => setSearch(e.target.value), style: inputStyle })),
-                    React.createElement("div", { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' } },
+                    React.createElement("div", { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' } },
                         React.createElement("div", null,
                             React.createElement("span", { style: labelStyle }, "Regi\u00F3n"),
-                            React.createElement("select", { value: region, onChange: e => setRegion(e.target.value), style: { ...inputStyle, cursor: 'pointer' } },
+                            React.createElement("select", { value: region, onChange: e => { setRegion(e.target.value); setActiveCity(null); }, style: { ...inputStyle, cursor: 'pointer' } },
                                 React.createElement("option", { value: "" }, "Todas"),
                                 uniqueRegiones.map(r => React.createElement("option", { key: r, value: r }, LABEL_REGION[r] || r)))),
                         React.createElement("div", null,
                             React.createElement("span", { style: labelStyle }, "Industria"),
-                            React.createElement("select", { value: industria, onChange: e => setIndustria(e.target.value), style: { ...inputStyle, cursor: 'pointer' } },
+                            React.createElement("select", { value: industria, onChange: e => { setIndustria(e.target.value); setActiveCity(null); }, style: { ...inputStyle, cursor: 'pointer' } },
                                 React.createElement("option", { value: "" }, "Todas"),
                                 uniqueIndustrias.map(i => React.createElement("option", { key: i, value: i }, LABEL_INDUSTRIA[i] || i))))),
-                    React.createElement("div", { style: { marginTop: '10px', fontSize: '11px', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '8px' } },
-                        React.createElement("span", null,
+                    React.createElement("div", { style: { marginTop: '8px', fontSize: '11px', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '8px', fontFamily: 'Inter, sans-serif' } },
+                        React.createElement("span", { style: { fontWeight: 600 } },
                             filtered.length,
                             " distribuidor",
                             filtered.length !== 1 ? 'es' : ''),
-                        (search || region || industria) && (React.createElement("button", { onClick: () => { setSearch(''); setRegion(''); setIndustria(''); setActiveCity(null); }, style: { color: '#2A4899', background: 'none', border: 'none', cursor: 'pointer', fontSize: '11px', fontWeight: 700, padding: 0 } }, "Limpiar")))),
-                React.createElement("div", { style: { overflowY: 'auto', flex: 1, maxHeight: '580px' } },
-                    Object.entries(byCity).sort((a, b) => b[1].length - a[1].length).map(([city, dists]) => (React.createElement("button", { key: city, onClick: () => setActiveCity(activeCity === city ? null : city), style: {
-                            width: '100%', textAlign: 'left', padding: '12px 16px',
-                            background: activeCity === city ? '#eff6ff' : 'transparent',
-                            border: 'none', borderBottom: '1px solid #e2e8f0', cursor: 'pointer',
-                            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                            borderLeft: activeCity === city ? '3px solid #2A4899' : '3px solid transparent',
-                            transition: 'all 0.2s',
-                        } },
-                        React.createElement("div", { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
-                            React.createElement("svg", { width: "10", height: "14", viewBox: "0 0 10 14" },
-                                React.createElement("circle", { cx: "5", cy: "5", r: "5", fill: activeCity === city ? '#2A4899' : '#cbd5e1' }),
-                                React.createElement("polygon", { points: "3,8 7,8 5,13", fill: activeCity === city ? '#2A4899' : '#cbd5e1' })),
-                            React.createElement("span", { style: { fontSize: '12px', fontWeight: 800, color: activeCity === city ? '#2A4899' : '#374151', textTransform: 'uppercase', letterSpacing: '0.06em' } }, city)),
-                        React.createElement("span", { style: { fontSize: '11px', background: activeCity === city ? '#2A4899' : '#f1f5f9', color: activeCity === city ? '#fff' : '#64748b', borderRadius: '20px', padding: '2px 8px', fontWeight: 700, transition: 'all 0.2s', minWidth: '22px', textAlign: 'center' } }, dists.length)))),
+                        (search || region || industria) && (React.createElement("button", { onClick: clearFilters, style: { color: '#2A4899', background: 'none', border: 'none', cursor: 'pointer', fontSize: '11px', fontWeight: 700, padding: 0, textDecoration: 'underline' } }, "Limpiar")))),
+                React.createElement("div", { style: { overflowY: 'auto', flex: 1 } },
+                    Object.entries(byCity)
+                        .sort((a, b) => b[1].length - a[1].length)
+                        .map(([city, dists]) => {
+                        const isActive = activeCity === city;
+                        return (React.createElement("button", { key: city, onClick: () => {
+                                const next = isActive ? null : city;
+                                setActiveCity(next);
+                                if (gMapRef.current) {
+                                    if (next) {
+                                        gMapRef.current.panTo({ lat: dists[0].lat, lng: dists[0].lng });
+                                        gMapRef.current.setZoom(11);
+                                    }
+                                    else {
+                                        gMapRef.current.setCenter({ lat: 4.5709, lng: -74.2973 });
+                                        gMapRef.current.setZoom(6);
+                                    }
+                                }
+                            }, style: {
+                                width: '100%', textAlign: 'left', padding: '11px 16px',
+                                background: isActive ? '#eff6ff' : 'transparent',
+                                border: 'none', borderBottom: '1px solid #f1f5f9', cursor: 'pointer',
+                                borderLeft: `3px solid ${isActive ? '#2A4899' : 'transparent'}`,
+                                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                                transition: 'all 0.15s',
+                            } },
+                            React.createElement("div", { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
+                                React.createElement("svg", { width: "9", height: "13", viewBox: "0 0 9 13" },
+                                    React.createElement("circle", { cx: "4.5", cy: "4.5", r: "4.5", fill: isActive ? '#2A4899' : '#cbd5e1' }),
+                                    React.createElement("polygon", { points: "2.5,7.5 6.5,7.5 4.5,12", fill: isActive ? '#2A4899' : '#cbd5e1' })),
+                                React.createElement("span", { style: { fontSize: '12px', fontWeight: 800, color: isActive ? '#2A4899' : '#374151', textTransform: 'uppercase', letterSpacing: '0.05em' } }, city)),
+                            React.createElement("span", { style: {
+                                    fontSize: '11px', borderRadius: '20px', padding: '2px 8px', fontWeight: 700,
+                                    background: isActive ? '#2A4899' : '#f1f5f9',
+                                    color: isActive ? '#fff' : '#64748b',
+                                    transition: 'all 0.15s', minWidth: '22px', textAlign: 'center',
+                                } }, dists.length)));
+                    }),
                     loaded && filtered.length === 0 && (React.createElement("div", { style: { padding: '48px 24px', textAlign: 'center', color: '#94a3b8' } },
                         React.createElement("div", { style: { fontSize: '2rem', marginBottom: '8px' } }, "\uD83D\uDD0D"),
-                        React.createElement("div", { style: { fontWeight: 600, fontSize: '14px' } }, "Sin resultados"))))),
-            React.createElement("div", { style: { flex: 1, background: 'linear-gradient(160deg, #dbeafe 0%, #e8f0fe 100%)', position: 'relative', overflow: 'hidden', minHeight: '680px', display: 'flex', alignItems: 'center', justifyContent: 'center' } },
-                React.createElement("svg", { viewBox: `0 0 ${MAP_W} ${MAP_H}`, style: { width: '100%', height: '100%', maxWidth: '520px', maxHeight: '660px' }, onClick: (e) => {
-                        const tag = e.target.tagName;
-                        if (tag === 'svg' || tag === 'path')
-                            setActiveCity(null);
-                    } },
-                    React.createElement("g", { style: { transform: zoomTransform, transformOrigin: '0 0', transition: 'transform 0.5s cubic-bezier(0.4,0,0.2,1)' } },
-                        React.createElement("path", { d: COLOMBIA_PATH, fill: "#bfdbfe", stroke: "#93c5fd", strokeWidth: "1", strokeLinejoin: "round" }),
-                        activeCity && React.createElement("path", { d: COLOMBIA_PATH, fill: "rgba(30,53,118,0.2)", stroke: "none" }),
-                        Object.entries(byCity).map(([city, dists]) => {
-                            const coords = CITIES[city.toUpperCase()];
-                            if (!coords)
-                                return null;
-                            const cx = lngToX(coords.lng);
-                            const cy = latToY(coords.lat);
-                            const isActive = activeCity === city;
-                            return (React.createElement("g", { key: city },
-                                !activeCity && (React.createElement("text", { x: cx, y: cy - 38, textAnchor: "middle", fill: "#1e3576", fontSize: 8, fontWeight: "700", fontFamily: "Sora, sans-serif", style: { pointerEvents: 'none', textShadow: '0 1px 2px white' } }, city.charAt(0) + city.slice(1).toLowerCase())),
-                                React.createElement(MapPin, { cx: cx, cy: cy, active: isActive, onClick: () => setActiveCity(isActive ? null : city) })));
-                        }))),
+                        React.createElement("div", { style: { fontWeight: 600, fontSize: '14px' } }, "Sin resultados"),
+                        React.createElement("div", { style: { fontSize: '12px', marginTop: '6px' } }, "Intenta con otro filtro"))))),
+            React.createElement("div", { style: { flex: 1, position: 'relative', minHeight: '680px' } },
+                React.createElement("div", { ref: mapRef, style: { width: '100%', height: '100%', minHeight: '680px' } }),
+                mapReady && !apiKey && (React.createElement("div", { style: { position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(160deg, #dbeafe 0%, #e8f0fe 100%)', flexDirection: 'column', gap: '12px' } },
+                    React.createElement("div", { style: { fontSize: '2.5rem' } }, "\uD83D\uDDFA\uFE0F"),
+                    React.createElement("div", { style: { fontWeight: 700, color: '#2A4899', fontSize: '15px' } }, "Mapa no configurado"),
+                    React.createElement("div", { style: { fontSize: '12px', color: '#64748b' } }, "Agrega GOOGLE_MAPS_API_KEY al servidor"))),
                 activeCity && activeCityData && (React.createElement("div", { style: {
-                        position: 'absolute', top: '16px', right: '16px', bottom: '16px',
-                        width: '290px', background: '#fff', borderRadius: '16px',
+                        position: 'absolute', top: '12px', right: '12px', bottom: '12px',
+                        width: '300px', background: '#fff', borderRadius: '16px',
                         boxShadow: '0 20px 60px rgba(30,53,118,0.2)', overflow: 'hidden',
-                        display: 'flex', flexDirection: 'column',
-                        animation: 'slideIn 0.3s ease',
+                        display: 'flex', flexDirection: 'column', animation: 'slideIn 0.25s ease',
                     } },
-                    React.createElement("div", { style: { background: 'linear-gradient(135deg, #2A4899, #1e3576)', padding: '16px', flexShrink: 0 } },
+                    React.createElement("div", { style: { background: 'linear-gradient(135deg, #2A4899, #1e3576)', padding: '14px 16px', flexShrink: 0 } },
                         React.createElement("div", { style: { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px' } },
                             React.createElement("div", null,
-                                React.createElement("div", { style: { fontSize: '10px', color: '#85C639', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '4px' } }, LABEL_REGION[(_a = activeCityData[0]) === null || _a === void 0 ? void 0 : _a.region] || ((_b = activeCityData[0]) === null || _b === void 0 ? void 0 : _b.region)),
-                                React.createElement("div", { style: { fontSize: '16px', fontWeight: 900, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.04em' } }, activeCity),
-                                React.createElement("div", { style: { fontSize: '11px', color: 'rgba(255,255,255,0.55)', marginTop: '4px' } },
+                                React.createElement("div", { style: { fontSize: '9px', color: '#85C639', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: '4px' } }, LABEL_REGION[(_a = activeCityData[0]) === null || _a === void 0 ? void 0 : _a.region] || ((_b = activeCityData[0]) === null || _b === void 0 ? void 0 : _b.region)),
+                                React.createElement("div", { style: { fontSize: '15px', fontWeight: 900, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.04em' } }, activeCity),
+                                React.createElement("div", { style: { fontSize: '11px', color: 'rgba(255,255,255,0.5)', marginTop: '3px', fontFamily: 'Inter, sans-serif' } },
                                     activeCityData.length,
                                     " distribuidor",
                                     activeCityData.length !== 1 ? 'es' : '')),
-                            React.createElement("button", { onClick: () => setActiveCity(null), style: { background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: '50%', width: '28px', height: '28px', cursor: 'pointer', color: '#fff', fontSize: '18px', lineHeight: '28px', textAlign: 'center', flexShrink: 0 } }, "\u00D7"))),
-                    React.createElement("div", { style: { overflowY: 'auto', flex: 1 } }, activeCityData.map((d, i) => (React.createElement("div", { key: i, onMouseEnter: () => setHoveredEntry(i), onMouseLeave: () => setHoveredEntry(null), style: {
-                            padding: '12px 16px', borderBottom: '1px solid #f1f5f9',
-                            background: hoveredEntry === i ? '#f8faff' : '#fff',
-                            transition: 'background 0.15s', cursor: 'default',
-                            display: 'flex', gap: '12px', alignItems: 'flex-start',
+                            React.createElement("button", { onClick: () => {
+                                    setActiveCity(null);
+                                    if (gMapRef.current) {
+                                        gMapRef.current.setCenter({ lat: 4.5709, lng: -74.2973 });
+                                        gMapRef.current.setZoom(6);
+                                    }
+                                }, style: {
+                                    background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: '50%',
+                                    width: '28px', height: '28px', cursor: 'pointer', color: '#fff',
+                                    fontSize: '18px', lineHeight: '28px', textAlign: 'center', flexShrink: 0,
+                                } }, "\u00D7"))),
+                    React.createElement("div", { style: { overflowY: 'auto', flex: 1 } }, activeCityData.map((d, i) => (React.createElement("div", { key: i, style: {
+                            padding: '12px 14px', borderBottom: '1px solid #f1f5f9',
+                            display: 'flex', gap: '10px', alignItems: 'flex-start',
+                            animation: `fadeUp 0.2s ease ${i * 0.04}s both`,
                         } },
                         React.createElement("div", { style: {
-                                minWidth: '24px', height: '24px', borderRadius: '50%',
-                                background: hoveredEntry === i ? '#2A4899' : '#eff6ff',
-                                color: hoveredEntry === i ? '#fff' : '#2A4899',
-                                fontSize: '11px', fontWeight: 800, display: 'flex',
-                                alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                                transition: 'all 0.15s', marginTop: '1px',
+                                minWidth: '22px', height: '22px', borderRadius: '50%',
+                                background: '#eff6ff', color: '#2A4899',
+                                fontSize: '10px', fontWeight: 800, display: 'flex',
+                                alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px',
                             } }, i + 1),
                         React.createElement("div", { style: { flex: 1 } },
                             React.createElement("div", { style: { fontSize: '12px', fontWeight: 700, color: '#181B1C', lineHeight: 1.3, marginBottom: '4px' } }, d.nombre),
-                            React.createElement("div", { style: { display: 'inline-block', fontSize: '10px', color: '#2A4899', background: '#eff6ff', borderRadius: '4px', padding: '2px 6px', fontWeight: 700, marginBottom: '5px' } }, LABEL_INDUSTRIA[d.industria] || d.industria),
-                            React.createElement("div", { style: { fontSize: '11px', color: '#64748b', lineHeight: 1.5 } }, d.direccion),
-                            d.telefono && (React.createElement("div", { style: { fontSize: '11px', color: '#94a3b8', marginTop: '4px' } },
+                            React.createElement("div", { style: { display: 'inline-block', fontSize: '9px', color: '#2A4899', background: '#eff6ff', borderRadius: '4px', padding: '2px 6px', fontWeight: 700, marginBottom: '5px', textTransform: 'uppercase', letterSpacing: '0.05em' } }, LABEL_INDUSTRIA[d.industria] || d.industria || 'Comercio'),
+                            React.createElement("div", { style: { fontSize: '11px', color: '#64748b', lineHeight: 1.5, fontFamily: 'Inter, sans-serif' } }, d.direccion),
+                            d.telefono && (React.createElement("a", { href: `tel:${d.telefono}`, style: { fontSize: '11px', color: '#2A4899', marginTop: '4px', display: 'block', textDecoration: 'none', fontFamily: 'Inter, sans-serif' } },
                                 "\uD83D\uDCDE ",
                                 d.telefono))))))))),
-                !activeCity && loaded && (React.createElement("div", { style: { position: 'absolute', bottom: '16px', left: '50%', transform: 'translateX(-50%)', background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(8px)', borderRadius: '10px', padding: '8px 16px', fontSize: '11px', color: '#64748b', fontWeight: 600, whiteSpace: 'nowrap', boxShadow: '0 2px 12px rgba(0,0,0,0.08)' } }, "Seleccion\u00E1 un pin o una ciudad en la lista")),
-                React.createElement("style", null, `
-            @keyframes slideIn {
-              from { opacity: 0; transform: translateX(16px); }
-              to   { opacity: 1; transform: translateX(0); }
-            }
-          `)))));
+                mapReady && apiKey && !activeCity && loaded && (React.createElement("div", { style: {
+                        position: 'absolute', bottom: '16px', left: '50%', transform: 'translateX(-50%)',
+                        background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(8px)',
+                        borderRadius: '10px', padding: '8px 16px', fontSize: '11px',
+                        color: '#64748b', fontWeight: 600, whiteSpace: 'nowrap',
+                        boxShadow: '0 2px 12px rgba(0,0,0,0.1)', pointerEvents: 'none',
+                        fontFamily: 'Inter, sans-serif',
+                    } }, "Toc\u00E1 un marcador o seleccion\u00E1 una ciudad en la lista"))))));
 }
 export const layout = {
     areaId: 'content',
     sortOrder: 1,
 };
+export const query = `
+  query {
+    setting {
+      googleMapsKey
+    }
+  }
+`;
 //# sourceMappingURL=DistribuidoresPage.js.map
