@@ -1,0 +1,9 @@
+type SizeVariant {
+  label: String!
+  url: String!
+  isCurrent: Boolean!
+}
+
+extend type Product {
+  sizeVariants: [SizeVariant]
+}

@@ -1,7 +1,10 @@
-export default function Breadcrumb() { return null; }
+import React from 'react';
+export default function Breadcrumb() {
+    return null;
+}
 export const layout = {
     areaId: 'content',
-    sortOrder: 0,
+    sortOrder: 0
 };
 export const query = `
   query Query {

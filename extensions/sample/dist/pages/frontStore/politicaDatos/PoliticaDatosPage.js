@@ -1,24 +1,75 @@
 import React, { useState } from 'react';
 const CHANNELS = [
-    { label: 'Recepción de documentos', value: 'Cra 72 # 62 - 27 sur' },
-    { label: 'Teléfono', value: '(601) 7761800' },
-    { label: 'Correo electrónico', value: 'protecciondedatos@incap.com.co' },
-    { label: 'Página web', value: 'incap.dataprotected.co' },
+    {
+        label: 'Recepción de documentos',
+        value: 'Cra 72 # 62 - 27 sur'
+    },
+    {
+        label: 'Teléfono',
+        value: '(601) 7761800'
+    },
+    {
+        label: 'Correo electrónico',
+        value: 'protecciondedatos@incap.com.co'
+    },
+    {
+        label: 'Página web',
+        value: 'incap.dataprotected.co'
+    }
 ];
 const DEFINITIONS = [
-    { term: 'Autorización', def: 'Consentimiento previo, expreso e informado del Titular para llevar a cabo el Tratamiento de datos personales.' },
-    { term: 'Base de Datos', def: 'Conjunto organizado de datos personales que sea objeto de Tratamiento.' },
-    { term: 'Dato personal', def: 'Cualquier información vinculada o que pueda asociarse a una o a varias personas naturales determinadas o determinables.' },
-    { term: 'Dato semiprivado', def: 'Datos cuyo conocimiento puede interesar a su titular o a un grupo de personas. Requieren autorización expresa. Ej.: datos financieros, datos de seguridad social.' },
-    { term: 'Dato sensible', def: 'Datos que afectan la intimidad del Titular o cuyo uso indebido puede generar discriminación (origen racial, orientación política, salud, vida sexual, datos biométricos, etc.).' },
-    { term: 'Dato privado', def: 'Dato de naturaleza íntima o reservada que solo interesa a su Titular y requiere su autorización expresa.' },
-    { term: 'Dato público', def: 'Dato que la Constitución o normas han determinado expresamente como público. No requiere autorización para su recolección.' },
-    { term: 'Encargado del Tratamiento', def: 'Persona natural o jurídica que realice el Tratamiento de datos personales por cuenta del Responsable.' },
-    { term: 'Responsable del Tratamiento', def: 'Persona natural o jurídica que decide sobre la base de datos y/o el Tratamiento de los datos.' },
-    { term: 'Titular', def: 'Persona natural cuyos datos personales sean objeto de Tratamiento.' },
-    { term: 'Tratamiento', def: 'Cualquier operación sobre datos personales: recolección, almacenamiento, uso, circulación o supresión.' },
-    { term: 'Transferencia', def: 'Envío de datos personales desde Colombia a un receptor Responsable del Tratamiento, dentro o fuera del país.' },
-    { term: 'Transmisión', def: 'Comunicación de datos dentro o fuera del territorio de Colombia cuando tiene por objeto la realización de un Tratamiento por el Encargado.' },
+    {
+        term: 'Autorización',
+        def: 'Consentimiento previo, expreso e informado del Titular para llevar a cabo el Tratamiento de datos personales.'
+    },
+    {
+        term: 'Base de Datos',
+        def: 'Conjunto organizado de datos personales que sea objeto de Tratamiento.'
+    },
+    {
+        term: 'Dato personal',
+        def: 'Cualquier información vinculada o que pueda asociarse a una o a varias personas naturales determinadas o determinables.'
+    },
+    {
+        term: 'Dato semiprivado',
+        def: 'Datos cuyo conocimiento puede interesar a su titular o a un grupo de personas. Requieren autorización expresa. Ej.: datos financieros, datos de seguridad social.'
+    },
+    {
+        term: 'Dato sensible',
+        def: 'Datos que afectan la intimidad del Titular o cuyo uso indebido puede generar discriminación (origen racial, orientación política, salud, vida sexual, datos biométricos, etc.).'
+    },
+    {
+        term: 'Dato privado',
+        def: 'Dato de naturaleza íntima o reservada que solo interesa a su Titular y requiere su autorización expresa.'
+    },
+    {
+        term: 'Dato público',
+        def: 'Dato que la Constitución o normas han determinado expresamente como público. No requiere autorización para su recolección.'
+    },
+    {
+        term: 'Encargado del Tratamiento',
+        def: 'Persona natural o jurídica que realice el Tratamiento de datos personales por cuenta del Responsable.'
+    },
+    {
+        term: 'Responsable del Tratamiento',
+        def: 'Persona natural o jurídica que decide sobre la base de datos y/o el Tratamiento de los datos.'
+    },
+    {
+        term: 'Titular',
+        def: 'Persona natural cuyos datos personales sean objeto de Tratamiento.'
+    },
+    {
+        term: 'Tratamiento',
+        def: 'Cualquier operación sobre datos personales: recolección, almacenamiento, uso, circulación o supresión.'
+    },
+    {
+        term: 'Transferencia',
+        def: 'Envío de datos personales desde Colombia a un receptor Responsable del Tratamiento, dentro o fuera del país.'
+    },
+    {
+        term: 'Transmisión',
+        def: 'Comunicación de datos dentro o fuera del territorio de Colombia cuando tiene por objeto la realización de un Tratamiento por el Encargado.'
+    }
 ];
 const PURPOSES = {
     Clientes: [
@@ -39,7 +90,7 @@ const PURPOSES = {
         'Adelantar comunicaciones a distancia para la venta de productos o servicios',
         'Realizar análisis de perfiles y actividades de fidelización',
         'Realizar actividades de marketing tradicional o digital',
-        'Cumplir con los requisitos legales asociados a la formalización de contratos',
+        'Cumplir con los requisitos legales asociados a la formalización de contratos'
     ],
     'Proveedores y Contratistas': [
         'Mantener un registro histórico, científico o estadístico',
@@ -55,7 +106,7 @@ const PURPOSES = {
         'Gestión y trámite de requerimientos de entidades de salud y seguridad social',
         'Adelantar procedimientos administrativos y de control interno',
         'Realizar la verificación de requisitos jurídicos, técnicos y/o financieros',
-        'Cumplir con los requisitos legales asociados a la formalización de contratos',
+        'Cumplir con los requisitos legales asociados a la formalización de contratos'
     ],
     Trabajadores: [
         'Mantener un registro histórico, científico o estadístico',
@@ -73,7 +124,7 @@ const PURPOSES = {
         'Controlar el acceso y salida de personas en las instalaciones',
         'Adelantar procedimientos administrativos y de control interno',
         'Cumplir con la declaración y pago de aportes de seguridad social',
-        'Realizar procesos de formación de personal interno',
+        'Realizar procesos de formación de personal interno'
     ],
     'Candidatos y Aspirantes': [
         'Gestionar las relaciones, derechos y deberes con los titulares',
@@ -85,7 +136,7 @@ const PURPOSES = {
         'Generar estadísticas internas',
         'Promocionar y gestionar ofertas de empleo',
         'Alimentar la base de datos de candidatos para futuras oportunidades',
-        'Realizar convocatorias o citas para entrevistas o pruebas',
+        'Realizar convocatorias o citas para entrevistas o pruebas'
     ],
     Visitantes: [
         'Atender requerimientos de autoridades judiciales o administrativas',
@@ -97,8 +148,8 @@ const PURPOSES = {
         'Gestionar riesgos o accidentes dentro de las instalaciones',
         'Controlar el acceso y salida de personas en las instalaciones',
         'Realizar el registro de entrada y salida de activos, paquetes y documentos',
-        'Generar estadísticas internas',
-    ],
+        'Generar estadísticas internas'
+    ]
 };
 const RIGHTS = [
     'Acceder en forma gratuita a sus datos personales que hayan sido objeto de Tratamiento.',
@@ -107,272 +158,484 @@ const RIGHTS = [
     'Revocar la autorización dada y/o solicitar la supresión de sus datos, siempre que no exista un deber legal o contractual que impida eliminarlos.',
     'Presentar queja ante la Superintendencia de Industria y Comercio cuando INCAP S A no haya atendido satisfactoriamente consultas o reclamos.',
     'Solicitar prueba de la autorización otorgada al responsable del tratamiento.',
-    'Abstenerse de responder las preguntas sobre datos sensibles o datos de niños, niñas y adolescentes.',
+    'Abstenerse de responder las preguntas sobre datos sensibles o datos de niños, niñas y adolescentes.'
 ];
 const NAV_SECTIONS = [
-    { id: 'general', label: 'Información General', icon: '🏢' },
-    { id: 'definiciones', label: 'Definiciones', icon: '📖' },
-    { id: 'tratamiento', label: 'Tratamiento de Datos', icon: '⚙️' },
-    { id: 'derechos', label: 'Tus Derechos', icon: '⚖️' },
-    { id: 'aspectos', label: 'Aspectos Finales', icon: '📋' },
-    { id: 'avisos', label: 'Avisos de Privacidad', icon: '📢' },
+    {
+        id: 'general',
+        label: 'Información General',
+        icon: '🏢'
+    },
+    {
+        id: 'definiciones',
+        label: 'Definiciones',
+        icon: '📖'
+    },
+    {
+        id: 'tratamiento',
+        label: 'Tratamiento de Datos',
+        icon: '⚙️'
+    },
+    {
+        id: 'derechos',
+        label: 'Tus Derechos',
+        icon: '⚖️'
+    },
+    {
+        id: 'aspectos',
+        label: 'Aspectos Finales',
+        icon: '📋'
+    },
+    {
+        id: 'avisos',
+        label: 'Avisos de Privacidad',
+        icon: '📢'
+    }
 ];
 function ContactCard() {
-    return (React.createElement("div", { className: "bg-[#2A4899] rounded-2xl p-6 mt-8" },
-        React.createElement("p", { className: "text-[#85C639] font-black text-[10px] uppercase tracking-[0.3em] mb-3" }, "Ejercer tus derechos"),
-        React.createElement("p", { className: "text-white font-bold text-sm mb-4" }, "Canales habilitados para consultas y reclamos:"),
-        React.createElement("div", { className: "space-y-2" }, CHANNELS.map((ch) => (React.createElement("div", { key: ch.label, className: "flex flex-col" },
-            React.createElement("span", { className: "text-white/50 text-[10px] uppercase tracking-widest" }, ch.label),
-            React.createElement("span", { className: "text-white text-xs font-semibold" }, ch.value)))))));
+    return /*#__PURE__*/ React.createElement("div", {
+        className: "bg-[#2A4899] rounded-2xl p-6 mt-8"
+    }, /*#__PURE__*/ React.createElement("p", {
+        className: "text-[#85C639] font-black text-[10px] uppercase tracking-[0.3em] mb-3"
+    }, "Ejercer tus derechos"), /*#__PURE__*/ React.createElement("p", {
+        className: "text-white font-bold text-sm mb-4"
+    }, "Canales habilitados para consultas y reclamos:"), /*#__PURE__*/ React.createElement("div", {
+        className: "space-y-2"
+    }, CHANNELS.map((ch)=>/*#__PURE__*/ React.createElement("div", {
+            key: ch.label,
+            className: "flex flex-col"
+        }, /*#__PURE__*/ React.createElement("span", {
+            className: "text-white/50 text-[10px] uppercase tracking-widest"
+        }, ch.label), /*#__PURE__*/ React.createElement("span", {
+            className: "text-white text-xs font-semibold"
+        }, ch.value)))));
 }
 function SectionGeneral() {
-    return (React.createElement("div", { className: "space-y-8" },
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]" }, "Responsable del Tratamiento"),
-            React.createElement("div", { className: "overflow-x-auto" },
-                React.createElement("table", { className: "w-full text-sm" },
-                    React.createElement("tbody", null, [
-                        ['Razón social', 'INCAP S A'],
-                        ['NIT', '860025998-3'],
-                        ['Dirección', 'CR 72 62 27 SUR'],
-                        ['Correo electrónico', 'dmarroquin@incap.com.co'],
-                        ['Teléfono', '6017761800'],
-                    ].map(([k, v]) => (React.createElement("tr", { key: k, className: "border-b border-slate-100" },
-                        React.createElement("td", { className: "py-2 pr-4 text-slate-500 font-semibold text-xs uppercase tracking-wide w-40" }, k),
-                        React.createElement("td", { className: "py-2 text-[#181B1C] font-medium" }, v)))))))),
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]" }, "Objetivo"),
-            React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed" },
-                "Establecer los criterios bajo los cuales se realiza el tratamiento de la informaci\u00F3n personal que reposa en las bases de datos, archivos f\u00EDsicos y digitales de ",
-                React.createElement("strong", null, "INCAP S A"),
-                ", dando cumplimiento al art\u00EDculo 15 y 20 de la Constituci\u00F3n Nacional, la Ley 1581 de 2012, el Cap\u00EDtulo 25 del Decreto 1074 de 2015 y la Sentencia C-748 de 2011.")),
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]" }, "Alcance"),
-            React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed" },
-                "Esta pol\u00EDtica aplica para toda la informaci\u00F3n personal registrada en las bases de datos de ",
-                React.createElement("strong", null, "INCAP S A"),
-                " y est\u00E1 dirigida a cualquier titular de la informaci\u00F3n o su representante legal de quien INCAP S A haya requerido informaci\u00F3n personal para el desarrollo de alguna actividad."),
-            React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed mt-3" }, "Establece los criterios para el tratamiento, los mecanismos para que los titulares puedan ejercer sus derechos, las finalidades, las medidas de seguridad y otros aspectos relacionados con la protecci\u00F3n de la informaci\u00F3n personal."))));
+    return /*#__PURE__*/ React.createElement("div", {
+        className: "space-y-8"
+    }, /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]"
+    }, "Responsable del Tratamiento"), /*#__PURE__*/ React.createElement("div", {
+        className: "overflow-x-auto"
+    }, /*#__PURE__*/ React.createElement("table", {
+        className: "w-full text-sm"
+    }, /*#__PURE__*/ React.createElement("tbody", null, [
+        [
+            'Razón social',
+            'INCAP S A'
+        ],
+        [
+            'NIT',
+            '860025998-3'
+        ],
+        [
+            'Dirección',
+            'CR 72 62 27 SUR'
+        ],
+        [
+            'Correo electrónico',
+            'dmarroquin@incap.com.co'
+        ],
+        [
+            'Teléfono',
+            '6017761800'
+        ]
+    ].map(([k, v])=>/*#__PURE__*/ React.createElement("tr", {
+            key: k,
+            className: "border-b border-slate-100"
+        }, /*#__PURE__*/ React.createElement("td", {
+            className: "py-2 pr-4 text-slate-500 font-semibold text-xs uppercase tracking-wide w-40"
+        }, k), /*#__PURE__*/ React.createElement("td", {
+            className: "py-2 text-[#181B1C] font-medium"
+        }, v))))))), /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]"
+    }, "Objetivo"), /*#__PURE__*/ React.createElement("p", {
+        className: "text-slate-600 text-sm leading-relaxed"
+    }, "Establecer los criterios bajo los cuales se realiza el tratamiento de la información personal que reposa en las bases de datos, archivos físicos y digitales de ", /*#__PURE__*/ React.createElement("strong", null, "INCAP S A"), ", dando cumplimiento al artículo 15 y 20 de la Constitución Nacional, la Ley 1581 de 2012, el Capítulo 25 del Decreto 1074 de 2015 y la Sentencia C-748 de 2011.")), /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]"
+    }, "Alcance"), /*#__PURE__*/ React.createElement("p", {
+        className: "text-slate-600 text-sm leading-relaxed"
+    }, "Esta política aplica para toda la información personal registrada en las bases de datos de ", /*#__PURE__*/ React.createElement("strong", null, "INCAP S A"), " y está dirigida a cualquier titular de la información o su representante legal de quien INCAP S A haya requerido información personal para el desarrollo de alguna actividad."), /*#__PURE__*/ React.createElement("p", {
+        className: "text-slate-600 text-sm leading-relaxed mt-3"
+    }, "Establece los criterios para el tratamiento, los mecanismos para que los titulares puedan ejercer sus derechos, las finalidades, las medidas de seguridad y otros aspectos relacionados con la protección de la información personal.")));
 }
 function SectionDefiniciones() {
     const [open, setOpen] = useState(null);
-    return (React.createElement("div", { className: "space-y-2" }, DEFINITIONS.map((d) => (React.createElement("div", { key: d.term, className: "border border-slate-200 rounded-xl overflow-hidden" },
-        React.createElement("button", { className: "w-full flex items-center justify-between px-5 py-3.5 text-left hover:bg-slate-50 transition-colors", onClick: () => setOpen(open === d.term ? null : d.term) },
-            React.createElement("span", { className: "font-bold text-[#2A4899] text-sm" }, d.term),
-            React.createElement("svg", { className: `w-4 h-4 text-slate-400 transition-transform flex-shrink-0 ${open === d.term ? 'rotate-180' : ''}`, fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
-                React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M19 9l-7 7-7-7" }))),
-        open === d.term && (React.createElement("div", { className: "px-5 pb-4 text-slate-600 text-sm leading-relaxed border-t border-slate-100 pt-3" }, d.def)))))));
+    return /*#__PURE__*/ React.createElement("div", {
+        className: "space-y-2"
+    }, DEFINITIONS.map((d)=>/*#__PURE__*/ React.createElement("div", {
+            key: d.term,
+            className: "border border-slate-200 rounded-xl overflow-hidden"
+        }, /*#__PURE__*/ React.createElement("button", {
+            className: "w-full flex items-center justify-between px-5 py-3.5 text-left hover:bg-slate-50 transition-colors",
+            onClick: ()=>setOpen(open === d.term ? null : d.term)
+        }, /*#__PURE__*/ React.createElement("span", {
+            className: "font-bold text-[#2A4899] text-sm"
+        }, d.term), /*#__PURE__*/ React.createElement("svg", {
+            className: `w-4 h-4 text-slate-400 transition-transform flex-shrink-0 ${open === d.term ? 'rotate-180' : ''}`,
+            fill: "none",
+            stroke: "currentColor",
+            viewBox: "0 0 24 24"
+        }, /*#__PURE__*/ React.createElement("path", {
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeWidth: 2.5,
+            d: "M19 9l-7 7-7-7"
+        }))), open === d.term && /*#__PURE__*/ React.createElement("div", {
+            className: "px-5 pb-4 text-slate-600 text-sm leading-relaxed border-t border-slate-100 pt-3"
+        }, d.def))));
 }
 function SectionTratamiento() {
     const [activeTab, setActiveTab] = useState('Clientes');
     const stakeholders = Object.keys(PURPOSES);
-    return (React.createElement("div", { className: "space-y-8" },
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]" }, "Tipos de datos tratados"),
-            React.createElement("div", { className: "grid grid-cols-2 sm:grid-cols-3 gap-2" }, ['Académicos', 'Características personales', 'Circunstancias sociales', 'Contacto', 'Electrónicos', 'Identificativos', 'Laborales', 'Patrimoniales', 'Públicos'].map((t) => (React.createElement("div", { key: t, className: "flex items-center gap-2 bg-slate-50 rounded-lg px-3 py-2" },
-                React.createElement("div", { className: "w-1.5 h-1.5 rounded-full bg-[#85C639] flex-shrink-0" }),
-                React.createElement("span", { className: "text-slate-700 text-xs font-medium" }, t)))))),
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]" }, "Operaciones sobre los datos"),
-            React.createElement("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-4" }, [
-                { op: 'Recolección', desc: 'Se obtiene directamente del titular, de un tercero con autorización, o de fuentes públicas, a través de medios físicos, digitales o electrónicos, con aviso de privacidad y autorización.' },
-                { op: 'Almacenamiento', desc: 'En servidores propios o externos de terceros, con medidas de seguridad física, técnica y administrativa. La información se conserva mientras la finalidad esté vigente o lo exija la ley.' },
-                { op: 'Circulación', desc: 'Por regla general no se comparten datos con terceros. Solo se entrega a otras entidades cuando sea necesario para el cumplimiento de obligaciones legales.' },
-                { op: 'Supresión', desc: 'Procede cuando se ha cumplido la finalidad, no existen obligaciones legales de conservación, no afecta la integridad de las bases de datos, o es solicitada por el titular.' },
-            ].map(({ op, desc }) => (React.createElement("div", { key: op, className: "border border-slate-200 rounded-xl p-4" },
-                React.createElement("p", { className: "font-black text-[#2A4899] text-xs uppercase tracking-widest mb-2" }, op),
-                React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed" }, desc)))))),
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-1 pb-2 border-b-2 border-[#85C639]" }, "Finalidades por tipo de titular"),
-            React.createElement("p", { className: "text-slate-500 text-xs mb-4" }, "Selecciona el tipo de titular para ver las finalidades aplicables."),
-            React.createElement("div", { className: "flex flex-wrap gap-2 mb-4" }, stakeholders.map((s) => (React.createElement("button", { key: s, onClick: () => setActiveTab(s), className: `px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all ${activeTab === s ? 'bg-[#2A4899] text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}` }, s)))),
-            React.createElement("ul", { className: "space-y-1.5" }, PURPOSES[activeTab].map((p, i) => (React.createElement("li", { key: i, className: "flex items-start gap-2.5 text-sm text-slate-600" },
-                React.createElement("span", { className: "w-1.5 h-1.5 rounded-full bg-[#85C639] mt-1.5 flex-shrink-0" }),
-                p))))),
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]" }, "Datos sensibles"),
-            React.createElement("div", { className: "bg-amber-50 border border-amber-200 rounded-xl p-4" },
-                React.createElement("p", { className: "text-xs font-bold text-amber-700 uppercase tracking-widest mb-2" }, "Datos de salud"),
-                React.createElement("p", { className: "text-sm text-slate-600 leading-relaxed" }, "Se tratan exclusivamente para: gesti\u00F3n administrativa, cumplimiento de normas de seguridad y salud en el trabajo, tr\u00E1mites ante entidades de salud y seguridad social, gesti\u00F3n de riesgos laborales, prevenci\u00F3n de enfermedades y accidentes, y verificaci\u00F3n de riesgo de salud."))),
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]" }, "Datos de menores de edad"),
-            React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed" }, "INCAP S A puede requerir datos de menores \u00FAnicamente para cumplir obligaciones legales (Ley 789 de 2002 \u2014 vinculaci\u00F3n de aprendices; afiliaci\u00F3n a seguridad social de dependientes). En caso de recolecci\u00F3n directa de datos de menores, se solicitar\u00E1 autorizaci\u00F3n con consentimiento informado de los padres o adultos responsables."))));
+    return /*#__PURE__*/ React.createElement("div", {
+        className: "space-y-8"
+    }, /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]"
+    }, "Tipos de datos tratados"), /*#__PURE__*/ React.createElement("div", {
+        className: "grid grid-cols-2 sm:grid-cols-3 gap-2"
+    }, [
+        'Académicos',
+        'Características personales',
+        'Circunstancias sociales',
+        'Contacto',
+        'Electrónicos',
+        'Identificativos',
+        'Laborales',
+        'Patrimoniales',
+        'Públicos'
+    ].map((t)=>/*#__PURE__*/ React.createElement("div", {
+            key: t,
+            className: "flex items-center gap-2 bg-slate-50 rounded-lg px-3 py-2"
+        }, /*#__PURE__*/ React.createElement("div", {
+            className: "w-1.5 h-1.5 rounded-full bg-[#85C639] flex-shrink-0"
+        }), /*#__PURE__*/ React.createElement("span", {
+            className: "text-slate-700 text-xs font-medium"
+        }, t))))), /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]"
+    }, "Operaciones sobre los datos"), /*#__PURE__*/ React.createElement("div", {
+        className: "grid grid-cols-1 sm:grid-cols-2 gap-4"
+    }, [
+        {
+            op: 'Recolección',
+            desc: 'Se obtiene directamente del titular, de un tercero con autorización, o de fuentes públicas, a través de medios físicos, digitales o electrónicos, con aviso de privacidad y autorización.'
+        },
+        {
+            op: 'Almacenamiento',
+            desc: 'En servidores propios o externos de terceros, con medidas de seguridad física, técnica y administrativa. La información se conserva mientras la finalidad esté vigente o lo exija la ley.'
+        },
+        {
+            op: 'Circulación',
+            desc: 'Por regla general no se comparten datos con terceros. Solo se entrega a otras entidades cuando sea necesario para el cumplimiento de obligaciones legales.'
+        },
+        {
+            op: 'Supresión',
+            desc: 'Procede cuando se ha cumplido la finalidad, no existen obligaciones legales de conservación, no afecta la integridad de las bases de datos, o es solicitada por el titular.'
+        }
+    ].map(({ op, desc })=>/*#__PURE__*/ React.createElement("div", {
+            key: op,
+            className: "border border-slate-200 rounded-xl p-4"
+        }, /*#__PURE__*/ React.createElement("p", {
+            className: "font-black text-[#2A4899] text-xs uppercase tracking-widest mb-2"
+        }, op), /*#__PURE__*/ React.createElement("p", {
+            className: "text-slate-600 text-sm leading-relaxed"
+        }, desc))))), /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-1 pb-2 border-b-2 border-[#85C639]"
+    }, "Finalidades por tipo de titular"), /*#__PURE__*/ React.createElement("p", {
+        className: "text-slate-500 text-xs mb-4"
+    }, "Selecciona el tipo de titular para ver las finalidades aplicables."), /*#__PURE__*/ React.createElement("div", {
+        className: "flex flex-wrap gap-2 mb-4"
+    }, stakeholders.map((s)=>/*#__PURE__*/ React.createElement("button", {
+            key: s,
+            onClick: ()=>setActiveTab(s),
+            className: `px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all ${activeTab === s ? 'bg-[#2A4899] text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`
+        }, s))), /*#__PURE__*/ React.createElement("ul", {
+        className: "space-y-1.5"
+    }, PURPOSES[activeTab].map((p, i)=>/*#__PURE__*/ React.createElement("li", {
+            key: i,
+            className: "flex items-start gap-2.5 text-sm text-slate-600"
+        }, /*#__PURE__*/ React.createElement("span", {
+            className: "w-1.5 h-1.5 rounded-full bg-[#85C639] mt-1.5 flex-shrink-0"
+        }), p)))), /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]"
+    }, "Datos sensibles"), /*#__PURE__*/ React.createElement("div", {
+        className: "bg-amber-50 border border-amber-200 rounded-xl p-4"
+    }, /*#__PURE__*/ React.createElement("p", {
+        className: "text-xs font-bold text-amber-700 uppercase tracking-widest mb-2"
+    }, "Datos de salud"), /*#__PURE__*/ React.createElement("p", {
+        className: "text-sm text-slate-600 leading-relaxed"
+    }, "Se tratan exclusivamente para: gestión administrativa, cumplimiento de normas de seguridad y salud en el trabajo, trámites ante entidades de salud y seguridad social, gestión de riesgos laborales, prevención de enfermedades y accidentes, y verificación de riesgo de salud."))), /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]"
+    }, "Datos de menores de edad"), /*#__PURE__*/ React.createElement("p", {
+        className: "text-slate-600 text-sm leading-relaxed"
+    }, "INCAP S A puede requerir datos de menores únicamente para cumplir obligaciones legales (Ley 789 de 2002 — vinculación de aprendices; afiliación a seguridad social de dependientes). En caso de recolección directa de datos de menores, se solicitará autorización con consentimiento informado de los padres o adultos responsables.")));
 }
 function SectionDerechos() {
-    return (React.createElement("div", { className: "space-y-8" },
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]" }, "Derecho de Habeas Data"),
-            React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed mb-4" }, "Como titular de tus datos personales, tienes derecho a:"),
-            React.createElement("ul", { className: "space-y-3" }, RIGHTS.map((r, i) => (React.createElement("li", { key: i, className: "flex items-start gap-3" },
-                React.createElement("span", { className: "flex-shrink-0 w-6 h-6 rounded-full bg-[#2A4899] text-white text-[10px] font-black flex items-center justify-center mt-0.5" }, String.fromCharCode(97 + i).toUpperCase()),
-                React.createElement("span", { className: "text-slate-600 text-sm leading-relaxed" }, r)))))),
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]" }, "Tiempos de atenci\u00F3n"),
-            React.createElement("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-4" },
-                React.createElement("div", { className: "border-l-4 border-[#2A4899] pl-4" },
-                    React.createElement("p", { className: "font-black text-[#2A4899] text-sm uppercase tracking-wide mb-2" }, "Consulta"),
-                    React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed" },
-                        "M\u00E1ximo ",
-                        React.createElement("strong", null, "10 d\u00EDas h\u00E1biles"),
-                        " desde la recepci\u00F3n. Si no es posible, se informa y se responde en los ",
-                        React.createElement("strong", null, "5 d\u00EDas h\u00E1biles"),
-                        " siguientes.")),
-                React.createElement("div", { className: "border-l-4 border-[#85C639] pl-4" },
-                    React.createElement("p", { className: "font-black text-[#2A4899] text-sm uppercase tracking-wide mb-2" }, "Reclamo"),
-                    React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed" },
-                        "M\u00E1ximo ",
-                        React.createElement("strong", null, "15 d\u00EDas h\u00E1biles"),
-                        " desde la recepci\u00F3n. Si no es posible, se informa y se responde en los ",
-                        React.createElement("strong", null, "8 d\u00EDas h\u00E1biles"),
-                        " siguientes."))),
-            React.createElement("div", { className: "bg-slate-50 rounded-xl p-4 mt-4 text-xs text-slate-500 leading-relaxed" },
-                "Si el reclamo est\u00E1 incompleto, tienes ",
-                React.createElement("strong", null, "5 d\u00EDas"),
-                " para subsanarlo. Transcurridos 2 meses sin aportar la informaci\u00F3n solicitada, se entiende que has desistido del reclamo.")),
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]" }, "C\u00F3mo ejercer tus derechos"),
-            React.createElement("p", { className: "text-slate-600 text-sm mb-3" }, "Puedes ejercer tus derechos si eres titular o representante legal. Debes aportar:"),
-            React.createElement("ul", { className: "space-y-1.5 mb-4" }, [
-                'Nombres y apellidos completos',
-                'Tipo y número de identificación',
-                'Datos de contacto (dirección, correo, teléfono)',
-                'Descripción del derecho que deseas ejercer',
-                'Fotocopia del documento de identidad u otro documento que acredite tu representación',
-            ].map((item, i) => (React.createElement("li", { key: i, className: "flex items-start gap-2.5 text-sm text-slate-600" },
-                React.createElement("span", { className: "w-1.5 h-1.5 rounded-full bg-[#2A4899] mt-1.5 flex-shrink-0" }),
-                item)))),
-            React.createElement("div", { className: "bg-[#2A4899]/5 border border-[#2A4899]/20 rounded-xl p-4 text-sm text-slate-600 leading-relaxed" },
-                React.createElement("strong", { className: "text-[#2A4899]" }, "Responsable interno:"),
-                " Asistente de Tesorer\u00EDa de INCAP S A, quien tambi\u00E9n podr\u00E1 requerir otras \u00E1reas para verificar el cumplimiento de la normativa.")),
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]" }, "Canales de atenci\u00F3n"),
-            React.createElement("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3" }, CHANNELS.map((ch) => (React.createElement("div", { key: ch.label, className: "flex items-start gap-3 bg-slate-50 rounded-xl p-4" },
-                React.createElement("div", { className: "w-2 h-2 rounded-full bg-[#85C639] mt-1.5 flex-shrink-0" }),
-                React.createElement("div", null,
-                    React.createElement("p", { className: "text-[10px] font-black uppercase tracking-widest text-slate-400" }, ch.label),
-                    React.createElement("p", { className: "text-sm font-semibold text-[#181B1C]" }, ch.value)))))))));
+    return /*#__PURE__*/ React.createElement("div", {
+        className: "space-y-8"
+    }, /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]"
+    }, "Derecho de Habeas Data"), /*#__PURE__*/ React.createElement("p", {
+        className: "text-slate-600 text-sm leading-relaxed mb-4"
+    }, "Como titular de tus datos personales, tienes derecho a:"), /*#__PURE__*/ React.createElement("ul", {
+        className: "space-y-3"
+    }, RIGHTS.map((r, i)=>/*#__PURE__*/ React.createElement("li", {
+            key: i,
+            className: "flex items-start gap-3"
+        }, /*#__PURE__*/ React.createElement("span", {
+            className: "flex-shrink-0 w-6 h-6 rounded-full bg-[#2A4899] text-white text-[10px] font-black flex items-center justify-center mt-0.5"
+        }, String.fromCharCode(97 + i).toUpperCase()), /*#__PURE__*/ React.createElement("span", {
+            className: "text-slate-600 text-sm leading-relaxed"
+        }, r))))), /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]"
+    }, "Tiempos de atención"), /*#__PURE__*/ React.createElement("div", {
+        className: "grid grid-cols-1 sm:grid-cols-2 gap-4"
+    }, /*#__PURE__*/ React.createElement("div", {
+        className: "border-l-4 border-[#2A4899] pl-4"
+    }, /*#__PURE__*/ React.createElement("p", {
+        className: "font-black text-[#2A4899] text-sm uppercase tracking-wide mb-2"
+    }, "Consulta"), /*#__PURE__*/ React.createElement("p", {
+        className: "text-slate-600 text-sm leading-relaxed"
+    }, "Máximo ", /*#__PURE__*/ React.createElement("strong", null, "10 días hábiles"), " desde la recepción. Si no es posible, se informa y se responde en los ", /*#__PURE__*/ React.createElement("strong", null, "5 días hábiles"), " siguientes.")), /*#__PURE__*/ React.createElement("div", {
+        className: "border-l-4 border-[#85C639] pl-4"
+    }, /*#__PURE__*/ React.createElement("p", {
+        className: "font-black text-[#2A4899] text-sm uppercase tracking-wide mb-2"
+    }, "Reclamo"), /*#__PURE__*/ React.createElement("p", {
+        className: "text-slate-600 text-sm leading-relaxed"
+    }, "Máximo ", /*#__PURE__*/ React.createElement("strong", null, "15 días hábiles"), " desde la recepción. Si no es posible, se informa y se responde en los ", /*#__PURE__*/ React.createElement("strong", null, "8 días hábiles"), " siguientes."))), /*#__PURE__*/ React.createElement("div", {
+        className: "bg-slate-50 rounded-xl p-4 mt-4 text-xs text-slate-500 leading-relaxed"
+    }, "Si el reclamo está incompleto, tienes ", /*#__PURE__*/ React.createElement("strong", null, "5 días"), " para subsanarlo. Transcurridos 2 meses sin aportar la información solicitada, se entiende que has desistido del reclamo.")), /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]"
+    }, "Cómo ejercer tus derechos"), /*#__PURE__*/ React.createElement("p", {
+        className: "text-slate-600 text-sm mb-3"
+    }, "Puedes ejercer tus derechos si eres titular o representante legal. Debes aportar:"), /*#__PURE__*/ React.createElement("ul", {
+        className: "space-y-1.5 mb-4"
+    }, [
+        'Nombres y apellidos completos',
+        'Tipo y número de identificación',
+        'Datos de contacto (dirección, correo, teléfono)',
+        'Descripción del derecho que deseas ejercer',
+        'Fotocopia del documento de identidad u otro documento que acredite tu representación'
+    ].map((item, i)=>/*#__PURE__*/ React.createElement("li", {
+            key: i,
+            className: "flex items-start gap-2.5 text-sm text-slate-600"
+        }, /*#__PURE__*/ React.createElement("span", {
+            className: "w-1.5 h-1.5 rounded-full bg-[#2A4899] mt-1.5 flex-shrink-0"
+        }), item))), /*#__PURE__*/ React.createElement("div", {
+        className: "bg-[#2A4899]/5 border border-[#2A4899]/20 rounded-xl p-4 text-sm text-slate-600 leading-relaxed"
+    }, /*#__PURE__*/ React.createElement("strong", {
+        className: "text-[#2A4899]"
+    }, "Responsable interno:"), " Asistente de Tesorería de INCAP S A, quien también podrá requerir otras áreas para verificar el cumplimiento de la normativa.")), /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]"
+    }, "Canales de atención"), /*#__PURE__*/ React.createElement("div", {
+        className: "grid grid-cols-1 sm:grid-cols-2 gap-3"
+    }, CHANNELS.map((ch)=>/*#__PURE__*/ React.createElement("div", {
+            key: ch.label,
+            className: "flex items-start gap-3 bg-slate-50 rounded-xl p-4"
+        }, /*#__PURE__*/ React.createElement("div", {
+            className: "w-2 h-2 rounded-full bg-[#85C639] mt-1.5 flex-shrink-0"
+        }), /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("p", {
+            className: "text-[10px] font-black uppercase tracking-widest text-slate-400"
+        }, ch.label), /*#__PURE__*/ React.createElement("p", {
+            className: "text-sm font-semibold text-[#181B1C]"
+        }, ch.value)))))));
 }
 function SectionAspectos() {
-    return (React.createElement("div", { className: "space-y-8" },
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]" }, "Disposiciones permanentes"),
-            React.createElement("div", { className: "space-y-3" }, [
-                { title: 'Vínculo con la política', desc: 'Cualquier titular de la información que tenga alguna relación con INCAP S A deberá acatar la presente política.' },
-                { title: 'Principios garantizados', desc: 'INCAP S A garantiza los principios de legalidad, finalidad, libertad, veracidad o calidad, transparencia, acceso y circulación restringida, seguridad y confidencialidad.' },
-                { title: 'Inscripción RNBD', desc: 'INCAP S A llevará a cabo la inscripción de sus bases de datos conforme al Decreto 090 de enero de 2018 que modifica el Decreto 1074 de 2015.' },
-            ].map(({ title, desc }) => (React.createElement("div", { key: title, className: "border border-slate-200 rounded-xl p-4" },
-                React.createElement("p", { className: "font-black text-[#2A4899] text-xs uppercase tracking-widest mb-2" }, title),
-                React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed" }, desc)))))),
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]" }, "Vigencia"),
-            React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed" }, "Las bases de datos tendr\u00E1n una vigencia igual al tiempo en que se mantenga y utilice la informaci\u00F3n para las finalidades descritas en esta pol\u00EDtica. Los datos se conservar\u00E1n mientras se mantenga la relaci\u00F3n contractual con el Titular o mientras no se solicite su supresi\u00F3n, siempre que no exista un deber legal de conservarlos.")),
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]" }, "Versi\u00F3n y vigencia"),
-            React.createElement("div", { className: "overflow-x-auto" },
-                React.createElement("table", { className: "w-full text-sm" },
-                    React.createElement("tbody", null, [
-                        ['Versión', '2'],
-                        ['Fecha de entrada en vigor', '28/03/2025'],
-                        ['Reemplaza la política anterior de', '31/03/2022'],
-                    ].map(([k, v]) => (React.createElement("tr", { key: k, className: "border-b border-slate-100" },
-                        React.createElement("td", { className: "py-2 pr-4 text-slate-500 font-semibold text-xs uppercase tracking-wide w-52" }, k),
-                        React.createElement("td", { className: "py-2 text-[#181B1C] font-medium" }, v)))))))),
-        React.createElement("div", { className: "bg-slate-50 rounded-xl p-4 border border-slate-200" },
-            React.createElement("p", { className: "text-xs font-black text-slate-400 uppercase tracking-widest mb-2" }, "Actualizaci\u00F3n de canales \u2014 10/MAR/2025"),
-            React.createElement("p", { className: "text-sm text-slate-600 leading-relaxed" }, "INCAP S A actualiz\u00F3 sus canales de atenci\u00F3n para gestionar solicitudes, consultas y reclamos relacionados con el tratamiento de datos personales, fortaleciendo la capacidad de respuesta y facilitando el ejercicio de derechos mediante medios modernos y con disponibilidad continua."))));
+    return /*#__PURE__*/ React.createElement("div", {
+        className: "space-y-8"
+    }, /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]"
+    }, "Disposiciones permanentes"), /*#__PURE__*/ React.createElement("div", {
+        className: "space-y-3"
+    }, [
+        {
+            title: 'Vínculo con la política',
+            desc: 'Cualquier titular de la información que tenga alguna relación con INCAP S A deberá acatar la presente política.'
+        },
+        {
+            title: 'Principios garantizados',
+            desc: 'INCAP S A garantiza los principios de legalidad, finalidad, libertad, veracidad o calidad, transparencia, acceso y circulación restringida, seguridad y confidencialidad.'
+        },
+        {
+            title: 'Inscripción RNBD',
+            desc: 'INCAP S A llevará a cabo la inscripción de sus bases de datos conforme al Decreto 090 de enero de 2018 que modifica el Decreto 1074 de 2015.'
+        }
+    ].map(({ title, desc })=>/*#__PURE__*/ React.createElement("div", {
+            key: title,
+            className: "border border-slate-200 rounded-xl p-4"
+        }, /*#__PURE__*/ React.createElement("p", {
+            className: "font-black text-[#2A4899] text-xs uppercase tracking-widest mb-2"
+        }, title), /*#__PURE__*/ React.createElement("p", {
+            className: "text-slate-600 text-sm leading-relaxed"
+        }, desc))))), /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]"
+    }, "Vigencia"), /*#__PURE__*/ React.createElement("p", {
+        className: "text-slate-600 text-sm leading-relaxed"
+    }, "Las bases de datos tendrán una vigencia igual al tiempo en que se mantenga y utilice la información para las finalidades descritas en esta política. Los datos se conservarán mientras se mantenga la relación contractual con el Titular o mientras no se solicite su supresión, siempre que no exista un deber legal de conservarlos.")), /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]"
+    }, "Versión y vigencia"), /*#__PURE__*/ React.createElement("div", {
+        className: "overflow-x-auto"
+    }, /*#__PURE__*/ React.createElement("table", {
+        className: "w-full text-sm"
+    }, /*#__PURE__*/ React.createElement("tbody", null, [
+        [
+            'Versión',
+            '2'
+        ],
+        [
+            'Fecha de entrada en vigor',
+            '28/03/2025'
+        ],
+        [
+            'Reemplaza la política anterior de',
+            '31/03/2022'
+        ]
+    ].map(([k, v])=>/*#__PURE__*/ React.createElement("tr", {
+            key: k,
+            className: "border-b border-slate-100"
+        }, /*#__PURE__*/ React.createElement("td", {
+            className: "py-2 pr-4 text-slate-500 font-semibold text-xs uppercase tracking-wide w-52"
+        }, k), /*#__PURE__*/ React.createElement("td", {
+            className: "py-2 text-[#181B1C] font-medium"
+        }, v))))))), /*#__PURE__*/ React.createElement("div", {
+        className: "bg-slate-50 rounded-xl p-4 border border-slate-200"
+    }, /*#__PURE__*/ React.createElement("p", {
+        className: "text-xs font-black text-slate-400 uppercase tracking-widest mb-2"
+    }, "Actualización de canales — 10/MAR/2025"), /*#__PURE__*/ React.createElement("p", {
+        className: "text-sm text-slate-600 leading-relaxed"
+    }, "INCAP S A actualizó sus canales de atención para gestionar solicitudes, consultas y reclamos relacionados con el tratamiento de datos personales, fortaleciendo la capacidad de respuesta y facilitando el ejercicio de derechos mediante medios modernos y con disponibilidad continua.")));
 }
 function SectionAvisos() {
-    return (React.createElement("div", { className: "space-y-8" },
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]" }, "Video Vigilancia (CCTV)"),
-            React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed mb-4" },
-                "Los videos y/o audios obtenidos a trav\u00E9s del CCTV o c\u00E1maras de vigilancia son almacenados de manera temporal y confidencial. ",
-                React.createElement("strong", null, "El ingreso voluntario a las instalaciones constituye autorizaci\u00F3n libre, previa e informada"),
-                " para la captaci\u00F3n de imagen y tratamiento de datos conforme a las siguientes finalidades:"),
-            React.createElement("ul", { className: "space-y-1.5 mb-6" }, [
-                'Atender requerimientos de autoridades judiciales o administrativas',
-                'Realizar actividades de gestión administrativa',
-                'Adelantar investigaciones ante situaciones de riesgo o violaciones a la seguridad',
-                'Gestionar la seguridad en todos sus aspectos',
-                'Preservar la seguridad de los activos y personas',
-                'Gestionar riesgos o accidentes dentro de las instalaciones',
-            ].map((item, i) => (React.createElement("li", { key: i, className: "flex items-start gap-2.5 text-sm text-slate-600" },
-                React.createElement("span", { className: "w-1.5 h-1.5 rounded-full bg-[#2A4899] mt-1.5 flex-shrink-0" }),
-                item))))),
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]" }, "Datos de menores de edad (todos los avisos)"),
-            React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed" }, "Si proporciona datos de un menor, declara ser padre, madre, tutor o representante legal y autoriza su tratamiento. Si la informaci\u00F3n es proporcionada directamente por un menor, este tiene el deber de informar a un adulto responsable. Tanto el representante legal como el propio menor podr\u00E1n ejercer sus derechos en cualquier momento.")),
-        React.createElement("div", null,
-            React.createElement("h3", { className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]" }, "Tus derechos como titular"),
-            React.createElement("ul", { className: "space-y-2" }, [
-                'Acceder a sus datos personales y conocer el tratamiento que se les ha dado.',
-                'Solicitar la actualización, corrección o rectificación de su información.',
-                'Solicitar información sobre el uso que se ha dado a sus datos.',
-                'Revocar la autorización y/o solicitar la supresión de sus datos cuando sea procedente.',
-                'Oponerse al tratamiento en los casos permitidos por la normativa.',
-                'Abstenerse de suministrar datos sensibles o datos de menores, salvo los autorizados por la ley.',
-                'Presentar consultas, quejas o reclamos ante el responsable o la autoridad competente.',
-            ].map((r, i) => (React.createElement("li", { key: i, className: "flex items-start gap-2.5 text-sm text-slate-600" },
-                React.createElement("span", { className: "flex-shrink-0 text-[#85C639] font-black" },
-                    "(",
-                    ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii'][i],
-                    ")"),
-                r)))),
-            React.createElement("div", { className: "mt-4 bg-[#181B1C] rounded-xl p-4" },
-                React.createElement("p", { className: "text-white text-sm" },
-                    "Para ejercer tus derechos escr\u00EDbenos a ",
-                    React.createElement("span", { className: "text-[#85C639] font-bold" }, "protecciondedatos@incap.com.co"),
-                    " o ingresa a ",
-                    React.createElement("span", { className: "text-[#85C639] font-bold" }, "incap.dataprotected.co"))))));
+    return /*#__PURE__*/ React.createElement("div", {
+        className: "space-y-8"
+    }, /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]"
+    }, "Video Vigilancia (CCTV)"), /*#__PURE__*/ React.createElement("p", {
+        className: "text-slate-600 text-sm leading-relaxed mb-4"
+    }, "Los videos y/o audios obtenidos a través del CCTV o cámaras de vigilancia son almacenados de manera temporal y confidencial. ", /*#__PURE__*/ React.createElement("strong", null, "El ingreso voluntario a las instalaciones constituye autorización libre, previa e informada"), " para la captación de imagen y tratamiento de datos conforme a las siguientes finalidades:"), /*#__PURE__*/ React.createElement("ul", {
+        className: "space-y-1.5 mb-6"
+    }, [
+        'Atender requerimientos de autoridades judiciales o administrativas',
+        'Realizar actividades de gestión administrativa',
+        'Adelantar investigaciones ante situaciones de riesgo o violaciones a la seguridad',
+        'Gestionar la seguridad en todos sus aspectos',
+        'Preservar la seguridad de los activos y personas',
+        'Gestionar riesgos o accidentes dentro de las instalaciones'
+    ].map((item, i)=>/*#__PURE__*/ React.createElement("li", {
+            key: i,
+            className: "flex items-start gap-2.5 text-sm text-slate-600"
+        }, /*#__PURE__*/ React.createElement("span", {
+            className: "w-1.5 h-1.5 rounded-full bg-[#2A4899] mt-1.5 flex-shrink-0"
+        }), item)))), /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]"
+    }, "Datos de menores de edad (todos los avisos)"), /*#__PURE__*/ React.createElement("p", {
+        className: "text-slate-600 text-sm leading-relaxed"
+    }, "Si proporciona datos de un menor, declara ser padre, madre, tutor o representante legal y autoriza su tratamiento. Si la información es proporcionada directamente por un menor, este tiene el deber de informar a un adulto responsable. Tanto el representante legal como el propio menor podrán ejercer sus derechos en cualquier momento.")), /*#__PURE__*/ React.createElement("div", null, /*#__PURE__*/ React.createElement("h3", {
+        className: "text-lg font-black text-[#181B1C] uppercase tracking-tight mb-4 pb-2 border-b-2 border-[#85C639]"
+    }, "Tus derechos como titular"), /*#__PURE__*/ React.createElement("ul", {
+        className: "space-y-2"
+    }, [
+        'Acceder a sus datos personales y conocer el tratamiento que se les ha dado.',
+        'Solicitar la actualización, corrección o rectificación de su información.',
+        'Solicitar información sobre el uso que se ha dado a sus datos.',
+        'Revocar la autorización y/o solicitar la supresión de sus datos cuando sea procedente.',
+        'Oponerse al tratamiento en los casos permitidos por la normativa.',
+        'Abstenerse de suministrar datos sensibles o datos de menores, salvo los autorizados por la ley.',
+        'Presentar consultas, quejas o reclamos ante el responsable o la autoridad competente.'
+    ].map((r, i)=>/*#__PURE__*/ React.createElement("li", {
+            key: i,
+            className: "flex items-start gap-2.5 text-sm text-slate-600"
+        }, /*#__PURE__*/ React.createElement("span", {
+            className: "flex-shrink-0 text-[#85C639] font-black"
+        }, "(", [
+            'i',
+            'ii',
+            'iii',
+            'iv',
+            'v',
+            'vi',
+            'vii'
+        ][i], ")"), r))), /*#__PURE__*/ React.createElement("div", {
+        className: "mt-4 bg-[#181B1C] rounded-xl p-4"
+    }, /*#__PURE__*/ React.createElement("p", {
+        className: "text-white text-sm"
+    }, "Para ejercer tus derechos escríbenos a ", /*#__PURE__*/ React.createElement("span", {
+        className: "text-[#85C639] font-bold"
+    }, "protecciondedatos@incap.com.co"), " o ingresa a ", /*#__PURE__*/ React.createElement("span", {
+        className: "text-[#85C639] font-bold"
+    }, "incap.dataprotected.co")))));
 }
 export default function PoliticaDatosPage() {
-    var _a, _b;
     const [activeSection, setActiveSection] = useState('general');
     const sections = {
-        general: React.createElement(SectionGeneral, null),
-        definiciones: React.createElement(SectionDefiniciones, null),
-        tratamiento: React.createElement(SectionTratamiento, null),
-        derechos: React.createElement(SectionDerechos, null),
-        aspectos: React.createElement(SectionAspectos, null),
-        avisos: React.createElement(SectionAvisos, null),
+        general: /*#__PURE__*/ React.createElement(SectionGeneral, null),
+        definiciones: /*#__PURE__*/ React.createElement(SectionDefiniciones, null),
+        tratamiento: /*#__PURE__*/ React.createElement(SectionTratamiento, null),
+        derechos: /*#__PURE__*/ React.createElement(SectionDerechos, null),
+        aspectos: /*#__PURE__*/ React.createElement(SectionAspectos, null),
+        avisos: /*#__PURE__*/ React.createElement(SectionAvisos, null)
     };
-    return (React.createElement("div", { className: "min-h-screen bg-white font-sora -mt-[90px]" },
-        React.createElement("div", { className: "bg-[#181B1C] pt-[90px] pb-16 px-4" },
-            React.createElement("div", { className: "max-w-[1536px] mx-auto" },
-                React.createElement("span", { className: "text-[#85C639] font-black uppercase tracking-[0.5em] text-xs block mb-4" }, "INCAP S A \u00B7 NIT 860025998-3"),
-                React.createElement("h1", { className: "text-4xl sm:text-6xl md:text-7xl font-black text-white uppercase leading-none tracking-tighter mb-4" },
-                    "Pol\u00EDtica de",
-                    React.createElement("br", null),
-                    React.createElement("span", { className: "text-[#2A4899]" }, "Tratamiento"),
-                    React.createElement("br", null),
-                    "de Datos"),
-                React.createElement("p", { className: "text-slate-400 text-sm md:text-base max-w-xl leading-relaxed" }, "Hemos organizado nuestra pol\u00EDtica en secciones para facilitar su lectura y comprensi\u00F3n. Selecciona la secci\u00F3n que te interesa."),
-                React.createElement("div", { className: "flex items-center gap-3 mt-6 text-xs text-slate-500" },
-                    React.createElement("span", { className: "bg-white/10 px-3 py-1 rounded-full" }, "Versi\u00F3n 2"),
-                    React.createElement("span", { className: "bg-white/10 px-3 py-1 rounded-full" }, "Vigente desde 28/03/2025"),
-                    React.createElement("span", { className: "bg-white/10 px-3 py-1 rounded-full" }, "Ley 1581 de 2012")))),
-        React.createElement("div", { className: "lg:hidden overflow-x-auto border-b border-slate-200 bg-white sticky top-0 z-20" },
-            React.createElement("div", { className: "flex min-w-max px-4" }, NAV_SECTIONS.map((s) => (React.createElement("button", { key: s.id, onClick: () => setActiveSection(s.id), className: `px-4 py-3.5 text-xs font-black uppercase tracking-wide whitespace-nowrap border-b-2 transition-colors ${activeSection === s.id ? 'border-[#2A4899] text-[#2A4899]' : 'border-transparent text-slate-400 hover:text-slate-600'}` }, s.label))))),
-        React.createElement("div", { className: "max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-12" },
-            React.createElement("div", { className: "flex gap-10" },
-                React.createElement("aside", { className: "hidden lg:block w-64 flex-shrink-0" },
-                    React.createElement("div", { className: "sticky top-8 space-y-1" },
-                        React.createElement("p", { className: "text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-4 px-3" }, "Secciones"),
-                        NAV_SECTIONS.map((s) => (React.createElement("button", { key: s.id, onClick: () => setActiveSection(s.id), className: `w-full flex items-center gap-3 px-3 py-3 rounded-xl text-left transition-all text-sm font-semibold ${activeSection === s.id ? 'bg-[#2A4899] text-white' : 'text-slate-600 hover:bg-slate-50 hover:text-[#2A4899]'}` },
-                            React.createElement("span", { className: "text-base" }, s.icon),
-                            s.label))),
-                        React.createElement(ContactCard, null))),
-                React.createElement("main", { className: "flex-1 min-w-0" },
-                    React.createElement("div", { className: "bg-white rounded-2xl border border-slate-100 shadow-sm p-6 md:p-10" },
-                        React.createElement("div", { className: "flex items-center gap-3 mb-8" },
-                            React.createElement("span", { className: "text-2xl" }, (_a = NAV_SECTIONS.find(s => s.id === activeSection)) === null || _a === void 0 ? void 0 : _a.icon),
-                            React.createElement("h2", { className: "text-2xl font-black text-[#181B1C] uppercase tracking-tight" }, (_b = NAV_SECTIONS.find(s => s.id === activeSection)) === null || _b === void 0 ? void 0 : _b.label)),
-                        sections[activeSection]),
-                    React.createElement("div", { className: "lg:hidden mt-6" },
-                        React.createElement(ContactCard, null)))))));
+    return /*#__PURE__*/ React.createElement("div", {
+        className: "min-h-screen bg-white font-sora -mt-[90px]"
+    }, /*#__PURE__*/ React.createElement("div", {
+        className: "bg-[#181B1C] pt-[90px] pb-16 px-4"
+    }, /*#__PURE__*/ React.createElement("div", {
+        className: "max-w-[1536px] mx-auto"
+    }, /*#__PURE__*/ React.createElement("span", {
+        className: "text-[#85C639] font-black uppercase tracking-[0.5em] text-xs block mb-4"
+    }, "INCAP S A · NIT 860025998-3"), /*#__PURE__*/ React.createElement("h1", {
+        className: "text-4xl sm:text-6xl md:text-7xl font-black text-white uppercase leading-none tracking-tighter mb-4"
+    }, "Política de", /*#__PURE__*/ React.createElement("br", null), /*#__PURE__*/ React.createElement("span", {
+        className: "text-[#2A4899]"
+    }, "Tratamiento"), /*#__PURE__*/ React.createElement("br", null), "de Datos"), /*#__PURE__*/ React.createElement("p", {
+        className: "text-slate-400 text-sm md:text-base max-w-xl leading-relaxed"
+    }, "Hemos organizado nuestra política en secciones para facilitar su lectura y comprensión. Selecciona la sección que te interesa."), /*#__PURE__*/ React.createElement("div", {
+        className: "flex items-center gap-3 mt-6 text-xs text-slate-500"
+    }, /*#__PURE__*/ React.createElement("span", {
+        className: "bg-white/10 px-3 py-1 rounded-full"
+    }, "Versión 2"), /*#__PURE__*/ React.createElement("span", {
+        className: "bg-white/10 px-3 py-1 rounded-full"
+    }, "Vigente desde 28/03/2025"), /*#__PURE__*/ React.createElement("span", {
+        className: "bg-white/10 px-3 py-1 rounded-full"
+    }, "Ley 1581 de 2012")))), /*#__PURE__*/ React.createElement("div", {
+        className: "lg:hidden overflow-x-auto border-b border-slate-200 bg-white sticky top-0 z-20"
+    }, /*#__PURE__*/ React.createElement("div", {
+        className: "flex min-w-max px-4"
+    }, NAV_SECTIONS.map((s)=>/*#__PURE__*/ React.createElement("button", {
+            key: s.id,
+            onClick: ()=>setActiveSection(s.id),
+            className: `px-4 py-3.5 text-xs font-black uppercase tracking-wide whitespace-nowrap border-b-2 transition-colors ${activeSection === s.id ? 'border-[#2A4899] text-[#2A4899]' : 'border-transparent text-slate-400 hover:text-slate-600'}`
+        }, s.label)))), /*#__PURE__*/ React.createElement("div", {
+        className: "max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-12"
+    }, /*#__PURE__*/ React.createElement("div", {
+        className: "flex gap-10"
+    }, /*#__PURE__*/ React.createElement("aside", {
+        className: "hidden lg:block w-64 flex-shrink-0"
+    }, /*#__PURE__*/ React.createElement("div", {
+        className: "sticky top-8 space-y-1"
+    }, /*#__PURE__*/ React.createElement("p", {
+        className: "text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-4 px-3"
+    }, "Secciones"), NAV_SECTIONS.map((s)=>/*#__PURE__*/ React.createElement("button", {
+            key: s.id,
+            onClick: ()=>setActiveSection(s.id),
+            className: `w-full flex items-center gap-3 px-3 py-3 rounded-xl text-left transition-all text-sm font-semibold ${activeSection === s.id ? 'bg-[#2A4899] text-white' : 'text-slate-600 hover:bg-slate-50 hover:text-[#2A4899]'}`
+        }, /*#__PURE__*/ React.createElement("span", {
+            className: "text-base"
+        }, s.icon), s.label)), /*#__PURE__*/ React.createElement(ContactCard, null))), /*#__PURE__*/ React.createElement("main", {
+        className: "flex-1 min-w-0"
+    }, /*#__PURE__*/ React.createElement("div", {
+        className: "bg-white rounded-2xl border border-slate-100 shadow-sm p-6 md:p-10"
+    }, /*#__PURE__*/ React.createElement("div", {
+        className: "flex items-center gap-3 mb-8"
+    }, /*#__PURE__*/ React.createElement("span", {
+        className: "text-2xl"
+    }, NAV_SECTIONS.find((s)=>s.id === activeSection)?.icon), /*#__PURE__*/ React.createElement("h2", {
+        className: "text-2xl font-black text-[#181B1C] uppercase tracking-tight"
+    }, NAV_SECTIONS.find((s)=>s.id === activeSection)?.label)), sections[activeSection]), /*#__PURE__*/ React.createElement("div", {
+        className: "lg:hidden mt-6"
+    }, /*#__PURE__*/ React.createElement(ContactCard, null))))));
 }
 export const layout = {
     areaId: 'content',
-    sortOrder: 1,
+    sortOrder: 1
 };
-//# sourceMappingURL=PoliticaDatosPage.js.map

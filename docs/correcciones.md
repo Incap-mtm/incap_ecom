@@ -116,9 +116,9 @@ Banners Rotativos (Home)
       Prioridad: media. Implementar cuando el cliente confirme que necesita autogestión.
  2. En le header a la derecha arriba, discretamente Agregar dos link de catálogo Pdf y Nuevos productos en Header lado Derecho - (descarga de PDF) → URLs de PDF desde Settings cuando estén disponibles. BLOQUEADO: catálogo digital no finalizado
  3. En el detalle de Producto: 
-    1. Quitar temporalmente Cantidad, Precio y add to cart ⏳ Pendiente
-    2. Mover la Descripción a Debajo del Título ⏳ Pendiente
-    3. Agregar un boton de "Descargar Ficha Técnica" (Al hacer clic, abre un formulario con los cambos Nombre completo, Correo electrónico, Teléfono. Al completar descarga la Ficha Técica, el boton aparece si hay asignado una ficha técnica desde admin), Se envía a correo inicialmente, y el pdf si se almacena en app/media → F2.2 ya hecho (atributo ficha_tecnica_url disponible en DB); pendiente implementar UI del botón y formulario
+    1. Quitar temporalmente Cantidad, Precio y add to cart ✅ Hecho — oculto via CSS `#productForm { display: none }` en Head.tsx
+    2. Mover la Descripción a Debajo del Título ✅ Hecho — ProductDescription en sortOrder 3 (después de ProductHeaderInfo sortOrder 1); elementos nativos ocultos via CSS
+    3. Agregar un botón de "Descargar Ficha Técnica" ✅ Hecho — modal con formulario nombre/email/teléfono, API /ficha-lead con rate limit y notificación Resend opcional; aparece solo si ficha_tecnica_url está asignado en admin. Pendiente: asignar PDFs a productos y configurar RESEND_API_KEY en Railway
 4. Integrar página de distribuidores con Google Maps ✅ Hecho — mapa Google Maps JS API con pines por ciudad, panel lateral con búsqueda y filtros; coordenadas geocodificadas con Nominatim (28 exactas, 53 por ciudad)
 
 
@@ -149,10 +149,23 @@ Catálogo con Filtros
 DECISIÓN ARQUITECTURAL: Migrar al sistema nativo de variantes de EverShop ANTES de implementar filtros.
 Script de migración sobre 322 productos: crea productos padre + vincula variantes de Tamaño.
 
-1 Agrupar Productos por variantes: Las variantes serán Tamaño y Color ⏳ Pendiente
-    Convención nombres: [Nombre completo] - [Tamaño] (ej: "MAXON Blanco - 1 Galón"). "Blanco" es parte del nombre.
-    Familias = productos con mismo nombre base (izquierda del " - "). Ej: todos los "MAXON Blanco" = 1 familia.
-    Todos los nombres de familias y productos en MAYÚSCULAS
+1 Agrupar Productos por variantes: Las variantes serán Tamaño y Color ✅ Hecho (2026-05-25)
+    Convención nombres: [Nombre completo] - [Tamaño] (ej: "Maxón Blanco - 4.5 Gal"). "Blanco" es parte del nombre.
+    Familias = productos con mismo nombre base (izquierda del " - "). Ej: todos los "Maxón Blanco" = 1 familia.
+    Implementado:
+      - 322 productos migrados: 69 variant_groups, 36 attribute_options de tamaño
+      - SizeSelector en ficha de producto: chips de tamaños por familia, tamaño actual resaltado
+      - IndustryPage agrupa por familia: una card por familia con chips de presentación
+      - scripts/migrate-variantes.mjs: incremental — agrega nuevas variantes a familias ya migradas
+
+    BACKLOG — Administración de variantes desde el admin (mejora posterior):
+      Problema: al crear un producto nuevo desde el admin, la agrupación en /industrias/* funciona
+      automáticamente (solo requiere nombre correcto), pero el SizeSelector en la ficha de producto
+      NO aparece hasta que se ejecute el script de migración.
+      Flujo actual: Admin crea producto → ejecutar `node scripts/migrate-variantes.mjs` → SizeSelector activo.
+      Mejora propuesta: botón en el admin ("Sincronizar variantes") que dispare el script via API REST,
+      eliminando la necesidad de acceso técnico al servidor para cada nuevo producto.
+      Complejidad: media. Requiere endpoint API protegido (solo admin) que ejecute el script y retorne log.
 
 2. En la industria Calzados y Marroquinería: Se debe crear las categorías ⏳ Pendiente
     Adhesivos → variante de tamaños
@@ -179,4 +192,5 @@ Script de migración sobre 322 productos: crea productos padre + vincula variant
 | Páginas de Políticas | Falta contenido / redacción legal |
 | Redes sociales (Footer Col 1) | Falta URLs de perfiles oficiales del cliente |
 | Blog link (Navbar) | WordPress pendiente de crear |
-| Ficha Técnica — botón en producto | F2.2 ✅ listo; pendiente implementar UI del formulario de descarga |
+| Ficha Técnica — asignar PDFs a productos | Modal y API ✅ listos; cliente debe subir PDFs y asignar `ficha_tecnica_url` en admin → Productos |
+| Ficha Técnica — email de notificación | Configurar `RESEND_API_KEY` en Railway variables de entorno |

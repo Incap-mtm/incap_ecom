@@ -1,4 +1,3 @@
-export default function () {
-    // No cron jobs registered
+export default function() {
+// No cron jobs registered
 }
-//# sourceMappingURL=bootstrap.js.map

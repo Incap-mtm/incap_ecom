@@ -125,48 +125,39 @@ export default function IndustryPage() {
   const uniqueProducts = Array.from(new Map(realProductsRaw.map((p: any) => [p.productId, p])).values());
   const realProducts = uniqueProducts.filter((p: any) => p.status === 1);
 
-  const families = useMemo(() => {
-    const counts: Record<string, number> = {};
+  // Agrupar productos por familia — una card por familia
+  const familyGroups = useMemo(() => {
+    const map = new Map<string, any[]>();
     realProducts.forEach((p: any) => {
       const fam = getFamily(p.name);
-      counts[fam] = (counts[fam] || 0) + 1;
+      if (!map.has(fam)) map.set(fam, []);
+      map.get(fam)!.push(p);
     });
-    return Object.entries(counts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+    return Array.from(map.entries())
+      .map(([family, products]) => ({
+        family,
+        products,
+        representative: products.find((p: any) => p.image?.url) || products[0],
+      }))
+      .sort((a, b) => b.products.length - a.products.length || a.family.localeCompare(b.family));
   }, [realProducts]);
 
+  const families = familyGroups.map(g => [g.family, g.products.length] as [string, number]);
+
   const [activeFamily, setActiveFamily] = useState<string>('');
-  const [activePresentation, setActivePresentation] = useState<string>('');
 
   useEffect(() => {
     try {
       const params = new URLSearchParams(window.location.search);
       setActiveFamily(params.get('familia') || '');
-      setActivePresentation('');
     } catch {
       setActiveFamily('');
-      setActivePresentation('');
     }
   }, [data.id]);
 
-  const filteredByFamily = activeFamily
-    ? realProducts.filter((p: any) => getFamily(p.name) === activeFamily)
-    : realProducts;
-
-  const presentations = useMemo(() => {
-    const seen = new Set<string>();
-    filteredByFamily.forEach((p: any) => {
-      const pres = getPresentation(p.name);
-      if (pres) seen.add(pres);
-    });
-    return Array.from(seen).sort((a, b) => {
-      const num = (s: string) => parseFloat(s.replace(/[^\d.]/g, '')) || 0;
-      return num(a) - num(b);
-    });
-  }, [filteredByFamily]);
-
-  const filteredProducts = activePresentation
-    ? filteredByFamily.filter((p: any) => getPresentation(p.name) === activePresentation)
-    : filteredByFamily;
+  const filteredGroups = activeFamily
+    ? familyGroups.filter(g => g.family === activeFamily)
+    : familyGroups;
 
   return (
     <div className="min-h-screen animate-fadeIn bg-white font-sora -mt-[90px]">
@@ -194,21 +185,18 @@ export default function IndustryPage() {
            <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-[#181B1C] font-sora mb-8 md:mb-12 uppercase text-center tracking-tighter">Portafolio Técnico</h2>
 
            {/* Barra de filtros */}
-           {!result.fetching && realProducts.length > 0 && (
+           {!result.fetching && familyGroups.length > 0 && (
              <div style={{ marginBottom: '40px' }}>
                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '12px 16px' }}>
-                 {/* Label */}
                  <span style={{ fontSize: '9px', fontWeight: 800, color: '#94a3b8', letterSpacing: '0.25em', textTransform: 'uppercase', flexShrink: 0 }}>Filtrar</span>
-
                  <div style={{ width: '1px', height: '20px', background: '#e2e8f0', flexShrink: 0 }} />
 
-                 {/* Familia */}
                  {families.length > 1 && (
                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
                      <div style={{ position: 'relative' }}>
                        <select
                          value={activeFamily}
-                         onChange={e => { setActiveFamily(e.target.value); setActivePresentation(''); }}
+                         onChange={e => setActiveFamily(e.target.value)}
                          style={{
                            appearance: 'none', WebkitAppearance: 'none',
                            padding: '7px 32px 7px 12px', borderRadius: '8px', border: 'none',
@@ -218,9 +206,9 @@ export default function IndustryPage() {
                            fontFamily: 'Sora, sans-serif', outline: 'none',
                          }}
                        >
-                         <option value="">Familia</option>
+                         <option value="">Todos los productos</option>
                          {families.map(([fam, count]) => (
-                           <option key={fam} value={fam}>{fam} ({count})</option>
+                           <option key={fam} value={fam}>{fam} ({count} presentaciones)</option>
                          ))}
                        </select>
                        <svg style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} width="10" height="10" fill="none" stroke={activeFamily ? '#fff' : '#94a3b8'} viewBox="0 0 24 24">
@@ -228,7 +216,7 @@ export default function IndustryPage() {
                        </svg>
                      </div>
                      {activeFamily && (
-                       <button onClick={() => { setActiveFamily(''); setActivePresentation(''); }}
+                       <button onClick={() => setActiveFamily('')}
                          style={{ width: '22px', height: '22px', borderRadius: '50%', border: 'none', background: '#e2e8f0', color: '#64748b', cursor: 'pointer', fontSize: '13px', lineHeight: 1, padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>
                          ×
                        </button>
@@ -236,43 +224,8 @@ export default function IndustryPage() {
                    </div>
                  )}
 
-                 {/* Presentación */}
-                 {presentations.length > 1 && (
-                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
-                     <div style={{ position: 'relative' }}>
-                       <select
-                         value={activePresentation}
-                         onChange={e => setActivePresentation(e.target.value)}
-                         style={{
-                           appearance: 'none', WebkitAppearance: 'none',
-                           padding: '7px 32px 7px 12px', borderRadius: '8px', border: 'none',
-                           background: activePresentation ? '#2A4899' : '#f8fafc',
-                           color: activePresentation ? '#fff' : '#374151',
-                           fontSize: '12px', fontWeight: 700, cursor: 'pointer',
-                           fontFamily: 'Sora, sans-serif', outline: 'none',
-                         }}
-                       >
-                         <option value="">Presentación</option>
-                         {presentations.map(p => (
-                           <option key={p} value={p}>{p}</option>
-                         ))}
-                       </select>
-                       <svg style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} width="10" height="10" fill="none" stroke={activePresentation ? '#fff' : '#94a3b8'} viewBox="0 0 24 24">
-                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                       </svg>
-                     </div>
-                     {activePresentation && (
-                       <button onClick={() => setActivePresentation('')}
-                         style={{ width: '22px', height: '22px', borderRadius: '50%', border: 'none', background: '#e2e8f0', color: '#64748b', cursor: 'pointer', fontSize: '13px', lineHeight: 1, padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>
-                         ×
-                       </button>
-                     )}
-                   </div>
-                 )}
-
-                 {/* Contador */}
                  <span style={{ marginLeft: 'auto', fontSize: '11px', color: '#94a3b8', fontWeight: 600 }}>
-                   {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''}
+                   {filteredGroups.length} familia{filteredGroups.length !== 1 ? 's' : ''}
                  </span>
                </div>
              </div>
@@ -280,28 +233,70 @@ export default function IndustryPage() {
 
            {result.fetching ? (
              <div className="text-center py-20 text-slate-400">Cargando portafolio...</div>
-           ) : filteredProducts.length > 0 ? (
+           ) : filteredGroups.length > 0 ? (
              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12">
-                {filteredProducts.map((prod: any) => (
-                  <a href={prod.url ?? `/product/${prod.uuid}`} key={prod.productId} className="bg-white p-0 rounded-[2rem] md:rounded-[2.5rem] shadow-xl border border-slate-100 hover:shadow-2xl transition-all cursor-pointer group overflow-hidden block">
-                    <div className="h-52 md:h-72 overflow-hidden bg-white flex items-center justify-center p-4">
-                      {prod.image?.url ? (
-                        <img src={prod.image.url} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700" alt={prod.name} />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-300 font-sora font-black uppercase tracking-widest text-base md:text-xl">Sin Imagen</div>
-                      )}
-                    </div>
-                    <div className="p-6 md:p-12">
-                      <span className="text-[#2A4899] font-black text-[10px] uppercase tracking-[0.4em] mb-3 block">Especializado</span>
-                      <h3 className="text-xl md:text-3xl font-black mb-4 md:mb-6 font-sora text-[#181B1C] group-hover:text-[#2A4899] transition-colors uppercase tracking-tight leading-none">{prod.name}</h3>
-                      <div className="inline-block px-3 py-1.5 md:px-4 md:py-2 bg-slate-50 rounded-lg text-[10px] font-black text-slate-400 mb-6 md:mb-10 uppercase tracking-[0.3em]">{prod.price?.regular?.text || 'Consultar'}</div>
-                      <div className="flex items-center justify-between">
-                         <span className="text-[#2A4899] font-black font-sora text-xs md:text-sm uppercase tracking-widest">Ver Ficha Técnica</span>
-                         <div className="w-10 h-10 md:w-14 md:h-14 rounded-full border-2 border-slate-100 flex items-center justify-center group-hover:bg-[#2A4899] group-hover:text-white transition-all duration-500">→</div>
-                      </div>
-                    </div>
-                  </a>
-                ))}
+               {filteredGroups.map((group) => {
+                 const rep = group.representative;
+                 const firstUrl = `/product/${rep.uuid}`;
+                 const sortedProducts = [...group.products].sort((a: any, b: any) => {
+                   const num = (s: string) => parseFloat(s.replace(/[^\d.]/g, '')) || 0;
+                   return num(getPresentation(a.name)) - num(getPresentation(b.name));
+                 });
+                 return (
+                   <div key={group.family} className="bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-xl border border-slate-100 hover:shadow-2xl transition-all overflow-hidden">
+                     <a href={firstUrl} className="block">
+                       <div className="h-52 md:h-64 overflow-hidden bg-white flex items-center justify-center p-4">
+                         {rep.image?.url ? (
+                           <img src={rep.image.url} className="w-full h-full object-contain hover:scale-105 transition-transform duration-700" alt={group.family} />
+                         ) : (
+                           <div className="w-full h-full flex items-center justify-center text-slate-300 font-sora font-black uppercase tracking-widest text-base md:text-xl">Sin Imagen</div>
+                         )}
+                       </div>
+                       <div className="px-6 md:px-10 pt-6 md:pt-8">
+                         <span className="text-[#2A4899] font-black text-[10px] uppercase tracking-[0.4em] mb-2 block">Especializado</span>
+                         <h3 className="text-xl md:text-2xl font-black mb-3 font-sora text-[#181B1C] hover:text-[#2A4899] transition-colors uppercase tracking-tight leading-none">{group.family}</h3>
+                       </div>
+                     </a>
+                     {/* Chips de presentación */}
+                     <div className="px-6 md:px-10 pb-6 md:pb-10">
+                       <p style={{ fontSize: '9px', fontWeight: 800, color: '#94a3b8', letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '10px' }}>
+                         Presentaciones
+                       </p>
+                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                         {sortedProducts.map((p: any) => (
+                           <a
+                             key={p.productId}
+                             href={`/product/${p.uuid}`}
+                             style={{
+                               display: 'inline-block',
+                               padding: '4px 10px',
+                               background: '#f1f5f9',
+                               color: '#2A4899',
+                               borderRadius: '6px',
+                               fontSize: '11px',
+                               fontWeight: 700,
+                               fontFamily: 'Sora, sans-serif',
+                               textDecoration: 'none',
+                               border: '1.5px solid transparent',
+                               transition: 'all 0.15s',
+                             }}
+                             onMouseOver={(e) => {
+                               (e.currentTarget as HTMLElement).style.background = '#2A4899';
+                               (e.currentTarget as HTMLElement).style.color = '#fff';
+                             }}
+                             onMouseOut={(e) => {
+                               (e.currentTarget as HTMLElement).style.background = '#f1f5f9';
+                               (e.currentTarget as HTMLElement).style.color = '#2A4899';
+                             }}
+                           >
+                             {getPresentation(p.name)}
+                           </a>
+                         ))}
+                       </div>
+                     </div>
+                   </div>
+                 );
+               })}
              </div>
            ) : (
              <div className="text-center py-20 bg-white rounded-[3rem] border border-slate-100 shadow-sm">

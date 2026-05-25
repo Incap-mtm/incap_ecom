@@ -1,7 +1,7 @@
 import { select } from '@evershop/postgres-query-builder';
 import { pool } from '@evershop/evershop/lib/postgres';
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-export default async (request, _response, next) => {
+export default (async (request, _response, next)=>{
     const param = request.params.uuid;
     if (!param || UUID_RE.test(param)) {
         return next();
@@ -13,13 +13,11 @@ export default async (request, _response, next) => {
         query.where('pd.url_key', '=', param);
         query.andWhere('p.status', '=', 1);
         const product = await query.load(pool);
-        if (product === null || product === void 0 ? void 0 : product.uuid) {
+        if (product?.uuid) {
             request.params.uuid = product.uuid;
         }
-    }
-    catch (_a) {
-        // slug lookup failed — let index.ts handle the 404
+    } catch  {
+    // slug lookup failed — let index.ts handle the 404
     }
     next();
-};
-//# sourceMappingURL=urlKeyResolver%5Bindex%5D.js.map
+});

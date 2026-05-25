@@ -161,21 +161,39 @@ async function main() {
   let skipped = 0;
 
   for (const [family, ps] of toMigrate) {
-    if (ps.some(p => p.variant_group_id !== null)) { skipped++; continue; }
+    // Determinar si la familia ya tiene un grupo asignado
+    const existingGroupId = ps.find(p => p.variant_group_id !== null)?.variant_group_id ?? null;
+    const newProducts = ps.filter(p => p.variant_group_id === null);
 
-    const { rows: [vg] } = await client.query(
-      `INSERT INTO variant_group (uuid, attribute_group_id, attribute_one, visibility)
-       VALUES ($1, $2, $3, false) RETURNING variant_group_id`,
-      [crypto.randomUUID(), ATTRIBUTE_GROUP_ID, SIZE_ATTRIBUTE_ID]
-    );
-    groupsCreated++;
+    if (existingGroupId !== null && newProducts.length === 0) {
+      // Todos ya migrados — skip real
+      skipped++;
+      continue;
+    }
 
-    for (const p of ps) {
+    let variantGroupId;
+    if (existingGroupId !== null) {
+      // Familia ya existe — solo agregar los productos nuevos
+      variantGroupId = existingGroupId;
+      process.stdout.write(`  ↑ ${family}: agregando ${newProducts.length} variante(s) al grupo existente\n`);
+    } else {
+      // Familia nueva — crear el grupo
+      const { rows: [vg] } = await client.query(
+        `INSERT INTO variant_group (uuid, attribute_group_id, attribute_one, visibility)
+         VALUES ($1, $2, $3, false) RETURNING variant_group_id`,
+        [crypto.randomUUID(), ATTRIBUTE_GROUP_ID, SIZE_ATTRIBUTE_ID]
+      );
+      variantGroupId = vg.variant_group_id;
+      groupsCreated++;
+      process.stdout.write(`  ✓ ${family} (${ps.length} variantes)\n`);
+    }
+
+    for (const p of newProducts) {
       const optionId = optionMap.get(p.size);
 
       await client.query(
         'UPDATE product SET variant_group_id = $1 WHERE product_id = $2',
-        [vg.variant_group_id, p.product_id]
+        [variantGroupId, p.product_id]
       );
       productsUpdated++;
 
@@ -190,8 +208,6 @@ async function main() {
       );
       paviInserted++;
     }
-
-    process.stdout.write(`  ✓ ${family} (${ps.length} variantes)\n`);
   }
 
   console.log('\n═══ RESULTADO FINAL ═══');
