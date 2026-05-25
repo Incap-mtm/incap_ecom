@@ -161,8 +161,14 @@ export default function Head() {
           display: flex;
           align-items: center;
           justify-self: start;
+          align-self: center;
+          line-height: 0;
+        }
+        .incap-navbar__logo svg {
+          display: block;
         }
         .incap-navbar__logo img {
+          display: block;
           height: 36px;
           width: auto;
           object-fit: contain;

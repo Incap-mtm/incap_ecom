@@ -3,7 +3,7 @@ import { useReveal } from '../../hooks/useReveal';
 
 const solutions = [
   {
-    icon: '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2.svg',
+    icon: '/images/icons/Icono_Calzado.png',
     name: 'Calzado',
     description: 'Flexibilidad, alta resistencia a la tracción y pegado duradero en cuero, sintéticos y suelas.',
   },
@@ -77,8 +77,8 @@ export default function SolucionesPegado() {
               key={i}
               className={`flex flex-col items-center text-center bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-[#85C639]/40 transition-all duration-300 reveal reveal-stagger-${(i % 3) + 1} active`}
             >
-              <div className="w-16 h-16 mb-4 bg-[#2A4899] rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
-                <img src={sol.icon} alt={sol.name} className="w-full h-full object-contain" />
+              <div className="w-16 h-16 mb-4 bg-[#2A4899] rounded-2xl flex items-center justify-center flex-shrink-0">
+                <img src={sol.icon} alt={sol.name} style={{ width: '36px', height: '36px', objectFit: 'contain', display: 'block' }} />
               </div>
               <h3 className="text-white font-black text-sm uppercase tracking-wide font-sora mb-2 leading-tight">
                 {sol.name}
