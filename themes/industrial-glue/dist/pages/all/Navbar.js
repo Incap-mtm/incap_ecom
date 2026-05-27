@@ -68,7 +68,7 @@ export default function Navbar() {
                         "Industrias",
                         React.createElement("svg", { className: `transition-transform duration-300 ${dropdownOpen ? 'rotate-180' : ''}`, fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", width: "14", height: "14" },
                             React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M19 9l-7 7-7-7" }))),
-                    React.createElement("div", { className: `fixed top-[80px] bg-white shadow-2xl border-t-4 border-[#2A4899] transition-all duration-300 ${dropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`, style: { left: 'auto', width: '520px' } },
+                    React.createElement("div", { className: `fixed top-[124px] bg-white shadow-2xl border-t-4 border-[#2A4899] transition-all duration-300 ${dropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`, style: { left: 'auto', width: '520px' } },
                         React.createElement("div", { className: "flex" },
                             React.createElement("div", { style: { width: '200px', flexShrink: 0, borderRight: '1px solid #e2e8f0', padding: '8px 0' } }, industries.map((ind) => {
                                 const active = hoveredInd === ind.id;

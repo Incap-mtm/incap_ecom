@@ -104,7 +104,7 @@ export default function Navbar() {
 
             {/* Mega-menú dos paneles */}
             <div
-              className={`fixed top-[80px] bg-white shadow-2xl border-t-4 border-[#2A4899] transition-all duration-300 ${dropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+              className={`fixed top-[124px] bg-white shadow-2xl border-t-4 border-[#2A4899] transition-all duration-300 ${dropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
               style={{ left: 'auto', width: '520px' }}
             >
               <div className="flex">

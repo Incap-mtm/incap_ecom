@@ -6,7 +6,7 @@ function buildQuery(term: string) {
   return `
     query {
       products(filters: [
-        { key: "keyword", operation: eq, value: "${term.replace(/"/g, '')}" }
+        { key: "name", operation: like, value: "${term.replace(/"/g, '').replace(/%/g, '')}" }
         { key: "limit",   operation: eq, value: "6" }
         { key: "status",  operation: eq, value: "1" }
       ]) {
@@ -32,7 +32,7 @@ function useDebounce(value: string, delay: number) {
   return debounced;
 }
 
-export default function SearchBar() {
+function SearchBarInner() {
   const [term, setTerm] = useState('');
   const [open, setOpen] = useState(false);
   const debounced = useDebounce(term.trim(), 280);
@@ -194,6 +194,15 @@ export default function SearchBar() {
       )}
     </div>
   );
+}
+
+export default function SearchBar() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return (
+    <div className="incap-searchbar" style={{ height: '44px', background: '#85C639', borderBottom: '1px solid rgba(0,0,0,0.08)' }} />
+  );
+  return <SearchBarInner />;
 }
 
 export const layout = {

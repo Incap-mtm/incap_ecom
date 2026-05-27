@@ -5,7 +5,7 @@ function buildQuery(term) {
     return `
     query {
       products(filters: [
-        { key: "keyword", operation: eq, value: "${term.replace(/"/g, '')}" }
+        { key: "name", operation: like, value: "${term.replace(/"/g, '').replace(/%/g, '')}" }
         { key: "limit",   operation: eq, value: "6" }
         { key: "status",  operation: eq, value: "1" }
       ]) {
@@ -29,7 +29,7 @@ function useDebounce(value, delay) {
     }, [value, delay]);
     return debounced;
 }
-export default function SearchBar() {
+function SearchBarInner() {
     var _a, _b, _c, _d, _e;
     const [term, setTerm] = useState('');
     const [open, setOpen] = useState(false);
@@ -122,6 +122,13 @@ export default function SearchBar() {
                     ") resultados"),
                 React.createElement("svg", { width: "14", height: "14", fill: "none", stroke: "#2A4899", viewBox: "0 0 24 24" },
                     React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M9 5l7 7-7 7" }))))))));
+}
+export default function SearchBar() {
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
+    if (!mounted)
+        return (React.createElement("div", { className: "incap-searchbar", style: { height: '44px', background: '#85C639', borderBottom: '1px solid rgba(0,0,0,0.08)' } }));
+    return React.createElement(SearchBarInner, null);
 }
 export const layout = {
     areaId: 'headerTop',
