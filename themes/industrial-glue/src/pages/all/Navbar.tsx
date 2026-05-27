@@ -221,6 +221,12 @@ export default function Navbar() {
           <a href="/catalog" className="btn-incap btn-primary-incap text-xs py-3 px-6">
             Solicitar Asesoría
           </a>
+          <a href="/assets/catalogo-incap.pdf" download className="incap-catalog-link">
+            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 3v12" />
+            </svg>
+            Descargar Catálogo
+          </a>
           <button
             className="incap-navbar__toggle"
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -287,6 +293,12 @@ export default function Navbar() {
             Distribuidores
             <svg className="h-4 w-4 text-[#85C639] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+          <a href="/assets/catalogo-incap.pdf" download className="incap-navbar__mobile-link">
+            Descargar Catálogo
+            <svg className="h-4 w-4 text-[#85C639] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 3v12" />
             </svg>
           </a>
           <a href="/catalog" className="btn-incap btn-primary-incap mt-6 justify-center">

@@ -212,6 +212,21 @@ export default function Head() {
           background: rgba(255,255,255,0.1);
         }
         .incap-navbar__chevron { opacity: 0.6; flex-shrink: 0; }
+        .incap-catalog-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          color: rgba(255,255,255,0.8);
+          font-size: 0.75rem;
+          font-weight: 700;
+          letter-spacing: 0.07em;
+          text-transform: uppercase;
+          text-decoration: none;
+          font-family: 'Sora', sans-serif;
+          white-space: nowrap;
+          transition: color 0.2s;
+        }
+        .incap-catalog-link:hover { color: #ffffff; }
         .incap-navbar__cta {
           display: inline-flex;
           align-items: center;
@@ -278,6 +293,7 @@ export default function Head() {
           .incap-navbar.scrolled .incap-navbar__inner { height: 56px; }
           .incap-navbar__links { display: none; }
           .incap-navbar__right .btn-incap { display: none; }
+          .incap-navbar__right .incap-catalog-link { display: none; }
           .incap-navbar__toggle { display: block; }
         }
 

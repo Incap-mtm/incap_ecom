@@ -1,32 +1,15 @@
 import React from 'react';
 export default function Head() {
-    return /*#__PURE__*/ React.createElement(React.Fragment, null, /*#__PURE__*/ React.createElement("link", {
-        rel: "icon",
-        type: "image/png",
-        href: "/images/icons/imagen-chatflotante.png"
-    }), /*#__PURE__*/ React.createElement("link", {
-        rel: "shortcut icon",
-        href: "/images/icons/imagen-chatflotante.png"
-    }), /*#__PURE__*/ React.createElement("link", {
-        rel: "apple-touch-icon",
-        href: "/images/icons/imagen-chatflotante.png"
-    }), /*#__PURE__*/ React.createElement("script", {
-        dangerouslySetInnerHTML: {
-            __html: `(function(){var t=document.title;if(t&&!t.startsWith('INCAP')){document.title='INCAP | '+t;}else if(!t){document.title='INCAP';}})();`
-        }
-    }), /*#__PURE__*/ React.createElement("link", {
-        rel: "preconnect",
-        href: "https://fonts.googleapis.com"
-    }), /*#__PURE__*/ React.createElement("link", {
-        rel: "preconnect",
-        href: "https://fonts.gstatic.com",
-        crossOrigin: "anonymous"
-    }), /*#__PURE__*/ React.createElement("link", {
-        href: "https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap",
-        rel: "stylesheet"
-    }), /*#__PURE__*/ React.createElement("script", {
-        src: "https://cdn.tailwindcss.com"
-    }), /*#__PURE__*/ React.createElement("style", null, `
+    return (React.createElement(React.Fragment, null,
+        React.createElement("link", { rel: "icon", type: "image/png", href: "/images/icons/imagen-chatflotante.png" }),
+        React.createElement("link", { rel: "shortcut icon", href: "/images/icons/imagen-chatflotante.png" }),
+        React.createElement("link", { rel: "apple-touch-icon", href: "/images/icons/imagen-chatflotante.png" }),
+        React.createElement("script", { dangerouslySetInnerHTML: { __html: `(function(){var t=document.title;if(t&&!t.startsWith('INCAP')){document.title='INCAP | '+t;}else if(!t){document.title='INCAP';}})();` } }),
+        React.createElement("link", { rel: "preconnect", href: "https://fonts.googleapis.com" }),
+        React.createElement("link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" }),
+        React.createElement("link", { href: "https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap", rel: "stylesheet" }),
+        React.createElement("script", { src: "https://cdn.tailwindcss.com" }),
+        React.createElement("style", null, `
         :root {
           --color-incap-blue: #2A4899;
           --color-incap-green: #85C639;
@@ -227,6 +210,21 @@ export default function Head() {
           background: rgba(255,255,255,0.1);
         }
         .incap-navbar__chevron { opacity: 0.6; flex-shrink: 0; }
+        .incap-catalog-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          color: rgba(255,255,255,0.8);
+          font-size: 0.75rem;
+          font-weight: 700;
+          letter-spacing: 0.07em;
+          text-transform: uppercase;
+          text-decoration: none;
+          font-family: 'Sora', sans-serif;
+          white-space: nowrap;
+          transition: color 0.2s;
+        }
+        .incap-catalog-link:hover { color: #ffffff; }
         .incap-navbar__cta {
           display: inline-flex;
           align-items: center;
@@ -293,6 +291,7 @@ export default function Head() {
           .incap-navbar.scrolled .incap-navbar__inner { height: 56px; }
           .incap-navbar__links { display: none; }
           .incap-navbar__right .btn-incap { display: none; }
+          .incap-navbar__right .incap-catalog-link { display: none; }
           .incap-navbar__toggle { display: block; }
         }
 
@@ -482,7 +481,7 @@ export default function Head() {
           color: #ffffff !important;
           border-color: #181B1C !important;
         }
-      `));
+      `)));
 }
 export const layout = {
     areaId: 'head',
