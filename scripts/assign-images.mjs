@@ -242,7 +242,7 @@ async function main() {
         `INSERT INTO product_image
            (product_image_product_id, origin_image, is_main)
          VALUES ($1, $2, $3)`,
-        [g.product.product_id, `/media/products/${img.filename}`, isMain]
+        [g.product.product_id, `/assets/products/${img.filename}`, isMain]
       );
       insertedImages++;
     }
