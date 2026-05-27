@@ -1,5 +1,4 @@
 {
-  "id": "buscarPage",
-  "path": "/buscar",
-  "isProtected": false
+  "methods": ["GET"],
+  "path": "/buscar"
 }
