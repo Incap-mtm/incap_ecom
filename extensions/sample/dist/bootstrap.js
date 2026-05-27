@@ -1,4 +1,4 @@
-import { addProcessor } from '@evershop/evershop/src/lib/util/registry.js';
+import { addProcessor } from '@evershop/evershop/lib/util/registry.js';
 export default function () {
     // Filtro fulltext: busca en nombre del producto Y en atributos usos/caracteristicas/modo_empleo
     addProcessor('productCollectionFilters', (filters) => {
