@@ -6,9 +6,9 @@ function buildQuery(term: string) {
   return `
     query {
       products(filters: [
-        { key: "name", operation: like, value: "${term.replace(/"/g, '').replace(/%/g, '')}" }
-        { key: "limit",   operation: eq, value: "6" }
-        { key: "status",  operation: eq, value: "1" }
+        { key: "fulltext", operation: eq, value: "${term.replace(/"/g, '').replace(/%/g, '')}" }
+        { key: "limit",    operation: eq, value: "6" }
+        { key: "status",   operation: eq, value: "1" }
       ]) {
         items {
           productId
@@ -32,7 +32,7 @@ function useDebounce(value: string, delay: number) {
   return debounced;
 }
 
-function SearchBarInner() {
+export default function SearchBar() {
   const [term, setTerm] = useState('');
   const [open, setOpen] = useState(false);
   const debounced = useDebounce(term.trim(), 280);
@@ -48,7 +48,6 @@ function SearchBarInner() {
   const items: any[] = result.data?.products?.items || [];
   const total: number = result.data?.products?.total ?? 0;
 
-  // Cerrar al click fuera
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
@@ -194,15 +193,6 @@ function SearchBarInner() {
       )}
     </div>
   );
-}
-
-export default function SearchBar() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return (
-    <div className="incap-searchbar" style={{ height: '44px', background: '#85C639', borderBottom: '1px solid rgba(0,0,0,0.08)' }} />
-  );
-  return <SearchBarInner />;
 }
 
 export const layout = {

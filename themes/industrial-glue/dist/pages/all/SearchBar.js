@@ -5,9 +5,9 @@ function buildQuery(term) {
     return `
     query {
       products(filters: [
-        { key: "name", operation: like, value: "${term.replace(/"/g, '').replace(/%/g, '')}" }
-        { key: "limit",   operation: eq, value: "6" }
-        { key: "status",  operation: eq, value: "1" }
+        { key: "fulltext", operation: eq, value: "${term.replace(/"/g, '').replace(/%/g, '')}" }
+        { key: "limit",    operation: eq, value: "6" }
+        { key: "status",   operation: eq, value: "1" }
       ]) {
         items {
           productId
@@ -29,7 +29,7 @@ function useDebounce(value, delay) {
     }, [value, delay]);
     return debounced;
 }
-function SearchBarInner() {
+export default function SearchBar() {
     var _a, _b, _c, _d, _e;
     const [term, setTerm] = useState('');
     const [open, setOpen] = useState(false);
@@ -43,7 +43,6 @@ function SearchBarInner() {
     });
     const items = ((_b = (_a = result.data) === null || _a === void 0 ? void 0 : _a.products) === null || _b === void 0 ? void 0 : _b.items) || [];
     const total = (_e = (_d = (_c = result.data) === null || _c === void 0 ? void 0 : _c.products) === null || _d === void 0 ? void 0 : _d.total) !== null && _e !== void 0 ? _e : 0;
-    // Cerrar al click fuera
     useEffect(() => {
         const handler = (e) => {
             if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
@@ -122,13 +121,6 @@ function SearchBarInner() {
                     ") resultados"),
                 React.createElement("svg", { width: "14", height: "14", fill: "none", stroke: "#2A4899", viewBox: "0 0 24 24" },
                     React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M9 5l7 7-7 7" }))))))));
-}
-export default function SearchBar() {
-    const [mounted, setMounted] = useState(false);
-    useEffect(() => setMounted(true), []);
-    if (!mounted)
-        return (React.createElement("div", { className: "incap-searchbar", style: { height: '44px', background: '#85C639', borderBottom: '1px solid rgba(0,0,0,0.08)' } }));
-    return React.createElement(SearchBarInner, null);
 }
 export const layout = {
     areaId: 'headerTop',

@@ -2,14 +2,13 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useQuery } from 'urql';
 import { getFamily } from '../../../utils/family.js';
 
-// ── Construye la query con el término actual ──────────────────────────────────
 function buildQuery(term: string) {
   const safe = term.replace(/"/g, '').replace(/%/g, '');
   return `
     query {
       setting { storeWhatsappNumber }
       products(filters: [
-        { key: "name",   operation: like,  value: "${safe}" }
+        { key: "fulltext", operation: eq, value: "${safe}" }
         { key: "limit",  operation: eq,    value: "500" }
         { key: "status", operation: eq,    value: "1" }
       ]) {
@@ -26,12 +25,10 @@ function buildQuery(term: string) {
   `;
 }
 
-// ── Componente interno — solo se monta en el cliente ─────────────────────────
-function BuscarContent() {
+export default function BuscarPage() {
   const [keyword, setKeyword] = useState('');
   const [inputValue, setInputValue] = useState('');
 
-  // Leer q= del URL una sola vez al montar
   useEffect(() => {
     try {
       const q = new URLSearchParams(window.location.search).get('q') || '';
@@ -75,7 +72,7 @@ function BuscarContent() {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-white font-sora" style={{ paddingTop: '124px' }}>
       {/* Hero / barra de búsqueda */}
       <section style={{ background: 'linear-gradient(160deg, #2A4899 0%, #1e3576 100%)', padding: '40px 0 48px' }}>
         <div style={{ maxWidth: '1536px', margin: '0 auto', padding: '0 2rem' }}>
@@ -183,22 +180,6 @@ function BuscarContent() {
           </>
         )}
       </section>
-    </>
-  );
-}
-
-// ── Export principal — guarda SSR con patrón mounted ─────────────────────────
-export default function BuscarPage() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
-  return (
-    <div className="min-h-screen bg-white font-sora" style={{ paddingTop: '124px' }}>
-      {mounted ? <BuscarContent /> : (
-        <div style={{ padding: '40px 2rem', maxWidth: '1536px', margin: '0 auto' }}>
-          <div style={{ height: '200px', background: 'linear-gradient(160deg, #2A4899 0%, #1e3576 100%)', borderRadius: '12px' }} />
-        </div>
-      )}
     </div>
   );
 }
