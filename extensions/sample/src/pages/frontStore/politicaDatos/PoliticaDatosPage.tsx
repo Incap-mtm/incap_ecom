@@ -490,9 +490,9 @@ export default function PoliticaDatosPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white font-sora -mt-[90px]">
+    <div className="min-h-screen bg-white font-sora -mt-[124px]">
       {/* Hero */}
-      <div className="bg-[#181B1C] pt-[90px] pb-16 px-4">
+      <div className="bg-[#181B1C] pt-[124px] pb-16 px-4">
         <div className="max-w-[1536px] mx-auto">
           <span className="text-[#85C639] font-black uppercase tracking-[0.5em] text-xs block mb-4">INCAP S A · NIT 860025998-3</span>
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-white uppercase leading-none tracking-tighter mb-4">

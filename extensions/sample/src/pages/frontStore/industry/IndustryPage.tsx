@@ -160,8 +160,8 @@ export default function IndustryPage() {
     : familyGroups;
 
   return (
-    <div className="min-h-screen animate-fadeIn bg-white font-sora -mt-[90px]">
-      <div className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-[80vh] flex items-center overflow-hidden bg-[#181B1C] pt-[90px]">
+    <div className="min-h-screen animate-fadeIn bg-white font-sora -mt-[124px]">
+      <div className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-[80vh] flex items-center overflow-hidden bg-[#181B1C] pt-[124px]">
         <img src={data.heroImage} className="absolute inset-0 w-full h-full object-cover object-center opacity-50" alt={data.name} />
         <div className="absolute inset-0 bg-gradient-to-t from-[#181B1C] via-[#181B1C]/30 to-transparent"></div>
         <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-[#181B1C]/80 to-transparent z-10" />

@@ -54,8 +54,8 @@ export default function Head() {
         .page-wrapper, .page-content, main { margin-bottom: 0 !important; padding-bottom: 0 !important; }
         .product__page__bottom { margin-bottom: 0 !important; padding-bottom: 0 !important; }
 
-        /* Compensar navbar fija en páginas de producto y categoría */
-        body.productView, body.categoryView { padding-top: 110px; }
+        /* Compensar navbar fija + barra de búsqueda (80px + 44px = 124px) */
+        body.productView, body.categoryView { padding-top: 154px; }
 
         /* Ocultar breadcrumb nativo de Evershop en páginas de producto */
         body.productView .breadcrumb-list,
