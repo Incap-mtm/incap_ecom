@@ -227,6 +227,7 @@ export default function Head() {
           transition: color 0.2s;
         }
         .incap-catalog-link:hover { color: #ffffff; }
+        .incap-searchbar input::placeholder { color: rgba(24,27,28,0.5); }
         .incap-navbar__cta {
           display: inline-flex;
           align-items: center;

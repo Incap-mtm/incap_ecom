@@ -74,13 +74,13 @@ export default function SearchBar() {
   const showDropdown = open && debounced.length >= 2;
 
   return (
-    <div ref={wrapperRef} style={{ position: 'relative', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(8px)', borderBottom: '1px solid rgba(42,72,153,0.12)', zIndex: 99 }}>
+    <div ref={wrapperRef} className="incap-searchbar" style={{ position: 'relative', background: '#85C639', borderBottom: '1px solid rgba(0,0,0,0.08)', zIndex: 99 }}>
       <form
         onSubmit={handleSubmit}
         style={{ maxWidth: '1536px', margin: '0 auto', padding: '0 2rem', height: '44px', display: 'flex', alignItems: 'center', gap: '10px' }}
       >
         {/* Icono buscar */}
-        <svg width="16" height="16" fill="none" stroke="#2A4899" viewBox="0 0 24 24" style={{ flexShrink: 0, opacity: 0.7 }}>
+        <svg width="16" height="16" fill="none" stroke="#181B1C" viewBox="0 0 24 24" style={{ flexShrink: 0, opacity: 0.6 }}>
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z" />
         </svg>
 
@@ -94,8 +94,8 @@ export default function SearchBar() {
           placeholder="Buscar productos, adhesivos, usos, aplicaciones..."
           style={{
             flex: 1, border: 'none', outline: 'none', background: 'transparent',
-            fontSize: '0.8rem', fontFamily: "'Inter', sans-serif", color: '#1e293b',
-            fontWeight: 500, letterSpacing: '0.02em',
+            fontSize: '0.8rem', fontFamily: "'Inter', sans-serif", color: '#181B1C',
+            fontWeight: 600, letterSpacing: '0.02em',
           }}
           autoComplete="off"
         />
@@ -104,7 +104,7 @@ export default function SearchBar() {
           <button
             type="button"
             onClick={() => { setTerm(''); setOpen(false); inputRef.current?.focus(); }}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: '#94a3b8', flexShrink: 0 }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: '#181B1C', opacity: 0.5, flexShrink: 0 }}
           >
             <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
