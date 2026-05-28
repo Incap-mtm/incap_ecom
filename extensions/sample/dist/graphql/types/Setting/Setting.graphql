@@ -1,4 +1,9 @@
 extend type Setting {
   storeWhatsappNumber: String
   googleMapsKey: String
+  storeInstagram: String
+  storeFacebook: String
+  storeLinkedin: String
+  storeTiktok: String
+  storeYoutube: String
 }
