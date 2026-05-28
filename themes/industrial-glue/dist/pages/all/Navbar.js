@@ -30,7 +30,9 @@ export default function Navbar() {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
-    const [result] = useQuery({ query: FAMILIES_QUERY });
+    const [isClient, setIsClient] = useState(false);
+    useEffect(() => setIsClient(true), []);
+    const [result] = useQuery({ query: FAMILIES_QUERY, pause: !isClient });
     // Construir map: industria.id → [{family, count}]
     const familiesByIndustry = useMemo(() => {
         var _a, _b, _c;

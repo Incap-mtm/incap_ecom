@@ -12,6 +12,7 @@ export default function () {
                     const where = query.getWhere();
                     where.addRaw('AND', `(
                 product_description.name ILIKE :ft_name_${uid}
+                OR COALESCE(product_description.description, '') ILIKE :ft_desc_${uid}
                 OR EXISTS (
                   SELECT 1
                   FROM product_attribute_value_index pavi_${uid}
@@ -23,6 +24,7 @@ export default function () {
                 )
               )`, {
                         [`ft_name_${uid}`]: `%${value}%`,
+                        [`ft_desc_${uid}`]: `%${value}%`,
                         [`ft_attr_${uid}`]: `%${value}%`,
                     });
                     currentFilters.push({ key: 'fulltext', operation: 'eq', value });

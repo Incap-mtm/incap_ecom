@@ -44,7 +44,9 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const [result] = useQuery({ query: FAMILIES_QUERY });
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => setIsClient(true), []);
+  const [result] = useQuery({ query: FAMILIES_QUERY, pause: !isClient });
 
   // Construir map: industria.id → [{family, count}]
   const familiesByIndustry = useMemo(() => {
