@@ -136,4 +136,4 @@ export const layout = {
     areaId: 'content',
     sortOrder: 1,
 };
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=BuscarPage.js.map
