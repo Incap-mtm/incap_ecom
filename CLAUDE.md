@@ -149,6 +149,59 @@ export default function Footer() {
 
 ---
 
+## Convenciones de archivos en Evershop — CRÍTICO
+
+Evershop distingue componentes React de middleware Express **por la primera letra del nombre del archivo**:
+
+| Primera letra | Tratamiento | Ejemplos |
+|--------------|-------------|---------|
+| **Mayúscula** | Componente React (renderizado en SSR) | `Navbar.js`, `BuscarPage.js`, `FabricantesPage.js` |
+| **Minúscula** | Middleware Express (ejecutado en Node.js) | `urlKeyResolver[index].js`, `auth.js`, `index.js` |
+
+**Regla:** Todo archivo `.tsx/.js` que exporte un componente React con `layout` debe tener nombre en **PascalCase** (mayúscula inicial).
+
+```
+✅ extensions/sample/src/pages/frontStore/buscar/BuscarPage.tsx
+❌ extensions/sample/src/pages/frontStore/buscar/index.tsx   ← se ejecuta como middleware → React error #321
+```
+
+Los archivos de middleware legítimos sí van en minúscula: `urlKeyResolver[index].js` resuelve slugs a UUIDs antes del render.
+
+**Por qué:** `scanForMiddlewareFunctions` llama al default export con `(request, response)`. Si ese export es un componente React, los hooks se ejecutan fuera del contexto de React → error.
+
+---
+
+### Imports de paquetes Evershop
+
+El `package.json` de `@evershop/evershop` usa un `exports` map con wildcards:
+```json
+"./lib/util/*": { "import": "./dist/lib/util/*.js" }
+```
+El wildcard ya añade `.js` → **nunca agregar `.js` al import**:
+```ts
+✅ import { addProcessor } from '@evershop/evershop/lib/util/registry'
+❌ import { addProcessor } from '@evershop/evershop/lib/util/registry.js'   // genera registry.js.js
+❌ import { addProcessor } from '@evershop/evershop/src/lib/util/registry.js' // no está en exports
+```
+
+---
+
+### SSR y hooks de React (urql / useState)
+
+Evershop renderiza páginas con `renderToString` sin un Provider de urql. Durante SSR:
+- `useEffect` **no se ejecuta** → leer URL params ahí es seguro
+- `useQuery` con `pause: true` es seguro en SSR
+- `useQuery` sin `pause` ejecuta la query durante SSR vía el cliente por defecto de urql
+
+Patrón correcto para queries que dependen del cliente (window, localStorage, URL):
+```tsx
+const [isClient, setIsClient] = useState(false);
+useEffect(() => setIsClient(true), []);
+const [result] = useQuery({ query: MY_QUERY, pause: !isClient });
+```
+
+---
+
 ## Reglas críticas
 
 ### Evershop themes vs admin
