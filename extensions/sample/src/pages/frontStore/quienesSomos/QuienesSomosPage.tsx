@@ -65,6 +65,37 @@ const pilares = [
 
 const marcasAliadas = ['CT Point', 'TECNOGI', 'KENDA FARBEN', 'INTERCOM', 'JAB', 'INCAP'];
 
+const industries = [
+  {
+    name: 'Madera y Muebles',
+    href: '/industrias/madera',
+    icon: '/images/icons/Icono_Categoria_Madera_Muebles.svg',
+    description: 'Adhesivos para la industria del mueble: enchapes, ensambles, ebanistería y producción en serie.',
+    color: '#8B6914',
+  },
+  {
+    name: 'Colchones y Espumas',
+    href: '/industrias/colchones',
+    icon: '/images/icons/INCAP_Icono_colchones_Espumas.svg',
+    description: 'Soluciones para pegue de espumas, telas y componentes en líneas de producción de descanso.',
+    color: '#2A4899',
+  },
+  {
+    name: 'Calzado y Marroquinería',
+    href: '/industrias/calzado',
+    icon: '/images/icons/Icono_Calzado.png',
+    description: 'El estándar de las grandes fábricas: adhesivos, tintas, cordones y accesorios para calzado.',
+    color: '#181B1C',
+  },
+  {
+    name: 'Hogar y Multiusos',
+    href: '/industrias/hogar',
+    icon: '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg',
+    description: 'Pegamentos versátiles para reparaciones domésticas, manualidades y proyectos creativos.',
+    color: '#85C639',
+  },
+];
+
 export default function QuienesSomosPage() {
   return (
     <div style={{ fontFamily: 'Sora, Inter, sans-serif', background: '#f8fafc' }}>
@@ -193,6 +224,43 @@ export default function QuienesSomosPage() {
               <span key={i} style={{ fontSize: '11px', fontWeight: 800, color: '#2A4899', background: '#fff', border: '1px solid #dbeafe', borderRadius: '20px', padding: '4px 14px', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
                 {m}
               </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Industrias que servimos */}
+        <div style={{ marginBottom: '4rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+            <div style={{ fontSize: '10px', fontWeight: 700, color: '#85C639', letterSpacing: '0.35em', textTransform: 'uppercase', marginBottom: '10px' }}>
+              Nuestro alcance
+            </div>
+            <h2 style={{ fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 900, color: '#181B1C', margin: 0, textTransform: 'uppercase', letterSpacing: '-0.01em' }}>
+              Industrias que Servimos
+            </h2>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '1.25rem' }}>
+            {industries.map((ind, i) => (
+              <a key={i} href={ind.href} style={{ display: 'flex', flexDirection: 'column', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '16px', overflow: 'hidden', textDecoration: 'none', boxShadow: '0 1px 8px rgba(42,72,153,0.06)', transition: 'transform 0.2s, box-shadow 0.2s' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 12px 32px rgba(42,72,153,0.14)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 1px 8px rgba(42,72,153,0.06)'; }}
+              >
+                <div style={{ height: '4px', background: ind.color }} />
+                <div style={{ padding: '1.5rem' }}>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem' }}>
+                    <img src={ind.icon} alt={ind.name} style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
+                  </div>
+                  <h3 style={{ fontSize: '0.9rem', fontWeight: 900, color: '#181B1C', textTransform: 'uppercase', letterSpacing: '0.04em', margin: '0 0 0.625rem' }}>
+                    {ind.name}
+                  </h3>
+                  <p style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.65, margin: '0 0 1rem', fontFamily: 'Inter, sans-serif' }}>
+                    {ind.description}
+                  </p>
+                  <span style={{ fontSize: '10px', fontWeight: 700, color: ind.color, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                    Ver soluciones →
+                  </span>
+                </div>
+              </a>
             ))}
           </div>
         </div>

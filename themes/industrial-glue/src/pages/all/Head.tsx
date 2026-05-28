@@ -54,7 +54,8 @@ export default function Head() {
         .page-wrapper, .page-content, main { margin-bottom: 0 !important; padding-bottom: 0 !important; }
         .product__page__bottom { margin-bottom: 0 !important; padding-bottom: 0 !important; }
 
-        /* Compensar navbar fija + barra de búsqueda (80px + 44px = 124px) */
+        /* Compensar navbar fija + barra de búsqueda (80px + 44px = 124px) en TODAS las páginas */
+        body { padding-top: 124px; }
         body.productView, body.categoryView { padding-top: 154px; }
 
         /* Ocultar breadcrumb nativo de Evershop en páginas de producto */
@@ -354,6 +355,11 @@ export default function Head() {
         /* Tailwind custom utilities for fonts */
         .font-sora { font-family: 'Sora', sans-serif; }
         .font-inter { font-family: 'Inter', sans-serif; }
+
+        /* Sora en nombres de producto (listados y buscador) */
+        .product-name, .product-name a,
+        .product-listing-name, .product-listing-name a,
+        [class*="product-name"] { font-family: 'Sora', sans-serif !important; }
 
         @keyframes marquee {
           0% { transform: translateX(0); }

@@ -3,12 +3,13 @@ import { useQuery } from 'urql';
 import { getFamily } from '../../utils/family.js';
 
 function buildQuery(term: string) {
+  const safe = term.replace(/"/g, '').replace(/%/g, '').replace(/'/g, '');
   return `
     query {
       products(filters: [
-        { key: "fulltext", operation: eq, value: "${term.replace(/"/g, '').replace(/%/g, '')}" }
-        { key: "limit",    operation: eq, value: "6" }
-        { key: "status",   operation: eq, value: "1" }
+        { key: "name", operation: like, value: "${safe}" }
+        { key: "limit",  operation: eq, value: "6" }
+        { key: "status", operation: eq, value: "1" }
       ]) {
         items {
           productId

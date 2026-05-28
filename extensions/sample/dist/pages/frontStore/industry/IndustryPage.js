@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useQuery } from 'urql';
-import { getFamily, getPresentation } from '../../../utils/family.js';
+import { getFamily, getPresentation, pickRepresentative } from '../../../utils/family.js';
 const INDUSTRIES_DATA = {
     madera: {
         id: 'madera',
@@ -115,7 +115,7 @@ export default function IndustryPage() {
             .map(([family, products]) => ({
             family,
             products,
-            representative: products.find((p) => { var _a; return (_a = p.image) === null || _a === void 0 ? void 0 : _a.url; }) || products[0],
+            representative: pickRepresentative(products),
         }))
             .sort((a, b) => b.products.length - a.products.length || a.family.localeCompare(b.family));
     }, [realProducts]);

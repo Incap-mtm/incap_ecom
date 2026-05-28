@@ -18,7 +18,7 @@ function stripHtml(h) {
     return (h || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 250);
 }
 function attr(attrs, code) {
-    const a = (attrs || []).find((x)=>x.attributeCode === code);
+    const a = (attrs || []).find(x => x.attributeCode === code);
     return a ? a.optionText : '';
 }
 const SYSTEM = `Eres el asesor técnico de INCAP, empresa colombiana líder en adhesivos industriales.
@@ -36,41 +36,38 @@ INSTRUCCIONES:
 CATÁLOGO:
 `;
 async function fetchCatalog(port) {
+    var _a, _b, _c;
     const res = await fetch(`http://localhost:${port}/graphql`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: GQL_CATALOG
+        headers: { 'Content-Type': 'application/json' },
+        body: GQL_CATALOG,
     });
     const { data } = await res.json();
     const lines = [];
-    for (const cat of data?.categories?.items || []){
-        for (const p of cat.products?.items || []){
-            if (!p.status) continue;
+    for (const cat of (((_a = data === null || data === void 0 ? void 0 : data.categories) === null || _a === void 0 ? void 0 : _a.items) || [])) {
+        for (const p of (((_b = cat.products) === null || _b === void 0 ? void 0 : _b.items) || [])) {
+            if (!p.status)
+                continue;
             const usos = stripHtml(attr(p.attributes, 'usos'));
             const caract = stripHtml(attr(p.attributes, 'caracteristicas'));
             const modo = stripHtml(attr(p.attributes, 'modo_empleo'));
-            lines.push(`SKU:${p.sku} | ${p.name} | ${cat.urlKey}` + (usos ? ` | Usos: ${usos}` : '') + (caract ? ` | Características: ${caract}` : '') + (modo ? ` | Modo: ${modo}` : ''));
+            lines.push(`SKU:${p.sku} | ${p.name} | ${cat.urlKey}` +
+                (usos ? ` | Usos: ${usos}` : '') +
+                (caract ? ` | Características: ${caract}` : '') +
+                (modo ? ` | Modo: ${modo}` : ''));
         }
     }
-    return {
-        catalog: lines.join('\n'),
-        cats: data?.categories?.items || []
-    };
+    return { catalog: lines.join('\n'), cats: ((_c = data === null || data === void 0 ? void 0 : data.categories) === null || _c === void 0 ? void 0 : _c.items) || [] };
 }
 export default async function advisor(request, response) {
+    var _a, _b, _c;
     try {
         const { messages } = request.body || {};
         if (!Array.isArray(messages) || messages.length === 0) {
-            return response.status(400).json({
-                error: 'messages requerido'
-            });
+            return response.status(400).json({ error: 'messages requerido' });
         }
         if (!process.env.ANTHROPIC_API_KEY) {
-            return response.status(500).json({
-                error: 'Servicio no configurado'
-            });
+            return response.status(500).json({ error: 'Servicio no configurado' });
         }
         const port = process.env.PORT || 8080;
         // Fetch catalog
@@ -78,7 +75,8 @@ export default async function advisor(request, response) {
         let cats = [];
         try {
             ({ catalog, cats } = await fetchCatalog(port));
-        } catch (e) {
+        }
+        catch (e) {
             catalog = '(catálogo no disponible)';
         }
         // Call Claude
@@ -87,55 +85,39 @@ export default async function advisor(request, response) {
             headers: {
                 'x-api-key': process.env.ANTHROPIC_API_KEY,
                 'anthropic-version': '2023-06-01',
-                'content-type': 'application/json'
+                'content-type': 'application/json',
             },
             body: JSON.stringify({
                 model: 'claude-haiku-4-5-20251001',
                 max_tokens: 800,
                 system: SYSTEM + catalog,
-                messages: messages.map((m)=>({
-                        role: m.role,
-                        content: m.content
-                    }))
-            })
+                messages: messages.map(m => ({ role: m.role, content: m.content })),
+            }),
         });
         const claudeData = await apiRes.json();
         if (!apiRes.ok) {
             console.error('Anthropic error:', JSON.stringify(claudeData));
-            return response.status(500).json({
-                error: 'Error en el servicio de IA'
-            });
+            return response.status(500).json({ error: 'Error en el servicio de IA' });
         }
-        const reply = claudeData.content?.[0]?.text || '';
+        const reply = ((_b = (_a = claudeData.content) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.text) || '';
         // Extract SKU markers [[SKU: XXXX]]
-        const skuMatches = [
-            ...reply.matchAll(/\[\[SKU:\s*([^\]]+)\]\]/gi)
-        ];
-        const skus = [
-            ...new Set(skuMatches.map((m)=>m[1].trim().toUpperCase()))
-        ];
+        const skuMatches = [...reply.matchAll(/\[\[SKU:\s*([^\]]+)\]\]/gi)];
+        const skus = [...new Set(skuMatches.map(m => m[1].trim().toUpperCase()))];
         // Build product cards from catalog
         const products = [];
-        for (const cat of cats){
-            for (const p of cat.products?.items || []){
+        for (const cat of cats) {
+            for (const p of (((_c = cat.products) === null || _c === void 0 ? void 0 : _c.items) || [])) {
                 if (skus.includes((p.sku || '').toUpperCase())) {
-                    products.push({
-                        sku: p.sku,
-                        name: p.name,
-                        url: p.url || `/${cat.urlKey}`
-                    });
+                    products.push({ sku: p.sku, name: p.name, url: p.url || `/${cat.urlKey}` });
                 }
             }
         }
         const cleanReply = reply.replace(/\[\[SKU:\s*[^\]]+\]\]/gi, '').replace(/\s{2,}/g, ' ').trim();
-        return response.json({
-            reply: cleanReply,
-            products
-        });
-    } catch (err) {
+        return response.json({ reply: cleanReply, products });
+    }
+    catch (err) {
         console.error('TechnicalAdvisor error:', err.message);
-        return response.status(500).json({
-            error: 'Error procesando la consulta'
-        });
+        return response.status(500).json({ error: 'Error procesando la consulta' });
     }
 }
+//# sourceMappingURL=%5BbodyParser%5Dadvisor.js.map

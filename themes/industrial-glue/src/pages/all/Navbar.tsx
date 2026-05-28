@@ -214,13 +214,13 @@ export default function Navbar() {
           </div>
 
           <a href="/distribuidores" className="incap-navbar__link">
-            Distribuidores
+            Aliados
           </a>
         </div>
 
         {/* Derecha: CTA + toggle mobile */}
         <div className="incap-navbar__right">
-          <a href="/catalog" className="btn-incap btn-primary-incap text-xs py-3 px-6">
+          <a href="https://api.whatsapp.com/send?phone=+573002171521&text=Quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer" className="btn-incap btn-primary-incap text-xs py-3 px-6">
             Solicitar Asesoría
           </a>
           <a href="/assets/catalogo-incap.pdf" download className="incap-catalog-link">
@@ -292,7 +292,7 @@ export default function Navbar() {
             </svg>
           </a>
           <a href="/distribuidores" className="incap-navbar__mobile-link">
-            Distribuidores
+            Aliados
             <svg className="h-4 w-4 text-[#85C639] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
             </svg>
@@ -303,7 +303,7 @@ export default function Navbar() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 3v12" />
             </svg>
           </a>
-          <a href="/catalog" className="btn-incap btn-primary-incap mt-6 justify-center">
+          <a href="https://api.whatsapp.com/send?phone=+573002171521&text=Quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer" className="btn-incap btn-primary-incap mt-6 justify-center">
             Solicitar Asesoría
           </a>
         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useQuery } from 'urql';
-import { getFamily } from '../../../utils/family.js';
+import { getFamily, pickRepresentative } from '../../../utils/family.js';
 function buildQuery(term) {
     const safe = term.replace(/"/g, '').replace(/%/g, '');
     return `
@@ -43,9 +43,24 @@ export default function BuscarPage() {
     const whatsapp = (_c = (_b = (_a = result.data) === null || _a === void 0 ? void 0 : _a.setting) === null || _b === void 0 ? void 0 : _b.storeWhatsappNumber) !== null && _c !== void 0 ? _c : '573002171521';
     const items = ((_e = (_d = result.data) === null || _d === void 0 ? void 0 : _d.products) === null || _e === void 0 ? void 0 : _e.items) || [];
     const total = (_h = (_g = (_f = result.data) === null || _f === void 0 ? void 0 : _f.products) === null || _g === void 0 ? void 0 : _g.total) !== null && _h !== void 0 ? _h : 0;
+    // Sort results by relevance: name starts with term → name contains term → rest
+    const sortedItems = useMemo(() => {
+        if (!keyword || items.length === 0)
+            return items;
+        const lower = keyword.toLowerCase().trim();
+        return [...items].sort((a, b) => {
+            const an = (a.name || '').toLowerCase();
+            const bn = (b.name || '').toLowerCase();
+            const aStarts = an.startsWith(lower) ? 0 : 1;
+            const bStarts = bn.startsWith(lower) ? 0 : 1;
+            const aContains = an.includes(lower) ? 0 : 1;
+            const bContains = bn.includes(lower) ? 0 : 1;
+            return (aStarts - bStarts) || (aContains - bContains) || an.localeCompare(bn);
+        });
+    }, [items, keyword]);
     const familyGroups = useMemo(() => {
         const map = new Map();
-        items.forEach((p) => {
+        sortedItems.forEach((p) => {
             const fam = getFamily(p.name);
             if (!map.has(fam))
                 map.set(fam, []);
@@ -55,10 +70,10 @@ export default function BuscarPage() {
             .map(([family, products]) => ({
             family,
             products,
-            representative: products.find((p) => { var _a; return (_a = p.image) === null || _a === void 0 ? void 0 : _a.url; }) || products[0],
+            representative: pickRepresentative(products),
         }))
             .sort((a, b) => a.family.localeCompare(b.family));
-    }, [items]);
+    }, [sortedItems]);
     const handleSubmit = (e) => {
         e.preventDefault();
         const q = inputValue.trim();

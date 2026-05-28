@@ -236,21 +236,23 @@ export default function TechnicalAdvisor() {
       )}
 
       {/* Floating button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        style={{ width: '56px', height: '56px', borderRadius: '50%', border: 'none', background: isOpen ? '#181B1C' : 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(42,72,153,0.4)', transition: 'all 0.3s', position: 'relative', padding: 0, overflow: 'hidden' }}
-      >
+      <div style={{ position: 'relative', width: '56px', height: '56px' }}>
         {!isOpen && (
-          <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: '#85C639', animation: 'ping 2s cubic-bezier(0,0,0.2,1) infinite', opacity: 0.25 }} />
+          <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: '#85C639', animation: 'ping 2s cubic-bezier(0,0,0.2,1) infinite', opacity: 0.3 }} />
         )}
-        {isOpen ? (
-          <svg width="20" height="20" fill="none" stroke="#fff" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        ) : (
-          <img src={AGENT_IMG} alt="Asesor Técnico INCAP" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
-        )}
-      </button>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          style={{ width: '56px', height: '56px', borderRadius: '50%', border: 'none', background: isOpen ? '#181B1C' : 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(42,72,153,0.4)', transition: 'all 0.3s', position: 'relative', zIndex: 1, padding: 0 }}
+        >
+          {isOpen ? (
+            <svg width="20" height="20" fill="none" stroke="#fff" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <img src={AGENT_IMG} alt="Asesor Técnico INCAP" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+          )}
+        </button>
+      </div>
     </div>
   );
 }

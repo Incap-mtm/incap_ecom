@@ -1,25 +1,13 @@
 export default async function fichaLead(request, response) {
     try {
         const { nombre, email, telefono, productName, sku, fichaUrl } = request.body || {};
-        if (!nombre?.trim() || !email?.trim() || !telefono?.trim() || !fichaUrl) {
-            return response.status(400).json({
-                error: 'Todos los campos son requeridos.'
-            });
+        if (!(nombre === null || nombre === void 0 ? void 0 : nombre.trim()) || !(email === null || email === void 0 ? void 0 : email.trim()) || !(telefono === null || telefono === void 0 ? void 0 : telefono.trim()) || !fichaUrl) {
+            return response.status(400).json({ error: 'Todos los campos son requeridos.' });
         }
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            return response.status(400).json({
-                error: 'Email inválido.'
-            });
+            return response.status(400).json({ error: 'Email inválido.' });
         }
-        const lead = {
-            nombre: nombre.trim(),
-            email: email.trim(),
-            telefono: telefono.trim(),
-            productName,
-            sku,
-            fichaUrl,
-            ts: new Date().toISOString()
-        };
+        const lead = { nombre: nombre.trim(), email: email.trim(), telefono: telefono.trim(), productName, sku, fichaUrl, ts: new Date().toISOString() };
         console.log('[FichaLead]', JSON.stringify(lead));
         // Intentar enviar email vía Resend si está configurado
         const resendKey = process.env.RESEND_API_KEY;
@@ -30,13 +18,11 @@ export default async function fichaLead(request, response) {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${resendKey}`,
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                         from: 'INCAP Web <noreply@grupoincap.com.co>',
-                        to: [
-                            toEmail
-                        ],
+                        to: [toEmail],
                         subject: `Nueva descarga de ficha técnica — ${productName || sku || 'producto'}`,
                         html: `
               <h2 style="color:#2A4899">Nueva solicitud de ficha técnica</h2>
@@ -48,21 +34,19 @@ export default async function fichaLead(request, response) {
                 <tr><td style="padding:6px 12px;font-weight:bold;color:#555">SKU</td><td style="padding:6px 12px">${sku || '—'}</td></tr>
                 <tr style="background:#f8f9fa"><td style="padding:6px 12px;font-weight:bold;color:#555">Ficha</td><td style="padding:6px 12px"><a href="${fichaUrl}">${fichaUrl}</a></td></tr>
               </table>
-            `
-                    })
+            `,
+                    }),
                 });
-            } catch (mailErr) {
+            }
+            catch (mailErr) {
                 console.error('[FichaLead] Error enviando email:', mailErr.message);
             }
         }
-        return response.json({
-            success: true,
-            fichaUrl
-        });
-    } catch (err) {
+        return response.json({ success: true, fichaUrl });
+    }
+    catch (err) {
         console.error('[FichaLead] Error:', err.message);
-        return response.status(500).json({
-            error: 'Error procesando la solicitud.'
-        });
+        return response.status(500).json({ error: 'Error procesando la solicitud.' });
     }
 }
+//# sourceMappingURL=%5BbodyParser%5DfichaLead.js.map

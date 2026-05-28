@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useQuery } from 'urql';
-import { getFamily } from '../../../utils/family.js';
+import { getFamily, pickRepresentative } from '../../../utils/family.js';
 
 function buildQuery(term: string) {
   const safe = term.replace(/"/g, '').replace(/%/g, '');
@@ -47,9 +47,24 @@ export default function BuscarPage() {
   const items: any[] = result.data?.products?.items || [];
   const total: number = result.data?.products?.total ?? 0;
 
+  // Sort results by relevance: name starts with term → name contains term → rest
+  const sortedItems = useMemo(() => {
+    if (!keyword || items.length === 0) return items;
+    const lower = keyword.toLowerCase().trim();
+    return [...items].sort((a: any, b: any) => {
+      const an = (a.name || '').toLowerCase();
+      const bn = (b.name || '').toLowerCase();
+      const aStarts = an.startsWith(lower) ? 0 : 1;
+      const bStarts = bn.startsWith(lower) ? 0 : 1;
+      const aContains = an.includes(lower) ? 0 : 1;
+      const bContains = bn.includes(lower) ? 0 : 1;
+      return (aStarts - bStarts) || (aContains - bContains) || an.localeCompare(bn);
+    });
+  }, [items, keyword]);
+
   const familyGroups = useMemo(() => {
     const map = new Map<string, any[]>();
-    items.forEach((p: any) => {
+    sortedItems.forEach((p: any) => {
       const fam = getFamily(p.name);
       if (!map.has(fam)) map.set(fam, []);
       map.get(fam)!.push(p);
@@ -58,10 +73,10 @@ export default function BuscarPage() {
       .map(([family, products]) => ({
         family,
         products,
-        representative: products.find((p: any) => p.image?.url) || products[0],
+        representative: pickRepresentative(products),
       }))
       .sort((a, b) => a.family.localeCompare(b.family));
-  }, [items]);
+  }, [sortedItems]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

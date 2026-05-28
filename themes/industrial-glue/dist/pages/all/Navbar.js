@@ -121,9 +121,9 @@ export default function Navbar() {
                                             React.createElement("svg", { width: "12", height: "12", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
                                                 React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M9 5l7 7-7 7" }))))));
                             })()))),
-                React.createElement("a", { href: "/distribuidores", className: "incap-navbar__link" }, "Distribuidores")),
+                React.createElement("a", { href: "/distribuidores", className: "incap-navbar__link" }, "Aliados")),
             React.createElement("div", { className: "incap-navbar__right" },
-                React.createElement("a", { href: "/catalog", className: "btn-incap btn-primary-incap text-xs py-3 px-6" }, "Solicitar Asesor\u00EDa"),
+                React.createElement("a", { href: "https://api.whatsapp.com/send?phone=+573002171521&text=Quiero%20m%C3%A1s%20informaci%C3%B3n", target: "_blank", rel: "noopener noreferrer", className: "btn-incap btn-primary-incap text-xs py-3 px-6" }, "Solicitar Asesor\u00EDa"),
                 React.createElement("a", { href: "/assets/catalogo-incap.pdf", download: true, className: "incap-catalog-link" },
                     React.createElement("svg", { width: "13", height: "13", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
                         React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 3v12" })),
@@ -162,14 +162,14 @@ export default function Navbar() {
                 React.createElement("svg", { className: "h-4 w-4 text-[#85C639] flex-shrink-0", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
                     React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M9 5l7 7-7 7" }))),
             React.createElement("a", { href: "/distribuidores", className: "incap-navbar__mobile-link" },
-                "Distribuidores",
+                "Aliados",
                 React.createElement("svg", { className: "h-4 w-4 text-[#85C639] flex-shrink-0", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
                     React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M9 5l7 7-7 7" }))),
             React.createElement("a", { href: "/assets/catalogo-incap.pdf", download: true, className: "incap-navbar__mobile-link" },
                 "Descargar Cat\u00E1logo",
                 React.createElement("svg", { className: "h-4 w-4 text-[#85C639] flex-shrink-0", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
                     React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 3v12" }))),
-            React.createElement("a", { href: "/catalog", className: "btn-incap btn-primary-incap mt-6 justify-center" }, "Solicitar Asesor\u00EDa")))));
+            React.createElement("a", { href: "https://api.whatsapp.com/send?phone=+573002171521&text=Quiero%20m%C3%A1s%20informaci%C3%B3n", target: "_blank", rel: "noopener noreferrer", className: "btn-incap btn-primary-incap mt-6 justify-center" }, "Solicitar Asesor\u00EDa")))));
 }
 export const layout = {
     areaId: 'headerTop',

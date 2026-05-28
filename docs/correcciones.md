@@ -194,3 +194,45 @@ Script de migración sobre 322 productos: crea productos padre + vincula variant
 | Blog link (Navbar) | WordPress pendiente de crear |
 | Ficha Técnica — asignar PDFs a productos | Modal y API ✅ listos; cliente debe subir PDFs y asignar `ficha_tecnica_url` en admin → Productos |
 | Ficha Técnica — email de notificación | Configurar `RESEND_API_KEY` en Railway variables de entorno |
+
+
+
+---
+## CORRECCIONES 28/05 — ORGANIZADAS POR COMPLEJIDAD
+
+### 🟢 BAJA COMPLEJIDAD (cambios CSS / texto / config)
+
+| # | Tarea | Estado |
+|---|-------|--------|
+| C1 | Quitar filtro verde del chatbot flotante (TechnicalAdvisor.tsx — ping movido fuera del button) | ✅ Hecho 2026-05-28 |
+| C2 | Links de redes sociales en Footer (WhatsApp, Instagram, Facebook, LinkedIn, TikTok, YouTube) | ✅ Hecho 2026-05-28 |
+| C3 | Botón "Asesoría" en header → redirigir a WhatsApp (desktop y mobile) | ✅ Hecho 2026-05-28 |
+| C6 | Cambiar texto "Distribuidores" → "Aliados" en Navbar (desktop/mobile) y Footer | ✅ Hecho 2026-05-28 |
+| C9 | Aplicar Sora a nombres de producto en listados (CSS selector `.product-name`) | ✅ Hecho 2026-05-28 |
+
+**URLs redes sociales (para guardar en EverShop Settings):**
+- Instagram: https://www.instagram.com/incap_col/?hl=es
+- Facebook: https://www.facebook.com/share/1D7BbLWtgs/?mibextid=wwXIfr
+- LinkedIn: https://www.linkedin.com/company/incap-s-a/?viewAsMember=true
+- TikTok: https://www.tiktok.com/@incap.s.a
+- YouTube: https://www.youtube.com/@IncapSA_Col
+- WhatsApp: https://api.whatsapp.com/send?phone=+573002171521&text=Quiero%20m%C3%A1s%20informaci%C3%B3n
+
+---
+
+### 🟡 MEDIA COMPLEJIDAD (lógica UI / layout)
+
+| # | Tarea | Estado |
+|---|-------|--------|
+| C5 | Buscador queda por encima de heroes/banners — `body { padding-top: 124px }` global en Head.tsx | ✅ Hecho 2026-05-28 |
+| C8 | Página /catalog con todos los productos agrupados por industria/familia | ✅ Hecho 2026-05-28 |
+| C10 | Sección "Industrias que Servimos" añadida en /quienes-somos (4 cards con link) | ✅ Hecho 2026-05-28 |
+
+---
+
+### 🔴 ALTA COMPLEJIDAD (lógica de datos / scripting)
+
+| # | Tarea | Estado |
+|---|-------|--------|
+| C4 | Buscador: SearchBar usa `name like` (coincidencia parcial garantizada); BuscarPage ordena por relevancia (nombre empieza con término → contiene → resto) | ✅ Hecho 2026-05-28 |
+| C7 | Imagen representativa = presentación intermedia: `pickRepresentative()` en IndustryPage, CatalogPage y BuscarPage; `parsePresentationSize()` normaliza cc/ml/L/Gal/kg | ✅ Hecho 2026-05-28 |
