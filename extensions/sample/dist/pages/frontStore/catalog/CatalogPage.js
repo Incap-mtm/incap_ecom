@@ -27,10 +27,26 @@ const CATALOG_QUERY = `
     }
   }
 `;
+const CATALOG_CSS = `
+  /* Mobile: tabs + single-industry grid */
+  @media (max-width: 767px) {
+    .cat-sidebar    { display: none !important; }
+    .cat-mob-tabs   { display: flex !important; }
+    .cat-desk-body  { display: none !important; }
+    .cat-mob-body   { display: block !important; }
+    .cat-layout     { padding: 0 !important; gap: 0 !important; }
+  }
+  /* Desktop: sidebar + full grid */
+  @media (min-width: 768px) {
+    .cat-mob-tabs   { display: none !important; }
+    .cat-mob-body   { display: none !important; }
+  }
+`;
 export default function CatalogPage() {
     const [isClient, setIsClient] = useState(false);
     useEffect(() => setIsClient(true), []);
     const [result] = useQuery({ query: CATALOG_QUERY, pause: !isClient, requestPolicy: 'cache-and-network' });
+    const [mobileTab, setMobileTab] = useState(CAT_ORDER[0]);
     const initialOpen = CAT_ORDER.reduce((acc, k) => ({ ...acc, [k]: true }), {});
     const [openIndustries, setOpenIndustries] = useState(initialOpen);
     const sections = useMemo(() => {
@@ -72,14 +88,54 @@ export default function CatalogPage() {
         return out;
     }, [result.data]);
     const toggleIndustry = (key) => setOpenIndustries(prev => ({ ...prev, [key]: !prev[key] }));
+    const mobileSection = sections.find(s => s.urlKey === mobileTab);
+    const mobileMeta = CAT_META[mobileTab];
     return (React.createElement("div", { style: { fontFamily: 'Sora, Inter, sans-serif', background: '#f8fafc', minHeight: '100vh' } },
+        React.createElement("style", null, CATALOG_CSS),
         React.createElement("div", { style: { background: 'linear-gradient(135deg, #2A4899 0%, #1e3576 100%)', padding: '4rem 2rem 3rem', textAlign: 'center', position: 'relative', overflow: 'hidden' } },
             React.createElement("div", { style: { position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 50%, rgba(133,198,57,0.08) 0%, transparent 70%)', pointerEvents: 'none' } }),
             React.createElement("div", { style: { fontSize: '10px', fontWeight: 700, color: '#85C639', letterSpacing: '0.35em', textTransform: 'uppercase', marginBottom: '12px' } }, "Portafolio completo"),
             React.createElement("h1", { style: { fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 900, color: '#fff', margin: '0 0 1rem', letterSpacing: '-0.02em', textTransform: 'uppercase', lineHeight: 1 } }, "Cat\u00E1logo INCAP"),
-            React.createElement("p", { style: { color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(14px, 2vw, 17px)', maxWidth: '680px', margin: '0 auto', lineHeight: 1.7, fontWeight: 400, fontFamily: 'Inter, sans-serif' } }, "322 productos para las principales industrias colombianas. Encuentra tu soluci\u00F3n de adhesi\u00F3n exacta.")),
-        React.createElement("div", { style: { maxWidth: '1536px', margin: '0 auto', display: 'flex', gap: '1.5rem', padding: '2rem 1.5rem', alignItems: 'flex-start' } },
-            React.createElement("aside", { style: { width: '240px', flexShrink: 0, position: 'sticky', top: '140px', background: '#fff', borderRadius: '16px', border: '1px solid #e2e8f0', overflow: 'hidden', maxHeight: 'calc(100vh - 160px)', overflowY: 'auto' } },
+            React.createElement("p", { style: { color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(14px, 2vw, 17px)', maxWidth: '680px', margin: '0 auto', lineHeight: 1.7, fontWeight: 400, fontFamily: 'Inter, sans-serif' } }, "322 productos para las principales industrias colombianas.")),
+        React.createElement("div", { className: "cat-mob-tabs", style: { display: 'none', position: 'sticky', top: '124px', zIndex: 20, background: '#fff', borderBottom: '1px solid #e2e8f0', overflowX: 'auto', WebkitOverflowScrolling: 'touch' } }, CAT_ORDER.map(key => {
+            const meta = CAT_META[key];
+            const active = mobileTab === key;
+            return (React.createElement("button", { key: key, onClick: () => setMobileTab(key), style: {
+                    flexShrink: 0,
+                    padding: '13px 16px',
+                    border: 'none',
+                    borderBottom: `3px solid ${active ? meta.color : 'transparent'}`,
+                    background: '#fff',
+                    color: active ? meta.color : '#94a3b8',
+                    fontSize: '10px', fontWeight: 800,
+                    textTransform: 'uppercase', letterSpacing: '0.06em',
+                    cursor: 'pointer', fontFamily: 'Sora, sans-serif',
+                    transition: 'color 0.15s, border-color 0.15s',
+                    whiteSpace: 'nowrap',
+                } }, meta.name));
+        })),
+        React.createElement("div", { className: "cat-mob-body", style: { display: 'none' } },
+            result.fetching && !mobileSection && (React.createElement("div", { style: { textAlign: 'center', padding: '4rem 1rem', color: '#94a3b8', fontSize: '14px' } }, "Cargando\u2026")),
+            mobileSection && (React.createElement(React.Fragment, null,
+                React.createElement("div", { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 1rem 0.75rem', borderBottom: `2px solid ${mobileMeta.color}20` } },
+                    React.createElement("div", { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
+                        React.createElement("div", { style: { width: '4px', height: '24px', background: mobileMeta.color, borderRadius: '2px' } }),
+                        React.createElement("span", { style: { fontSize: '11px', fontWeight: 800, color: '#181B1C', textTransform: 'uppercase', letterSpacing: '0.04em' } },
+                            mobileSection.total,
+                            " productos \u00B7 ",
+                            mobileSection.families.length,
+                            " familias")),
+                    React.createElement("a", { href: mobileMeta.href, style: { fontSize: '10px', fontWeight: 700, color: mobileMeta.color, textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.06em' } }, "Ver industria \u2192")),
+                React.createElement("div", { style: { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', padding: '0.875rem' } }, mobileSection.families.map((fc) => (React.createElement("a", { key: fc.family, href: fc.href, style: { display: 'flex', flexDirection: 'column', background: '#fff', borderRadius: '16px', border: '1px solid #f1f5f9', overflow: 'hidden', textDecoration: 'none', boxShadow: '0 2px 8px rgba(42,72,153,0.06)' } },
+                    React.createElement("div", { style: { aspectRatio: '1', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.75rem', borderBottom: '1px solid #f8fafc' } }, fc.repImage ? (React.createElement("img", { src: fc.repImage, alt: fc.family, style: { width: '100%', height: '100%', objectFit: 'contain' }, loading: "lazy" })) : (React.createElement("div", { style: { width: '40px', height: '40px', borderRadius: '8px', background: '#f1f5f9' } }))),
+                    React.createElement("div", { style: { padding: '8px 10px 10px' } },
+                        React.createElement("p", { style: { margin: '0 0 3px', fontSize: '11px', fontWeight: 900, color: '#181B1C', fontFamily: 'Sora, sans-serif', lineHeight: 1.25, textTransform: 'uppercase', letterSpacing: '-0.01em' } }, fc.family),
+                        React.createElement("p", { style: { margin: 0, fontSize: '9px', fontWeight: 600, color: '#94a3b8', fontFamily: 'Inter, sans-serif' } },
+                            fc.count,
+                            " ",
+                            fc.count === 1 ? 'presentación' : 'presentaciones'))))))))),
+        React.createElement("div", { className: "cat-layout", style: { maxWidth: '1536px', margin: '0 auto', display: 'flex', gap: '1.5rem', padding: '2rem 1.5rem', alignItems: 'flex-start' } },
+            React.createElement("aside", { className: "cat-sidebar", style: { width: '240px', flexShrink: 0, position: 'sticky', top: '140px', background: '#fff', borderRadius: '16px', border: '1px solid #e2e8f0', overflow: 'hidden', maxHeight: 'calc(100vh - 160px)', overflowY: 'auto' } },
                 React.createElement("div", { style: { padding: '1rem 1rem 0.5rem', borderBottom: '1px solid #f1f5f9' } },
                     React.createElement("p", { style: { margin: 0, fontSize: '9px', fontWeight: 800, color: '#94a3b8', letterSpacing: '0.3em', textTransform: 'uppercase' } }, "Industrias")),
                 CAT_ORDER.map(key => {
@@ -87,12 +143,7 @@ export default function CatalogPage() {
                     const sec = sections.find(s => s.urlKey === key);
                     const open = openIndustries[key];
                     return (React.createElement("div", { key: key },
-                        React.createElement("button", { onClick: () => toggleIndustry(key), style: {
-                                width: '100%', display: 'flex', alignItems: 'center', gap: '8px',
-                                padding: '10px 14px', border: 'none', borderBottom: '1px solid #f1f5f9',
-                                background: open ? `${meta.color}08` : '#fff',
-                                cursor: 'pointer', textAlign: 'left',
-                            } },
+                        React.createElement("button", { onClick: () => toggleIndustry(key), style: { width: '100%', display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', border: 'none', borderBottom: '1px solid #f1f5f9', background: open ? `${meta.color}08` : '#fff', cursor: 'pointer', textAlign: 'left' } },
                             React.createElement("div", { style: { width: '8px', height: '8px', borderRadius: '2px', background: meta.color, flexShrink: 0 } }),
                             React.createElement("span", { style: { flex: 1, fontSize: '11px', fontWeight: 800, color: '#181B1C', textTransform: 'uppercase', letterSpacing: '0.04em', fontFamily: 'Sora, sans-serif', lineHeight: 1.3 } }, meta.name),
                             React.createElement("svg", { width: "10", height: "10", fill: "none", stroke: "#94a3b8", viewBox: "0 0 24 24", style: { transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s', flexShrink: 0 } },
@@ -105,7 +156,7 @@ export default function CatalogPage() {
                                 React.createElement("span", null, fc.family),
                                 React.createElement("span", { style: { fontSize: '9px', color: '#94a3b8', fontWeight: 600, flexShrink: 0, marginLeft: '4px' } }, fc.count))))))));
                 })),
-            React.createElement("main", { style: { flex: 1, minWidth: 0 } },
+            React.createElement("main", { className: "cat-desk-body", style: { flex: 1, minWidth: 0 } },
                 result.fetching && sections.length === 0 && (React.createElement("div", { style: { textAlign: 'center', padding: '5rem 2rem', color: '#94a3b8', fontSize: '14px', fontFamily: 'Inter, sans-serif' } }, "Cargando cat\u00E1logo\u2026")),
                 sections.map((sec) => (React.createElement("section", { key: sec.urlKey, id: `cat-${sec.urlKey}`, style: { marginBottom: '4rem' } },
                     React.createElement("div", { style: { display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem', flexWrap: 'wrap', paddingBottom: '1rem', borderBottom: `2px solid ${sec.meta.color}20` } },
