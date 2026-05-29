@@ -63,7 +63,14 @@ const pilares = [
   },
 ];
 
-const marcasAliadas = ['CT Point', 'TECNOGI', 'KENDA FARBEN', 'INTERCOM', 'JAB', 'INCAP'];
+const marcasLogos = [
+  { name: 'INCAP',       src: '/images/icons/incap_favicon.svg' },
+  { name: 'JAB',         src: '/images/logos/jab-logo.png' },
+  { name: 'CT Point',    src: '/images/logos/Logo_CT_Point.svg' },
+  { name: 'TECNOGI',     src: '/images/logos/Logo_Tecno_GI.svg' },
+  { name: 'Kenda Farben',src: '/images/logos/Logo_Kenda_Farben.svg' },
+  { name: 'Intercom',    src: '/images/logos/Logo_Intercom.svg' },
+];
 
 const industries = [
   {
@@ -214,16 +221,21 @@ export default function QuienesSomosPage() {
           </div>
         </div>
 
-        {/* Marcas aliadas strip */}
-        <div style={{ background: '#f1f5f9', borderRadius: '16px', padding: '1.75rem 2rem', marginBottom: '4rem', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1rem' }}>
-          <span style={{ fontSize: '10px', fontWeight: 700, color: '#94a3b8', letterSpacing: '0.25em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
+        {/* Marcas del grupo — logos */}
+        <div style={{ background: '#f1f5f9', borderRadius: '16px', padding: '1.75rem 2rem', marginBottom: '4rem' }}>
+          <span style={{ display: 'block', fontSize: '10px', fontWeight: 700, color: '#94a3b8', letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
             Marcas del grupo
           </span>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-            {marcasAliadas.map((m, i) => (
-              <span key={i} style={{ fontSize: '11px', fontWeight: 800, color: '#2A4899', background: '#fff', border: '1px solid #dbeafe', borderRadius: '20px', padding: '4px 14px', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                {m}
-              </span>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '2rem' }}>
+            {marcasLogos.map((m) => (
+              <img
+                key={m.name}
+                src={m.src}
+                alt={m.name}
+                style={{ height: '36px', width: 'auto', objectFit: 'contain', mixBlendMode: 'multiply', opacity: 0.85, transition: 'opacity 0.2s' }}
+                onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
+                onMouseLeave={e => (e.currentTarget.style.opacity = '0.85')}
+              />
             ))}
           </div>
         </div>

@@ -45,7 +45,14 @@ const pilares = [
         description: 'El verdadero motor de Grupo INCAP es su gente: operarios, distribuidores y clientes que construyen juntos el tejido industrial del país.',
     },
 ];
-const marcasAliadas = ['CT Point', 'TECNOGI', 'KENDA FARBEN', 'INTERCOM', 'JAB', 'INCAP'];
+const marcasLogos = [
+    { name: 'INCAP', src: '/images/icons/incap_favicon.svg' },
+    { name: 'JAB', src: '/images/logos/jab-logo.png' },
+    { name: 'CT Point', src: '/images/logos/Logo_CT_Point.svg' },
+    { name: 'TECNOGI', src: '/images/logos/Logo_Tecno_GI.svg' },
+    { name: 'Kenda Farben', src: '/images/logos/Logo_Kenda_Farben.svg' },
+    { name: 'Intercom', src: '/images/logos/Logo_Intercom.svg' },
+];
 const industries = [
     {
         name: 'Madera y Muebles',
@@ -119,9 +126,9 @@ export default function QuienesSomosPage() {
                     React.createElement("div", { style: { width: '56px', height: '56px', borderRadius: '14px', background: '#2A4899', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.25rem' } }, p.icon),
                     React.createElement("h3", { style: { fontSize: '1rem', fontWeight: 900, color: '#181B1C', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 0.75rem' } }, p.title),
                     React.createElement("p", { style: { fontSize: '13px', color: '#64748b', lineHeight: 1.75, margin: 0, fontFamily: 'Inter, sans-serif' } }, p.description)))))),
-            React.createElement("div", { style: { background: '#f1f5f9', borderRadius: '16px', padding: '1.75rem 2rem', marginBottom: '4rem', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1rem' } },
-                React.createElement("span", { style: { fontSize: '10px', fontWeight: 700, color: '#94a3b8', letterSpacing: '0.25em', textTransform: 'uppercase', whiteSpace: 'nowrap' } }, "Marcas del grupo"),
-                React.createElement("div", { style: { display: 'flex', flexWrap: 'wrap', gap: '0.5rem' } }, marcasAliadas.map((m, i) => (React.createElement("span", { key: i, style: { fontSize: '11px', fontWeight: 800, color: '#2A4899', background: '#fff', border: '1px solid #dbeafe', borderRadius: '20px', padding: '4px 14px', letterSpacing: '0.06em', textTransform: 'uppercase' } }, m))))),
+            React.createElement("div", { style: { background: '#f1f5f9', borderRadius: '16px', padding: '1.75rem 2rem', marginBottom: '4rem' } },
+                React.createElement("span", { style: { display: 'block', fontSize: '10px', fontWeight: 700, color: '#94a3b8', letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1.25rem' } }, "Marcas del grupo"),
+                React.createElement("div", { style: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '2rem' } }, marcasLogos.map((m) => (React.createElement("img", { key: m.name, src: m.src, alt: m.name, style: { height: '36px', width: 'auto', objectFit: 'contain', mixBlendMode: 'multiply', opacity: 0.85, transition: 'opacity 0.2s' }, onMouseEnter: e => (e.currentTarget.style.opacity = '1'), onMouseLeave: e => (e.currentTarget.style.opacity = '0.85') }))))),
             React.createElement("div", { style: { marginBottom: '4rem' } },
                 React.createElement("div", { style: { textAlign: 'center', marginBottom: '2.5rem' } },
                     React.createElement("div", { style: { fontSize: '10px', fontWeight: 700, color: '#85C639', letterSpacing: '0.35em', textTransform: 'uppercase', marginBottom: '10px' } }, "Nuestro alcance"),
