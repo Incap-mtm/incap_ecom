@@ -29,8 +29,8 @@ export default function HistorySection() {
     const modelUrl = MODEL_URL;
 
     script.textContent = `
-import * as THREE     from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
+import * as THREE     from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const container = document.getElementById('incap-3d-mount');
 if (!container) { console.warn('[INCAP 3D] mount container not found'); }

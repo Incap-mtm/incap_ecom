@@ -78,6 +78,12 @@ export default function Head() {
         React.createElement("link", { rel: "shortcut icon", href: "/images/icons/incap_favicon.svg" }),
         React.createElement("link", { rel: "apple-touch-icon", href: "/images/icons/incap_favicon.svg" }),
         React.createElement("script", { dangerouslySetInnerHTML: { __html: `(function(){var t=document.title;if(t&&!t.startsWith('INCAP')){document.title='INCAP | '+t;}else if(!t){document.title='INCAP';}})();` } }),
+        React.createElement("script", { type: "importmap", dangerouslySetInnerHTML: { __html: JSON.stringify({
+                    imports: {
+                        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+                    }
+                }) } }),
         React.createElement("link", { rel: "preconnect", href: "https://fonts.googleapis.com" }),
         React.createElement("link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" }),
         React.createElement("link", { href: "https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap", rel: "stylesheet" }),
