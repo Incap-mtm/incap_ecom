@@ -1,122 +1,144 @@
 import React, { useEffect, useRef } from 'react';
 import { useReveal } from '../../hooks/useReveal';
 const MODEL_URL = '/images/sections/animacion-producto.glb';
-const THREE_CDN = 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-const GLTF_CDN = 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
-// Bypass TS static analysis on CDN import() so the compiler doesn't try to resolve the URL
-const dynImport = new Function('u', 'return import(u)');
 export default function HistorySection() {
     const reveal = useReveal();
     const mountRef = useRef(null);
     useEffect(() => {
+        var _a;
         const container = mountRef.current;
         if (!container)
             return;
-        let disposed = false;
-        let rafId = 0;
-        let renderer = null;
-        let removeListeners;
-        (async () => {
-            const THREE = await dynImport(THREE_CDN);
-            const { GLTFLoader } = await dynImport(GLTF_CDN);
-            if (disposed)
-                return;
-            /* ── Scene ── */
-            const scene = new THREE.Scene();
-            const w = container.clientWidth || 500;
-            const h = container.clientHeight || 500;
-            const camera = new THREE.PerspectiveCamera(42, w / h, 0.1, 100);
-            camera.position.set(0, 0.1, 3.6);
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(w, h);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.outputColorSpace = THREE.SRGBColorSpace;
-            container.appendChild(renderer.domElement);
-            /* ── Lights ── */
-            scene.add(new THREE.AmbientLight(0xffffff, 1.4));
-            const key = new THREE.DirectionalLight(0xffffff, 2.2);
-            key.position.set(4, 6, 4);
-            scene.add(key);
-            const fill = new THREE.DirectionalLight(0x8899ff, 0.5);
-            fill.position.set(-4, -2, -3);
-            scene.add(fill);
-            /* ── Load GLB ── */
-            const loader = new GLTFLoader();
-            let mixer = null;
-            let action = null;
-            loader.load(MODEL_URL, (gltf) => {
-                var _a, _b;
-                if (disposed)
-                    return;
-                const model = gltf.scene;
-                // Center + scale to fit view
-                const box = new THREE.Box3().setFromObject(model);
-                const center = box.getCenter(new THREE.Vector3());
-                const size = box.getSize(new THREE.Vector3());
-                model.position.sub(center);
-                model.scale.setScalar(2.6 / Math.max(size.x, size.y, size.z));
-                scene.add(model);
-                // Wire up the built-in "rotacion" animation to scroll
-                if ((_a = gltf.animations) === null || _a === void 0 ? void 0 : _a.length) {
-                    mixer = new THREE.AnimationMixer(model);
-                    const clip = (_b = gltf.animations.find((a) => a.name === 'rotacion')) !== null && _b !== void 0 ? _b : gltf.animations[0];
-                    action = mixer.clipAction(clip);
-                    action.play();
-                    action.paused = true;
-                    action.time = 0;
-                    mixer.update(0);
-                    // Set initial position based on current scroll
-                    onScroll();
-                }
-                // Start render loop only after model is ready
-                const tick = () => {
-                    if (disposed)
-                        return;
-                    rafId = requestAnimationFrame(tick);
-                    renderer.render(scene, camera);
-                };
-                tick();
-            });
-            /* ── Scroll → scrub animation time ── */
-            const onScroll = () => {
-                if (!mixer || !action)
-                    return;
-                const section = container.closest('section');
-                if (!section)
-                    return;
-                const rect = section.getBoundingClientRect();
-                const vh = window.innerHeight;
-                // 0 = section just entered bottom, 1 = section top at top of viewport
-                const progress = Math.min(1, Math.max(0, (vh - rect.top) / (vh + rect.height)));
-                action.time = progress * action.getClip().duration;
-                mixer.update(0);
-            };
-            window.addEventListener('scroll', onScroll, { passive: true });
-            /* ── Resize ── */
-            const onResize = () => {
-                if (disposed || !renderer)
-                    return;
-                const w = container.clientWidth;
-                const h = container.clientHeight;
-                camera.aspect = w / h;
-                camera.updateProjectionMatrix();
-                renderer.setSize(w, h);
-            };
-            window.addEventListener('resize', onResize);
-            removeListeners = () => {
-                window.removeEventListener('scroll', onScroll);
-                window.removeEventListener('resize', onResize);
-            };
-        })();
+        // Unique ID so the module script can find the DOM node
+        container.id = 'incap-3d-mount';
+        // Remove any leftover script from a previous render
+        (_a = document.getElementById('incap-3d-script')) === null || _a === void 0 ? void 0 : _a.remove();
+        // Inject a real <script type="module"> — the only reliable way to use
+        // ES-module CDN imports (import() from within a normal script context
+        // doesn't resolve relative sub-imports inside Three.js correctly).
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.id = 'incap-3d-script';
+        // NOTE: MODEL_URL is interpolated here by TypeScript/JS at runtime,
+        // not inside the script string.
+        const modelUrl = MODEL_URL;
+        script.textContent = `
+import * as THREE     from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
+
+const container = document.getElementById('incap-3d-mount');
+if (!container) { console.warn('[INCAP 3D] mount container not found'); }
+else init(container);
+
+function init(container) {
+  // Wait one RAF so CSS layout (width/height) has settled
+  requestAnimationFrame(() => {
+    const w = container.offsetWidth  || 520;
+    const h = container.offsetHeight || 520;
+
+    /* Scene */
+    const scene  = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 100);
+    camera.position.set(0, 0, 3.8);
+
+    /* Renderer */
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    container.appendChild(renderer.domElement);
+
+    /* Lights */
+    scene.add(new THREE.AmbientLight(0xffffff, 1.5));
+    const key = new THREE.DirectionalLight(0xffffff, 2.5);
+    key.position.set(5, 8, 5);
+    scene.add(key);
+    const fill = new THREE.DirectionalLight(0x8899ff, 0.6);
+    fill.position.set(-4, -2, -4);
+    scene.add(fill);
+
+    let raf    = 0;
+    let mixer  = null;
+    let action = null;
+
+    /* Load model */
+    new GLTFLoader().load(
+      '${modelUrl}',
+      (gltf) => {
+        const model = gltf.scene;
+
+        /* Center + auto-scale */
+        const box  = new THREE.Box3().setFromObject(model);
+        const c    = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+        model.position.sub(c);
+        model.scale.setScalar(2.8 / Math.max(size.x, size.y, size.z));
+        scene.add(model);
+
+        /* Wire scroll to the built-in 'rotacion' animation */
+        if (gltf.animations && gltf.animations.length) {
+          mixer  = new THREE.AnimationMixer(model);
+          const clip = gltf.animations.find(a => a.name === 'rotacion') || gltf.animations[0];
+          action = mixer.clipAction(clip);
+          action.play();
+          action.paused = true;
+          action.time   = 0;
+          mixer.update(0);
+          onScroll(); // set initial position
+        }
+
+        /* Render loop */
+        (function tick() { raf = requestAnimationFrame(tick); renderer.render(scene, camera); })();
+      },
+      undefined,
+      (err) => console.error('[INCAP 3D] GLB error:', err)
+    );
+
+    /* Scroll → scrub animation */
+    function onScroll() {
+      if (!mixer || !action) return;
+      const section = container.closest('section');
+      if (!section) return;
+      const rect  = section.getBoundingClientRect();
+      const vh    = window.innerHeight;
+      const prog  = Math.min(1, Math.max(0, (vh - rect.top) / (vh + rect.height)));
+      action.time = prog * action.getClip().duration;
+      mixer.update(0);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    /* Resize */
+    function onResize() {
+      const w = container.offsetWidth;
+      const h = container.offsetHeight;
+      if (!w || !h) return;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+    window.addEventListener('resize', onResize);
+
+    /* Cleanup hook for React unmount */
+    window.__incap3dCleanup = function() {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+      renderer.dispose();
+      if (renderer.domElement && renderer.domElement.parentNode) {
+        renderer.domElement.parentNode.removeChild(renderer.domElement);
+      }
+      delete window.__incap3dCleanup;
+    };
+  });
+}
+    `;
+        document.head.appendChild(script);
         return () => {
             var _a;
-            disposed = true;
-            cancelAnimationFrame(rafId);
-            removeListeners === null || removeListeners === void 0 ? void 0 : removeListeners();
-            if (renderer) {
-                renderer.dispose();
-                (_a = renderer.domElement) === null || _a === void 0 ? void 0 : _a.remove();
-            }
+            const cleanup = window.__incap3dCleanup;
+            if (typeof cleanup === 'function')
+                cleanup();
+            (_a = document.getElementById('incap-3d-script')) === null || _a === void 0 ? void 0 : _a.remove();
         };
     }, []);
     return (React.createElement("section", { id: "nosotros", className: "py-32 bg-slate-50 relative overflow-hidden", ref: reveal.ref },
@@ -133,7 +155,7 @@ export default function HistorySection() {
                 React.createElement("div", { className: `relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0` },
                     React.createElement("div", { ref: mountRef, style: {
                             width: '100%',
-                            aspectRatio: '1 / 1',
+                            height: 'clamp(300px, 44vw, 520px)',
                             borderRadius: '3rem',
                             overflow: 'hidden',
                             background: 'transparent',
