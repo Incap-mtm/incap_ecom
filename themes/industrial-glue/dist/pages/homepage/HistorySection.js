@@ -152,7 +152,7 @@ function init(container) {
             (_a = document.getElementById('incap-3d-script')) === null || _a === void 0 ? void 0 : _a.remove();
         };
     }, []);
-    return (React.createElement("section", { id: "nosotros", className: "py-32 bg-slate-50 relative overflow-hidden", ref: reveal.ref },
+    return (React.createElement("section", { id: "nosotros", className: "py-32 bg-slate-50 relative", ref: reveal.ref },
         React.createElement("div", { className: "max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12" },
             React.createElement("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-32" },
                 React.createElement("div", { className: `${reveal.className}` },
@@ -163,12 +163,8 @@ function init(container) {
                         "DE LA ",
                         React.createElement("span", { className: "text-[#85C639] italic" }, "INDUSTRIA")),
                     React.createElement("p", { className: "text-xl md:text-2xl text-[#2A4899]/70 font-sora font-medium leading-relaxed mb-8 max-w-xl" }, "Desde 1969, entendemos que detr\u00E1s de cada adhesivo hay una familia y una f\u00E1brica que compite a nivel global.")),
-                React.createElement("div", { className: `relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0` },
-                    React.createElement("div", { ref: mountRef, style: {
-                            width: '100%',
-                            height: 'clamp(420px, 54vw, 680px)',
-                            background: 'transparent',
-                        } }),
+                React.createElement("div", { className: `relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0`, style: { minHeight: '560px' } },
+                    React.createElement("div", { ref: mountRef, id: "incap-3d-mount" }),
                     React.createElement("div", { className: "absolute bottom-6 left-6 md:bottom-10 md:left-8 bg-[#2A4899] text-white p-7 md:p-10 rounded-[2rem] shadow-2xl z-10 w-56 md:w-72 flex flex-col justify-center", style: { backdropFilter: 'blur(2px)' } },
                         React.createElement("span", { className: "block text-5xl md:text-7xl font-black font-sora mb-1 md:mb-2 leading-none" }, "+56"),
                         React.createElement("span", { className: "text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] font-sora opacity-90 leading-tight" }, "A\u00D1OS DE MAESTR\u00CDA T\u00C9CNICA")))),

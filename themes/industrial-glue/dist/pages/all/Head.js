@@ -567,6 +567,27 @@ export default function Head() {
           color: #ffffff !important;
           border-color: #181B1C !important;
         }
+
+        /* ── 3D canvas flotante — Sección Uniendo el Legado ── */
+        /* Desktop: absolute, sangra más allá de la columna derecha */
+        @media (min-width: 1024px) {
+          #incap-3d-mount {
+            position: absolute !important;
+            top: -100px;
+            left: -40px;
+            right: -220px;
+            bottom: -60px;
+            width: auto !important;
+            height: auto !important;
+          }
+        }
+        /* Móvil: flujo normal */
+        @media (max-width: 1023px) {
+          #incap-3d-mount {
+            width: 100% !important;
+            height: clamp(320px, 80vw, 480px) !important;
+          }
+        }
       `)));
 }
 export const layout = {
