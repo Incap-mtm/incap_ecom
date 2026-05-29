@@ -5,7 +5,8 @@ export default function AuthoritySection() {
     '/images/logos/Logo_Kenda_Farben.svg',
     '/images/logos/Logo_CT_Point.svg',
     '/images/logos/Logo_Intercom.svg',
-    '/images/logos/Logo_Tecno_GI.svg'
+    '/images/logos/Logo_Tecno_GI.svg',
+    '/images/logos/jab-logo.png',
   ];
   
   return (

@@ -4,7 +4,8 @@ export default function AuthoritySection() {
         '/images/logos/Logo_Kenda_Farben.svg',
         '/images/logos/Logo_CT_Point.svg',
         '/images/logos/Logo_Intercom.svg',
-        '/images/logos/Logo_Tecno_GI.svg'
+        '/images/logos/Logo_Tecno_GI.svg',
+        '/images/logos/jab-logo.png',
     ];
     return (React.createElement("section", { className: "py-24 bg-white border-y border-slate-100 overflow-hidden" },
         React.createElement("div", { className: "max-w-[1536px] mx-auto px-6 text-center mb-16" },

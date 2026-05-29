@@ -46,7 +46,6 @@ const pilares = [
     },
 ];
 const marcasLogos = [
-    { name: 'INCAP', src: '/images/icons/incap_favicon.svg' },
     { name: 'JAB', src: '/images/logos/jab-logo.png' },
     { name: 'CT Point', src: '/images/logos/Logo_CT_Point.svg' },
     { name: 'TECNOGI', src: '/images/logos/Logo_Tecno_GI.svg' },
@@ -128,6 +127,9 @@ export default function QuienesSomosPage() {
                     React.createElement("p", { style: { fontSize: '13px', color: '#64748b', lineHeight: 1.75, margin: 0, fontFamily: 'Inter, sans-serif' } }, p.description)))))),
             React.createElement("div", { style: { background: '#f1f5f9', borderRadius: '16px', padding: '1.75rem 2rem', marginBottom: '4rem' } },
                 React.createElement("span", { style: { display: 'block', fontSize: '10px', fontWeight: 700, color: '#94a3b8', letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1.25rem' } }, "Marcas del grupo"),
+                React.createElement("div", { style: { marginBottom: '1.25rem' } },
+                    React.createElement("img", { src: "/images/logos/Logo_Incap_eslogan.svg", alt: "INCAP", style: { height: '48px', width: 'auto', objectFit: 'contain', opacity: 0.9, transition: 'opacity 0.2s' }, onMouseEnter: e => (e.currentTarget.style.opacity = '1'), onMouseLeave: e => (e.currentTarget.style.opacity = '0.9') })),
+                React.createElement("div", { style: { borderTop: '1px solid #e2e8f0', marginBottom: '1.25rem' } }),
                 React.createElement("div", { style: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '2rem' } }, marcasLogos.map((m) => (React.createElement("img", { key: m.name, src: m.src, alt: m.name, style: { height: '36px', width: 'auto', objectFit: 'contain', mixBlendMode: 'multiply', opacity: 0.85, transition: 'opacity 0.2s' }, onMouseEnter: e => (e.currentTarget.style.opacity = '1'), onMouseLeave: e => (e.currentTarget.style.opacity = '0.85') }))))),
             React.createElement("div", { style: { marginBottom: '4rem' } },
                 React.createElement("div", { style: { textAlign: 'center', marginBottom: '2.5rem' } },
@@ -136,7 +138,7 @@ export default function QuienesSomosPage() {
                 React.createElement("div", { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '1.25rem' } }, industries.map((ind, i) => (React.createElement("a", { key: i, href: ind.href, style: { display: 'flex', flexDirection: 'column', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '16px', overflow: 'hidden', textDecoration: 'none', boxShadow: '0 1px 8px rgba(42,72,153,0.06)', transition: 'transform 0.2s, box-shadow 0.2s' }, onMouseEnter: e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(42,72,153,0.14)'; }, onMouseLeave: e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 1px 8px rgba(42,72,153,0.06)'; } },
                     React.createElement("div", { style: { height: '4px', background: ind.color } }),
                     React.createElement("div", { style: { padding: '1.5rem' } },
-                        React.createElement("div", { style: { width: '48px', height: '48px', borderRadius: '12px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem' } },
+                        React.createElement("div", { style: { width: '48px', height: '48px', borderRadius: '12px', background: '#2A4899', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem' } },
                             React.createElement("img", { src: ind.icon, alt: ind.name, style: { width: '28px', height: '28px', objectFit: 'contain' } })),
                         React.createElement("h3", { style: { fontSize: '0.9rem', fontWeight: 900, color: '#181B1C', textTransform: 'uppercase', letterSpacing: '0.04em', margin: '0 0 0.625rem' } }, ind.name),
                         React.createElement("p", { style: { fontSize: '12px', color: '#64748b', lineHeight: 1.65, margin: '0 0 1rem', fontFamily: 'Inter, sans-serif' } }, ind.description),

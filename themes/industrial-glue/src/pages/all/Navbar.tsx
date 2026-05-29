@@ -149,11 +149,11 @@ export default function Navbar() {
                       >
                         <div style={{
                           width: '30px', height: '30px', flexShrink: 0,
-                          background: active ? 'rgba(255,255,255,0.15)' : '#f1f5f9',
+                          background: active ? '#1e3576' : '#2A4899',
                           borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center',
                           transition: 'background 0.15s',
                         }}>
-                          <img src={ind.icon} style={{ width: '18px', height: '18px', objectFit: 'contain', filter: active ? 'brightness(0) invert(1)' : 'none' }} alt="" />
+                          <img src={ind.icon} style={{ width: '18px', height: '18px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} alt="" />
                         </div>
                         <a
                           href={ind.href}
@@ -204,6 +204,7 @@ export default function Navbar() {
                               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                               padding: '7px 16px', textDecoration: 'none',
                               fontSize: '12px', fontWeight: 600, color: '#374151',
+                              textTransform: 'uppercase', letterSpacing: '0.04em',
                               transition: 'all 0.12s',
                             }}
                             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#f8faff'; (e.currentTarget as HTMLElement).style.color = '#2A4899'; }}
@@ -291,7 +292,7 @@ export default function Navbar() {
                           <a
                             key={label}
                             href={`${ind.href}?familia=${encodeURIComponent(label)}`}
-                            className="block text-[12px] text-white/80 hover:text-[#85C639] py-2 font-sora"
+                            className="block text-[12px] text-white/80 hover:text-[#85C639] py-2 font-sora uppercase tracking-wide"
                           >
                             {label} <span className="text-white/40 text-[10px]">({count})</span>
                           </a>

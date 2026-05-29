@@ -95,7 +95,7 @@ export default function Head() {
       <script dangerouslySetInnerHTML={{ __html: `(function(){var t=document.title;if(t&&!t.startsWith('INCAP')){document.title='INCAP | '+t;}else if(!t){document.title='INCAP';}})();` }} />
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
       <script src="https://cdn.tailwindcss.com"></script>
       <style>{`
         :root {
@@ -104,7 +104,7 @@ export default function Head() {
           --color-incap-black: #181B1C;
           --color-incap-gray: #f8f9fa;
           --font-heading: 'Sora', sans-serif;
-          --font-body: 'Inter', sans-serif;
+          --font-body: 'Sora', sans-serif;
         }
         body {
           font-family: var(--font-body);
@@ -440,7 +440,7 @@ export default function Head() {
 
         /* Tailwind custom utilities for fonts */
         .font-sora { font-family: 'Sora', sans-serif; }
-        .font-inter { font-family: 'Inter', sans-serif; }
+        .font-inter { font-family: 'Sora', sans-serif; }
 
         /* Sora en nombres de producto (listados y buscador) */
         .product-name, .product-name a,
@@ -498,7 +498,7 @@ export default function Head() {
           color: #4b5563;
           line-height: 1.8;
           margin-bottom: 0.875rem;
-          font-family: 'Inter', sans-serif;
+          font-family: 'Sora', sans-serif;
         }
 
         /* Listas */
@@ -512,7 +512,7 @@ export default function Head() {
           color: #4b5563;
           line-height: 1.7;
           margin-bottom: 0.375rem;
-          font-family: 'Inter', sans-serif;
+          font-family: 'Sora', sans-serif;
         }
         .incap-desc ul li::before {
           content: '';

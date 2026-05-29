@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["../../node_modules/@evershop/evershop/dist/components/*"]
+    },
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "target": "ES2018",

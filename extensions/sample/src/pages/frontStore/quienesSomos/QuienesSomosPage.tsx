@@ -64,7 +64,6 @@ const pilares = [
 ];
 
 const marcasLogos = [
-  { name: 'INCAP',       src: '/images/icons/incap_favicon.svg' },
   { name: 'JAB',         src: '/images/logos/jab-logo.png' },
   { name: 'CT Point',    src: '/images/logos/Logo_CT_Point.svg' },
   { name: 'TECNOGI',     src: '/images/logos/Logo_Tecno_GI.svg' },
@@ -226,6 +225,19 @@ export default function QuienesSomosPage() {
           <span style={{ display: 'block', fontSize: '10px', fontWeight: 700, color: '#94a3b8', letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
             Marcas del grupo
           </span>
+          {/* Marca principal */}
+          <div style={{ marginBottom: '1.25rem' }}>
+            <img
+              src="/images/logos/Logo_Incap_eslogan.svg"
+              alt="INCAP"
+              style={{ height: '48px', width: 'auto', objectFit: 'contain', opacity: 0.9, transition: 'opacity 0.2s' }}
+              onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
+              onMouseLeave={e => (e.currentTarget.style.opacity = '0.9')}
+            />
+          </div>
+          {/* Divisor */}
+          <div style={{ borderTop: '1px solid #e2e8f0', marginBottom: '1.25rem' }} />
+          {/* Resto de marcas */}
           <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '2rem' }}>
             {marcasLogos.map((m) => (
               <img
@@ -259,7 +271,7 @@ export default function QuienesSomosPage() {
               >
                 <div style={{ height: '4px', background: ind.color }} />
                 <div style={{ padding: '1.5rem' }}>
-                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem' }}>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: '#2A4899', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem' }}>
                     <img src={ind.icon} alt={ind.name} style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
                   </div>
                   <h3 style={{ fontSize: '0.9rem', fontWeight: 900, color: '#181B1C', textTransform: 'uppercase', letterSpacing: '0.04em', margin: '0 0 0.625rem' }}>
