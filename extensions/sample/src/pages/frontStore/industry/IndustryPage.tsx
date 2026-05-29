@@ -161,23 +161,25 @@ export default function IndustryPage() {
 
   return (
     <div className="min-h-screen animate-fadeIn bg-white font-sora -mt-[124px]">
-      <div className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-[80vh] flex items-center overflow-hidden bg-[#181B1C] pt-[124px]">
-        <img src={data.heroImage} className="absolute inset-0 w-full h-full object-cover object-center opacity-50" alt={data.name} />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#181B1C] via-[#181B1C]/30 to-transparent"></div>
-        <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-[#181B1C]/80 to-transparent z-10" />
-        <div className="max-w-[1536px] mx-auto w-full px-4 sm:px-6 lg:px-8 relative z-20">
-          <div className="flex items-center gap-6 mb-6">
-            <span className="text-[#85C639] font-black uppercase tracking-[0.5em] text-xs font-sora">Sistemas de Adherencia</span>
-            <div className="flex gap-3">
-              {data.icons && data.icons.map((icon, i) => (
-                <div key={i} className="bg-[#2A4899] rounded-xl p-2.5 w-14 h-14 flex items-center justify-center shadow-lg">
-                  <img src={icon} className="w-full h-full object-contain" alt="" />
-                </div>
-              ))}
+      <div className="relative overflow-hidden bg-[#181B1C] pt-[124px]">
+        <img src={data.heroImage} className="w-full h-auto block opacity-60" alt={data.name} />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#181B1C] via-[#181B1C]/20 to-transparent pointer-events-none"></div>
+        <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-[#181B1C]/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 pb-10 md:pb-16 z-20">
+          <div className="max-w-[1536px] mx-auto w-full px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center gap-6 mb-4">
+              <span className="text-[#85C639] font-black uppercase tracking-[0.5em] text-xs font-sora">Sistemas de Adherencia</span>
+              <div className="flex gap-3">
+                {data.icons && data.icons.map((icon, i) => (
+                  <div key={i} className="bg-[#2A4899] rounded-xl p-2.5 w-14 h-14 flex items-center justify-center shadow-lg">
+                    <img src={icon} className="w-full h-full object-contain" alt="" />
+                  </div>
+                ))}
+              </div>
             </div>
+            <h1 className="text-4xl sm:text-6xl md:text-9xl font-black text-white font-sora mb-4 md:mb-8 leading-none uppercase tracking-tighter">{data.name}</h1>
+            <p className="text-base sm:text-xl md:text-3xl text-slate-300 max-w-4xl font-inter font-light leading-relaxed">{data.description}</p>
           </div>
-          <h1 className="text-4xl sm:text-6xl md:text-9xl font-black text-white font-sora mb-4 md:mb-8 leading-none uppercase tracking-tighter">{data.name}</h1>
-          <p className="text-base sm:text-xl md:text-3xl text-slate-300 max-w-4xl font-inter font-light leading-relaxed">{data.description}</p>
         </div>
       </div>
       <section className="py-16 md:py-32 bg-slate-50">
