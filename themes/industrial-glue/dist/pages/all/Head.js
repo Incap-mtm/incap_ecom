@@ -569,14 +569,14 @@ export default function Head() {
         }
 
         /* ── 3D canvas flotante — Sección Uniendo el Legado ── */
-        /* Desktop: absolute, sangra más allá de la columna derecha */
+        /* Desktop: absolute, solo sangra a la derecha para mantener el centro vertical */
         @media (min-width: 1024px) {
           #incap-3d-mount {
             position: absolute !important;
-            top: -100px;
-            left: -40px;
-            right: -220px;
-            bottom: -60px;
+            top: 0;
+            left: 0;
+            right: -280px;
+            bottom: 0;
             width: auto !important;
             height: auto !important;
           }

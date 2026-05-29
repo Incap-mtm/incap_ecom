@@ -38,9 +38,9 @@ function init(container) {
 
     /* Scene */
     const scene  = new THREE.Scene();
-    // FOV 46° + z=9 → frustum alto suficiente para el producto sin distorsión excesiva
+    // FOV 46° + z=4 → producto llena ~85% del alto del canvas
     const camera = new THREE.PerspectiveCamera(46, w / h, 0.1, 100);
-    camera.position.set(0, 0.2, 9);
+    camera.position.set(0, 0.1, 4);
 
     /* Renderer — no premultipliedAlpha so transparency is clean */
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, premultipliedAlpha: false });
