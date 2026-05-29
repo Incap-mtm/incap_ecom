@@ -44,9 +44,10 @@ function init(container) {
 
     /* Scene */
     const scene  = new THREE.Scene();
-    // FOV 46° + z=4 → producto llena ~85% del alto del canvas
+    // FOV 46° + z=4.5 → producto llena bien el canvas sin cortes
     const camera = new THREE.PerspectiveCamera(46, w / h, 0.1, 100);
-    camera.position.set(0, 0.1, 4);
+    camera.position.set(0, 0.5, 4.5);
+    camera.lookAt(0, -0.4, 0); // mira ligeramente hacia abajo → producto en mitad inferior
 
     /* Renderer — no premultipliedAlpha so transparency is clean */
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, premultipliedAlpha: false });
@@ -89,6 +90,7 @@ function init(container) {
         // Wrap in a group for the static tilt — keeps animation on model unaffected
         const tiltGroup = new THREE.Group();
         tiltGroup.rotation.z = -(15 * Math.PI / 180); // lean 15° to the right
+        tiltGroup.position.y = -0.7; // bajar para alinear con base del texto
         tiltGroup.add(model);
         scene.add(tiltGroup);
 
@@ -180,7 +182,7 @@ function init(container) {
           {/* Right — 3D canvas (desktop: flotante, desborda columna) */}
           <div
             className={`relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0`}
-            style={{ minHeight: '560px' }}
+            style={{ minHeight: '640px' }}
           >
             <div ref={mountRef} id="incap-3d-mount" />
 

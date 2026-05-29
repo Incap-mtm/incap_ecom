@@ -38,9 +38,10 @@ function init(container) {
 
     /* Scene */
     const scene  = new THREE.Scene();
-    // FOV 46° + z=4 → producto llena ~85% del alto del canvas
+    // FOV 46° + z=4.5 → producto llena bien el canvas sin cortes
     const camera = new THREE.PerspectiveCamera(46, w / h, 0.1, 100);
-    camera.position.set(0, 0.1, 4);
+    camera.position.set(0, 0.5, 4.5);
+    camera.lookAt(0, -0.4, 0); // mira ligeramente hacia abajo → producto en mitad inferior
 
     /* Renderer — no premultipliedAlpha so transparency is clean */
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, premultipliedAlpha: false });
@@ -83,6 +84,7 @@ function init(container) {
         // Wrap in a group for the static tilt — keeps animation on model unaffected
         const tiltGroup = new THREE.Group();
         tiltGroup.rotation.z = -(15 * Math.PI / 180); // lean 15° to the right
+        tiltGroup.position.y = -0.7; // bajar para alinear con base del texto
         tiltGroup.add(model);
         scene.add(tiltGroup);
 
@@ -163,7 +165,7 @@ function init(container) {
                         "DE LA ",
                         React.createElement("span", { className: "text-[#85C639] italic" }, "INDUSTRIA")),
                     React.createElement("p", { className: "text-xl md:text-2xl text-[#2A4899]/70 font-sora font-medium leading-relaxed mb-8 max-w-xl" }, "Desde 1969, entendemos que detr\u00E1s de cada adhesivo hay una familia y una f\u00E1brica que compite a nivel global.")),
-                React.createElement("div", { className: `relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0`, style: { minHeight: '560px' } },
+                React.createElement("div", { className: `relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0`, style: { minHeight: '640px' } },
                     React.createElement("div", { ref: mountRef, id: "incap-3d-mount" }),
                     React.createElement("div", { className: "absolute bottom-6 left-6 md:bottom-10 md:left-8 bg-[#2A4899] text-white p-7 md:p-10 rounded-[2rem] shadow-2xl z-10 w-56 md:w-72 flex flex-col justify-center", style: { backdropFilter: 'blur(2px)' } },
                         React.createElement("span", { className: "block text-5xl md:text-7xl font-black font-sora mb-1 md:mb-2 leading-none" }, "+56"),
