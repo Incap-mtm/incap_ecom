@@ -48,9 +48,10 @@ export default function Navbar() {
   useEffect(() => setIsClient(true), []);
   const [result] = useQuery({ query: FAMILIES_QUERY, pause: !isClient });
 
-  // Construir map: industria.id → [{family, count}]
+  // Construir map: industria.id → [{label, count, isGroup}]
+  // Familias que comparten primera palabra se agrupan bajo esa palabra.
   const familiesByIndustry = useMemo(() => {
-    const out: Record<string, { family: string; count: number }[]> = {};
+    const out: Record<string, { label: string; count: number; isGroup: boolean }[]> = {};
     const cats = result.data?.categories?.items || [];
     for (const ind of industries) {
       const cat = cats.find((c: any) => c.urlKey === ind.catUrlKey);
@@ -60,9 +61,29 @@ export default function Navbar() {
         const f = getFamily(p.name);
         if (f) counts[f] = (counts[f] || 0) + 1;
       });
-      out[ind.id] = Object.entries(counts)
-        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-        .map(([family, count]) => ({ family, count }));
+      const families = Object.entries(counts).map(([family, count]) => ({ family, count }));
+
+      // Contar cuántas familias comparten la misma primera palabra
+      const firstWordCount: Record<string, number> = {};
+      families.forEach(({ family }) => {
+        const key = family.split(' ')[0];
+        firstWordCount[key] = (firstWordCount[key] || 0) + 1;
+      });
+
+      // Agrupar bajo la primera palabra cuando hay múltiples familias con ella
+      const groups: Record<string, { label: string; count: number; isGroup: boolean }> = {};
+      families.forEach(({ family, count }) => {
+        const key = family.split(' ')[0];
+        if (firstWordCount[key] > 1) {
+          if (!groups[key]) groups[key] = { label: key, count: 0, isGroup: true };
+          groups[key].count += count;
+        } else {
+          groups[family] = { label: family, count, isGroup: false };
+        }
+      });
+
+      out[ind.id] = Object.values(groups)
+        .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
     }
     return out;
   }, [result.data]);
@@ -175,10 +196,10 @@ export default function Navbar() {
                         {!result.fetching && fams.length === 0 && (
                           <p style={{ fontSize: '11px', color: '#94a3b8', padding: '8px 16px' }}>Sin familias</p>
                         )}
-                        {fams.map(({ family, count }) => (
+                        {fams.map(({ label, count, isGroup }) => (
                           <a
-                            key={family}
-                            href={`${activeInd.href}?familia=${encodeURIComponent(family)}`}
+                            key={label}
+                            href={`${activeInd.href}?familia=${encodeURIComponent(label)}`}
                             style={{
                               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                               padding: '7px 16px', textDecoration: 'none',
@@ -188,7 +209,10 @@ export default function Navbar() {
                             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#f8faff'; (e.currentTarget as HTMLElement).style.color = '#2A4899'; }}
                             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = '#374151'; }}
                           >
-                            <span>{family}</span>
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                              {label}
+                              {isGroup && <span style={{ fontSize: '9px', background: '#e0e7ff', color: '#2A4899', borderRadius: '4px', padding: '1px 5px', fontWeight: 700 }}>línea</span>}
+                            </span>
                             <span style={{ fontSize: '10px', color: '#94a3b8', fontWeight: 700 }}>{count}</span>
                           </a>
                         ))}
@@ -263,13 +287,13 @@ export default function Navbar() {
                     {expanded && (
                       <div className="pl-4 pb-2">
                         {fams.length === 0 && <p className="text-[11px] text-white/40 py-2">Sin familias</p>}
-                        {fams.map(({ family, count }) => (
+                        {fams.map(({ label, count }) => (
                           <a
-                            key={family}
-                            href={`${ind.href}?familia=${encodeURIComponent(family)}`}
+                            key={label}
+                            href={`${ind.href}?familia=${encodeURIComponent(label)}`}
                             className="block text-[12px] text-white/80 hover:text-[#85C639] py-2 font-sora"
                           >
-                            {family} <span className="text-white/40 text-[10px]">({count})</span>
+                            {label} <span className="text-white/40 text-[10px]">({count})</span>
                           </a>
                         ))}
                       </div>

@@ -155,8 +155,12 @@ export default function IndustryPage() {
     }
   }, [data.id]);
 
+  // Soporta filtro exacto ("Maxón Blanco") o por prefijo de línea ("Maxón" → Maxón Blanco, Maxón Rápid…)
   const filteredGroups = activeFamily
-    ? familyGroups.filter(g => g.family === activeFamily)
+    ? familyGroups.filter(g =>
+        g.family === activeFamily ||
+        g.family.toLowerCase().startsWith(activeFamily.toLowerCase() + ' ')
+      )
     : familyGroups;
 
   return (

@@ -130,8 +130,10 @@ export default function IndustryPage() {
             setActiveFamily('');
         }
     }, [data.id]);
+    // Soporta filtro exacto ("Maxón Blanco") o por prefijo de línea ("Maxón" → Maxón Blanco, Maxón Rápid…)
     const filteredGroups = activeFamily
-        ? familyGroups.filter(g => g.family === activeFamily)
+        ? familyGroups.filter(g => g.family === activeFamily ||
+            g.family.toLowerCase().startsWith(activeFamily.toLowerCase() + ' '))
         : familyGroups;
     return (React.createElement("div", { className: "min-h-screen animate-fadeIn bg-white font-sora -mt-[124px]" },
         React.createElement("div", { className: "relative overflow-hidden bg-[#181B1C] pt-[124px]" },

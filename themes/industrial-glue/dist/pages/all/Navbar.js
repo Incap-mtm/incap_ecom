@@ -33,7 +33,8 @@ export default function Navbar() {
     const [isClient, setIsClient] = useState(false);
     useEffect(() => setIsClient(true), []);
     const [result] = useQuery({ query: FAMILIES_QUERY, pause: !isClient });
-    // Construir map: industria.id → [{family, count}]
+    // Construir map: industria.id → [{label, count, isGroup}]
+    // Familias que comparten primera palabra se agrupan bajo esa palabra.
     const familiesByIndustry = useMemo(() => {
         var _a, _b, _c;
         const out = {};
@@ -47,9 +48,28 @@ export default function Navbar() {
                 if (f)
                     counts[f] = (counts[f] || 0) + 1;
             });
-            out[ind.id] = Object.entries(counts)
-                .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-                .map(([family, count]) => ({ family, count }));
+            const families = Object.entries(counts).map(([family, count]) => ({ family, count }));
+            // Contar cuántas familias comparten la misma primera palabra
+            const firstWordCount = {};
+            families.forEach(({ family }) => {
+                const key = family.split(' ')[0];
+                firstWordCount[key] = (firstWordCount[key] || 0) + 1;
+            });
+            // Agrupar bajo la primera palabra cuando hay múltiples familias con ella
+            const groups = {};
+            families.forEach(({ family, count }) => {
+                const key = family.split(' ')[0];
+                if (firstWordCount[key] > 1) {
+                    if (!groups[key])
+                        groups[key] = { label: key, count: 0, isGroup: true };
+                    groups[key].count += count;
+                }
+                else {
+                    groups[family] = { label: family, count, isGroup: false };
+                }
+            });
+            out[ind.id] = Object.values(groups)
+                .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
         }
         return out;
     }, [result.data]);
@@ -106,13 +126,15 @@ export default function Navbar() {
                                     React.createElement("div", { style: { overflowY: 'auto', maxHeight: '280px' } },
                                         result.fetching && fams.length === 0 && (React.createElement("p", { style: { fontSize: '11px', color: '#94a3b8', padding: '8px 16px' } }, "Cargando\u2026")),
                                         !result.fetching && fams.length === 0 && (React.createElement("p", { style: { fontSize: '11px', color: '#94a3b8', padding: '8px 16px' } }, "Sin familias")),
-                                        fams.map(({ family, count }) => (React.createElement("a", { key: family, href: `${activeInd.href}?familia=${encodeURIComponent(family)}`, style: {
+                                        fams.map(({ label, count, isGroup }) => (React.createElement("a", { key: label, href: `${activeInd.href}?familia=${encodeURIComponent(label)}`, style: {
                                                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                                                 padding: '7px 16px', textDecoration: 'none',
                                                 fontSize: '12px', fontWeight: 600, color: '#374151',
                                                 transition: 'all 0.12s',
                                             }, onMouseEnter: e => { e.currentTarget.style.background = '#f8faff'; e.currentTarget.style.color = '#2A4899'; }, onMouseLeave: e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#374151'; } },
-                                            React.createElement("span", null, family),
+                                            React.createElement("span", { style: { display: 'flex', alignItems: 'center', gap: '5px' } },
+                                                label,
+                                                isGroup && React.createElement("span", { style: { fontSize: '9px', background: '#e0e7ff', color: '#2A4899', borderRadius: '4px', padding: '1px 5px', fontWeight: 700 } }, "l\u00EDnea")),
                                             React.createElement("span", { style: { fontSize: '10px', color: '#94a3b8', fontWeight: 700 } }, count))))),
                                     React.createElement("div", { style: { borderTop: '1px solid #f1f5f9', marginTop: 'auto', padding: '10px 16px 8px' } },
                                         React.createElement("a", { href: activeInd.href, style: { fontSize: '11px', fontWeight: 700, color: '#2A4899', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' } },
@@ -145,8 +167,8 @@ export default function Navbar() {
                                 React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M19 9l-7 7-7-7" }))),
                         expanded && (React.createElement("div", { className: "pl-4 pb-2" },
                             fams.length === 0 && React.createElement("p", { className: "text-[11px] text-white/40 py-2" }, "Sin familias"),
-                            fams.map(({ family, count }) => (React.createElement("a", { key: family, href: `${ind.href}?familia=${encodeURIComponent(family)}`, className: "block text-[12px] text-white/80 hover:text-[#85C639] py-2 font-sora" },
-                                family,
+                            fams.map(({ label, count }) => (React.createElement("a", { key: label, href: `${ind.href}?familia=${encodeURIComponent(label)}`, className: "block text-[12px] text-white/80 hover:text-[#85C639] py-2 font-sora" },
+                                label,
                                 " ",
                                 React.createElement("span", { className: "text-white/40 text-[10px]" },
                                     "(",
