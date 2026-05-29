@@ -24,6 +24,7 @@ export default function LogoStrip() {
               src={logo.src}
               alt={logo.name}
               className="h-10 w-auto object-contain flex-shrink-0 transition-transform hover:scale-110"
+              style={{ mixBlendMode: 'multiply' }}
             />
           ))}
         </div>
