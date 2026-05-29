@@ -32,7 +32,7 @@ const industries = [
     image: '/images/sections/Calzado_Marroquinera_Seccion_Home.webp',
     icons: [
       { src: '/images/icons/Icono_Calzado.png', label: 'Calzado' },
-      { src: '/images/icons/Icono_Marroquinería.png', label: 'Marroquinería' },
+      { src: '/images/icons/Icono_Marroquineria.png', label: 'Marroquinería' },
     ],
   },
   {

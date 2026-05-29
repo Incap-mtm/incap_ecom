@@ -8,7 +8,7 @@ const solutions = [
     description: 'Flexibilidad, alta resistencia a la tracción y pegado duradero en cuero, sintéticos y suelas.',
   },
   {
-    icon: '/images/icons/Icono_Marroquinería.png',
+    icon: '/images/icons/Icono_Marroquineria.png',
     name: 'Marroquinería y Cuero',
     description: 'Para bolsos, cinturones, billeteras y artículos de moda en cuero natural y sintético.',
   },
