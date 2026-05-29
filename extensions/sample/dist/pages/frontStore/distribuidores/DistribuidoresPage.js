@@ -290,7 +290,11 @@ export default function DistribuidoresPage({ setting }) {
                         color: '#64748b', fontWeight: 600, whiteSpace: 'nowrap',
                         boxShadow: '0 2px 12px rgba(0,0,0,0.1)', pointerEvents: 'none',
                         fontFamily: 'Inter, sans-serif',
-                    } }, "Toc\u00E1 un marcador o seleccion\u00E1 una ciudad en la lista"))))));
+                    } }, "Toc\u00E1 un marcador o seleccion\u00E1 una ciudad en la lista")))),
+        React.createElement("div", { style: { background: '#fff', borderTop: '1px solid #e2e8f0', padding: '2.5rem 2rem', textAlign: 'center' } },
+            React.createElement("p", { style: { fontSize: '9px', fontWeight: 800, color: '#94a3b8', letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '1.5rem' } }, "Aliados Estrat\u00E9gicos"),
+            React.createElement("div", { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' } },
+                React.createElement("img", { src: "/images/logos/jab-logo.png", alt: "JAB", style: { height: '48px', width: 'auto', objectFit: 'contain', opacity: 0.85, filter: 'grayscale(20%)', transition: 'opacity 0.2s, filter 0.2s' }, onMouseEnter: e => { const el = e.currentTarget; el.style.opacity = '1'; el.style.filter = 'grayscale(0%)'; }, onMouseLeave: e => { const el = e.currentTarget; el.style.opacity = '0.85'; el.style.filter = 'grayscale(20%)'; } })))));
 }
 export const layout = {
     areaId: 'content',

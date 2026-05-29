@@ -398,6 +398,22 @@ export default function DistribuidoresPage({ setting }: PageProps) {
           )}
         </div>
       </div>
+
+      {/* Aliados estratégicos */}
+      <div style={{ background: '#fff', borderTop: '1px solid #e2e8f0', padding: '2.5rem 2rem', textAlign: 'center' }}>
+        <p style={{ fontSize: '9px', fontWeight: 800, color: '#94a3b8', letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
+          Aliados Estratégicos
+        </p>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
+          <img
+            src="/images/logos/jab-logo.png"
+            alt="JAB"
+            style={{ height: '48px', width: 'auto', objectFit: 'contain', opacity: 0.85, filter: 'grayscale(20%)', transition: 'opacity 0.2s, filter 0.2s' }}
+            onMouseEnter={e => { const el = e.currentTarget as HTMLImageElement; el.style.opacity = '1'; el.style.filter = 'grayscale(0%)'; }}
+            onMouseLeave={e => { const el = e.currentTarget as HTMLImageElement; el.style.opacity = '0.85'; el.style.filter = 'grayscale(20%)'; }}
+          />
+        </div>
+      </div>
     </div>
   );
 }
