@@ -91,7 +91,7 @@ function init(container) {
         const isMobile = w < 1024;
         const tiltGroup = new THREE.Group();
         tiltGroup.rotation.z = -(15 * Math.PI / 180);
-        tiltGroup.position.y = isMobile ? -0.5  : -1.45;
+        tiltGroup.position.y = isMobile ? -1.5  : -1.45;
         tiltGroup.position.x = isMobile ?  0.0  : -0.8;
         tiltGroup.add(model);
         scene.add(tiltGroup);
@@ -189,7 +189,7 @@ function init(container) {
             <div ref={mountRef} id="incap-3d-mount" />
 
             {/* Badge — overlaps product intentionally */}
-            <div className="absolute bottom-6 left-6 md:bottom-10 md:left-8 bg-[#2A4899] text-white p-7 md:p-10 rounded-[2rem] shadow-2xl z-10 w-56 md:w-72 flex flex-col justify-center" style={{ backdropFilter: 'blur(2px)' }}>
+            <div className="absolute bottom-16 left-6 md:bottom-10 md:left-8 bg-[#2A4899] text-white p-7 md:p-10 rounded-[2rem] shadow-2xl z-10 w-56 md:w-72 flex flex-col justify-center" style={{ backdropFilter: 'blur(2px)' }}>
               <span className="block text-5xl md:text-7xl font-black font-sora mb-1 md:mb-2 leading-none">+56</span>
               <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] font-sora opacity-90 leading-tight">
                 AÑOS DE MAESTRÍA TÉCNICA
