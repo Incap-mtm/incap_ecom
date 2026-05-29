@@ -5,6 +5,7 @@ const logos = [
   { name: 'Intercom', src: '/images/logos/Logo_Intercom.svg' },
   { name: 'Tecno GI', src: '/images/logos/Logo_Tecno_GI.svg' },
   { name: 'CT Point', src: '/images/logos/Logo_CT_Point.svg' },
+  { name: 'JAB', src: '/images/logos/jab-logo.png' },
 ];
 
 export default function LogoStrip() {
