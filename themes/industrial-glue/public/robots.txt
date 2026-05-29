@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /graphql
+Disallow: /checkout/
+
+Sitemap: https://www.grupoincap.com.co/sitemap.xml

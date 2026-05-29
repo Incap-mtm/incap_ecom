@@ -1,8 +1,94 @@
 import React from 'react';
+import { useQuery } from 'urql';
+
+const SEO_QUERY = `
+  query {
+    setting {
+      storeName
+      storePhoneNumber
+      storeInstagram
+      storeFacebook
+      storeLinkedin
+    }
+  }
+`;
+
+const SITE_URL = 'https://www.grupoincap.com.co';
 
 export default function Head() {
+  const [{ data }] = useQuery({ query: SEO_QUERY, requestPolicy: 'cache-and-network' });
+
+  const storeName  = data?.setting?.storeName        || 'Grupo INCAP';
+  const phone      = data?.setting?.storePhoneNumber || '+57 300 217 1521';
+  const instagram  = data?.setting?.storeInstagram   || '';
+  const facebook   = data?.setting?.storeFacebook    || '';
+  const linkedin   = data?.setting?.storeLinkedin    || '';
+  const sameAs     = [instagram, facebook, linkedin].filter(Boolean);
+
+  const orgSchema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': ['Organization', 'LocalBusiness'],
+        '@id': `${SITE_URL}/#organization`,
+        name: storeName,
+        url: SITE_URL,
+        logo: {
+          '@type': 'ImageObject',
+          url: `${SITE_URL}/images/icons/incap_favicon.svg`,
+        },
+        description: 'Fabricante colombiano de adhesivos industriales para calzado, muebles, colchones y hogar. Asesoría técnica especializada.',
+        address: {
+          '@type': 'PostalAddress',
+          addressCountry: 'CO',
+          addressLocality: 'Bogotá',
+          addressRegion: 'Cundinamarca',
+        },
+        contactPoint: {
+          '@type': 'ContactPoint',
+          telephone: phone,
+          contactType: 'customer service',
+          availableLanguage: 'Spanish',
+        },
+        ...(sameAs.length > 0 && { sameAs }),
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: storeName,
+        publisher: { '@id': `${SITE_URL}/#organization` },
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: {
+            '@type': 'EntryPoint',
+            urlTemplate: `${SITE_URL}/buscar?q={search_term_string}`,
+          },
+          'query-input': 'required name=search_term_string',
+        },
+      },
+    ],
+  };
+
   return (
     <>
+      {/* SEO — meta base */}
+      <meta name="description" content="Grupo INCAP — Fabricante colombiano de adhesivos industriales para calzado, muebles, colchones y hogar. Asesoría técnica especializada." />
+      <meta name="robots" content="index, follow" />
+
+      {/* Open Graph */}
+      <meta property="og:type" content="website" />
+      <meta property="og:site_name" content="Grupo INCAP" />
+      <meta property="og:locale" content="es_CO" />
+      <meta property="og:image" content={`${SITE_URL}/images/banners/Banner_Maderas_Muebles.webp`} />
+      <meta property="og:description" content="Fabricante colombiano de adhesivos industriales para calzado, muebles, colchones y hogar." />
+
+      {/* Structured data — Organization + WebSite */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+      />
+
       <link rel="icon" type="image/svg+xml" href="/images/icons/incap_favicon.svg" />
       <link rel="shortcut icon" href="/images/icons/incap_favicon.svg" />
       <link rel="apple-touch-icon" href="/images/icons/incap_favicon.svg" />

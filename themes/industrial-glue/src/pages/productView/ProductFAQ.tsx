@@ -49,7 +49,22 @@ export default function ProductFAQ({ product }: ProductProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i);
 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  };
+
   return (
+    <>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+    />
     <section className="bg-[#181B1C] py-20 relative overflow-hidden">
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#85C639]/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
 
@@ -83,6 +98,7 @@ export default function ProductFAQ({ product }: ProductProps) {
         </div>
       </div>
     </section>
+    </>
   );
 }
 

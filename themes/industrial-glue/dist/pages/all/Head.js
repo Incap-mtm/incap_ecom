@@ -1,6 +1,79 @@
 import React from 'react';
+import { useQuery } from 'urql';
+const SEO_QUERY = `
+  query {
+    setting {
+      storeName
+      storePhoneNumber
+      storeInstagram
+      storeFacebook
+      storeLinkedin
+    }
+  }
+`;
+const SITE_URL = 'https://www.grupoincap.com.co';
 export default function Head() {
+    var _a, _b, _c, _d, _e;
+    const [{ data }] = useQuery({ query: SEO_QUERY, requestPolicy: 'cache-and-network' });
+    const storeName = ((_a = data === null || data === void 0 ? void 0 : data.setting) === null || _a === void 0 ? void 0 : _a.storeName) || 'Grupo INCAP';
+    const phone = ((_b = data === null || data === void 0 ? void 0 : data.setting) === null || _b === void 0 ? void 0 : _b.storePhoneNumber) || '+57 300 217 1521';
+    const instagram = ((_c = data === null || data === void 0 ? void 0 : data.setting) === null || _c === void 0 ? void 0 : _c.storeInstagram) || '';
+    const facebook = ((_d = data === null || data === void 0 ? void 0 : data.setting) === null || _d === void 0 ? void 0 : _d.storeFacebook) || '';
+    const linkedin = ((_e = data === null || data === void 0 ? void 0 : data.setting) === null || _e === void 0 ? void 0 : _e.storeLinkedin) || '';
+    const sameAs = [instagram, facebook, linkedin].filter(Boolean);
+    const orgSchema = {
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': ['Organization', 'LocalBusiness'],
+                '@id': `${SITE_URL}/#organization`,
+                name: storeName,
+                url: SITE_URL,
+                logo: {
+                    '@type': 'ImageObject',
+                    url: `${SITE_URL}/images/icons/incap_favicon.svg`,
+                },
+                description: 'Fabricante colombiano de adhesivos industriales para calzado, muebles, colchones y hogar. Asesoría técnica especializada.',
+                address: {
+                    '@type': 'PostalAddress',
+                    addressCountry: 'CO',
+                    addressLocality: 'Bogotá',
+                    addressRegion: 'Cundinamarca',
+                },
+                contactPoint: {
+                    '@type': 'ContactPoint',
+                    telephone: phone,
+                    contactType: 'customer service',
+                    availableLanguage: 'Spanish',
+                },
+                ...(sameAs.length > 0 && { sameAs }),
+            },
+            {
+                '@type': 'WebSite',
+                '@id': `${SITE_URL}/#website`,
+                url: SITE_URL,
+                name: storeName,
+                publisher: { '@id': `${SITE_URL}/#organization` },
+                potentialAction: {
+                    '@type': 'SearchAction',
+                    target: {
+                        '@type': 'EntryPoint',
+                        urlTemplate: `${SITE_URL}/buscar?q={search_term_string}`,
+                    },
+                    'query-input': 'required name=search_term_string',
+                },
+            },
+        ],
+    };
     return (React.createElement(React.Fragment, null,
+        React.createElement("meta", { name: "description", content: "Grupo INCAP \u2014 Fabricante colombiano de adhesivos industriales para calzado, muebles, colchones y hogar. Asesor\u00EDa t\u00E9cnica especializada." }),
+        React.createElement("meta", { name: "robots", content: "index, follow" }),
+        React.createElement("meta", { property: "og:type", content: "website" }),
+        React.createElement("meta", { property: "og:site_name", content: "Grupo INCAP" }),
+        React.createElement("meta", { property: "og:locale", content: "es_CO" }),
+        React.createElement("meta", { property: "og:image", content: `${SITE_URL}/images/banners/Banner_Maderas_Muebles.webp` }),
+        React.createElement("meta", { property: "og:description", content: "Fabricante colombiano de adhesivos industriales para calzado, muebles, colchones y hogar." }),
+        React.createElement("script", { type: "application/ld+json", dangerouslySetInnerHTML: { __html: JSON.stringify(orgSchema) } }),
         React.createElement("link", { rel: "icon", type: "image/svg+xml", href: "/images/icons/incap_favicon.svg" }),
         React.createElement("link", { rel: "shortcut icon", href: "/images/icons/incap_favicon.svg" }),
         React.createElement("link", { rel: "apple-touch-icon", href: "/images/icons/incap_favicon.svg" }),

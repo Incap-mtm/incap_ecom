@@ -22,18 +22,29 @@ export default function ProductFAQ({ product }) {
         return null;
     const [openIndex, setOpenIndex] = useState(0);
     const toggle = (i) => setOpenIndex(openIndex === i ? null : i);
-    return (React.createElement("section", { className: "bg-[#181B1C] py-20 relative overflow-hidden" },
-        React.createElement("div", { className: "absolute bottom-0 left-0 w-96 h-96 bg-[#85C639]/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" }),
-        React.createElement("div", { className: "max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12 relative z-10" },
-            React.createElement("div", { className: "grid grid-cols-1 lg:grid-cols-5 gap-16" },
-                React.createElement("div", { className: "lg:col-span-2" },
-                    React.createElement("h2", { className: "text-4xl md:text-5xl font-black text-white uppercase tracking-tight font-sora mb-2" },
-                        "Preguntas",
-                        React.createElement("br", null),
-                        React.createElement("span", { className: "text-[#85C639] italic" }, "Frecuentes")),
-                    React.createElement("div", { className: "w-24 h-2 bg-[#85C639] mb-6" }),
-                    React.createElement("p", { className: "text-sm text-white/40 leading-relaxed font-inter" }, "Informaci\u00F3n t\u00E9cnica esencial para optimizar el uso de este producto en sus procesos industriales.")),
-                React.createElement("div", { className: "lg:col-span-3" }, faqs.map((faq, i) => (React.createElement(AccordionItem, { key: i, item: faq, isOpen: openIndex === i, onToggle: () => toggle(i) }))))))));
+    const faqSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqs.map((f) => ({
+            '@type': 'Question',
+            name: f.question,
+            acceptedAnswer: { '@type': 'Answer', text: f.answer },
+        })),
+    };
+    return (React.createElement(React.Fragment, null,
+        React.createElement("script", { type: "application/ld+json", dangerouslySetInnerHTML: { __html: JSON.stringify(faqSchema) } }),
+        React.createElement("section", { className: "bg-[#181B1C] py-20 relative overflow-hidden" },
+            React.createElement("div", { className: "absolute bottom-0 left-0 w-96 h-96 bg-[#85C639]/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" }),
+            React.createElement("div", { className: "max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12 relative z-10" },
+                React.createElement("div", { className: "grid grid-cols-1 lg:grid-cols-5 gap-16" },
+                    React.createElement("div", { className: "lg:col-span-2" },
+                        React.createElement("h2", { className: "text-4xl md:text-5xl font-black text-white uppercase tracking-tight font-sora mb-2" },
+                            "Preguntas",
+                            React.createElement("br", null),
+                            React.createElement("span", { className: "text-[#85C639] italic" }, "Frecuentes")),
+                        React.createElement("div", { className: "w-24 h-2 bg-[#85C639] mb-6" }),
+                        React.createElement("p", { className: "text-sm text-white/40 leading-relaxed font-inter" }, "Informaci\u00F3n t\u00E9cnica esencial para optimizar el uso de este producto en sus procesos industriales.")),
+                    React.createElement("div", { className: "lg:col-span-3" }, faqs.map((faq, i) => (React.createElement(AccordionItem, { key: i, item: faq, isOpen: openIndex === i, onToggle: () => toggle(i) })))))))));
 }
 export const layout = {
     areaId: 'productPageBottom',
