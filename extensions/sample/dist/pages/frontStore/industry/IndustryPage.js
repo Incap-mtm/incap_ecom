@@ -7,7 +7,7 @@ const INDUSTRIES_DATA = {
         slugs: ['madera', 'maderas', 'muebles'],
         name: 'Madera y Muebles',
         heroImage: '/images/banners/Banner_Maderas_Muebles.webp',
-        icons: ['/images/icons/Icono_Categoria_Madera_Muebles.svg', '/images/icons/Icono_Categoria_Madera_Muebles_2.svg'],
+        icons: ['/images/icons/Icono_Maderas.png', '/images/icons/Icono_Muebles.png'],
         description: 'Soluciones adhesivas de alta ingeniería para la industria del mueble. De la ebanistería fina a la producción en serie.',
     },
     colchones: {
@@ -15,7 +15,7 @@ const INDUSTRIES_DATA = {
         slugs: ['colchones', 'espumas'],
         name: 'Colchones y Espumas',
         heroImage: '/images/banners/Banner_Colchones.webp',
-        icons: ['/images/icons/INCAP_Icono_colchones_Espumas.svg', '/images/icons/INCAP_Icono_colchones_Espumas_2.svg'],
+        icons: ['/images/icons/Icono_Colchones.png', '/images/icons/icono_Espuma.png'],
         description: 'Ingeniería para el descanso. Adhesivos que optimizan tu línea de producción y protegen la salud de tu equipo.',
     },
     calzado: {
@@ -23,7 +23,7 @@ const INDUSTRIES_DATA = {
         slugs: ['calzado', 'marroquineria'],
         name: 'Calzado y Marroquinería',
         heroImage: '/images/banners/Banner_Calzado_Marroquineria.webp',
-        icons: ['/images/icons/Icono_Calzado.png', '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2_alt.svg'],
+        icons: ['/images/icons/Icono_Calzado.png', '/images/icons/Icono_Marroquinería.png'],
         description: 'El estándar de las grandes fábricas. Un ecosistema completo para reducir garantías.',
     },
     hogar: {
@@ -31,7 +31,7 @@ const INDUSTRIES_DATA = {
         slugs: ['hogar', 'multiusos', 'manualidades'],
         name: 'Hogar y Multiusos',
         heroImage: '/images/banners/Banner_Hogar_Multiusos.webp',
-        icons: ['/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg', '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos_2.svg', '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos_3.svg'],
+        icons: ['/images/icons/Icono_Hogar.png', '/images/icons/Icono_manualidades.png', '/images/icons/Icono_Multiusos.png'],
         description: 'Soluciones versátiles para el día a día. Reparaciones rápidas y proyectos creativos con calidad industrial.',
     }
 };

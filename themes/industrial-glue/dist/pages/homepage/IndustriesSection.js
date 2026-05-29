@@ -8,8 +8,8 @@ const industries = [
         href: '/industrias/madera',
         image: '/images/sections/Categoria_Maderas_Muebles_Seccion_Home.webp',
         icons: [
-            { src: '/images/icons/Icono_Categoria_Madera_Muebles.svg', label: 'Maderas' },
-            { src: '/images/icons/Icono_Categoria_Madera_Muebles_2.svg', label: 'Muebles' }
+            { src: '/images/icons/Icono_Maderas.png', label: 'Maderas' },
+            { src: '/images/icons/Icono_Muebles.png', label: 'Muebles' }
         ],
     },
     {
@@ -19,8 +19,8 @@ const industries = [
         href: '/industrias/colchones',
         image: '/images/sections/Colchones_Seccion_Home.webp',
         icons: [
-            { src: '/images/icons/INCAP_Icono_colchones_Espumas.svg', label: 'Colchones' },
-            { src: '/images/icons/INCAP_Icono_colchones_Espumas_2.svg', label: 'Espumas' }
+            { src: '/images/icons/Icono_Colchones.png', label: 'Colchones' },
+            { src: '/images/icons/icono_Espuma.png', label: 'Espumas' }
         ],
     },
     {
@@ -31,7 +31,7 @@ const industries = [
         image: '/images/sections/Calzado_Marroquinera_Seccion_Home.webp',
         icons: [
             { src: '/images/icons/Icono_Calzado.png', label: 'Calzado' },
-            { src: '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2_alt.svg', label: 'Marroquinería' },
+            { src: '/images/icons/Icono_Marroquinería.png', label: 'Marroquinería' },
         ],
     },
     {
@@ -41,9 +41,9 @@ const industries = [
         href: '/industrias/hogar',
         image: '/images/sections/Hogar_Multiusos_Seccion_Home.webp',
         icons: [
-            { src: '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg', label: 'Hogar' },
-            { src: '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos_2.svg', label: 'Manualidades' },
-            { src: '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos_3.svg', label: 'Multiusos' }
+            { src: '/images/icons/Icono_Hogar.png', label: 'Hogar' },
+            { src: '/images/icons/Icono_manualidades.png', label: 'Manualidades' },
+            { src: '/images/icons/Icono_Multiusos.png', label: 'Multiusos' }
         ],
     },
 ];

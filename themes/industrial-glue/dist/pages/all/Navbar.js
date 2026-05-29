@@ -2,10 +2,10 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useQuery } from 'urql';
 import { getFamily } from '../../utils/family.js';
 const industries = [
-    { id: 'madera', name: 'Madera y Muebles', href: '/industrias/madera', icon: '/images/icons/Icono_Categoria_Madera_Muebles.svg', catUrlKey: 'madera' },
-    { id: 'colchones', name: 'Colchones y Espumas', href: '/industrias/colchones', icon: '/images/icons/INCAP_Icono_colchones_Espumas.svg', catUrlKey: 'colchones' },
-    { id: 'calzado', name: 'Calzado y Marroquinería', href: '/industrias/calzado', icon: '/images/icons/INCAP_Icono_Calzado_y_Marroquinera_2.svg', catUrlKey: 'calzado' },
-    { id: 'hogar', name: 'Hogar y Multiusos', href: '/industrias/hogar', icon: '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg', catUrlKey: 'multiusos' },
+    { id: 'madera', name: 'Madera y Muebles', href: '/industrias/madera', icon: '/images/icons/Icono_Maderas.png', catUrlKey: 'madera' },
+    { id: 'colchones', name: 'Colchones y Espumas', href: '/industrias/colchones', icon: '/images/icons/Icono_Colchones.png', catUrlKey: 'colchones' },
+    { id: 'calzado', name: 'Calzado y Marroquinería', href: '/industrias/calzado', icon: '/images/icons/Icono_Calzado.png', catUrlKey: 'calzado' },
+    { id: 'hogar', name: 'Hogar y Multiusos', href: '/industrias/hogar', icon: '/images/icons/Icono_Hogar.png', catUrlKey: 'multiusos' },
 ];
 const FAMILIES_QUERY = `
   query {

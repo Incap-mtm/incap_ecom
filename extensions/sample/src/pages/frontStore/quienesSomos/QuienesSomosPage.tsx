@@ -69,14 +69,14 @@ const industries = [
   {
     name: 'Madera y Muebles',
     href: '/industrias/madera',
-    icon: '/images/icons/Icono_Categoria_Madera_Muebles.svg',
+    icon: '/images/icons/Icono_Maderas.png',
     description: 'Adhesivos para la industria del mueble: enchapes, ensambles, ebanistería y producción en serie.',
     color: '#8B6914',
   },
   {
     name: 'Colchones y Espumas',
     href: '/industrias/colchones',
-    icon: '/images/icons/INCAP_Icono_colchones_Espumas.svg',
+    icon: '/images/icons/Icono_Colchones.png',
     description: 'Soluciones para pegue de espumas, telas y componentes en líneas de producción de descanso.',
     color: '#2A4899',
   },
@@ -90,7 +90,7 @@ const industries = [
   {
     name: 'Hogar y Multiusos',
     href: '/industrias/hogar',
-    icon: '/images/icons/INCAP_Icono_Hogar_Manualidades_y_Multisuos.svg',
+    icon: '/images/icons/Icono_Hogar.png',
     description: 'Pegamentos versátiles para reparaciones domésticas, manualidades y proyectos creativos.',
     color: '#85C639',
   },
