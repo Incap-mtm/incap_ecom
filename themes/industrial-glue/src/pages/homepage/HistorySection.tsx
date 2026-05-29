@@ -44,9 +44,9 @@ function init(container) {
 
     /* Scene */
     const scene  = new THREE.Scene();
-    // Telephoto FOV keeps proportions natural; camera further back shows full product
-    const camera = new THREE.PerspectiveCamera(32, w / h, 0.1, 100);
-    camera.position.set(0, 0.15, 6.5);
+    // FOV 46° + z=9 → frustum alto suficiente para el producto sin distorsión excesiva
+    const camera = new THREE.PerspectiveCamera(46, w / h, 0.1, 100);
+    camera.position.set(0, 0.2, 9);
 
     /* Renderer — no premultipliedAlpha so transparency is clean */
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, premultipliedAlpha: false });
@@ -183,7 +183,7 @@ function init(container) {
               ref={mountRef}
               style={{
                 width: '100%',
-                height: 'clamp(360px, 48vw, 600px)',
+                height: 'clamp(420px, 54vw, 680px)',
                 background: 'transparent',
               }}
             />
