@@ -38,24 +38,29 @@ function init(container) {
 
     /* Scene */
     const scene  = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 100);
-    camera.position.set(0, 0, 3.8);
+    // Telephoto FOV keeps proportions natural; camera further back shows full product
+    const camera = new THREE.PerspectiveCamera(32, w / h, 0.1, 100);
+    camera.position.set(0, 0.15, 6.5);
 
-    /* Renderer */
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    /* Renderer — no premultipliedAlpha so transparency is clean */
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, premultipliedAlpha: false });
     renderer.setSize(w, h);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.shadowMap.enabled = false;
     container.appendChild(renderer.domElement);
 
     /* Lights */
-    scene.add(new THREE.AmbientLight(0xffffff, 1.5));
-    const key = new THREE.DirectionalLight(0xffffff, 2.5);
-    key.position.set(5, 8, 5);
+    scene.add(new THREE.AmbientLight(0xffffff, 1.8));
+    const key = new THREE.DirectionalLight(0xffffff, 2.8);
+    key.position.set(4, 8, 6);
     scene.add(key);
-    const fill = new THREE.DirectionalLight(0x8899ff, 0.6);
-    fill.position.set(-4, -2, -4);
+    const fill = new THREE.DirectionalLight(0xaabbff, 0.5);
+    fill.position.set(-5, -2, -3);
     scene.add(fill);
+    const rim = new THREE.DirectionalLight(0xffffff, 0.8);
+    rim.position.set(-3, 4, -6);
+    scene.add(rim);
 
     let raf    = 0;
     let mixer  = null;
@@ -67,13 +72,19 @@ function init(container) {
       (gltf) => {
         const model = gltf.scene;
 
-        /* Center + auto-scale */
+        /* Center + scale to show full product */
         const box  = new THREE.Box3().setFromObject(model);
         const c    = box.getCenter(new THREE.Vector3());
         const size = box.getSize(new THREE.Vector3());
         model.position.sub(c);
-        model.scale.setScalar(2.8 / Math.max(size.x, size.y, size.z));
-        scene.add(model);
+        // Scale so the tallest dimension fits comfortably in view with breathing room
+        model.scale.setScalar(1.85 / Math.max(size.x, size.y, size.z));
+
+        // Wrap in a group for the static tilt — keeps animation on model unaffected
+        const tiltGroup = new THREE.Group();
+        tiltGroup.rotation.z = -(15 * Math.PI / 180); // lean 15° to the right
+        tiltGroup.add(model);
+        scene.add(tiltGroup);
 
         /* Wire scroll to the built-in 'rotacion' animation */
         if (gltf.animations && gltf.animations.length) {
@@ -155,9 +166,7 @@ function init(container) {
                 React.createElement("div", { className: `relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0` },
                     React.createElement("div", { ref: mountRef, style: {
                             width: '100%',
-                            height: 'clamp(300px, 44vw, 520px)',
-                            borderRadius: '3rem',
-                            overflow: 'hidden',
+                            height: 'clamp(360px, 48vw, 600px)',
                             background: 'transparent',
                         } }),
                     React.createElement("div", { className: "absolute -bottom-8 -left-8 md:-bottom-12 md:-left-12 bg-[#2A4899] text-white p-8 md:p-12 rounded-[2rem] shadow-2xl z-10 w-64 md:w-80 flex flex-col justify-center" },
