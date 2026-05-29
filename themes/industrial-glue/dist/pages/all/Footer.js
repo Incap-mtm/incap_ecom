@@ -18,9 +18,9 @@ const legalLinks = [
 export default function Footer({ setting }) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
     const currentYear = new Date().getFullYear();
-    const phone = (_a = setting === null || setting === void 0 ? void 0 : setting.storePhoneNumber) !== null && _a !== void 0 ? _a : '+57 300 217 1521';
-    const address = (_b = setting === null || setting === void 0 ? void 0 : setting.storeAddress) !== null && _b !== void 0 ? _b : 'Bogotá, Colombia';
-    const city = (_c = setting === null || setting === void 0 ? void 0 : setting.storeCity) !== null && _c !== void 0 ? _c : '';
+    const phone = (_a = setting === null || setting === void 0 ? void 0 : setting.storePhoneNumber) !== null && _a !== void 0 ? _a : '+57 312 378 6835';
+    const address = (_b = setting === null || setting === void 0 ? void 0 : setting.storeAddress) !== null && _b !== void 0 ? _b : 'Cra. 72 #62-27 sur';
+    const city = (_c = setting === null || setting === void 0 ? void 0 : setting.storeCity) !== null && _c !== void 0 ? _c : 'Bogotá';
     const whatsapp = (_d = setting === null || setting === void 0 ? void 0 : setting.storeWhatsappNumber) !== null && _d !== void 0 ? _d : '573002171521';
     const email = (_e = setting === null || setting === void 0 ? void 0 : setting.storeEmail) !== null && _e !== void 0 ? _e : '';
     const instagram = (_f = setting === null || setting === void 0 ? void 0 : setting.storeInstagram) !== null && _f !== void 0 ? _f : 'https://www.instagram.com/incap_col/?hl=es';

@@ -19,7 +19,7 @@ export default function Head() {
   const [{ data }] = useQuery({ query: SEO_QUERY, requestPolicy: 'cache-and-network' });
 
   const storeName  = data?.setting?.storeName        || 'Grupo INCAP';
-  const phone      = data?.setting?.storePhoneNumber || '+57 300 217 1521';
+  const phone      = data?.setting?.storePhoneNumber || '+57 312 378 6835';
   const instagram  = data?.setting?.storeInstagram   || '';
   const facebook   = data?.setting?.storeFacebook    || '';
   const linkedin   = data?.setting?.storeLinkedin    || '';

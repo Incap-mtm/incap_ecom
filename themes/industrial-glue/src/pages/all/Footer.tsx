@@ -36,9 +36,9 @@ const legalLinks = [
 
 export default function Footer({ setting }: FooterProps) {
   const currentYear = new Date().getFullYear();
-  const phone = setting?.storePhoneNumber ?? '+57 300 217 1521';
-  const address = setting?.storeAddress ?? 'Bogotá, Colombia';
-  const city = setting?.storeCity ?? '';
+  const phone = setting?.storePhoneNumber ?? '+57 312 378 6835';
+  const address = setting?.storeAddress ?? 'Cra. 72 #62-27 sur';
+  const city = setting?.storeCity ?? 'Bogotá';
   const whatsapp = setting?.storeWhatsappNumber ?? '573002171521';
   const email = setting?.storeEmail ?? '';
   const instagram = setting?.storeInstagram ?? 'https://www.instagram.com/incap_col/?hl=es';

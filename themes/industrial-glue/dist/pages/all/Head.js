@@ -16,7 +16,7 @@ export default function Head() {
     var _a, _b, _c, _d, _e;
     const [{ data }] = useQuery({ query: SEO_QUERY, requestPolicy: 'cache-and-network' });
     const storeName = ((_a = data === null || data === void 0 ? void 0 : data.setting) === null || _a === void 0 ? void 0 : _a.storeName) || 'Grupo INCAP';
-    const phone = ((_b = data === null || data === void 0 ? void 0 : data.setting) === null || _b === void 0 ? void 0 : _b.storePhoneNumber) || '+57 300 217 1521';
+    const phone = ((_b = data === null || data === void 0 ? void 0 : data.setting) === null || _b === void 0 ? void 0 : _b.storePhoneNumber) || '+57 312 378 6835';
     const instagram = ((_c = data === null || data === void 0 ? void 0 : data.setting) === null || _c === void 0 ? void 0 : _c.storeInstagram) || '';
     const facebook = ((_d = data === null || data === void 0 ? void 0 : data.setting) === null || _d === void 0 ? void 0 : _d.storeFacebook) || '';
     const linkedin = ((_e = data === null || data === void 0 ? void 0 : data.setting) === null || _e === void 0 ? void 0 : _e.storeLinkedin) || '';
