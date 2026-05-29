@@ -84,7 +84,8 @@ function init(container) {
         // Wrap in a group for the static tilt — keeps animation on model unaffected
         const tiltGroup = new THREE.Group();
         tiltGroup.rotation.z = -(15 * Math.PI / 180); // lean 15° to the right
-        tiltGroup.position.y = -1.2; // bajar para alinear con base del texto
+        tiltGroup.position.y = -1.32; // +10% más abajo
+        tiltGroup.position.x = -0.8;  // 30% hacia la izquierda
         tiltGroup.add(model);
         scene.add(tiltGroup);
 
