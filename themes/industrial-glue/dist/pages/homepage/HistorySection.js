@@ -78,7 +78,7 @@ function init(container) {
         const size = box.getSize(new THREE.Vector3());
         model.position.sub(c);
         // Scale so the tallest dimension fits comfortably in view with breathing room
-        model.scale.setScalar(1.85 / Math.max(size.x, size.y, size.z));
+        model.scale.setScalar(2.96 / Math.max(size.x, size.y, size.z));
 
         // Wrap in a group for the static tilt — keeps animation on model unaffected
         const tiltGroup = new THREE.Group();
@@ -169,7 +169,7 @@ function init(container) {
                             height: 'clamp(360px, 48vw, 600px)',
                             background: 'transparent',
                         } }),
-                    React.createElement("div", { className: "absolute -bottom-8 -left-8 md:-bottom-12 md:-left-12 bg-[#2A4899] text-white p-8 md:p-12 rounded-[2rem] shadow-2xl z-10 w-64 md:w-80 flex flex-col justify-center" },
+                    React.createElement("div", { className: "absolute bottom-6 left-6 md:bottom-10 md:left-8 bg-[#2A4899] text-white p-7 md:p-10 rounded-[2rem] shadow-2xl z-10 w-56 md:w-72 flex flex-col justify-center", style: { backdropFilter: 'blur(2px)' } },
                         React.createElement("span", { className: "block text-5xl md:text-7xl font-black font-sora mb-1 md:mb-2 leading-none" }, "+56"),
                         React.createElement("span", { className: "text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] font-sora opacity-90 leading-tight" }, "A\u00D1OS DE MAESTR\u00CDA T\u00C9CNICA")))),
             React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12" }, [
