@@ -3,7 +3,6 @@ const navLinks = [
     { label: 'Quiénes Somos', href: '/quienes-somos' },
     { label: 'Catálogo', href: '/catalog' },
     { label: 'Fabricantes', href: '/fabricantes' },
-    { label: 'Aliados', href: '/distribuidores' },
     { label: 'Blog', href: '/blog' },
 ];
 const industryLinks = [
