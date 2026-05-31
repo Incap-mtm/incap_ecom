@@ -8,7 +8,7 @@ const INDUSTRIES_DATA: Record<string, any> = {
     slugs: ['madera', 'maderas', 'muebles'],
     name: 'Madera y Muebles',
     heroImage: '/images/banners/Banner_Maderas_Muebles.webp',
-    icons: ['/images/icons/Icono_Maderas.png', '/images/icons/Icono_Muebles.png'],
+    icons: ['/images/icons/Icono_Maderas.webp', '/images/icons/Icono_Muebles.webp'],
     description: 'Soluciones adhesivas de alta ingeniería para la industria del mueble. De la ebanistería fina a la producción en serie.',
   },
   colchones: {
@@ -16,7 +16,7 @@ const INDUSTRIES_DATA: Record<string, any> = {
     slugs: ['colchones', 'espumas'],
     name: 'Colchones y Espumas',
     heroImage: '/images/banners/Banner_Colchones.webp',
-    icons: ['/images/icons/Icono_Colchones.png', '/images/icons/icono_Espuma.png'],
+    icons: ['/images/icons/Icono_Colchones.webp', '/images/icons/icono_Espuma.webp'],
     description: 'Ingeniería para el descanso. Adhesivos que optimizan tu línea de producción y protegen la salud de tu equipo.',
   },
   calzado: {
@@ -24,7 +24,7 @@ const INDUSTRIES_DATA: Record<string, any> = {
     slugs: ['calzado', 'marroquineria'],
     name: 'Calzado y Marroquinería',
     heroImage: '/images/banners/Banner_Calzado_Marroquineria.webp',
-    icons: ['/images/icons/Icono_Calzado.png', '/images/icons/Icono_Marroquineria.png'],
+    icons: ['/images/icons/Icono_Calzado.webp', '/images/icons/Icono_Marroquineria.webp'],
     description: 'El estándar de las grandes fábricas. Un ecosistema completo para reducir garantías.',
   },
   hogar: {
@@ -32,7 +32,7 @@ const INDUSTRIES_DATA: Record<string, any> = {
     slugs: ['hogar', 'multiusos', 'manualidades'],
     name: 'Hogar y Multiusos',
     heroImage: '/images/banners/Banner_Hogar_Multiusos.webp',
-    icons: ['/images/icons/Icono_Hogar.png', '/images/icons/Icono_manualidades.png', '/images/icons/Icono_Multiusos.png'],
+    icons: ['/images/icons/Icono_Hogar.webp', '/images/icons/Icono_manualidades.webp', '/images/icons/Icono_Multiusos.webp'],
     description: 'Soluciones versátiles para el día a día. Reparaciones rápidas y proyectos creativos con calidad industrial.',
   }
 };

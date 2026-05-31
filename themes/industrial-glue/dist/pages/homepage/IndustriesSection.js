@@ -8,8 +8,8 @@ const industries = [
         href: '/industrias/madera',
         image: '/images/sections/Categoria_Maderas_Muebles_Seccion_Home.webp',
         icons: [
-            { src: '/images/icons/Icono_Maderas.png', label: 'Maderas' },
-            { src: '/images/icons/Icono_Muebles.png', label: 'Muebles' }
+            { src: '/images/icons/Icono_Maderas.webp', label: 'Maderas' },
+            { src: '/images/icons/Icono_Muebles.webp', label: 'Muebles' }
         ],
     },
     {
@@ -19,8 +19,8 @@ const industries = [
         href: '/industrias/colchones',
         image: '/images/sections/Colchones_Seccion_Home.webp',
         icons: [
-            { src: '/images/icons/Icono_Colchones.png', label: 'Colchones' },
-            { src: '/images/icons/icono_Espuma.png', label: 'Espumas' }
+            { src: '/images/icons/Icono_Colchones.webp', label: 'Colchones' },
+            { src: '/images/icons/icono_Espuma.webp', label: 'Espumas' }
         ],
     },
     {
@@ -30,8 +30,8 @@ const industries = [
         href: '/industrias/calzado',
         image: '/images/sections/Calzado_Marroquinera_Seccion_Home.webp',
         icons: [
-            { src: '/images/icons/Icono_Calzado.png', label: 'Calzado' },
-            { src: '/images/icons/Icono_Marroquineria.png', label: 'Marroquinería' },
+            { src: '/images/icons/Icono_Calzado.webp', label: 'Calzado' },
+            { src: '/images/icons/Icono_Marroquineria.webp', label: 'Marroquinería' },
         ],
     },
     {
@@ -41,9 +41,9 @@ const industries = [
         href: '/industrias/hogar',
         image: '/images/sections/Hogar_Multiusos_Seccion_Home.webp',
         icons: [
-            { src: '/images/icons/Icono_Hogar.png', label: 'Hogar' },
-            { src: '/images/icons/Icono_manualidades.png', label: 'Manualidades' },
-            { src: '/images/icons/Icono_Multiusos.png', label: 'Multiusos' }
+            { src: '/images/icons/Icono_Hogar.webp', label: 'Hogar' },
+            { src: '/images/icons/Icono_manualidades.webp', label: 'Manualidades' },
+            { src: '/images/icons/Icono_Multiusos.webp', label: 'Multiusos' }
         ],
     },
 ];

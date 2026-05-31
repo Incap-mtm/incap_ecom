@@ -11,10 +11,10 @@ interface Industry {
 }
 
 const industries: Industry[] = [
-  { id: 'madera',    name: 'Madera y Muebles',        href: '/industrias/madera',    icon: '/images/icons/Icono_Maderas.png',          catUrlKey: 'madera' },
-  { id: 'colchones', name: 'Colchones y Espumas',     href: '/industrias/colchones', icon: '/images/icons/Icono_Colchones.png',        catUrlKey: 'colchones' },
-  { id: 'calzado',   name: 'Calzado y Marroquinería', href: '/industrias/calzado',   icon: '/images/icons/Icono_Calzado.png',          catUrlKey: 'calzado' },
-  { id: 'hogar',     name: 'Hogar y Multiusos',       href: '/industrias/hogar',     icon: '/images/icons/Icono_Hogar.png',            catUrlKey: 'multiusos' },
+  { id: 'madera',    name: 'Madera y Muebles',        href: '/industrias/madera',    icon: '/images/icons/Icono_Maderas.webp',          catUrlKey: 'madera' },
+  { id: 'colchones', name: 'Colchones y Espumas',     href: '/industrias/colchones', icon: '/images/icons/Icono_Colchones.webp',        catUrlKey: 'colchones' },
+  { id: 'calzado',   name: 'Calzado y Marroquinería', href: '/industrias/calzado',   icon: '/images/icons/Icono_Calzado.webp',          catUrlKey: 'calzado' },
+  { id: 'hogar',     name: 'Hogar y Multiusos',       href: '/industrias/hogar',     icon: '/images/icons/Icono_Hogar.webp',            catUrlKey: 'multiusos' },
 ];
 
 

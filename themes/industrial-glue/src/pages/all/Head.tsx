@@ -101,11 +101,17 @@ export default function Head() {
       }) }} />
       <link rel="preload" as="image" href="/images/banners/Hero/banner-01-mobile.webp" media="(max-width: 768px)" />
       <link rel="preload" as="image" href="/images/banners/Hero/banner-01-desk.webp" media="(min-width: 769px)" />
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+      <link rel="preload" as="font" type="font/woff2" href="/font/Sora-VariableFont_wght.woff2" crossOrigin="anonymous" />
       <link rel="stylesheet" href="/assets/tailwind.css" />
       <style>{`
+        @font-face {
+          font-family: 'Sora';
+          src: url('/font/Sora-VariableFont_wght.woff2') format('woff2-variations'),
+               url('/font/Sora-VariableFont_wght.ttf') format('truetype');
+          font-weight: 100 900;
+          font-style: normal;
+          font-display: swap;
+        }
         :root {
           --color-incap-blue: #2A4899;
           --color-incap-green: #85C639;
