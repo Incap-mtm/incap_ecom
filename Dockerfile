@@ -19,6 +19,9 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci --omit=dev
 
+# ffmpeg para conversión de imágenes a WebP
+RUN apk add --no-cache ffmpeg
+
 # Artefactos del build
 COPY --from=builder /app/.evershop ./.evershop
 COPY --from=builder /app/themes ./themes
