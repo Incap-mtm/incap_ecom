@@ -84,10 +84,12 @@ export default function Head() {
                         "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
                     }
                 }) } }),
+        React.createElement("link", { rel: "preload", as: "image", href: "/images/banners/Hero/banner-01-mobile.webp", media: "(max-width: 768px)" }),
+        React.createElement("link", { rel: "preload", as: "image", href: "/images/banners/Hero/banner-01-desk.webp", media: "(min-width: 769px)" }),
         React.createElement("link", { rel: "preconnect", href: "https://fonts.googleapis.com" }),
         React.createElement("link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" }),
         React.createElement("link", { href: "https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap", rel: "stylesheet" }),
-        React.createElement("script", { src: "https://cdn.tailwindcss.com" }),
+        React.createElement("link", { rel: "stylesheet", href: "/assets/tailwind.css" }),
         React.createElement("style", null, `
         :root {
           --color-incap-blue: #2A4899;

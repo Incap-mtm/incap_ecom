@@ -11,16 +11,22 @@ export default function HistorySection() {
     const container = mountRef.current;
     if (!container) return;
 
-    // Unique ID so the module script can find the DOM node
-    container.id = 'incap-3d-mount';
+    let injected = false;
 
-    // Remove any leftover script from a previous render
-    document.getElementById('incap-3d-script')?.remove();
+    const inject = () => {
+      if (injected) return;
+      injected = true;
 
-    // Inject a real <script type="module"> — the only reliable way to use
-    // ES-module CDN imports (import() from within a normal script context
-    // doesn't resolve relative sub-imports inside Three.js correctly).
-    const script = document.createElement('script');
+      // Unique ID so the module script can find the DOM node
+      container.id = 'incap-3d-mount';
+
+      // Remove any leftover script from a previous render
+      document.getElementById('incap-3d-script')?.remove();
+
+      // Inject a real <script type="module"> — the only reliable way to use
+      // ES-module CDN imports (import() from within a normal script context
+      // doesn't resolve relative sub-imports inside Three.js correctly).
+      const script = document.createElement('script');
     script.type = 'module';
     script.id   = 'incap-3d-script';
 
@@ -154,9 +160,17 @@ function init(container) {
 }
     `;
 
-    document.head.appendChild(script);
+      document.head.appendChild(script);
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { observer.disconnect(); inject(); } },
+      { rootMargin: '300px', threshold: 0 }
+    );
+    observer.observe(container);
 
     return () => {
+      observer.disconnect();
       const cleanup = (window as any).__incap3dCleanup;
       if (typeof cleanup === 'function') cleanup();
       document.getElementById('incap-3d-script')?.remove();

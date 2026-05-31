@@ -9,7 +9,7 @@ const logos = [
 ];
 
 export default function LogoStrip() {
-  const loopLogos = [...logos, ...logos, ...logos, ...logos]; // Repeated multiple times for safety
+  const loopLogos = [...logos, ...logos];
   return (
     <section className="bg-white border-y border-slate-100 py-10 overflow-hidden">
       <div className="relative flex overflow-hidden">
@@ -23,6 +23,7 @@ export default function LogoStrip() {
               key={`${logo.name}-${i}`}
               src={logo.src}
               alt={logo.name}
+              loading="lazy"
               className="h-10 w-auto object-contain flex-shrink-0 transition-transform hover:scale-110"
               style={{ mixBlendMode: 'multiply' }}
             />

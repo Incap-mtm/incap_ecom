@@ -5,24 +5,29 @@ export default function HistorySection() {
     const reveal = useReveal();
     const mountRef = useRef(null);
     useEffect(() => {
-        var _a;
         const container = mountRef.current;
         if (!container)
             return;
-        // Unique ID so the module script can find the DOM node
-        container.id = 'incap-3d-mount';
-        // Remove any leftover script from a previous render
-        (_a = document.getElementById('incap-3d-script')) === null || _a === void 0 ? void 0 : _a.remove();
-        // Inject a real <script type="module"> — the only reliable way to use
-        // ES-module CDN imports (import() from within a normal script context
-        // doesn't resolve relative sub-imports inside Three.js correctly).
-        const script = document.createElement('script');
-        script.type = 'module';
-        script.id = 'incap-3d-script';
-        // NOTE: MODEL_URL is interpolated here by TypeScript/JS at runtime,
-        // not inside the script string.
-        const modelUrl = MODEL_URL;
-        script.textContent = `
+        let injected = false;
+        const inject = () => {
+            var _a;
+            if (injected)
+                return;
+            injected = true;
+            // Unique ID so the module script can find the DOM node
+            container.id = 'incap-3d-mount';
+            // Remove any leftover script from a previous render
+            (_a = document.getElementById('incap-3d-script')) === null || _a === void 0 ? void 0 : _a.remove();
+            // Inject a real <script type="module"> — the only reliable way to use
+            // ES-module CDN imports (import() from within a normal script context
+            // doesn't resolve relative sub-imports inside Three.js correctly).
+            const script = document.createElement('script');
+            script.type = 'module';
+            script.id = 'incap-3d-script';
+            // NOTE: MODEL_URL is interpolated here by TypeScript/JS at runtime,
+            // not inside the script string.
+            const modelUrl = MODEL_URL;
+            script.textContent = `
 import * as THREE     from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
@@ -147,9 +152,16 @@ function init(container) {
   });
 }
     `;
-        document.head.appendChild(script);
+            document.head.appendChild(script);
+        };
+        const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) {
+            observer.disconnect();
+            inject();
+        } }, { rootMargin: '300px', threshold: 0 });
+        observer.observe(container);
         return () => {
             var _a;
+            observer.disconnect();
             const cleanup = window.__incap3dCleanup;
             if (typeof cleanup === 'function')
                 cleanup();

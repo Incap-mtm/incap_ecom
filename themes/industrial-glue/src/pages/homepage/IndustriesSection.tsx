@@ -99,6 +99,7 @@ export default function IndustriesSection() {
                 <img
                   src={ind.image}
                   alt={ind.title}
+                  loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#181B1C]/90 via-[#181B1C]/20 to-transparent" />
@@ -106,7 +107,7 @@ export default function IndustriesSection() {
                 {/* Vertical Blue Icon Ribbon */}
                 <div className="absolute top-0 left-6 bg-[#2A4899] w-[72px] rounded-b-2xl flex flex-col items-center py-5 gap-5 shadow-lg z-10">
                   {ind.icons.map((icon, i) => (
-                    <img key={i} src={icon.src} className="w-8 h-8 object-contain" alt={icon.label} />
+                    <img key={i} src={icon.src} loading="lazy" className="w-8 h-8 object-contain" alt={icon.label} />
                   ))}
                 </div>
 

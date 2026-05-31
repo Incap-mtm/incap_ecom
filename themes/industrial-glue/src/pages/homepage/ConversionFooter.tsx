@@ -41,9 +41,10 @@ export default function ConversionFooter({ setting }: ConversionFooterProps) {
                 <div className="relative rounded-[3rem] border border-white/10 shadow-2xl shadow-black/50 p-6">
                    <div className="rounded-2xl overflow-hidden">
                      <img
-                      src="/images/sections/Fallas_De_Pegue_contacto.png"
+                      src="/images/sections/Fallas_De_Pegue_contacto.webp"
                       className="w-full h-auto object-cover transform scale-90 group-hover:scale-[0.945] transition-transform duration-1000"
                       alt="Técnico INCAP en planta"
+                      loading="lazy"
                      />
                      <div className="absolute inset-0 bg-gradient-to-t from-[#181B1C]/60 to-transparent"></div>
                    </div>

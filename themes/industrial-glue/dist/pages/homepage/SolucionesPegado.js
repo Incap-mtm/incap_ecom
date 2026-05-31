@@ -70,7 +70,7 @@ export default function SolucionesPegado() {
                 React.createElement("p", { className: "text-slate-400 text-sm md:text-base font-inter font-light mt-6 max-w-2xl mx-auto leading-relaxed" }, "Fabricamos soluciones espec\u00EDficas para optimizar tus procesos productivos. Identifica el icono de tu sector para elegir el adhesivo correcto.")),
             React.createElement("div", { className: "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto" }, solutions.map((sol, i) => (React.createElement("a", { key: i, href: sol.href, className: `flex flex-col items-center text-center bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-[#85C639]/40 transition-all duration-300 reveal reveal-stagger-${(i % 3) + 1} active`, style: { textDecoration: 'none' } },
                 React.createElement("div", { className: "w-16 h-16 mb-4 bg-[#2A4899] rounded-2xl flex items-center justify-center flex-shrink-0" },
-                    React.createElement("img", { src: sol.icon, alt: sol.name, style: { width: '36px', height: '36px', objectFit: 'contain', display: 'block' } })),
+                    React.createElement("img", { src: sol.icon, alt: sol.name, loading: "lazy", style: { width: '36px', height: '36px', objectFit: 'contain', display: 'block' } })),
                 React.createElement("h3", { className: "text-white font-black text-sm uppercase tracking-wide font-sora mb-2 leading-tight" }, sol.name),
                 React.createElement("p", { className: "text-slate-400 text-xs font-inter leading-relaxed" }, sol.description))))))));
 }

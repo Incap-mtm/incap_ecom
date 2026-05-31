@@ -2,23 +2,31 @@ import React, { useState, useEffect } from 'react';
 
 const slides = [
   {
-    desk: '/images/banners/Hero/banner-01-desk.png',
-    mobile: '/images/banners/Hero/banner-01-mobile.png',
+    desk: '/images/banners/Hero/banner-01-desk.webp',
+    mobile: '/images/banners/Hero/banner-01-mobile.webp',
+    deskFallback: '/images/banners/Hero/banner-01-desk.png',
+    mobileFallback: '/images/banners/Hero/banner-01-mobile.png',
     alt: 'Adhesivos industriales INCAP — Calidad y respaldo técnico',
   },
   {
-    desk: '/images/banners/Hero/banner-02-desk.png',
-    mobile: '/images/banners/Hero/banner-02-mobile.png',
+    desk: '/images/banners/Hero/banner-02-desk.webp',
+    mobile: '/images/banners/Hero/banner-02-mobile.webp',
+    deskFallback: '/images/banners/Hero/banner-02-desk.png',
+    mobileFallback: '/images/banners/Hero/banner-02-mobile.png',
     alt: 'Soluciones de pegado para la industria colombiana',
   },
   {
-    desk: '/images/banners/Hero/banner-03-desk.png',
-    mobile: '/images/banners/Hero/banner-03-mobile.png',
+    desk: '/images/banners/Hero/banner-03-desk.webp',
+    mobile: '/images/banners/Hero/banner-03-mobile.webp',
+    deskFallback: '/images/banners/Hero/banner-03-desk.png',
+    mobileFallback: '/images/banners/Hero/banner-03-mobile.png',
     alt: 'INCAP — La química que construye país',
   },
   {
-    desk: '/images/banners/Hero/banner-04-desk.png',
-    mobile: '/images/banners/Hero/banner-04-mobile.png',
+    desk: '/images/banners/Hero/banner-04-desk.webp',
+    mobile: '/images/banners/Hero/banner-04-mobile.webp',
+    deskFallback: '/images/banners/Hero/banner-04-desk.png',
+    mobileFallback: '/images/banners/Hero/banner-04-mobile.png',
     alt: 'Grupo INCAP — Fabricantes de adhesivos industriales',
   },
 ];
@@ -51,12 +59,15 @@ export default function Hero() {
           style={{ opacity: i === current ? 1 : 0, zIndex: i === current ? 1 : 0 }}
         >
           <picture>
-            <source media="(max-width: 768px)" srcSet={slide.mobile} />
+            <source media="(max-width: 768px)" srcSet={slide.mobile} type="image/webp" />
+            <source media="(max-width: 768px)" srcSet={slide.mobileFallback} />
+            <source srcSet={slide.desk} type="image/webp" />
             <img
-              src={slide.desk}
+              src={slide.deskFallback}
               alt={slide.alt}
               className="w-full h-full object-cover"
               loading={i === 0 ? 'eager' : 'lazy'}
+              fetchPriority={i === 0 ? 'high' : 'auto'}
             />
           </picture>
         </div>

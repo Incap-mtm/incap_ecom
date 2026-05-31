@@ -20,7 +20,7 @@ export default function ConversionFooter({ setting }) {
                         React.createElement("div", { className: "absolute -inset-10 bg-[#2A4899]/20 rounded-[4rem] blur-3xl group-hover:bg-[#2A4899]/30 transition-all duration-700" }),
                         React.createElement("div", { className: "relative rounded-[3rem] border border-white/10 shadow-2xl shadow-black/50 p-6" },
                             React.createElement("div", { className: "rounded-2xl overflow-hidden" },
-                                React.createElement("img", { src: "/images/sections/Fallas_De_Pegue_contacto.png", className: "w-full h-auto object-cover transform scale-90 group-hover:scale-[0.945] transition-transform duration-1000", alt: "T\u00E9cnico INCAP en planta" }),
+                                React.createElement("img", { src: "/images/sections/Fallas_De_Pegue_contacto.webp", className: "w-full h-auto object-cover transform scale-90 group-hover:scale-[0.945] transition-transform duration-1000", alt: "T\u00E9cnico INCAP en planta", loading: "lazy" }),
                                 React.createElement("div", { className: "absolute inset-0 bg-gradient-to-t from-[#181B1C]/60 to-transparent" })))))))));
 }
 export const layout = {
