@@ -12,7 +12,7 @@ export default function LogoStrip() {
         React.createElement("div", { className: "relative flex overflow-hidden" },
             React.createElement("div", { className: "absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10" }),
             React.createElement("div", { className: "absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10" }),
-            React.createElement("div", { className: "flex animate-marquee whitespace-nowrap items-center py-4 grayscale hover:grayscale-0 transition-all duration-1000 opacity-40 hover:opacity-100 gap-[50px]" }, loopLogos.map((logo, i) => (React.createElement("img", { key: `${logo.name}-${i}`, src: logo.src, alt: logo.name, loading: "lazy", className: "h-10 w-auto object-contain flex-shrink-0 transition-transform hover:scale-110", style: { mixBlendMode: 'multiply' } })))))));
+            React.createElement("div", { className: "flex animate-marquee whitespace-nowrap items-center py-4 grayscale hover:grayscale-0 transition-all duration-1000 opacity-40 hover:opacity-100" }, loopLogos.map((logo, i) => (React.createElement("img", { key: `${logo.name}-${i}`, src: logo.src, alt: logo.name, loading: "lazy", className: "h-10 w-auto object-contain flex-shrink-0 transition-transform hover:scale-110", style: { mixBlendMode: 'multiply', marginRight: '50px' } })))))));
 }
 export const layout = {
     areaId: 'content',
