@@ -90,13 +90,13 @@ function init(container) {
         const c    = box.getCenter(new THREE.Vector3());
         const size = box.getSize(new THREE.Vector3());
         model.position.sub(c);
-        // Scale so the tallest dimension fits comfortably in view with breathing room
-        model.scale.setScalar(2.96 / Math.max(size.x, size.y, size.z));
+        // Scale so the tallest dimension fits comfortably in view with breathing room (−10%)
+        model.scale.setScalar(2.664 / Math.max(size.x, size.y, size.z));
 
         // Wrap in a group for the static tilt — keeps animation on model unaffected
         const isMobile = w < 1024;
         const tiltGroup = new THREE.Group();
-        tiltGroup.rotation.z = -(15 * Math.PI / 180);
+        tiltGroup.rotation.z = (15 * Math.PI / 180);
         tiltGroup.position.y = isMobile ? -1.5  : -1.45;
         tiltGroup.position.x = isMobile ?  0.0  : -0.8;
         tiltGroup.add(model);
