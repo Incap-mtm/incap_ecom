@@ -91,7 +91,7 @@ function init(container) {
         const tiltGroup = new THREE.Group();
         tiltGroup.rotation.z = (15 * Math.PI / 180);
         tiltGroup.position.y = isMobile ? -1.3  : -1.25;
-        tiltGroup.position.x = isMobile ?  0.0  : -1.7;
+        tiltGroup.position.x = isMobile ?  0.0  : -2.4;
         tiltGroup.add(model);
         scene.add(tiltGroup);
 
