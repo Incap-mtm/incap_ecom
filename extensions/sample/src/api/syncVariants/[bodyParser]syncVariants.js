@@ -35,7 +35,7 @@ export default async function syncVariants(request, response) {
       `SELECT attribute_id FROM attribute WHERE attribute_code = 'size' LIMIT 1`
     );
     if (!attrRows.length) {
-      client.release();
+      // El client se libera en el finally
       return response.status(400).json({ success: false, error: 'El atributo "size" no existe.' });
     }
     const SIZE_ATTRIBUTE_ID = attrRows[0].attribute_id;
