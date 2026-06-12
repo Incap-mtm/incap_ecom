@@ -110,6 +110,9 @@ export default function Navbar() {
           <a href="/fabricantes" className="incap-navbar__link">
             Fabricantes
           </a>
+          <a href="/catalog" className="incap-navbar__link">
+            Catálogo
+          </a>
           <div
             className="relative"
             onMouseEnter={() => setDropdownOpen(true)}
@@ -309,6 +312,12 @@ export default function Navbar() {
           </a>
           <a href="/fabricantes" className="incap-navbar__mobile-link">
             Fabricantes
+            <svg className="h-4 w-4 text-[#85C639] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+          <a href="/catalog" className="incap-navbar__mobile-link">
+            Catálogo
             <svg className="h-4 w-4 text-[#85C639] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
             </svg>
