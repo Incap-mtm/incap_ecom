@@ -98,7 +98,7 @@ function init(container) {
         const tiltGroup = new THREE.Group();
         tiltGroup.rotation.z = (15 * Math.PI / 180);
         tiltGroup.position.y = isMobile ? -1.5  : -1.45;
-        tiltGroup.position.x = isMobile ?  0.0  : -0.8;
+        tiltGroup.position.x = isMobile ?  0.0  : -1.2;
         tiltGroup.add(model);
         scene.add(tiltGroup);
 
@@ -205,7 +205,7 @@ function init(container) {
               src="/images/sections/56_anos_maxon.webp"
               alt="+56 años de experiencia"
               loading="lazy"
-              style={{ position: 'absolute', zIndex: 0, top: 0, left: '50%', transform: 'translateX(-50%)', width: '95%', maxWidth: '560px', pointerEvents: 'none', userSelect: 'none' }}
+              style={{ position: 'absolute', zIndex: 0, top: 0, left: '50%', transform: 'translateX(-50%)', width: '140%', maxWidth: '840px', pointerEvents: 'none', userSelect: 'none' }}
             />
 
             {/* Mascota INCAP — a la derecha, detrás del producto */}
