@@ -195,20 +195,29 @@ function init(container) {
             </p>
           </div>
 
-          {/* Right — 3D canvas (desktop: flotante, desborda columna) */}
+          {/* Right — composición: "+56 años" (fondo) + producto 3D (frente) + mascota (derecha) */}
           <div
             className={`relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0`}
             style={{ minHeight: '640px' }}
           >
-            <div ref={mountRef} id="incap-3d-mount" />
+            {/* "+56 años" — capa de fondo */}
+            <img
+              src="/images/sections/56_anos_maxon.webp"
+              alt="+56 años de experiencia"
+              loading="lazy"
+              style={{ position: 'absolute', zIndex: 0, top: 0, left: '50%', transform: 'translateX(-50%)', width: '95%', maxWidth: '560px', pointerEvents: 'none', userSelect: 'none' }}
+            />
 
-            {/* Badge — overlaps product intentionally */}
-            <div className="absolute bottom-[164px] left-6 md:bottom-10 md:left-8 bg-[#2A4899] text-white p-7 md:p-10 rounded-[2rem] shadow-2xl z-10 w-56 md:w-72 flex flex-col justify-center" style={{ backdropFilter: 'blur(2px)' }}>
-              <span className="block text-5xl md:text-7xl font-black font-sora mb-1 md:mb-2 leading-none">+56</span>
-              <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] font-sora opacity-90 leading-tight">
-                AÑOS DE MAESTRÍA TÉCNICA
-              </span>
-            </div>
+            {/* Mascota INCAP — a la derecha, detrás del producto */}
+            <img
+              src="/images/sections/cap_para_maxon.webp"
+              alt="Mascota INCAP"
+              loading="lazy"
+              style={{ position: 'absolute', zIndex: 1, right: 0, bottom: 0, width: '60%', maxWidth: '400px', pointerEvents: 'none', userSelect: 'none' }}
+            />
+
+            {/* Producto 3D — al frente */}
+            <div ref={mountRef} id="incap-3d-mount" style={{ position: 'relative', zIndex: 10 }} />
           </div>
 
         </div>

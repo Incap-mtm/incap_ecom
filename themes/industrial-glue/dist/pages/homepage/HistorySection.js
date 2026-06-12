@@ -180,10 +180,9 @@ function init(container) {
                         React.createElement("span", { className: "text-[#85C639] italic" }, "INDUSTRIA")),
                     React.createElement("p", { className: "text-xl md:text-2xl text-[#2A4899]/70 font-sora font-medium leading-relaxed mb-8 max-w-xl" }, "Desde 1969, entendemos que detr\u00E1s de cada adhesivo hay una familia y una f\u00E1brica que compite a nivel global.")),
                 React.createElement("div", { className: `relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0`, style: { minHeight: '640px' } },
-                    React.createElement("div", { ref: mountRef, id: "incap-3d-mount" }),
-                    React.createElement("div", { className: "absolute bottom-[164px] left-6 md:bottom-10 md:left-8 bg-[#2A4899] text-white p-7 md:p-10 rounded-[2rem] shadow-2xl z-10 w-56 md:w-72 flex flex-col justify-center", style: { backdropFilter: 'blur(2px)' } },
-                        React.createElement("span", { className: "block text-5xl md:text-7xl font-black font-sora mb-1 md:mb-2 leading-none" }, "+56"),
-                        React.createElement("span", { className: "text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] font-sora opacity-90 leading-tight" }, "A\u00D1OS DE MAESTR\u00CDA T\u00C9CNICA")))),
+                    React.createElement("img", { src: "/images/sections/56_anos_maxon.webp", alt: "+56 a\u00F1os de experiencia", loading: "lazy", style: { position: 'absolute', zIndex: 0, top: 0, left: '50%', transform: 'translateX(-50%)', width: '95%', maxWidth: '560px', pointerEvents: 'none', userSelect: 'none' } }),
+                    React.createElement("img", { src: "/images/sections/cap_para_maxon.webp", alt: "Mascota INCAP", loading: "lazy", style: { position: 'absolute', zIndex: 1, right: 0, bottom: 0, width: '60%', maxWidth: '400px', pointerEvents: 'none', userSelect: 'none' } }),
+                    React.createElement("div", { ref: mountRef, id: "incap-3d-mount", style: { position: 'relative', zIndex: 10 } }))),
             React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12" }, [
                 { t: 'INGENIERÍA CON ROSTRO HUMANO', d: 'No creemos en catálogos fríos. Creemos en la presencia real en tu planta.' },
                 { t: 'INNOVACIÓN CON RESPONSABILIDAD', d: 'Lideramos con fórmulas Libres de Tolueno (LT) para proteger a tus operarios.' },
