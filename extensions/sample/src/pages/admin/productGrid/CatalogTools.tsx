@@ -28,7 +28,7 @@ export default function CatalogTools() {
   const runVariants = async () => {
     setVariants({ kind: 'loading' });
     try {
-      const { ok, data } = await callEndpoint('/sync-variants');
+      const { ok, data } = await callEndpoint('/api/sync-variants');
       if (!ok) return setVariants({ kind: 'error', msg: data.error || 'Error al sincronizar.' });
       const s = data.summary || {};
       setVariants({
@@ -43,7 +43,7 @@ export default function CatalogTools() {
   const runImages = async () => {
     setImages({ kind: 'loading' });
     try {
-      const { ok, data } = await callEndpoint('/optimize-images');
+      const { ok, data } = await callEndpoint('/api/optimize-images');
       if (!ok) return setImages({ kind: 'error', msg: data.error || 'Error al optimizar.' });
       setImages({
         kind: 'ok',
