@@ -79,38 +79,41 @@ export default function SearchBar() {
         onSubmit={handleSubmit}
         style={{ maxWidth: '1536px', margin: '0 auto', padding: '0 2rem', height: '44px', display: 'flex', alignItems: 'center', gap: '10px' }}
       >
-        {/* Icono buscar */}
-        <svg width="16" height="16" fill="none" stroke="#181B1C" viewBox="0 0 24 24" style={{ flexShrink: 0, opacity: 0.6 }}>
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z" />
-        </svg>
+        {/* Campo de escritura: fondo blanco redondeado para contraste */}
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px', background: '#fff', borderRadius: '8px', padding: '0 12px', height: '30px', boxShadow: '0 1px 2px rgba(0,0,0,0.08)' }}>
+          {/* Icono buscar */}
+          <svg width="16" height="16" fill="none" stroke="#181B1C" viewBox="0 0 24 24" style={{ flexShrink: 0, opacity: 0.5 }}>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z" />
+          </svg>
 
-        <input
-          ref={inputRef}
-          type="text"
-          value={term}
-          onChange={e => { setTerm(e.target.value); setOpen(true); }}
-          onFocus={() => debounced.length >= 2 && setOpen(true)}
-          onKeyDown={handleKey}
-          placeholder="Buscar productos, adhesivos, usos, aplicaciones..."
-          style={{
-            flex: 1, border: 'none', outline: 'none', background: 'transparent',
-            fontSize: '0.8rem', fontFamily: "'Inter', sans-serif", color: '#181B1C',
-            fontWeight: 600, letterSpacing: '0.02em',
-          }}
-          autoComplete="off"
-        />
+          <input
+            ref={inputRef}
+            type="text"
+            value={term}
+            onChange={e => { setTerm(e.target.value); setOpen(true); }}
+            onFocus={() => debounced.length >= 2 && setOpen(true)}
+            onKeyDown={handleKey}
+            placeholder="Buscar productos, adhesivos, usos, aplicaciones..."
+            style={{
+              flex: 1, border: 'none', outline: 'none', background: 'transparent',
+              fontSize: '0.8rem', fontFamily: "'Inter', sans-serif", color: '#181B1C',
+              fontWeight: 600, letterSpacing: '0.02em',
+            }}
+            autoComplete="off"
+          />
 
-        {term && (
-          <button
-            type="button"
-            onClick={() => { setTerm(''); setOpen(false); inputRef.current?.focus(); }}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: '#181B1C', opacity: 0.5, flexShrink: 0 }}
-          >
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        )}
+          {term && (
+            <button
+              type="button"
+              onClick={() => { setTerm(''); setOpen(false); inputRef.current?.focus(); }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: '#181B1C', opacity: 0.5, flexShrink: 0 }}
+            >
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
 
         <button
           type="submit"
