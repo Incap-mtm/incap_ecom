@@ -37,6 +37,7 @@ export default function HistorySection() {
     script.textContent = `
 import * as THREE     from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const container = document.getElementById('incap-3d-mount');
 if (!container) { console.warn('[INCAP 3D] mount container not found'); }
@@ -62,6 +63,11 @@ function init(container) {
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.shadowMap.enabled = false;
     container.appendChild(renderer.domElement);
+
+    /* Environment map — estudio neutro para que los materiales PBR
+       (plástico del envase) se vean blancos/limpios y no grises */
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 
     /* Lights */
     scene.add(new THREE.AmbientLight(0xffffff, 2.8));
