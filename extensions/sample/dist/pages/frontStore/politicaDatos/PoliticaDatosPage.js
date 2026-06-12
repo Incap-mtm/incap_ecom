@@ -118,6 +118,7 @@ const NAV_SECTIONS = [
     { id: 'avisos', label: 'Avisos de Privacidad', icon: '📢' },
     { id: 'antisoborno', label: 'Antisoborno y Anticorrupción', icon: '🛡️' },
     { id: 'sagrilaft', label: 'SAGRILAFT (LA/FT/FPADM)', icon: '🔍' },
+    { id: 'promocion', label: 'Promoción "Pasión por el Balón"', icon: '⚽' },
 ];
 // ─── Política Antisoborno y Anticorrupción (PTEE) ───
 const PTEE_GLOSSARY = [
@@ -516,6 +517,68 @@ function SectionSagrilaft() {
                         React.createElement("td", { className: "py-2 pr-4 text-slate-500 font-semibold text-xs uppercase tracking-wide w-40" }, k),
                         React.createElement("td", { className: "py-2 text-[#181B1C] font-medium" }, v))))))))));
 }
+function SectionPromocion() {
+    return (React.createElement("div", { className: "space-y-8" },
+        React.createElement("div", null,
+            React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed" },
+                "El presente documento regula los t\u00E9rminos, condiciones y restricciones de la actividad promocional ",
+                React.createElement("strong", null, "\"Pasi\u00F3n por el Bal\u00F3n INCAP\""),
+                ", organizada por ",
+                React.createElement("strong", null, "INCAP S.A."),
+                " (en adelante \"El Organizador\"), dirigida a sus clientes en el territorio colombiano. La participaci\u00F3n en la promoci\u00F3n implica el conocimiento y la aceptaci\u00F3n total de este reglamento.")),
+        React.createElement("div", null,
+            React.createElement(SectionHeading, null, "1. Resumen general"),
+            React.createElement("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3" }, [
+                { k: 'Vigencia', v: 'Del 11 de junio al 30 de julio de 2026' },
+                { k: 'Dinámica', v: 'Por cada 100 galones de ADHESIVOS Incap, 1 balón' },
+                { k: 'Inventario', v: '130 balones a nivel nacional (hasta agotar existencias)' },
+                { k: 'Envío', v: 'Sin costo para el cliente (cuenta de INCAP S.A.)' },
+            ].map(({ k, v }) => (React.createElement("div", { key: k, className: "bg-slate-50 border border-slate-200 rounded-xl p-4" },
+                React.createElement("p", { className: "text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1" }, k),
+                React.createElement("p", { className: "text-sm font-semibold text-[#181B1C] leading-snug" }, v)))))),
+        React.createElement("div", null,
+            React.createElement(SectionHeading, null, "2. Mec\u00E1nica de participaci\u00F3n y acumulaci\u00F3n"),
+            React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed mb-4" }, "La actividad premia la fidelidad de los compradores mediante un sistema acumulativo de volumen:"),
+            React.createElement("div", { className: "space-y-3" }, [
+                { t: 'Dinámica base', d: 'Por cada cien (100) galones comprados de la línea de productos ADHESIVOS Incap, el cliente tendrá derecho a recibir un (1) balón.' },
+                { t: 'Compras acumulables', d: 'No es obligatorio comprar los 100 galones en una sola factura. Se permite acumular galones adquiridos en diferentes facturas, emitidas exclusivamente dentro del periodo de vigencia (del 11 de junio al 30 de julio de 2026).' },
+                { t: 'Proporcionalidad (sin tope de incentivos)', d: 'La entrega de premios es directamente proporcional al volumen total acumulado. Si un cliente acumula quinientos (500) galones durante la vigencia, recibirá cinco (5) balones, y así sucesivamente, sujeto siempre a la disponibilidad del inventario general (130 unidades).' },
+            ].map(({ t, d }) => (React.createElement("div", { key: t, className: "border border-slate-200 rounded-xl p-4" },
+                React.createElement("p", { className: "font-black text-[#2A4899] text-xs uppercase tracking-widest mb-2" }, t),
+                React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed" }, d)))))),
+        React.createElement("div", null,
+            React.createElement(SectionHeading, null, "3. Inventario y \"hasta agotar existencias\""),
+            React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed mb-3" }, "En cumplimiento estricto de las normas de protecci\u00F3n al consumidor en Colombia, se aclara que:"),
+            React.createElement("div", { className: "bg-amber-50 border border-amber-200 rounded-xl p-4" },
+                React.createElement("p", { className: "text-xs font-bold text-amber-700 uppercase tracking-widest mb-2" }, "Importante"),
+                React.createElement("p", { className: "text-sm text-slate-600 leading-relaxed" },
+                    "La promoci\u00F3n cuenta con un stock limitado de ",
+                    React.createElement("strong", null, "130 unidades"),
+                    " de balones a nivel nacional. La actividad finalizar\u00E1 autom\u00E1ticamente el ",
+                    React.createElement("strong", null, "30 de junio de 2026"),
+                    " o en el momento exacto en que se entregue el bal\u00F3n n\u00FAmero 130, lo que ocurra primero. Agotado el inventario, El Organizador no estar\u00E1 obligado a entregar m\u00E1s incentivos ni compensaciones equivalentes."))),
+        React.createElement("div", null,
+            React.createElement(SectionHeading, null, "4. Log\u00EDstica y despacho de los incentivos"),
+            React.createElement("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-4" },
+                React.createElement("div", { className: "border-l-4 border-[#85C639] pl-4" },
+                    React.createElement("p", { className: "font-black text-[#2A4899] text-sm uppercase tracking-wide mb-2" }, "Costo de transporte"),
+                    React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed" }, "El env\u00EDo de los balones hacia el domicilio o establecimiento del cliente corre por cuenta de Incap S.A. El participante no asume ning\u00FAn valor por fletes o log\u00EDstica de entrega dentro del territorio nacional.")),
+                React.createElement("div", { className: "border-l-4 border-[#2A4899] pl-4" },
+                    React.createElement("p", { className: "font-black text-[#2A4899] text-sm uppercase tracking-wide mb-2" }, "Tiempos de entrega"),
+                    React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed" }, "Una vez validada la acumulaci\u00F3n de galones y las facturas correspondientes, El Organizador coordinar\u00E1 el despacho del premio en un plazo estimado de 8 a 15 d\u00EDas h\u00E1biles.")))),
+        React.createElement("div", null,
+            React.createElement(SectionHeading, null, "5. Restricciones y condiciones generales"),
+            React.createElement("ul", { className: "space-y-2.5" }, [
+                'El incentivo (balón) es intransferible y en ningún caso será canjeable por dinero en efectivo, notas crédito, descuentos u otros productos de la marca Incap.',
+                'Solo serán válidas las facturas legales emitidas dentro de las fechas de la campaña. No se aceptarán preventas, cotizaciones ni facturas de fechas anteriores al 11 de junio de 2026 ni posteriores al 30 de julio de 2026.',
+                'Incap S.A. se reserva el derecho de verificar la autenticidad de las facturas comerciales presentadas por los clientes para el reclamo de los incentivos.',
+            ].map((r, i) => (React.createElement("li", { key: i, className: "flex items-start gap-2.5 text-sm text-slate-600 leading-relaxed" },
+                React.createElement("span", { className: "w-1.5 h-1.5 rounded-full bg-[#2A4899] mt-1.5 flex-shrink-0" }),
+                r))))),
+        React.createElement("div", null,
+            React.createElement(SectionHeading, null, "Modificaci\u00F3n de los t\u00E9rminos y condiciones"),
+            React.createElement("p", { className: "text-slate-600 text-sm leading-relaxed" }, "Cualquier modificaci\u00F3n sustancial a este reglamento ser\u00E1 informada oportunamente a los clientes a trav\u00E9s de los canales digitales oficiales de Incap S.A."))));
+}
 export default function PoliticaDatosPage() {
     var _a, _b;
     const [activeSection, setActiveSection] = useState('general');
@@ -528,6 +591,7 @@ export default function PoliticaDatosPage() {
         avisos: React.createElement(SectionAvisos, null),
         antisoborno: React.createElement(SectionAntisoborno, null),
         sagrilaft: React.createElement(SectionSagrilaft, null),
+        promocion: React.createElement(SectionPromocion, null),
     };
     return (React.createElement("div", { className: "min-h-screen bg-white font-sora -mt-[124px]" },
         React.createElement("div", { className: "bg-[#181B1C] pt-[124px] pb-16 px-4" },

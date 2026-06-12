@@ -123,6 +123,7 @@ const NAV_SECTIONS = [
   { id: 'avisos', label: 'Avisos de Privacidad', icon: '📢' },
   { id: 'antisoborno', label: 'Antisoborno y Anticorrupción', icon: '🛡️' },
   { id: 'sagrilaft', label: 'SAGRILAFT (LA/FT/FPADM)', icon: '🔍' },
+  { id: 'promocion', label: 'Promoción "Pasión por el Balón"', icon: '⚽' },
 ];
 
 // ─── Política Antisoborno y Anticorrupción (PTEE) ───
@@ -730,6 +731,100 @@ function SectionSagrilaft() {
   );
 }
 
+function SectionPromocion() {
+  return (
+    <div className="space-y-8">
+      <div>
+        <p className="text-slate-600 text-sm leading-relaxed">
+          El presente documento regula los términos, condiciones y restricciones de la actividad promocional <strong>"Pasión por el Balón INCAP"</strong>, organizada por <strong>INCAP S.A.</strong> (en adelante "El Organizador"), dirigida a sus clientes en el territorio colombiano. La participación en la promoción implica el conocimiento y la aceptación total de este reglamento.
+        </p>
+      </div>
+
+      <div>
+        <SectionHeading>1. Resumen general</SectionHeading>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {[
+            { k: 'Vigencia', v: 'Del 11 de junio al 30 de julio de 2026' },
+            { k: 'Dinámica', v: 'Por cada 100 galones de ADHESIVOS Incap, 1 balón' },
+            { k: 'Inventario', v: '130 balones a nivel nacional (hasta agotar existencias)' },
+            { k: 'Envío', v: 'Sin costo para el cliente (cuenta de INCAP S.A.)' },
+          ].map(({ k, v }) => (
+            <div key={k} className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{k}</p>
+              <p className="text-sm font-semibold text-[#181B1C] leading-snug">{v}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <SectionHeading>2. Mecánica de participación y acumulación</SectionHeading>
+        <p className="text-slate-600 text-sm leading-relaxed mb-4">La actividad premia la fidelidad de los compradores mediante un sistema acumulativo de volumen:</p>
+        <div className="space-y-3">
+          {[
+            { t: 'Dinámica base', d: 'Por cada cien (100) galones comprados de la línea de productos ADHESIVOS Incap, el cliente tendrá derecho a recibir un (1) balón.' },
+            { t: 'Compras acumulables', d: 'No es obligatorio comprar los 100 galones en una sola factura. Se permite acumular galones adquiridos en diferentes facturas, emitidas exclusivamente dentro del periodo de vigencia (del 11 de junio al 30 de julio de 2026).' },
+            { t: 'Proporcionalidad (sin tope de incentivos)', d: 'La entrega de premios es directamente proporcional al volumen total acumulado. Si un cliente acumula quinientos (500) galones durante la vigencia, recibirá cinco (5) balones, y así sucesivamente, sujeto siempre a la disponibilidad del inventario general (130 unidades).' },
+          ].map(({ t, d }) => (
+            <div key={t} className="border border-slate-200 rounded-xl p-4">
+              <p className="font-black text-[#2A4899] text-xs uppercase tracking-widest mb-2">{t}</p>
+              <p className="text-slate-600 text-sm leading-relaxed">{d}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <SectionHeading>3. Inventario y "hasta agotar existencias"</SectionHeading>
+        <p className="text-slate-600 text-sm leading-relaxed mb-3">En cumplimiento estricto de las normas de protección al consumidor en Colombia, se aclara que:</p>
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+          <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-2">Importante</p>
+          <p className="text-sm text-slate-600 leading-relaxed">
+            La promoción cuenta con un stock limitado de <strong>130 unidades</strong> de balones a nivel nacional. La actividad finalizará automáticamente el <strong>30 de junio de 2026</strong> o en el momento exacto en que se entregue el balón número 130, lo que ocurra primero. Agotado el inventario, El Organizador no estará obligado a entregar más incentivos ni compensaciones equivalentes.
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <SectionHeading>4. Logística y despacho de los incentivos</SectionHeading>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="border-l-4 border-[#85C639] pl-4">
+            <p className="font-black text-[#2A4899] text-sm uppercase tracking-wide mb-2">Costo de transporte</p>
+            <p className="text-slate-600 text-sm leading-relaxed">El envío de los balones hacia el domicilio o establecimiento del cliente corre por cuenta de Incap S.A. El participante no asume ningún valor por fletes o logística de entrega dentro del territorio nacional.</p>
+          </div>
+          <div className="border-l-4 border-[#2A4899] pl-4">
+            <p className="font-black text-[#2A4899] text-sm uppercase tracking-wide mb-2">Tiempos de entrega</p>
+            <p className="text-slate-600 text-sm leading-relaxed">Una vez validada la acumulación de galones y las facturas correspondientes, El Organizador coordinará el despacho del premio en un plazo estimado de 8 a 15 días hábiles.</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <SectionHeading>5. Restricciones y condiciones generales</SectionHeading>
+        <ul className="space-y-2.5">
+          {[
+            'El incentivo (balón) es intransferible y en ningún caso será canjeable por dinero en efectivo, notas crédito, descuentos u otros productos de la marca Incap.',
+            'Solo serán válidas las facturas legales emitidas dentro de las fechas de la campaña. No se aceptarán preventas, cotizaciones ni facturas de fechas anteriores al 11 de junio de 2026 ni posteriores al 30 de julio de 2026.',
+            'Incap S.A. se reserva el derecho de verificar la autenticidad de las facturas comerciales presentadas por los clientes para el reclamo de los incentivos.',
+          ].map((r, i) => (
+            <li key={i} className="flex items-start gap-2.5 text-sm text-slate-600 leading-relaxed">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2A4899] mt-1.5 flex-shrink-0" />
+              {r}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <SectionHeading>Modificación de los términos y condiciones</SectionHeading>
+        <p className="text-slate-600 text-sm leading-relaxed">
+          Cualquier modificación sustancial a este reglamento será informada oportunamente a los clientes a través de los canales digitales oficiales de Incap S.A.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function PoliticaDatosPage() {
   const [activeSection, setActiveSection] = useState('general');
 
@@ -742,6 +837,7 @@ export default function PoliticaDatosPage() {
     avisos: <SectionAvisos />,
     antisoborno: <SectionAntisoborno />,
     sagrilaft: <SectionSagrilaft />,
+    promocion: <SectionPromocion />,
   };
 
   return (
