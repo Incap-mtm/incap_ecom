@@ -16,31 +16,37 @@ const connectionString =
 
 // Banners actuales del Hero (themes/industrial-glue/public/images/banners/Hero/).
 // El cliente podrá reemplazarlos desde Admin → CMS → Widgets (suben a /media/).
+// Orden de visualización: banner-05 primero (el último cargado), luego 01–04.
 const slides = [
   {
+    id: 'hero-05',
+    deskImage: '/images/banners/Hero/banner-05-desk.webp',
+    mobileImage: '/images/banners/Hero/banner-05-mobile.webp',
+    alt: 'INCAP — Adhesivos industriales en presentaciones de canecas y galones'
+  },
+  {
+    id: 'hero-01',
     deskImage: '/images/banners/Hero/banner-01-desk.webp',
     mobileImage: '/images/banners/Hero/banner-01-mobile.webp',
     alt: 'Adhesivos industriales INCAP — Calidad y respaldo técnico'
   },
   {
+    id: 'hero-02',
     deskImage: '/images/banners/Hero/banner-02-desk.webp',
     mobileImage: '/images/banners/Hero/banner-02-mobile.webp',
     alt: 'Soluciones de pegado para la industria colombiana'
   },
   {
+    id: 'hero-03',
     deskImage: '/images/banners/Hero/banner-03-desk.webp',
     mobileImage: '/images/banners/Hero/banner-03-mobile.webp',
     alt: 'INCAP — La química que construye país'
   },
   {
+    id: 'hero-04',
     deskImage: '/images/banners/Hero/banner-04-desk.webp',
     mobileImage: '/images/banners/Hero/banner-04-mobile.webp',
     alt: 'Grupo INCAP — Fabricantes de adhesivos industriales'
-  },
-  {
-    deskImage: '/images/banners/Hero/banner-05-desk.webp',
-    mobileImage: '/images/banners/Hero/banner-05-mobile.webp',
-    alt: 'INCAP — Adhesivos industriales en presentaciones de canecas y galones'
   }
 ];
 
@@ -60,9 +66,8 @@ async function run() {
     return;
   }
 
-  // Asignar un id estable a cada slide (el render usa slide.id como key).
   const settings = {
-    slides: slides.map((s, i) => ({ id: `hero-${i + 1}`, ...s })),
+    slides, // cada slide ya trae su id estable (el render usa slide.id como key)
     autoplaySpeed: 5000
   };
 
