@@ -94,11 +94,11 @@ function init(container) {
         model.scale.setScalar(2.664 / Math.max(size.x, size.y, size.z));
 
         // Wrap in a group for the static tilt — keeps animation on model unaffected
-        const isMobile = w < 1024;
+        const isMobile = window.innerWidth < 1024;
         const tiltGroup = new THREE.Group();
         tiltGroup.rotation.z = (15 * Math.PI / 180);
         tiltGroup.position.y = isMobile ? -1.3  : -1.25;
-        tiltGroup.position.x = isMobile ?  0.0  : -5;
+        tiltGroup.position.x = isMobile ?  0.0  : -1.8;
         tiltGroup.add(model);
         scene.add(tiltGroup);
 
