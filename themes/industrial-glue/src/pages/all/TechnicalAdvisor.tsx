@@ -60,7 +60,6 @@ function AssistantBubble({ content, products }: { content: string; products?: Pr
             >
               <div>
                 <div style={{ fontSize: '12px', fontWeight: 700, color: '#181B1C' }}>{p.name}</div>
-                <div style={{ fontSize: '10px', color: '#94a3b8', fontWeight: 600 }}>{p.sku}</div>
               </div>
               <svg width="14" height="14" fill="none" stroke="#2A4899" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />

@@ -9,7 +9,6 @@ export default function ProductHeaderInfo() {
 
   const usos             = get('usos');
   const codigoIndustrial = get('codigo_industrial');
-  const sku              = product?.sku;
   const name             = product?.name;
 
   return (
@@ -28,21 +27,12 @@ export default function ProductHeaderInfo() {
         </h1>
       )}
 
-      {(sku || codigoIndustrial) && (
+      {codigoIndustrial && (
         <div className="flex items-center flex-wrap gap-x-4 gap-y-1 text-xs text-slate-400 font-inter">
-          {sku && (
-            <span>
-              SKU{' '}
-              <strong className="text-[#181B1C] font-bold">{sku}</strong>
-            </span>
-          )}
-          {sku && codigoIndustrial && <span className="text-slate-200">·</span>}
-          {codigoIndustrial && (
-            <span>
-              Ref. industrial{' '}
-              <strong className="text-[#181B1C] font-bold">{codigoIndustrial}</strong>
-            </span>
-          )}
+          <span>
+            Ref. industrial{' '}
+            <strong className="text-[#181B1C] font-bold">{codigoIndustrial}</strong>
+          </span>
         </div>
       )}
     </div>

@@ -11,12 +11,10 @@ interface ProductProps {
 export default function WhatsAppCTA({ product, setting }: ProductProps) {
   const whatsappNumber = setting?.storeWhatsappNumber ?? '573002171521';
   const [productName, setProductName] = useState('');
-  const [productSku, setProductSku]   = useState('');
 
   useEffect(() => {
     if (product?.name) {
       setProductName(product.name);
-      setProductSku(product.sku || '');
     } else {
       setProductName(document.title.split(' - ')[0] || document.title);
     }
@@ -24,7 +22,6 @@ export default function WhatsAppCTA({ product, setting }: ProductProps) {
 
   const waMessage = encodeURIComponent(
     `Hola INCAP! Me interesa el producto: *${productName || 'este producto'}*` +
-    `${productSku ? ` (SKU: ${productSku})` : ''}` +
     `\n¿Pueden asesorarme sobre disponibilidad y precios?`
   );
 

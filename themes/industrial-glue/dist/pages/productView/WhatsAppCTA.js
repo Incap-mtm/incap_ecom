@@ -3,18 +3,15 @@ export default function WhatsAppCTA({ product, setting }) {
     var _a;
     const whatsappNumber = (_a = setting === null || setting === void 0 ? void 0 : setting.storeWhatsappNumber) !== null && _a !== void 0 ? _a : '573002171521';
     const [productName, setProductName] = useState('');
-    const [productSku, setProductSku] = useState('');
     useEffect(() => {
         if (product === null || product === void 0 ? void 0 : product.name) {
             setProductName(product.name);
-            setProductSku(product.sku || '');
         }
         else {
             setProductName(document.title.split(' - ')[0] || document.title);
         }
     }, [product]);
     const waMessage = encodeURIComponent(`Hola INCAP! Me interesa el producto: *${productName || 'este producto'}*` +
-        `${productSku ? ` (SKU: ${productSku})` : ''}` +
         `\n¿Pueden asesorarme sobre disponibilidad y precios?`);
     const techMessage = encodeURIComponent(`Hola INCAP! Necesito soporte técnico sobre: *${productName || 'este producto'}*`);
     return (React.createElement("div", { className: "py-8 border-t border-slate-100", style: { position: 'sticky', top: '120px' } },

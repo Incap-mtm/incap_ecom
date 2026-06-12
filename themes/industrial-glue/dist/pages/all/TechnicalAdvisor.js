@@ -21,8 +21,7 @@ function AssistantBubble({ content, products }) {
             React.createElement("div", { style: { background: '#f8fafc', borderRadius: '4px 16px 16px 16px', padding: '10px 14px', maxWidth: '85%', fontSize: '13px', lineHeight: 1.6, color: '#374151', border: '1px solid #e2e8f0' } }, content)),
         products && products.length > 0 && (React.createElement("div", { style: { marginLeft: '36px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '6px' } }, products.map(p => (React.createElement("a", { key: p.sku, href: p.url, style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '10px', textDecoration: 'none', transition: 'all 0.15s' }, onMouseEnter: e => { e.currentTarget.style.borderColor = '#2A4899'; e.currentTarget.style.background = '#f0f5ff'; }, onMouseLeave: e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.background = '#fff'; } },
             React.createElement("div", null,
-                React.createElement("div", { style: { fontSize: '12px', fontWeight: 700, color: '#181B1C' } }, p.name),
-                React.createElement("div", { style: { fontSize: '10px', color: '#94a3b8', fontWeight: 600 } }, p.sku)),
+                React.createElement("div", { style: { fontSize: '12px', fontWeight: 700, color: '#181B1C' } }, p.name)),
             React.createElement("svg", { width: "14", height: "14", fill: "none", stroke: "#2A4899", viewBox: "0 0 24 24" },
                 React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M9 5l7 7-7 7" })))))))));
 }
