@@ -555,7 +555,7 @@ function SectionPromocion() {
                     "La promoci\u00F3n cuenta con un stock limitado de ",
                     React.createElement("strong", null, "130 unidades"),
                     " de balones a nivel nacional. La actividad finalizar\u00E1 autom\u00E1ticamente el ",
-                    React.createElement("strong", null, "30 de junio de 2026"),
+                    React.createElement("strong", null, "30 de julio de 2026"),
                     " o en el momento exacto en que se entregue el bal\u00F3n n\u00FAmero 130, lo que ocurra primero. Agotado el inventario, El Organizador no estar\u00E1 obligado a entregar m\u00E1s incentivos ni compensaciones equivalentes."))),
         React.createElement("div", null,
             React.createElement(SectionHeading, null, "4. Log\u00EDstica y despacho de los incentivos"),

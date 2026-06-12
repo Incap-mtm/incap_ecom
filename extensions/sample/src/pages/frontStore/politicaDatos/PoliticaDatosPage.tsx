@@ -780,7 +780,7 @@ function SectionPromocion() {
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
           <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-2">Importante</p>
           <p className="text-sm text-slate-600 leading-relaxed">
-            La promoción cuenta con un stock limitado de <strong>130 unidades</strong> de balones a nivel nacional. La actividad finalizará automáticamente el <strong>30 de junio de 2026</strong> o en el momento exacto en que se entregue el balón número 130, lo que ocurra primero. Agotado el inventario, El Organizador no estará obligado a entregar más incentivos ni compensaciones equivalentes.
+            La promoción cuenta con un stock limitado de <strong>130 unidades</strong> de balones a nivel nacional. La actividad finalizará automáticamente el <strong>30 de julio de 2026</strong> o en el momento exacto en que se entregue el balón número 130, lo que ocurra primero. Agotado el inventario, El Organizador no estará obligado a entregar más incentivos ni compensaciones equivalentes.
           </p>
         </div>
       </div>
