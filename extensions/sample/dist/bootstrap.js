@@ -1,5 +1,23 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { addProcessor } from '@evershop/evershop/lib/util/registry';
+import { registerWidget } from '@evershop/evershop/lib/widget';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export default function () {
+    // Widget custom Hero Slider — gestionable desde Admin → CMS → Widgets.
+    // Soporta imagen desktop + mobile (WebP) por slide, a diferencia del simple_slider nativo.
+    registerWidget({
+        type: 'hero_slider',
+        settingComponent: path.resolve(__dirname, 'components/HeroSliderSetting.js'),
+        component: path.resolve(__dirname, 'components/HeroSlider.js'),
+        name: 'Hero Slider INCAP',
+        description: 'Carrusel full-bleed del home con imagen desktop/mobile por slide',
+        defaultSettings: {
+            slides: [],
+            autoplaySpeed: 5000
+        },
+        enabled: true
+    });
     // Filtro fulltext: busca en nombre del producto Y en atributos usos/caracteristicas/modo_empleo
     addProcessor('productCollectionFilters', (filters) => {
         return [

@@ -1,0 +1,34 @@
+"""
+Un slide del Hero: imagen desktop + mobile (WebP) y texto alternativo.
+"""
+type HeroSlide {
+  id: String!
+  deskImage: String!
+  mobileImage: String
+  alt: String
+}
+
+"""
+Input de un slide del Hero (para leer settings del widget).
+"""
+input HeroSlideInput {
+  id: String!
+  deskImage: String!
+  mobileImage: String
+  alt: String
+}
+
+"""
+Widget Hero Slider — carrusel full-bleed con imagen desktop/mobile por slide.
+"""
+type HeroSliderWidget {
+  slides: [HeroSlide!]
+  autoplaySpeed: Int
+}
+
+extend type Query {
+  heroSliderWidget(
+    slides: [HeroSlideInput]
+    autoplaySpeed: Int
+  ): HeroSliderWidget
+}
