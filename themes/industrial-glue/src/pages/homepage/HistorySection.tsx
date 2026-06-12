@@ -64,11 +64,12 @@ function init(container) {
     container.appendChild(renderer.domElement);
 
     /* Lights */
-    scene.add(new THREE.AmbientLight(0xffffff, 1.8));
-    const key = new THREE.DirectionalLight(0xffffff, 2.8);
+    scene.add(new THREE.AmbientLight(0xffffff, 2.8));
+    const key = new THREE.DirectionalLight(0xffffff, 3.6);
     key.position.set(4, 8, 6);
     scene.add(key);
-    const fill = new THREE.DirectionalLight(0xaabbff, 0.5);
+    // Relleno blanco (antes azulado, que engrisaba el producto)
+    const fill = new THREE.DirectionalLight(0xffffff, 0.8);
     fill.position.set(-5, -2, -3);
     scene.add(fill);
     const rim = new THREE.DirectionalLight(0xffffff, 0.8);
@@ -213,7 +214,7 @@ function init(container) {
               src="/images/sections/cap_para_maxon.webp"
               alt="Mascota INCAP"
               loading="lazy"
-              style={{ position: 'absolute', zIndex: 1, right: 0, bottom: 0, width: '72%', maxWidth: '480px', pointerEvents: 'none', userSelect: 'none' }}
+              style={{ position: 'absolute', zIndex: 1, right: 0, bottom: '-48px', width: '72%', maxWidth: '480px', pointerEvents: 'none', userSelect: 'none' }}
             />
 
             {/* Producto 3D — al frente */}

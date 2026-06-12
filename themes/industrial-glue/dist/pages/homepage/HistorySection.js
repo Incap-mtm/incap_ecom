@@ -57,11 +57,12 @@ function init(container) {
     container.appendChild(renderer.domElement);
 
     /* Lights */
-    scene.add(new THREE.AmbientLight(0xffffff, 1.8));
-    const key = new THREE.DirectionalLight(0xffffff, 2.8);
+    scene.add(new THREE.AmbientLight(0xffffff, 2.8));
+    const key = new THREE.DirectionalLight(0xffffff, 3.6);
     key.position.set(4, 8, 6);
     scene.add(key);
-    const fill = new THREE.DirectionalLight(0xaabbff, 0.5);
+    // Relleno blanco (antes azulado, que engrisaba el producto)
+    const fill = new THREE.DirectionalLight(0xffffff, 0.8);
     fill.position.set(-5, -2, -3);
     scene.add(fill);
     const rim = new THREE.DirectionalLight(0xffffff, 0.8);
@@ -181,7 +182,7 @@ function init(container) {
                     React.createElement("p", { className: "text-xl md:text-2xl text-[#2A4899]/70 font-sora font-medium leading-relaxed mb-8 max-w-xl" }, "Desde 1969, entendemos que detr\u00E1s de cada adhesivo hay una familia y una f\u00E1brica que compite a nivel global.")),
                 React.createElement("div", { className: `relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0`, style: { minHeight: '640px' } },
                     React.createElement("img", { src: "/images/sections/56_anos_maxon.webp", alt: "+56 a\u00F1os de experiencia", loading: "lazy", style: { position: 'absolute', zIndex: 0, top: 0, left: '50%', transform: 'translateX(-50%)', width: '140%', maxWidth: '840px', pointerEvents: 'none', userSelect: 'none' } }),
-                    React.createElement("img", { src: "/images/sections/cap_para_maxon.webp", alt: "Mascota INCAP", loading: "lazy", style: { position: 'absolute', zIndex: 1, right: 0, bottom: 0, width: '72%', maxWidth: '480px', pointerEvents: 'none', userSelect: 'none' } }),
+                    React.createElement("img", { src: "/images/sections/cap_para_maxon.webp", alt: "Mascota INCAP", loading: "lazy", style: { position: 'absolute', zIndex: 1, right: 0, bottom: '-48px', width: '72%', maxWidth: '480px', pointerEvents: 'none', userSelect: 'none' } }),
                     React.createElement("div", { ref: mountRef, id: "incap-3d-mount", style: { position: 'relative', zIndex: 10 } }))),
             React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12" }, [
                 { t: 'INGENIERÍA CON ROSTRO HUMANO', d: 'No creemos en catálogos fríos. Creemos en la presencia real en tu planta.' },
