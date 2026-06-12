@@ -1,4 +1,4 @@
-import { pool } from '@evershop/evershop/lib/postgres/connection';
+import { pool } from '@evershop/evershop/lib/postgres';
 
 const SITE_URL = 'https://www.grupoincap.com.co';
 

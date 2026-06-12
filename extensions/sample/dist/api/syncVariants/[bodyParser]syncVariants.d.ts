@@ -1,5 +1,5 @@
 /**
  * Endpoint admin: normaliza tamaños y agrupa productos por familia en variant_groups.
- * Es idempotente: solo crea grupos/variantes faltantes, no toca los ya migrados.
+ * Idempotente y transaccional: si algo falla, hace ROLLBACK (no deja estado parcial).
  */
 export default function syncVariants(request: any, response: any): Promise<any>;

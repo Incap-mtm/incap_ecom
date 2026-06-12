@@ -1,4 +1,4 @@
-import { pool } from '@evershop/evershop/lib/postgres/connection';
+import { pool } from '@evershop/evershop/lib/postgres';
 import crypto from 'crypto';
 
 /* ── Helpers (portados de scripts/migrate-variantes.mjs) ── */
@@ -21,30 +21,32 @@ function getSize(name) {
 
 /**
  * Endpoint admin: normaliza tamaños y agrupa productos por familia en variant_groups.
- * Es idempotente: solo crea grupos/variantes faltantes, no toca los ya migrados.
+ * Idempotente y transaccional: si algo falla, hace ROLLBACK (no deja estado parcial).
  */
 export default async function syncVariants(request, response) {
-  // Defensa extra (la ruta ya es access:private → exige admin logueado)
   const admin = typeof request.getCurrentUser === 'function' ? request.getCurrentUser() : null;
   if (!admin) {
     return response.status(401).json({ success: false, error: 'No autorizado' });
   }
 
+  const client = await pool.connect();
   try {
-    // IDs dinámicos (en vez de hardcodear)
-    const { rows: attrRows } = await pool.query(
+    const { rows: attrRows } = await client.query(
       `SELECT attribute_id FROM attribute WHERE attribute_code = 'size' LIMIT 1`
     );
     if (!attrRows.length) {
+      client.release();
       return response.status(400).json({ success: false, error: 'El atributo "size" no existe.' });
     }
     const SIZE_ATTRIBUTE_ID = attrRows[0].attribute_id;
-    const { rows: grpRows } = await pool.query(
+    const { rows: grpRows } = await client.query(
       `SELECT attribute_group_id FROM attribute_group WHERE group_name = 'Default' LIMIT 1`
     );
     const ATTRIBUTE_GROUP_ID = grpRows.length ? grpRows[0].attribute_group_id : 1;
 
-    const { rows: products } = await pool.query(`
+    await client.query('BEGIN');
+
+    const { rows: products } = await client.query(`
       SELECT p.product_id, p.sku, p.variant_group_id, pd.product_description_id, pd.name
       FROM product p
       JOIN product_description pd ON pd.product_description_product_id = p.product_id
@@ -60,7 +62,7 @@ export default async function syncVariants(request, response) {
       const normSize = normalizeSize(rawSize);
       if (normSize !== rawSize) {
         const newName = `${getFamily(p.name)} - ${normSize}`;
-        await pool.query(
+        await client.query(
           'UPDATE product_description SET name = $1 WHERE product_description_id = $2',
           [newName, p.product_description_id]
         );
@@ -79,8 +81,7 @@ export default async function syncVariants(request, response) {
     }
     const toMigrate = [...families.entries()].filter(([, ps]) => ps.length >= 2);
 
-    // Opciones de tamaño existentes
-    const { rows: existingOpts } = await pool.query(
+    const { rows: existingOpts } = await client.query(
       'SELECT attribute_option_id, option_text FROM attribute_option WHERE attribute_id = $1',
       [SIZE_ATTRIBUTE_ID]
     );
@@ -91,7 +92,7 @@ export default async function syncVariants(request, response) {
     let optionsCreated = 0;
     for (const size of sizesNeeded) {
       if (!optionMap.has(size)) {
-        const { rows: [opt] } = await pool.query(
+        const { rows: [opt] } = await client.query(
           `INSERT INTO attribute_option (uuid, attribute_id, attribute_code, option_text)
            VALUES ($1, $2, 'size', $3) RETURNING attribute_option_id`,
           [crypto.randomUUID(), SIZE_ATTRIBUTE_ID, size]
@@ -109,7 +110,7 @@ export default async function syncVariants(request, response) {
 
       let variantGroupId = existingGroupId;
       if (variantGroupId === null) {
-        const { rows: [vg] } = await pool.query(
+        const { rows: [vg] } = await client.query(
           `INSERT INTO variant_group (uuid, attribute_group_id, attribute_one, visibility)
            VALUES ($1, $2, $3, false) RETURNING variant_group_id`,
           [crypto.randomUUID(), ATTRIBUTE_GROUP_ID, SIZE_ATTRIBUTE_ID]
@@ -120,12 +121,12 @@ export default async function syncVariants(request, response) {
 
       for (const p of newProducts) {
         const optionId = optionMap.get(p.size);
-        await pool.query('UPDATE product SET variant_group_id = $1 WHERE product_id = $2', [variantGroupId, p.product_id]);
-        await pool.query(
+        await client.query('UPDATE product SET variant_group_id = $1 WHERE product_id = $2', [variantGroupId, p.product_id]);
+        await client.query(
           'DELETE FROM product_attribute_value_index WHERE product_id = $1 AND attribute_id = $2',
           [p.product_id, SIZE_ATTRIBUTE_ID]
         );
-        await pool.query(
+        await client.query(
           `INSERT INTO product_attribute_value_index (product_id, attribute_id, option_id, option_text)
            VALUES ($1, $2, $3, $4)`,
           [p.product_id, SIZE_ATTRIBUTE_ID, optionId, p.size]
@@ -133,6 +134,8 @@ export default async function syncVariants(request, response) {
         productsUpdated++;
       }
     }
+
+    await client.query('COMMIT');
 
     return response.json({
       success: true,
@@ -146,6 +149,9 @@ export default async function syncVariants(request, response) {
       },
     });
   } catch (err) {
+    try { await client.query('ROLLBACK'); } catch { /* noop */ }
     return response.status(500).json({ success: false, error: err.message });
+  } finally {
+    client.release();
   }
 }
