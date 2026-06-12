@@ -29,6 +29,13 @@ const slides = [
     mobileFallback: '/images/banners/Hero/banner-04-mobile.png',
     alt: 'Grupo INCAP — Fabricantes de adhesivos industriales',
   },
+  {
+    desk: '/images/banners/Hero/banner-05-desk.webp',
+    mobile: '/images/banners/Hero/banner-05-mobile.webp',
+    deskFallback: '/images/banners/Hero/banner-05-desk.png',
+    mobileFallback: '/images/banners/Hero/banner-05-mobile.png',
+    alt: 'INCAP — Adhesivos industriales en presentaciones de canecas y galones',
+  },
 ];
 
 const INTERVAL_MS = 5000;
