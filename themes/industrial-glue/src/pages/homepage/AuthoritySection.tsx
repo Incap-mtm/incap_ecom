@@ -20,7 +20,7 @@ export default function AuthoritySection() {
           <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-white to-transparent z-10"></div>
           
           <div className="flex animate-marquee whitespace-nowrap items-center py-4 grayscale hover:grayscale-0 transition-all duration-1000 opacity-40 hover:opacity-100">
-             {[...logos, ...logos].map((logo, i) => (
+             {[...logos, ...logos, ...logos, ...logos].map((logo, i) => (
                <img
                 key={i}
                 src={logo}

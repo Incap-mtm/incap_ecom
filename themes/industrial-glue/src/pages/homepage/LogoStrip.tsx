@@ -9,7 +9,9 @@ const logos = [
 ];
 
 export default function LogoStrip() {
-  const loopLogos = [...logos, ...logos];
+  // 4 copias: cada mitad del track (2 copias) supera el ancho del viewport,
+  // así el marquee nunca deja espacio vacío a la derecha antes de reiniciar.
+  const loopLogos = [...logos, ...logos, ...logos, ...logos];
   return (
     <section className="bg-white border-y border-slate-100 py-10 overflow-hidden">
       <div className="relative flex overflow-hidden">
