@@ -213,7 +213,7 @@ function init(container) {
               src="/images/sections/cap_para_maxon.webp"
               alt="Mascota INCAP"
               loading="lazy"
-              style={{ position: 'absolute', zIndex: 1, right: 0, bottom: 0, width: '60%', maxWidth: '400px', pointerEvents: 'none', userSelect: 'none' }}
+              style={{ position: 'absolute', zIndex: 1, right: 0, bottom: 0, width: '72%', maxWidth: '480px', pointerEvents: 'none', userSelect: 'none' }}
             />
 
             {/* Producto 3D — al frente */}

@@ -181,7 +181,7 @@ function init(container) {
                     React.createElement("p", { className: "text-xl md:text-2xl text-[#2A4899]/70 font-sora font-medium leading-relaxed mb-8 max-w-xl" }, "Desde 1969, entendemos que detr\u00E1s de cada adhesivo hay una familia y una f\u00E1brica que compite a nivel global.")),
                 React.createElement("div", { className: `relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0`, style: { minHeight: '640px' } },
                     React.createElement("img", { src: "/images/sections/56_anos_maxon.webp", alt: "+56 a\u00F1os de experiencia", loading: "lazy", style: { position: 'absolute', zIndex: 0, top: 0, left: '50%', transform: 'translateX(-50%)', width: '140%', maxWidth: '840px', pointerEvents: 'none', userSelect: 'none' } }),
-                    React.createElement("img", { src: "/images/sections/cap_para_maxon.webp", alt: "Mascota INCAP", loading: "lazy", style: { position: 'absolute', zIndex: 1, right: 0, bottom: 0, width: '60%', maxWidth: '400px', pointerEvents: 'none', userSelect: 'none' } }),
+                    React.createElement("img", { src: "/images/sections/cap_para_maxon.webp", alt: "Mascota INCAP", loading: "lazy", style: { position: 'absolute', zIndex: 1, right: 0, bottom: 0, width: '72%', maxWidth: '480px', pointerEvents: 'none', userSelect: 'none' } }),
                     React.createElement("div", { ref: mountRef, id: "incap-3d-mount", style: { position: 'relative', zIndex: 10 } }))),
             React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12" }, [
                 { t: 'INGENIERÍA CON ROSTRO HUMANO', d: 'No creemos en catálogos fríos. Creemos en la presencia real en tu planta.' },
