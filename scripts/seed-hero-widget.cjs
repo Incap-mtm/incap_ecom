@@ -68,7 +68,7 @@ async function run() {
 
   const settings = {
     slides, // cada slide ya trae su id estable (el render usa slide.id como key)
-    autoplaySpeed: 5000
+    autoplaySpeed: 8000
   };
 
   await client.query(

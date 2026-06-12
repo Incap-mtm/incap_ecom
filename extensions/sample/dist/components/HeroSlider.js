@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 export default function HeroSlider({ heroSliderWidget }) {
     var _a;
     const slides = (_a = heroSliderWidget === null || heroSliderWidget === void 0 ? void 0 : heroSliderWidget.slides) !== null && _a !== void 0 ? _a : [];
-    const intervalMs = Number(heroSliderWidget === null || heroSliderWidget === void 0 ? void 0 : heroSliderWidget.autoplaySpeed) || 5000;
+    const intervalMs = Number(heroSliderWidget === null || heroSliderWidget === void 0 ? void 0 : heroSliderWidget.autoplaySpeed) || 8000;
     const [current, setCurrent] = useState(0);
     useEffect(() => {
         if (slides.length <= 1)

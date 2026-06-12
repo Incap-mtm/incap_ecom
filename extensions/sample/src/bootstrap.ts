@@ -16,7 +16,7 @@ export default function () {
     description: 'Carrusel full-bleed del home con imagen desktop/mobile por slide',
     defaultSettings: {
       slides: [],
-      autoplaySpeed: 5000
+      autoplaySpeed: 8000
     },
     enabled: true
   });

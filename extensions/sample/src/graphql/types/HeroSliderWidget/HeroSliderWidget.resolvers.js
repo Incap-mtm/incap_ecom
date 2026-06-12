@@ -4,7 +4,7 @@ export default {
     // y los devuelve tipados. Mismo patrón que el slideshowWidget nativo.
     heroSliderWidget: (_, { slides, autoplaySpeed }) => ({
       slides: Array.isArray(slides) ? slides : [],
-      autoplaySpeed: Number(autoplaySpeed) || 5000
+      autoplaySpeed: Number(autoplaySpeed) || 8000
     })
   }
 };

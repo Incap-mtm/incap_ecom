@@ -24,7 +24,7 @@ async function validateImage(url) {
     return null;
 }
 export default function HeroSliderSetting({ heroSliderWidget }) {
-    const { slides = [], autoplaySpeed = 5000 } = heroSliderWidget || {};
+    const { slides = [], autoplaySpeed = 8000 } = heroSliderWidget || {};
     const { control, setValue, watch } = useFormContext();
     const { fields, append, remove, move } = useFieldArray({
         control,
@@ -34,7 +34,7 @@ export default function HeroSliderSetting({ heroSliderWidget }) {
     const currentSpeed = watch('settings.autoplaySpeed', autoplaySpeed);
     useEffect(() => {
         setValue('settings.slides', (slides === null || slides === void 0 ? void 0 : slides.length) ? slides : []);
-        setValue('settings.autoplaySpeed', Number(autoplaySpeed) || 5000);
+        setValue('settings.autoplaySpeed', Number(autoplaySpeed) || 8000);
     }, []);
     const [openBrowser, setOpenBrowser] = useState(false);
     const [target, setTarget] = useState(null);
@@ -77,7 +77,7 @@ export default function HeroSliderSetting({ heroSliderWidget }) {
             ". Recomendado: desktop 2667\u00D71250 px, mobile 782\u00D71390 px."),
         React.createElement("div", { className: "mb-4" },
             React.createElement("label", { className: "block mb-1 text-sm font-medium" }, "Velocidad de autoplay (ms)"),
-            React.createElement("input", { type: "number", min: 1000, step: 500, className: "w-48 p-2 border border-gray-300 rounded", value: Number(currentSpeed) || 5000, onChange: (e) => setValue('settings.autoplaySpeed', Number(e.target.value) || 5000) })),
+            React.createElement("input", { type: "number", min: 1000, step: 500, className: "w-48 p-2 border border-gray-300 rounded", value: Number(currentSpeed) || 8000, onChange: (e) => setValue('settings.autoplaySpeed', Number(e.target.value) || 8000) })),
         React.createElement("div", { className: "flex justify-between items-center mb-2" },
             React.createElement("h2", { className: "text-lg font-medium" }, "Slides del Hero"),
             React.createElement(Button, { onClick: addSlide, variant: "outline" }, "Agregar slide")),

@@ -40,7 +40,7 @@ async function validateImage(url: string): Promise<string | null> {
 }
 
 export default function HeroSliderSetting({ heroSliderWidget }: HeroSliderSettingProps) {
-  const { slides = [], autoplaySpeed = 5000 } = heroSliderWidget || {};
+  const { slides = [], autoplaySpeed = 8000 } = heroSliderWidget || {};
   const { control, setValue, watch } = useFormContext();
   const { fields, append, remove, move } = useFieldArray({
     control,
@@ -52,7 +52,7 @@ export default function HeroSliderSetting({ heroSliderWidget }: HeroSliderSettin
 
   useEffect(() => {
     setValue('settings.slides', slides?.length ? slides : []);
-    setValue('settings.autoplaySpeed', Number(autoplaySpeed) || 5000);
+    setValue('settings.autoplaySpeed', Number(autoplaySpeed) || 8000);
   }, []);
 
   const [openBrowser, setOpenBrowser] = useState(false);
@@ -108,8 +108,8 @@ export default function HeroSliderSetting({ heroSliderWidget }: HeroSliderSettin
           min={1000}
           step={500}
           className="w-48 p-2 border border-gray-300 rounded"
-          value={Number(currentSpeed) || 5000}
-          onChange={(e) => setValue('settings.autoplaySpeed', Number(e.target.value) || 5000)}
+          value={Number(currentSpeed) || 8000}
+          onChange={(e) => setValue('settings.autoplaySpeed', Number(e.target.value) || 8000)}
         />
       </div>
 

@@ -16,7 +16,7 @@ interface HeroSliderProps {
 
 export default function HeroSlider({ heroSliderWidget }: HeroSliderProps) {
   const slides = heroSliderWidget?.slides ?? [];
-  const intervalMs = Number(heroSliderWidget?.autoplaySpeed) || 5000;
+  const intervalMs = Number(heroSliderWidget?.autoplaySpeed) || 8000;
 
   const [current, setCurrent] = useState(0);
 
