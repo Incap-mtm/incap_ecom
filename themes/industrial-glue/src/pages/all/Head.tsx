@@ -99,8 +99,9 @@ export default function Head() {
           "three/addons/":  "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
         }
       }) }} />
-      <link rel="preload" as="image" href="/images/banners/Hero/banner-01-mobile.webp" media="(max-width: 768px)" />
-      <link rel="preload" as="image" href="/images/banners/Hero/banner-01-desk.webp" media="(min-width: 769px)" />
+      {/* El hero es dinámico (widget hero_slider): el preload estático de un banner
+          fijo queda obsoleto al reordenar desde el admin. El primer slide del
+          HeroSlider ya usa loading="eager" + fetchPriority="high" para el LCP. */}
       <link rel="preload" as="font" type="font/woff2" href="/font/Sora-VariableFont_wght.woff2" crossOrigin="anonymous" />
       <link rel="stylesheet" href="/assets/tailwind.css" />
       <style>{`

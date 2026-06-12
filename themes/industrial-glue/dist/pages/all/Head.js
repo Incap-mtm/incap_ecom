@@ -84,8 +84,6 @@ export default function Head() {
                         "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
                     }
                 }) } }),
-        React.createElement("link", { rel: "preload", as: "image", href: "/images/banners/Hero/banner-01-mobile.webp", media: "(max-width: 768px)" }),
-        React.createElement("link", { rel: "preload", as: "image", href: "/images/banners/Hero/banner-01-desk.webp", media: "(min-width: 769px)" }),
         React.createElement("link", { rel: "preload", as: "font", type: "font/woff2", href: "/font/Sora-VariableFont_wght.woff2", crossOrigin: "anonymous" }),
         React.createElement("link", { rel: "stylesheet", href: "/assets/tailwind.css" }),
         React.createElement("style", null, `
