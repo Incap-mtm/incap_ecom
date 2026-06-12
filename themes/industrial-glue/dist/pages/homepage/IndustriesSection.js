@@ -4,7 +4,7 @@ const industries = [
     {
         id: 'madera',
         title: 'Madera y Muebles',
-        description: 'Ensamble estructural y laminado fino con tecnología PVA de alta ingeniería.',
+        description: '¿Tu PVA se quiebra en las uniones? Tenemos la viscosidad exacta para tu proceso de prensado en frío o caliente.',
         href: '/industrias/madera',
         image: '/images/sections/Categoria_Maderas_Muebles_Seccion_Home.webp',
         icons: [
@@ -15,7 +15,7 @@ const industries = [
     {
         id: 'colchones',
         title: 'Colchones y Espumas',
-        description: 'Adhesivos libres de tolueno diseñados para el confort y la salud de tu equipo.',
+        description: 'Tus operarios llevan 8 horas al día con la pistola en la mano. Tenemos fórmulas LT que no comprometen su salud ni el rendimiento de pegue.',
         href: '/industrias/colchones',
         image: '/images/sections/Colchones_Seccion_Home.webp',
         icons: [
@@ -26,7 +26,7 @@ const industries = [
     {
         id: 'calzado',
         title: 'Calzado y Marroquinería',
-        description: 'Sistemas completos de pegado para las fábricas más exigentes del país.',
+        description: 'Del aparado a la suela: un solo proveedor con el adhesivo correcto para cada etapa de tu línea.',
         href: '/industrias/calzado',
         image: '/images/sections/Calzado_Marroquinera_Seccion_Home.webp',
         icons: [
@@ -61,9 +61,6 @@ export default function IndustriesSection() {
                 React.createElement("a", { href: "/catalog", className: "mt-8 md:mt-0 text-[10px] font-black text-[#2A4899] hover:text-[#85C639] tracking-[0.2em] uppercase flex items-center gap-2 transition-all group" },
                     "VER TODO EL PORTAFOLIO",
                     React.createElement("span", { className: "group-hover:translate-x-2 transition-transform" }, "\u2192"))),
-            React.createElement("div", { className: "flex flex-wrap gap-3 mb-10" }, industries.map((ind) => (React.createElement("a", { key: ind.id, href: ind.href, className: "inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#2A4899]/30 text-[#2A4899] text-xs font-black uppercase tracking-wider hover:bg-[#2A4899] hover:text-white hover:border-[#2A4899] transition-all duration-200 font-sora" },
-                ind.title,
-                React.createElement("span", { className: "text-[#85C639]" }, "\u2192"))))),
             React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" }, industries.map((ind, idx) => (React.createElement("div", { key: ind.id, className: `flex flex-col bg-white rounded-3xl overflow-hidden shadow-xl shadow-slate-200/40 border border-slate-100 reveal reveal-stagger-${idx + 1} active group` },
                 React.createElement("div", { className: "relative h-[280px] overflow-hidden bg-slate-100" },
                     React.createElement("img", { src: ind.image, alt: ind.title, loading: "lazy", className: "w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" }),
