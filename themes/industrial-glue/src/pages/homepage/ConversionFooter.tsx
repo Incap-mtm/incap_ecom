@@ -21,9 +21,17 @@ export default function ConversionFooter({ setting }: ConversionFooterProps) {
                ¿Fallas de <br/>
                <span className="text-[#85C639]">Pegue?</span>
              </h2>
-             <p className="text-2xl text-slate-400 mb-16 font-inter font-light max-w-2xl leading-relaxed">
-                Recibe un diagnóstico técnico gratuito en menos de 24 horas. Protege la calidad de tu producto final con expertos que entienden tu maquinaria.
-             </p>
+             <div className="mb-16 max-w-2xl space-y-5">
+                <p className="text-2xl md:text-3xl text-white font-sora font-bold leading-tight">
+                   Cada unidad defectuosa es una devolución, una queja y una venta perdida.
+                </p>
+                <p className="text-lg text-slate-400 font-inter font-light leading-relaxed">
+                   Cuéntanos tu caso por WhatsApp y en menos de 24 horas un técnico INCAP te dice exactamente qué está pasando, sin costo, sin compromiso.
+                </p>
+                <p className="text-base text-slate-500 font-inter font-light leading-relaxed">
+                   Hemos diagnosticado fallas en más de 200 plantas. El 90% se resuelve ajustando el producto, la temperatura de aplicación o el tiempo abierto. El otro 10% requiere reformulación, y para eso también estamos.
+                </p>
+             </div>
              <a 
               href={`https://wa.me/${whatsappNumber}?text=${message}`}
               target="_blank"
