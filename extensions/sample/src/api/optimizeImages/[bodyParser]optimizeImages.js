@@ -58,19 +58,25 @@ export default async function optimizeImages(request, response) {
       `SELECT product_image_id, origin_image FROM product_image
        WHERE origin_image ~* '\\.(jpe?g|png)$'`
     );
-    let dbActualizadas = 0, dbSinWebp = 0;
+    const fixableIds = [];
+    let dbSinWebp = 0;
     for (const r of rows) {
-      const webpUrl = toWebp(r.origin_image);
-      if (fs.existsSync(urlToDisk(mediaPath, webpUrl))) {
-        await pool.query(
-          'UPDATE product_image SET origin_image = $1 WHERE product_image_id = $2',
-          [webpUrl, r.product_image_id]
-        );
-        dbActualizadas++;
+      if (fs.existsSync(urlToDisk(mediaPath, toWebp(r.origin_image)))) {
+        fixableIds.push(r.product_image_id);
       } else {
         dbSinWebp++;
       }
     }
+    // Un solo UPDATE atómico: cada fila recibe su propio .webp vía regexp_replace
+    if (fixableIds.length) {
+      await pool.query(
+        `UPDATE product_image
+         SET origin_image = regexp_replace(origin_image, '\\.(jpe?g|png)$', '.webp', 'i')
+         WHERE product_image_id = ANY($1::int[])`,
+        [fixableIds]
+      );
+    }
+    const dbActualizadas = fixableIds.length;
 
     return response.json({
       success: true,
