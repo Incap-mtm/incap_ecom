@@ -32,7 +32,7 @@ export default function CatalogTools() {
         }
     };
     const runImages = async () => {
-        var _a, _b;
+        var _a, _b, _c;
         setImages({ kind: 'loading' });
         try {
             const { ok, data } = await callEndpoint('/api/optimize-images');
@@ -40,7 +40,7 @@ export default function CatalogTools() {
                 return setImages({ kind: 'error', msg: data.error || 'Error al optimizar.' });
             setImages({
                 kind: 'ok',
-                msg: `Convertidas: ${(_a = data.convertidas) !== null && _a !== void 0 ? _a : 0}, ya optimizadas: ${(_b = data.yaOptimizadas) !== null && _b !== void 0 ? _b : 0}${data.pendientes ? `, pendientes: ${data.pendientes}` : ''}.`
+                msg: `Convertidas: ${(_a = data.convertidas) !== null && _a !== void 0 ? _a : 0}, ya optimizadas: ${(_b = data.yaOptimizadas) !== null && _b !== void 0 ? _b : 0}, DB sincronizadas: ${(_c = data.dbActualizadas) !== null && _c !== void 0 ? _c : 0}${data.dbSinWebp ? `, sin webp: ${data.dbSinWebp}` : ''}${data.pendientes ? `, pendientes: ${data.pendientes}` : ''}.`
             });
         }
         catch (e) {

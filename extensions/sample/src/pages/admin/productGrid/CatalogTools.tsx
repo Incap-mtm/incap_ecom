@@ -47,7 +47,7 @@ export default function CatalogTools() {
       if (!ok) return setImages({ kind: 'error', msg: data.error || 'Error al optimizar.' });
       setImages({
         kind: 'ok',
-        msg: `Convertidas: ${data.convertidas ?? 0}, ya optimizadas: ${data.yaOptimizadas ?? 0}${data.pendientes ? `, pendientes: ${data.pendientes}` : ''}.`
+        msg: `Convertidas: ${data.convertidas ?? 0}, ya optimizadas: ${data.yaOptimizadas ?? 0}, DB sincronizadas: ${data.dbActualizadas ?? 0}${data.dbSinWebp ? `, sin webp: ${data.dbSinWebp}` : ''}${data.pendientes ? `, pendientes: ${data.pendientes}` : ''}.`
       });
     } catch (e: any) {
       setImages({ kind: 'error', msg: e?.message || 'Error de conexión.' });
