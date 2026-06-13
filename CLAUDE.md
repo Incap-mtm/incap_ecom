@@ -216,6 +216,28 @@ El wildcard ya añade `.js` → **nunca agregar `.js` al import**:
 
 ---
 
+### Query builder — COUNT y alias (`@evershop/postgres-query-builder`)
+
+`SelectQuery.select(field, alias)` toma campo y alias **separados**. Si pasás un solo string con `as`, `isValueASQL` no lo reconoce como SQL y el builder lo encierra en comillas → `SELECT "COUNT(...) as cnt"` → columna inexistente → **excepción 500**.
+
+```js
+❌ select('COUNT(admin_user_id) as cnt').from('admin_user')...   // SELECT "COUNT(...) as cnt" → 500
+✅ pool.query('SELECT COUNT(*)::int AS cnt FROM admin_user WHERE status = true')  // SQL crudo, a prueba de balas
+```
+
+Para agregados/COUNT en endpoints, preferir `pool.query` con SQL crudo (como hace `api/sitemap`). `COUNT(*)` devuelve bigint → string en node-pg; castear con `::int` para recibir un number.
+
+### Manejo de errores de la API en el front (evitar pantalla en blanco)
+
+Los endpoints pueden responder `{ error: 'texto' }` (nuestros handlers) **o** `{ error: { status, message } }` (errores 500 / no manejados de Evershop). **Nunca** hacer `setError(data.error)` directo: si es objeto, React crashea al renderizarlo como hijo → **página en blanco**. Extraer siempre un string:
+
+```ts
+const msg = typeof data?.error === 'string' ? data.error : (data?.error?.message || 'Error.');
+setError(msg);
+```
+
+---
+
 ### SSR y hooks de React (urql / useState)
 
 Evershop renderiza páginas con `renderToString` sin un Provider de urql. Durante SSR:
