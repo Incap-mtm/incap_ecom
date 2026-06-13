@@ -38,4 +38,4 @@ export default async function sendSitemap(request, response) {
         response.status(500).end('Sitemap error');
     }
 }
-//# sourceMappingURL=%5BsendSitemap%5Dsitemap.js.map
+//# sourceMappingURL=sitemap.js.map
