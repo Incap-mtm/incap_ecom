@@ -1,0 +1,5 @@
+{
+  "methods": ["POST"],
+  "path": "/suggest-sku",
+  "access": "private"
+}
