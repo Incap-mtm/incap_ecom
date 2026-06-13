@@ -171,6 +171,36 @@ Los archivos de middleware legítimos sí van en minúscula: `urlKeyResolver[ind
 
 ---
 
+### Endpoints API POST/PATCH — el `bodyParser.js` companion es OBLIGATORIO ⚠️
+
+**Evershop NO tiene un body-parser global.** `addDefaultMiddlewareFuncs` agrega session, cookies y estáticos, pero **no** parsea JSON del body. El parseo se hace con un middleware `bodyParser` **definido por carpeta de ruta**.
+
+El prefijo en corchetes de un handler declara una **dependencia de orden**: `[bodyParser]createX.js` significa "ejecutame DESPUÉS del middleware con id `bodyParser`". Si en esa misma carpeta **no existe** un `bodyParser.js`, la dependencia es irresoluble y **`sortMiddlewares` DESCARTA el handler silenciosamente** → la ruta solo corre los middlewares globales → el `apiResponse` global responde `{}` con **status 200** → el front cree que fue éxito **pero el handler nunca corrió** (cero efecto, cero error en logs).
+
+**Regla:** toda carpeta de endpoint cuyo handler use el prefijo `[bodyParser]` (o cualquier `[xxx]`) **debe** incluir un archivo que defina ese middleware. Para body JSON, copiar el patrón de `extensions/sample/src/api/createFoo/bodyParser.js`:
+
+```js
+// extensions/sample/src/api/<ruta>/bodyParser.js
+import bodyParser from 'body-parser';
+
+export default (request, response, next) => {
+  bodyParser.json({ inflate: false })(request, response, next);
+};
+```
+
+```
+✅ api/adminUsers/{ route.json, bodyParser.js, [bodyParser]createAdminUser.js }
+❌ api/adminUsers/{ route.json, [bodyParser]createAdminUser.js }   ← handler descartado → {} 200, no persiste
+```
+
+Alternativa (sin body): un handler sin corchetes (`deleteAdminUser.js`) recibe deps por defecto resolubles (`apiResponse`, `escapeHtml`, `auth`) → **no se descarta** y corre. Usar este patrón para DELETE/GET que no leen body.
+
+**Cómo detectarlo:** el síntoma es un POST que devuelve **`{}` con 200** (no el JSON esperado del handler) y no aparece ningún log del handler. Verificar con DevTools → Network → Response (`content-length: 2` = `{}`).
+
+> **Deuda conocida:** los endpoints `/api/sync-variants`, `/api/optimize-images`, `/api/ficha-lead`, `/api/maps-key` y `/api/technical-advisor` usan el prefijo `[bodyParser]` **sin** el companion → probablemente estén siendo descartados igual. Revisar y agregarles `bodyParser.js` cuando se toquen.
+
+---
+
 ### Imports de paquetes Evershop
 
 El `package.json` de `@evershop/evershop` usa un `exports` map con wildcards:
