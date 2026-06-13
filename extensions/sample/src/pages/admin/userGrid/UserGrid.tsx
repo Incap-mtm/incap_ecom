@@ -31,6 +31,18 @@ interface Props {
   userEditUrlTemplate: string;
 }
 
+/**
+ * Extrae un string del error de la API. La API puede devolver
+ * { error: 'texto' } (nuestros handlers) o { error: { status, message } }
+ * (errores no manejados / 500 de Evershop). Nunca devolver un objeto:
+ * renderizar un objeto como hijo de React crashea el componente.
+ */
+function extractError(data: any, fallback: string): string {
+  if (typeof data?.error === 'string') return data.error;
+  if (typeof data?.error?.message === 'string') return data.error.message;
+  return fallback;
+}
+
 export default function UserGrid({
   adminUsers,
   userNewUrl,
@@ -52,7 +64,7 @@ export default function UserGrid({
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || data.success === false) {
-        setError(data.error || 'Error al cambiar el estado.');
+        setError(extractError(data, 'Error al cambiar el estado.'));
       } else {
         setUsers((prev) =>
           prev.map((u) =>
@@ -80,7 +92,7 @@ export default function UserGrid({
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || data.success === false) {
-        setError(data.error || 'Error al eliminar el usuario.');
+        setError(extractError(data, 'Error al eliminar el usuario.'));
       } else {
         setUsers((prev) => prev.filter((u) => u.adminUserId !== user.adminUserId));
       }

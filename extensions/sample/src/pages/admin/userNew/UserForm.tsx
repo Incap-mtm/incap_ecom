@@ -126,7 +126,11 @@ export default function UserForm({ user, userGridUrl }: Props) {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok || data.success === false) {
-        setError(data.error || 'Error al guardar el usuario.');
+        const msg =
+          typeof data?.error === 'string'
+            ? data.error
+            : data?.error?.message || 'Error al guardar el usuario.';
+        setError(msg);
         return;
       }
 

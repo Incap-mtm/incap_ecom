@@ -2,6 +2,20 @@ import { Card, CardContent, CardHeader, CardTitle } from '@components/common/ui/
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/common/ui/Table.js';
 import { Button } from '@components/common/ui/Button.js';
 import React, { useState } from 'react';
+/**
+ * Extrae un string del error de la API. La API puede devolver
+ * { error: 'texto' } (nuestros handlers) o { error: { status, message } }
+ * (errores no manejados / 500 de Evershop). Nunca devolver un objeto:
+ * renderizar un objeto como hijo de React crashea el componente.
+ */
+function extractError(data, fallback) {
+    var _a;
+    if (typeof (data === null || data === void 0 ? void 0 : data.error) === 'string')
+        return data.error;
+    if (typeof ((_a = data === null || data === void 0 ? void 0 : data.error) === null || _a === void 0 ? void 0 : _a.message) === 'string')
+        return data.error.message;
+    return fallback;
+}
 export default function UserGrid({ adminUsers, userNewUrl, userEditUrlTemplate }) {
     var _a;
     const [users, setUsers] = useState((_a = adminUsers === null || adminUsers === void 0 ? void 0 : adminUsers.items) !== null && _a !== void 0 ? _a : []);
@@ -19,7 +33,7 @@ export default function UserGrid({ adminUsers, userNewUrl, userEditUrlTemplate }
             });
             const data = await res.json().catch(() => ({}));
             if (!res.ok || data.success === false) {
-                setError(data.error || 'Error al cambiar el estado.');
+                setError(extractError(data, 'Error al cambiar el estado.'));
             }
             else {
                 setUsers((prev) => prev.map((u) => u.adminUserId === user.adminUserId
@@ -46,7 +60,7 @@ export default function UserGrid({ adminUsers, userNewUrl, userEditUrlTemplate }
             });
             const data = await res.json().catch(() => ({}));
             if (!res.ok || data.success === false) {
-                setError(data.error || 'Error al eliminar el usuario.');
+                setError(extractError(data, 'Error al eliminar el usuario.'));
             }
             else {
                 setUsers((prev) => prev.filter((u) => u.adminUserId !== user.adminUserId));

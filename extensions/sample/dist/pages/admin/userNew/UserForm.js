@@ -50,6 +50,7 @@ export default function UserForm({ user, userGridUrl }) {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const handleSubmit = async (e) => {
+        var _a;
         e.preventDefault();
         setError(null);
         setSuccess(null);
@@ -94,7 +95,10 @@ export default function UserForm({ user, userGridUrl }) {
             });
             const data = await res.json().catch(() => ({}));
             if (!res.ok || data.success === false) {
-                setError(data.error || 'Error al guardar el usuario.');
+                const msg = typeof (data === null || data === void 0 ? void 0 : data.error) === 'string'
+                    ? data.error
+                    : ((_a = data === null || data === void 0 ? void 0 : data.error) === null || _a === void 0 ? void 0 : _a.message) || 'Error al guardar el usuario.';
+                setError(msg);
                 return;
             }
             setSuccess(isEdit ? 'Usuario actualizado correctamente.' : 'Usuario creado correctamente. Redirigiendo...');

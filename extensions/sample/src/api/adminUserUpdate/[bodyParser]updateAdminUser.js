@@ -67,11 +67,10 @@ export default async function updateAdminUser(request, response) {
         return response.status(409).json({ success: false, error: 'No podés desactivar tu propio usuario.' });
       }
       // Contar cuántos admins activos hay
-      const countRow = await select('COUNT(admin_user_id) as cnt')
-        .from('admin_user')
-        .where('status', '=', true)
-        .load(pool);
-      const activeCount = parseInt(countRow?.cnt ?? '0', 10);
+      const { rows: countRows } = await pool.query(
+        'SELECT COUNT(*)::int AS cnt FROM admin_user WHERE status = true'
+      );
+      const activeCount = countRows[0]?.cnt ?? 0;
       if (activeCount <= 1) {
         return response.status(409).json({ success: false, error: 'No podés desactivar al último usuario admin activo.' });
       }

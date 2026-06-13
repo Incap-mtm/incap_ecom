@@ -10,7 +10,7 @@ function isValidEmail(email) {
  * access: private — el middleware global de auth garantiza que solo admins logueados lleguen aquí.
  */
 export default async function updateAdminUser(request, response) {
-    var _a, _b;
+    var _a, _b, _c;
     const id = parseInt(request.params.id, 10);
     if (isNaN(id)) {
         return response.status(400).json({ success: false, error: 'ID de usuario inválido.' });
@@ -59,11 +59,8 @@ export default async function updateAdminUser(request, response) {
                 return response.status(409).json({ success: false, error: 'No podés desactivar tu propio usuario.' });
             }
             // Contar cuántos admins activos hay
-            const countRow = await select('COUNT(admin_user_id) as cnt')
-                .from('admin_user')
-                .where('status', '=', true)
-                .load(pool);
-            const activeCount = parseInt((_b = countRow === null || countRow === void 0 ? void 0 : countRow.cnt) !== null && _b !== void 0 ? _b : '0', 10);
+            const { rows: countRows } = await pool.query('SELECT COUNT(*)::int AS cnt FROM admin_user WHERE status = true');
+            const activeCount = (_c = (_b = countRows[0]) === null || _b === void 0 ? void 0 : _b.cnt) !== null && _c !== void 0 ? _c : 0;
             if (activeCount <= 1) {
                 return response.status(409).json({ success: false, error: 'No podés desactivar al último usuario admin activo.' });
             }
