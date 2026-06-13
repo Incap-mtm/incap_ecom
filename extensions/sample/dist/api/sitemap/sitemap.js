@@ -20,7 +20,7 @@ function urlEntry({ loc, priority, changefreq }) {
 }
 export default async function sendSitemap(request, response) {
     try {
-        const result = await pool.query(`SELECT p.uuid FROM product p WHERE p.status = 1 ORDER BY p.product_id`);
+        const result = await pool.query(`SELECT p.uuid FROM product p WHERE p.status = true ORDER BY p.product_id`);
         const productEntries = result.rows.map(row => urlEntry({ loc: `/product/${row.uuid}`, priority: '0.7', changefreq: 'weekly' }));
         const staticEntries = STATIC_PAGES.map(urlEntry);
         const xml = [
