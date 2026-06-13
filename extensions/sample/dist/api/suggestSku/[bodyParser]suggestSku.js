@@ -1,5 +1,5 @@
 import { pool } from '@evershop/evershop/lib/postgres';
-import { encodeSizeToken } from './encodeSize';
+import { encodeSizeToken } from './encodeSize.js';
 /**
  * POST /api/suggest-sku
  * Sugiere un SKU para un producto basándose en su nombre.
