@@ -29,7 +29,14 @@ const normalizeGhs = (txt) => (txt || '')
     return 'GHS' + m[1].padStart(2, '0');
 })
     .filter(Boolean);
-// FAQ: soporta JSON [{question,answer}] o texto plano "¿P? R - ¿P2? R2"
+// Limpia separadores colgantes (" - ", "–") y espacios al inicio/fin de una respuesta.
+const cleanAnswer = (s) => (s || '').replace(/^[\s\-–]+/, '').replace(/[\s\-–]+$/, '').trim();
+// FAQ: soporta JSON [{question,answer}] o texto plano.
+// El texto plano puede venir como "¿P? R - ¿P2? R2" (separado por " - ") o
+// "¿P? R. ¿P2? R2" (pares pegados sin separador). Para ser robusto a ambos,
+// anclamos en los signos de apertura "¿": cada pregunta arranca en "¿" y su
+// respuesta corre hasta el próximo "¿". Así no se pierde ninguna pregunta aunque
+// falte el " - " entre pares (ver productos como el 199 en el catálogo).
 const parseFaqs = (txt) => {
     if (!txt)
         return [];
@@ -39,12 +46,31 @@ const parseFaqs = (txt) => {
             return parsed.filter((f) => f === null || f === void 0 ? void 0 : f.question);
     }
     catch ( /* texto plano */_a) { /* texto plano */ }
-    return splitDash(txt)
+    const s = txt.trim();
+    // Formato preferido: anclar en "¿" (preguntas en español).
+    if (s.includes('¿')) {
+        const faqs = [];
+        const blocks = s.split(/(?=¿)/).map(b => b.trim()).filter(Boolean);
+        for (const block of blocks) {
+            const qi = block.indexOf('?');
+            if (qi === -1) {
+                // Bloque sin cierre de pregunta → es continuación de la respuesta anterior.
+                if (faqs.length)
+                    faqs[faqs.length - 1].answer = cleanAnswer(faqs[faqs.length - 1].answer + ' ' + block);
+                continue;
+            }
+            faqs.push({ question: block.slice(0, qi + 1).trim(), answer: cleanAnswer(block.slice(qi + 1)) });
+        }
+        if (faqs.length)
+            return faqs;
+    }
+    // Fallback (sin "¿"): segmentos separados por " - " con un "?" interno.
+    return splitDash(s)
         .map(seg => {
         const qi = seg.indexOf('?');
         if (qi === -1)
             return null;
-        return { question: seg.slice(0, qi + 1).trim(), answer: seg.slice(qi + 1).trim() };
+        return { question: seg.slice(0, qi + 1).trim(), answer: cleanAnswer(seg.slice(qi + 1)) };
     })
         .filter(Boolean);
 };

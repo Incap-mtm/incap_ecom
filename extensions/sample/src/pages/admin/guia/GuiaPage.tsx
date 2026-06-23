@@ -326,16 +326,68 @@ const GLOSARIO: [string, string][] = [
   ['Users', 'Usuarios']
 ];
 
-const ATRIBUTOS: [string, string][] = [
-  ['usos', 'Campos de aplicación recomendados para el producto.'],
-  ['caracteristicas', 'Propiedades técnicas principales (viscosidad, color, tiempo de secado, etc.).'],
-  ['modo_empleo', 'Instrucciones paso a paso de aplicación.'],
-  ['codigo_industrial', 'Código interno o de referencia industrial del producto.'],
-  ['ghs_pictogramas', 'Códigos de pictogramas GHS de peligro (ej. GHS02, GHS07). Separados por coma.'],
-  ['precauciones_h', 'Declaraciones de peligro H según GHS/SGA (ej. H226, H336).'],
-  ['consejos_prudencia_p', 'Consejos de prudencia P según GHS/SGA (ej. P210, P260).'],
-  ['ficha_tecnica_url', 'URL del PDF de la ficha técnica del producto (enlace externo o ruta interna).'],
-  ['preguntas_frecuentes', 'Preguntas y respuestas frecuentes del producto en formato texto.']
+interface AtributoDoc {
+  name: string;
+  desc: string;
+  formato: string;
+  ejemplo: string;
+}
+
+const ATRIBUTOS: AtributoDoc[] = [
+  {
+    name: 'usos',
+    desc: 'Campos de aplicación recomendados para el producto. Se muestra como lista con viñetas.',
+    formato: 'Cada uso separado por un guion con espacios " - ".',
+    ejemplo: 'Pegado de suelas - Unión de cueros - Forrado de plantillas'
+  },
+  {
+    name: 'caracteristicas',
+    desc: 'Propiedades técnicas principales (viscosidad, color, secado, etc.). Se muestra como lista con viñetas.',
+    formato: 'Cada característica separada por un guion con espacios " - ".',
+    ejemplo: 'Base poliuretano - Color ámbar - Viscosidad 2500 cp - Secado 15 min'
+  },
+  {
+    name: 'modo_empleo',
+    desc: 'Instrucciones paso a paso de aplicación. Cada paso se muestra como una tarjeta numerada con título y detalle.',
+    formato: 'Cada paso con el patrón "N. Título: detalle", separados por " - ".',
+    ejemplo: '1. Preparar: limpie la superficie de polvo y grasa - 2. Aplicar: extienda una capa uniforme con brocha - 3. Secar: deje secar 15 minutos'
+  },
+  {
+    name: 'preguntas_frecuentes',
+    desc: 'Preguntas y respuestas frecuentes. Cada par se muestra como un acordeón (pregunta resaltada + respuesta desplegable).',
+    formato: 'Cada pregunta debe abrir con "¿" y cerrar con "?", seguida de su respuesta. Separe cada par con " - ".',
+    ejemplo: '¿Se debe diluir antes de usar? No, viene listo para aplicar. - ¿Cuánto tarda en secar? Entre 10 y 15 minutos.'
+  },
+  {
+    name: 'precauciones_h',
+    desc: 'Declaraciones de peligro H según GHS/SGA. Se muestra como lista.',
+    formato: 'Cada declaración separada por " - ".',
+    ejemplo: 'H226 Líquido y vapores inflamables - H336 Puede provocar somnolencia'
+  },
+  {
+    name: 'consejos_prudencia_p',
+    desc: 'Consejos de prudencia P según GHS/SGA. Se muestra como lista.',
+    formato: 'Cada consejo separado por " - ".',
+    ejemplo: 'P210 Mantener alejado del calor - P260 No respirar los vapores'
+  },
+  {
+    name: 'ghs_pictogramas',
+    desc: 'Códigos de pictogramas GHS de peligro. Se muestran como íconos con su nombre.',
+    formato: 'Solo los códigos, separados por " - ". Acepta GHS02, SGA 02, etc.',
+    ejemplo: 'GHS02 - GHS07'
+  },
+  {
+    name: 'codigo_industrial',
+    desc: 'Código interno o de referencia industrial del producto. Texto libre.',
+    formato: 'Texto simple, sin formato especial.',
+    ejemplo: 'I-111'
+  },
+  {
+    name: 'ficha_tecnica_url',
+    desc: 'Enlace al PDF de la ficha técnica. Habilita el botón de descarga con captura de datos.',
+    formato: 'Una URL completa (https://…) o una ruta interna que empiece con "/". Sin espacios.',
+    ejemplo: 'https://www.grupoincap.com.co/media/fichas/lamifort.pdf'
+  }
 ];
 
 export default function GuiaPage({
@@ -565,20 +617,71 @@ export default function GuiaPage({
             técnicos se encuentran en la sección de "Attributes" más abajo en la misma página.
           </div>
 
-          <div style={{ marginTop: 16 }}>
-            <div style={{ ...styles.attrRow, borderTop: `1px solid ${GRIS_BORDE}` }}>
-              <div style={{ fontWeight: 700, fontSize: 12, color: '#64748b' }}>CAMPO</div>
-              <div style={{ fontWeight: 700, fontSize: 12, color: '#64748b' }}>DESCRIPCIÓN</div>
-            </div>
-            {ATRIBUTOS.map(([name, desc]) => (
-              <div key={name} style={styles.attrRow}>
-                <code style={styles.attrName}>{name}</code>
-                <div style={styles.attrDesc}>{desc}</div>
+          {/* REGLA DE ORO del formato */}
+          <h3 style={{ fontSize: 15, fontWeight: 700, color: '#1e293b', margin: '22px 0 8px' }}>
+            Regla de oro: cómo separar los datos
+          </h3>
+          <div style={styles.warnBox}>
+            Varios campos se muestran en el sitio como <strong>listas, pasos o acordeones</strong>.
+            Para que el sitio sepa dónde empieza y termina cada elemento, debe respetar el
+            <strong> separador</strong> de cada campo:
+            <ul style={{ margin: '8px 0 0', paddingLeft: 18 }}>
+              <li>Para separar elementos de una lista o pares de preguntas, use un{' '}
+                <strong>guion con un espacio a cada lado</strong>: <span style={styles.code}>{' - '}</span>
+                (espacio, guion, espacio).</li>
+              <li>En <span style={styles.code}>preguntas_frecuentes</span>, además, cada pregunta debe{' '}
+                <strong>abrir con <span style={styles.code}>¿</span> y cerrar con <span style={styles.code}>?</span></strong>.
+                Así el sitio distingue la pregunta de la respuesta.</li>
+              <li>En <span style={styles.code}>modo_empleo</span>, cada paso lleva{' '}
+                <strong>número, título y dos puntos</strong>: <span style={styles.code}>1. Título: detalle</span>.</li>
+            </ul>
+          </div>
+
+          {/* Ficha de cada atributo: descripción + formato + ejemplo */}
+          <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
+            {ATRIBUTOS.map((attr) => (
+              <div key={attr.name} style={{ ...styles.stepCard, padding: '16px 18px' }}>
+                <code style={{ ...styles.attrName, fontSize: 13, marginBottom: 8 }}>{attr.name}</code>
+                <div style={{ ...styles.attrDesc, marginTop: 8 }}>{attr.desc}</div>
+                <div style={{ fontSize: 12, color: '#64748b', margin: '10px 0 2px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Formato</div>
+                <div style={{ fontSize: 13, color: '#475569' }}>{attr.formato}</div>
+                <div style={{ fontSize: 12, color: '#64748b', margin: '10px 0 4px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Ejemplo</div>
+                <div style={{ fontFamily: 'monospace', fontSize: 12.5, color: '#0f172a', background: '#f1f5f9', border: `1px solid ${GRIS_BORDE}`, borderRadius: 6, padding: '8px 12px', lineHeight: 1.55, whiteSpace: 'pre-wrap' as const }}>
+                  {attr.ejemplo}
+                </div>
               </div>
             ))}
           </div>
 
-          <figure style={styles.figure}>
+          {/* Ejemplo correcto vs incorrecto en FAQ */}
+          <h3 style={{ fontSize: 15, fontWeight: 700, color: '#1e293b', margin: '24px 0 8px' }}>
+            Ejemplo: preguntas frecuentes (correcto vs. incorrecto)
+          </h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
+            <div style={{ ...styles.stepCard, borderTop: `3px solid ${VERDE}` }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: '#16a34a', marginBottom: 8 }}>✓ CORRECTO</div>
+              <div style={{ fontFamily: 'monospace', fontSize: 12, color: '#0f172a', lineHeight: 1.6 }}>
+                ¿Se debe diluir antes de usar? No, viene listo para aplicar. <strong style={{ color: '#16a34a' }}>-</strong> ¿Cuánto tarda en secar? Entre 10 y 15 minutos.
+              </div>
+              <div style={{ fontSize: 12, color: '#475569', marginTop: 8 }}>
+                Cada pregunta abre con <span style={styles.code}>¿</span> y cierra con{' '}
+                <span style={styles.code}>?</span>; los pares se separan con{' '}
+                <span style={styles.code}>{' - '}</span>.
+              </div>
+            </div>
+            <div style={{ ...styles.stepCard, borderTop: '3px solid #dc2626' }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: '#dc2626', marginBottom: 8 }}>✗ INCORRECTO</div>
+              <div style={{ fontFamily: 'monospace', fontSize: 12, color: '#0f172a', lineHeight: 1.6 }}>
+                Se debe diluir antes de usar. No, viene listo. Cuanto tarda en secar. Entre 10 y 15 minutos.
+              </div>
+              <div style={{ fontSize: 12, color: '#475569', marginTop: 8 }}>
+                Sin <span style={styles.code}>¿ ?</span> ni separador <span style={styles.code}>{' - '}</span>:
+                el sitio no puede distinguir la pregunta de la respuesta y el contenido se ve mezclado.
+              </div>
+            </div>
+          </div>
+
+          <figure style={{ ...styles.figure, marginTop: 20 }}>
             <div style={{ fontSize: 32, marginBottom: 8 }}>📷</div>
             <div style={{ fontSize: 13, color: '#64748b' }}>
               Captura sugerida: sección de atributos técnicos en la ficha de un producto
