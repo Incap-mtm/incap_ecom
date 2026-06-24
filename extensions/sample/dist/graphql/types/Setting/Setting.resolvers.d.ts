@@ -7,6 +7,12 @@ declare namespace _default {
         function storeLinkedin(setting: any): any;
         function storeTiktok(setting: any): any;
         function storeYoutube(setting: any): any;
+        function variantSizeOrder(setting: any): any;
+    }
+    namespace Query {
+        function sizeOptions(_: any, __: any, { pool: ctxPool }: {
+            pool: any;
+        }): Promise<any>;
     }
 }
 export default _default;

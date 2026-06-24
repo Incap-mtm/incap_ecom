@@ -1,3 +1,7 @@
+import { pool } from '@evershop/evershop/lib/postgres';
+
+const SIZE_ATTRIBUTE_ID = 2;
+
 const findSetting = (setting, name, fallback = '') =>
   (setting.find((item) => item.name === name) || {}).value || fallback;
 
@@ -10,5 +14,19 @@ export default {
     storeLinkedin:  (setting) => findSetting(setting, 'storeLinkedin'),
     storeTiktok:    (setting) => findSetting(setting, 'storeTiktok'),
     storeYoutube:   (setting) => findSetting(setting, 'storeYoutube'),
+    variantSizeOrder: (setting) => findSetting(setting, 'variant_size_order', '[]'),
+  },
+  Query: {
+    sizeOptions: async (_, __, { pool: ctxPool }) => {
+      const p = ctxPool || pool;
+      const { rows } = await p.query(
+        `SELECT attribute_option_id AS id, option_text AS text
+         FROM attribute_option
+         WHERE attribute_id = $1
+         ORDER BY attribute_option_id ASC`,
+        [SIZE_ATTRIBUTE_ID]
+      );
+      return rows;
+    }
   }
 };

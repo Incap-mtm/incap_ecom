@@ -8,6 +8,10 @@ import {
 } from '@components/common/ui/Card.js';
 import React, { useState } from 'react';
 
+interface CatalogToolsProps {
+  variantSizeOrderUrl?: string;
+}
+
 type Status = { kind: 'idle' | 'loading' | 'ok' | 'error'; msg?: string };
 
 async function callEndpoint(url: string): Promise<{ ok: boolean; data: any }> {
@@ -21,7 +25,7 @@ async function callEndpoint(url: string): Promise<{ ok: boolean; data: any }> {
   return { ok: res.ok && data.success !== false, data };
 }
 
-export default function CatalogTools() {
+export default function CatalogTools({ variantSizeOrderUrl }: CatalogToolsProps) {
   const [variants, setVariants] = useState<Status>({ kind: 'idle' });
   const [images, setImages] = useState<Status>({ kind: 'idle' });
 
@@ -83,6 +87,17 @@ export default function CatalogTools() {
               {images.msg || 'Convierte a WebP las imágenes nuevas subidas al servidor.'}
             </p>
           </div>
+          <div className="flex-1">
+            <Button
+              variant="outline"
+              onClick={() => { window.location.href = variantSizeOrderUrl || '/orden-tamanos'; }}
+            >
+              Orden de tamaños
+            </Button>
+            <p className="text-xs mt-2" style={{ color: '#64748b' }}>
+              Define el orden de aparición de los tamaños en el selector de variantes.
+            </p>
+          </div>
         </div>
       </CardContent>
     </Card>
@@ -93,3 +108,9 @@ export const layout = {
   areaId: 'content',
   sortOrder: 5
 };
+
+export const query = `
+  query CatalogToolsQuery {
+    variantSizeOrderUrl: url(routeId: "variantSizeOrder")
+  }
+`;

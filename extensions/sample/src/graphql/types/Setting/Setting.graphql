@@ -6,4 +6,14 @@ extend type Setting {
   storeLinkedin: String
   storeTiktok: String
   storeYoutube: String
+  variantSizeOrder: String
+}
+
+type SizeOption {
+  id: Int!
+  text: String!
+}
+
+extend type Query {
+  sizeOptions: [SizeOption]
 }

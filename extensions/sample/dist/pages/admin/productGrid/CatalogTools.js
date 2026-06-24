@@ -11,7 +11,7 @@ async function callEndpoint(url) {
     const data = await res.json().catch(() => ({}));
     return { ok: res.ok && data.success !== false, data };
 }
-export default function CatalogTools() {
+export default function CatalogTools({ variantSizeOrderUrl }) {
     const [variants, setVariants] = useState({ kind: 'idle' });
     const [images, setImages] = useState({ kind: 'idle' });
     const runVariants = async () => {
@@ -59,10 +59,18 @@ export default function CatalogTools() {
                     React.createElement("p", { className: "text-xs mt-2", style: { color: statusColor(variants.kind) } }, variants.msg || 'Agrupa productos por familia (Tamaño) para el selector en la ficha.')),
                 React.createElement("div", { className: "flex-1" },
                     React.createElement(Button, { variant: "outline", onClick: runImages, disabled: images.kind === 'loading' }, images.kind === 'loading' ? 'Optimizando…' : 'Optimizar imágenes a WebP'),
-                    React.createElement("p", { className: "text-xs mt-2", style: { color: statusColor(images.kind) } }, images.msg || 'Convierte a WebP las imágenes nuevas subidas al servidor.'))))));
+                    React.createElement("p", { className: "text-xs mt-2", style: { color: statusColor(images.kind) } }, images.msg || 'Convierte a WebP las imágenes nuevas subidas al servidor.')),
+                React.createElement("div", { className: "flex-1" },
+                    React.createElement(Button, { variant: "outline", onClick: () => { window.location.href = variantSizeOrderUrl || '/orden-tamanos'; } }, "Orden de tama\u00F1os"),
+                    React.createElement("p", { className: "text-xs mt-2", style: { color: '#64748b' } }, "Define el orden de aparici\u00F3n de los tama\u00F1os en el selector de variantes."))))));
 }
 export const layout = {
     areaId: 'content',
     sortOrder: 5
 };
+export const query = `
+  query CatalogToolsQuery {
+    variantSizeOrderUrl: url(routeId: "variantSizeOrder")
+  }
+`;
 //# sourceMappingURL=CatalogTools.js.map

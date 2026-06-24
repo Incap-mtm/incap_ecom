@@ -1,6 +1,11 @@
 import React from 'react';
-export default function CatalogTools(): React.JSX.Element;
+interface CatalogToolsProps {
+    variantSizeOrderUrl?: string;
+}
+export default function CatalogTools({ variantSizeOrderUrl }: CatalogToolsProps): React.JSX.Element;
 export declare const layout: {
     areaId: string;
     sortOrder: number;
 };
+export declare const query = "\n  query CatalogToolsQuery {\n    variantSizeOrderUrl: url(routeId: \"variantSizeOrder\")\n  }\n";
+export {};
