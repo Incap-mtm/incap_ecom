@@ -1,0 +1,5 @@
+{
+  "methods": ["POST"],
+  "path": "/unlink-variant",
+  "access": "private"
+}

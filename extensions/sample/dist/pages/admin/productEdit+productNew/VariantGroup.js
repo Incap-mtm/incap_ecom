@@ -79,18 +79,16 @@ function VariantRow({ variant, variantGroup, refresh }) {
         setUnlinking(true);
         setRowError('');
         try {
-            // El endpoint del core espera multipart/form-data con campo "id"
-            // NO JSON — el companion usa multer().none()
-            const fd = new FormData();
-            fd.append('id', String(variant.product.productId));
-            const res = await fetch('/api/variants/' + variant.product.productId, {
-                method: 'DELETE',
+            // Usamos nuestro endpoint propio con JSON (no el del core, que hace
+            // SET visibility = NULL — incompatible con la columna NOT NULL de esta DB).
+            const res = await fetch('/api/unlink-variant', {
+                method: 'POST',
                 credentials: 'include',
-                // Sin Content-Type manual → el browser pone multipart/form-data + boundary
-                body: fd
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ productId: variant.product.productId })
             });
             const data = await res.json().catch(() => ({}));
-            if (!res.ok || data.error) {
+            if (!res.ok || (data === null || data === void 0 ? void 0 : data.error)) {
                 // Extraer string robusto — nunca pasar objeto a React
                 const msg = typeof (data === null || data === void 0 ? void 0 : data.error) === 'string'
                     ? data.error
