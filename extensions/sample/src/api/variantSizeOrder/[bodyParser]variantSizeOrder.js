@@ -47,8 +47,8 @@ export default async function variantSizeOrder(request, response) {
   try {
     await pool.query(
       `INSERT INTO setting (name, value, is_json)
-       VALUES ('variant_size_order', $1, 1)
-       ON CONFLICT (name) DO UPDATE SET value = EXCLUDED.value, is_json = 1`,
+       VALUES ('variant_size_order', $1, true)
+       ON CONFLICT (name) DO UPDATE SET value = EXCLUDED.value, is_json = true`,
       [JSON.stringify(order)]
     );
     // Invalida caché interna del módulo de settings
