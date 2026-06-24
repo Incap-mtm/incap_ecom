@@ -260,6 +260,7 @@ export default function Head() {
         .incap-navbar__logo img {
           display: block;
           height: 36px;
+          padding-top: 5px;
           width: auto;
           object-fit: contain;
           filter: brightness(0) invert(1);
