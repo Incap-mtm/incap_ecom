@@ -1,9 +1,9 @@
 /**
  * Override del bloque de variantes del core.
  * Agrega un botón "Desvincular" por fila que llama a
- * DELETE /api/variants/:id con FormData (multipart/form-data),
- * que es el formato que acepta el companion del core
- * [context]multerNone[auth].js → multer().none().
+ * POST /api/unlink-variant con JSON { productId }.
+ * (Endpoint propio de la extensión: el del core hace
+ * SET visibility = NULL y acá esa columna es NOT NULL → 500.)
  *
  * Reemplaza:
  *   node_modules/@evershop/evershop/dist/modules/catalog/pages/admin/productEdit/VariantGroup.js
