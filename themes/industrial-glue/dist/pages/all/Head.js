@@ -273,6 +273,7 @@ export default function Head() {
         }
         .incap-navbar__right {
           display: flex;
+          
           align-items: center;
           justify-content: flex-end;
           gap: 1rem;
