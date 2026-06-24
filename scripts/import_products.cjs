@@ -21,7 +21,7 @@ const path = require('path');
 const { Pool } = require('pg');
 
 // ── Config ───────────────────────────────────────────────────────────────────
-const CSV_PATH = path.join(__dirname, '../Master -  Listado prod completo - images_updated.csv');
+const CSV_PATH = path.join(__dirname, '../data/Master - Listado prod completo - images_updated.csv');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const CLEAR   = process.argv.includes('--clear');

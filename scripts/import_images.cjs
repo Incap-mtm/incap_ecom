@@ -3,7 +3,7 @@ const fs   = require('fs');
 const path = require('path');
 const { Pool } = require('pg');
 
-const CSV_PATH = path.join(__dirname, '../Master -  Listado prod completo - images_updated.csv');
+const CSV_PATH = path.join(__dirname, '../data/Master - Listado prod completo - images_updated.csv');
 
 const pool = process.env.DATABASE_URL
   ? new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } })

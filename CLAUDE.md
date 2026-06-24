@@ -9,7 +9,8 @@ Staging → **Railway servicio staging** — branch `staging` → verificar ante
 - **Framework**: Evershop v2 (Next.js-like, GraphQL, PostgreSQL)
 - **Theme**: `themes/industrial-glue/` — solo overridea frontStore
 - **Extension**: `extensions/sample/` — overrides de admin + custom pages + APIs
-- **DB**: PostgreSQL en Railway (interno). Conexión externa: `postgresql://postgres:jWUghBxUtgsWrmvxzocrtxTeblOlnprU@switchyard.proxy.rlwy.net:33426/railway`
+- **DB**: PostgreSQL en Railway (interno). La URL de conexión va en `DATABASE_URL` (env / `.env` local) — **nunca hardcodearla en código ni en este doc**.
+  - ⚠️ **Deuda de seguridad conocida (pendiente):** la credencial de Postgres quedó commiteada en el historial de git (CLAUDE.md previo + ~9 scripts). **Rotar la contraseña en Railway** y confirmar que todo lea de `process.env.DATABASE_URL`.
 - **Volumen Railway**: `/app/media/` (montado en container) → imágenes en `/app/media/products/`
 
 ## Estructura clave
@@ -99,7 +100,7 @@ Para: descripciones técnicas, fichas, FAQ, características, pictogramas GHS.
 - Hardcodear teléfonos, WhatsApp, emails, direcciones en TSX/JS
 - Hardcodear textos de secciones que el cliente pueda querer editar
 - Usar `<script src="https://cdn.tailwindcss.com">` en producción
-- Dejar componentes que devuelven `null` sin eliminarlos (`TrustSection`, etc.)
+- Dejar componentes que devuelven `null` sin eliminarlos (eliminar el archivo, no dejar el stub)
 - Crear endpoints REST sin autenticación o sin rate limiting si llaman APIs de pago
 - Dejar cron jobs activos sin función real
 - Usar `requestPolicy: 'network-only'` en queries de catálogo completo
@@ -145,7 +146,7 @@ export default function Footer() {
 **No hardcodear IDs** — usar `url_key`. Los IDs de madera/colchones cambiaron en el cleanup.
 
 - **Familias**: derivadas en runtime con `name.lastIndexOf(' - ')`. "Super PVA - 20kg" → "Super PVA". Lógica centralizada en `themes/industrial-glue/src/utils/family.ts` — importar desde ahí, no duplicar.
-- **Source of truth**: `Master - Listado prod completo - images_updated.csv` en raíz del repo.
+- **Source of truth**: `data/Master - Listado prod completo - images_updated.csv`.
 
 ---
 
@@ -197,7 +198,7 @@ Alternativa (sin body): un handler sin corchetes (`deleteAdminUser.js`) recibe d
 
 **Cómo detectarlo:** el síntoma es un POST que devuelve **`{}` con 200** (no el JSON esperado del handler) y no aparece ningún log del handler. Verificar con DevTools → Network → Response (`content-length: 2` = `{}`).
 
-> **Deuda conocida:** los endpoints `/api/sync-variants`, `/api/optimize-images`, `/api/ficha-lead`, `/api/maps-key` y `/api/technical-advisor` usan el prefijo `[bodyParser]` **sin** el companion → probablemente estén siendo descartados igual. Revisar y agregarles `bodyParser.js` cuando se toquen.
+> **Estado (auditado 2026-06-24):** todos los endpoints con prefijo `[bodyParser]`/`[multerFicha]` (`syncVariants`, `optimizeImages`, `fichaLead`, `mapsKey`, `technicalAdvisor`, `suggestSku`, `uploadFicha`, `adminUsers`, etc.) **ya tienen su companion** → no hay handlers descartados. Mantener esta regla al crear endpoints nuevos.
 
 ---
 
@@ -285,7 +286,7 @@ npx tsc --project themes/industrial-glue/tsconfig.json --noEmitOnError false
 # Extensión
 cd extensions/sample && npm run tsc
 ```
-Los errores TS pre-existentes en `TrustSection.tsx` y `ProductBreadcrumb.tsx` son conocidos y no bloquean la compilación.
+Los errores TS pre-existentes en `ProductBreadcrumb.tsx` son conocidos y no bloquean la compilación.
 
 ---
 

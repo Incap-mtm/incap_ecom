@@ -39,7 +39,7 @@ const ATTRS_TO_SYNC = [
 ];
 
 async function run() {
-  const csvPath = 'D:\\Dev AI\\GitHub\\glue-ecommerce\\Master -  Listado prod completo - images_updated.csv';
+  const csvPath = require('path').join(__dirname, '../data/Master - Listado prod completo - images_updated.csv');
   const text = fs.readFileSync(csvPath, 'utf8');
   const rows = parseCSV(text);
   const h = rows[0];
