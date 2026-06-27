@@ -290,9 +290,11 @@ export default function QuienesSomosPage() {
         <div style={S.inner}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
             <div style={{ background: '#fff', borderRadius: '16px', padding: '2.25rem', boxShadow: '0 12px 30px rgba(24,27,28,0.12)' }}>
+              <h3 style={{ fontSize: '1.4rem', fontWeight: 900, color: '#2A4899', margin: '0 0 0.85rem', fontFamily: 'Sora, sans-serif' }}>Misión</h3>
               <p style={{ fontSize: '15px', color: '#374151', lineHeight: 1.8, margin: 0, fontFamily: 'Sora, sans-serif' }}>{c.misionVision.mision}</p>
             </div>
             <div style={{ background: '#fff', borderRadius: '16px', padding: '2.25rem', boxShadow: '0 12px 30px rgba(24,27,28,0.12)' }}>
+              <h3 style={{ fontSize: '1.4rem', fontWeight: 900, color: '#2A4899', margin: '0 0 0.85rem', fontFamily: 'Sora, sans-serif' }}>Visión</h3>
               <p style={{ fontSize: '15px', color: '#374151', lineHeight: 1.8, margin: 0, fontFamily: 'Sora, sans-serif' }}>{c.misionVision.vision}</p>
             </div>
           </div>
