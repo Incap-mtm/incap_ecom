@@ -94,10 +94,10 @@ const DEFAULT_CONTENT = {
     kicker: 'Nuestro alcance',
     titulo: 'Industrias que servimos',
     items: [
-      { nombre: 'Calzado y Marroquinería',         href: '/industrias/calzado',   icon: '/images/icons/Icono_Calzado.webp',   descripcion: 'El estándar de las grandes fábricas: adhesivos, tintas, cordones y accesorios para calzado.' },
-      { nombre: 'Colchones y Espumas',             href: '/industrias/colchones', icon: '/images/icons/Icono_Colchones.webp', descripcion: 'Soluciones para pegue de espumas, telas y componentes en líneas de producción de descanso.' },
-      { nombre: 'Madera y Muebles',               href: '/industrias/madera',    icon: '/images/icons/Icono_Maderas.webp',   descripcion: 'Adhesivos para la industria del mueble: enchapes, ensambles, ebanistería y producción en serie.' },
-      { nombre: 'Hogar, Manualidades y Multiusos', href: '/industrias/hogar',    icon: '/images/icons/Icono_Hogar.webp',     descripcion: 'Pegamentos versátiles para reparaciones domésticas, manualidades y proyectos creativos.' },
+      { nombre: 'Calzado y Marroquinería',         href: '/industrias/calzado',   icons: ['/images/icons/Icono_Calzado.webp', '/images/icons/Icono_Marroquineria.webp'], descripcion: 'El estándar de las grandes fábricas: adhesivos, tintas, cordones y accesorios para calzado.' },
+      { nombre: 'Colchones y Espumas',             href: '/industrias/colchones', icons: ['/images/icons/Icono_Colchones.webp', '/images/icons/icono_Espuma.webp'], descripcion: 'Soluciones para pegue de espumas, telas y componentes en líneas de producción de descanso.' },
+      { nombre: 'Madera y Muebles',               href: '/industrias/madera',    icons: ['/images/icons/Icono_Maderas.webp', '/images/icons/Icono_Muebles.webp'], descripcion: 'Adhesivos para la industria del mueble: enchapes, ensambles, ebanistería y producción en serie.' },
+      { nombre: 'Hogar, Manualidades y Multiusos', href: '/industrias/hogar',    icons: ['/images/icons/Icono_Hogar.webp', '/images/icons/Icono_manualidades.webp', '/images/icons/Icono_Multiusos.webp'], descripcion: 'Pegamentos versátiles para reparaciones domésticas, manualidades y proyectos creativos.' },
     ],
     ctaTexto: 'Ver portafolio completo',
     ctaUrl: '/catalog',
@@ -352,22 +352,21 @@ export default function QuienesSomosPage() {
       <section style={{ background: '#fff', ...S.sectionPad }}>
         <div style={S.inner}>
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <span style={S.kicker}>{c.industrias.kicker}</span>
-            <h2 style={S.h2}>{c.industrias.titulo}</h2>
+            <span style={{ ...S.kicker, color: '#2A4899', fontSize: 'clamp(1rem, 2vw, 1.4rem)', letterSpacing: '0.18em' }}>{c.industrias.kicker}</span>
+            <h2 style={{ ...S.h2, textTransform: 'uppercase' }}>{c.industrias.titulo}</h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
             {c.industrias.items.map((ind: any, i: number) => (
-              <a key={i} href={ind.href}
-                style={{ display: 'flex', flexDirection: 'column', background: '#2A4899', borderRadius: '16px', padding: '1.75rem', textDecoration: 'none', transition: 'transform 0.2s, box-shadow 0.2s', boxShadow: '0 2px 12px rgba(42,72,153,0.15)' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 12px 32px rgba(42,72,153,0.28)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 12px rgba(42,72,153,0.15)'; }}>
-                <div style={{ width: '52px', height: '52px', borderRadius: '12px', background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem' }}>
-                  <img src={ind.icon} alt={ind.nombre} style={{ width: '32px', height: '32px', objectFit: 'contain', filter: 'brightness(10)' }} />
+              <div key={i} style={{ display: 'flex', flexDirection: 'column', background: '#2A4899', borderRadius: '0 16px 16px 16px', padding: '1.75rem', boxShadow: '0 2px 12px rgba(42,72,153,0.15)' }}>
+                <div style={{ display: 'flex', gap: '14px', alignItems: 'center', marginBottom: '1rem' }}>
+                  {(ind.icons ?? [ind.icon]).map((ic: string, k: number) => (
+                    <img key={k} src={ic} alt={ind.nombre} style={{ width: '46px', height: '46px', objectFit: 'contain' }} />
+                  ))}
                 </div>
                 <h3 style={{ fontSize: '0.95rem', fontWeight: 900, color: '#fff', margin: '0 0 0.625rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{ind.nombre}</h3>
                 <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.65, margin: '0 0 1.25rem', fontFamily: 'Sora, sans-serif', flex: 1 }}>{ind.descripcion}</p>
-                <span style={{ fontSize: '10px', fontWeight: 900, color: '#85C639', textTransform: 'uppercase', letterSpacing: '0.12em' }}>Ver soluciones →</span>
-              </a>
+                <a href={ind.href} style={{ alignSelf: 'flex-start', background: '#85C639', color: '#fff', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.12em', padding: '9px 18px', borderRadius: '50px', textDecoration: 'none' }}>Ver soluciones →</a>
+              </div>
             ))}
           </div>
           <div style={{ textAlign: 'center' }}>

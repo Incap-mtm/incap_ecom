@@ -80,10 +80,10 @@
     "kicker": "Nuestro alcance",
     "titulo": "Industrias que servimos",
     "items": [
-      { "nombre": "Calzado y Marroquinería", "href": "/industrias/calzado",   "icon": "/images/icons/Icono_Calzado.webp",  "descripcion": "El estándar de las grandes fábricas: adhesivos, tintas, cordones y accesorios para calzado." },
-      { "nombre": "Colchones y Espumas",     "href": "/industrias/colchones", "icon": "/images/icons/Icono_Colchones.webp", "descripcion": "Soluciones para pegue de espumas, telas y componentes en líneas de producción de descanso." },
-      { "nombre": "Madera y Muebles",        "href": "/industrias/madera",    "icon": "/images/icons/Icono_Maderas.webp",   "descripcion": "Adhesivos para la industria del mueble: enchapes, ensambles, ebanistería y producción en serie." },
-      { "nombre": "Hogar, Manualidades y Multiusos", "href": "/industrias/hogar", "icon": "/images/icons/Icono_Hogar.webp", "descripcion": "Pegamentos versátiles para reparaciones domésticas, manualidades y proyectos creativos." }
+      { "nombre": "Calzado y Marroquinería", "href": "/industrias/calzado",   "icons": ["/images/icons/Icono_Calzado.webp", "/images/icons/Icono_Marroquineria.webp"],  "descripcion": "El estándar de las grandes fábricas: adhesivos, tintas, cordones y accesorios para calzado." },
+      { "nombre": "Colchones y Espumas",     "href": "/industrias/colchones", "icons": ["/images/icons/Icono_Colchones.webp", "/images/icons/icono_Espuma.webp"], "descripcion": "Soluciones para pegue de espumas, telas y componentes en líneas de producción de descanso." },
+      { "nombre": "Madera y Muebles",        "href": "/industrias/madera",    "icons": ["/images/icons/Icono_Maderas.webp", "/images/icons/Icono_Muebles.webp"],   "descripcion": "Adhesivos para la industria del mueble: enchapes, ensambles, ebanistería y producción en serie." },
+      { "nombre": "Hogar, Manualidades y Multiusos", "href": "/industrias/hogar", "icons": ["/images/icons/Icono_Hogar.webp", "/images/icons/Icono_manualidades.webp", "/images/icons/Icono_Multiusos.webp"], "descripcion": "Pegamentos versátiles para reparaciones domésticas, manualidades y proyectos creativos." }
     ],
     "ctaTexto": "Ver portafolio completo",
     "ctaUrl": "/catalog"
