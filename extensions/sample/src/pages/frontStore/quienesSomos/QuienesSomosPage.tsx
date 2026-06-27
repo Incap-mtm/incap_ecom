@@ -254,7 +254,7 @@ export default function QuienesSomosPage() {
         {/* Stats row */}
         <div style={{ ...S.inner, padding: '0 2rem 3rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem' }}>
           {c.hero.stats.map((st: any, i: number) => (
-            <div key={i} style={{ background: '#fff', borderRadius: '16px 16px 16px 0', padding: '18px 20px', textAlign: 'center', boxShadow: '0 12px 24px rgba(0,0,0,0.28)' }}>
+            <div key={i} style={{ background: '#fff', borderRadius: '0 16px 16px 16px', padding: '18px 20px', textAlign: 'center', boxShadow: '14px 12px 24px rgba(0,0,0,0.28)' }}>
               <div style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 900, color: '#2A4899', fontFamily: 'Sora, sans-serif', lineHeight: 1 }}>{st.valor}</div>
               <div style={{ fontSize: '10px', color: '#2A4899', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '6px', fontFamily: 'Sora, sans-serif' }}>{st.label}</div>
             </div>
