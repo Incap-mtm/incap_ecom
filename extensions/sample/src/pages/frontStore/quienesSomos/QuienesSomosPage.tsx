@@ -449,17 +449,23 @@ export default function QuienesSomosPage() {
       {/* ── 9. FABRICACIÓN PROPIA ────────────────────────────────────────── */}
       <section style={{ background: '#2A4899', ...S.sectionPad, paddingTop: 0 }}>
         <div style={S.inner}>
-          <span style={S.kicker}>{c.fabricacion.kicker}</span>
-          <h2 style={{ ...S.h2White, maxWidth: '700px', marginBottom: '1.5rem' }}>
-            Fabricamos la mayoría de lo que vendemos. Y <span style={S.green}>lo diseñamos nosotros</span>.
-          </h2>
-          {c.fabricacion.parrafos.map((p: string, i: number) => (
-            <p key={i} style={{ ...S.body, color: 'rgba(255,255,255,0.85)', maxWidth: '780px' }}>{p}</p>
-          ))}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem', alignItems: 'start' }}>
+            <div>
+              <span style={S.kicker}>{c.fabricacion.kicker}</span>
+              <h2 style={{ ...S.h2White, margin: 0 }}>
+                Fabricamos la mayoría de lo que vendemos. Y <span style={S.green}>lo diseñamos nosotros</span>.
+              </h2>
+            </div>
+            <div>
+              {c.fabricacion.parrafos.map((p: string, i: number) => (
+                <p key={i} style={{ ...S.body, color: 'rgba(255,255,255,0.85)', margin: i === 0 ? '0 0 1rem' : '0 0 1rem' }}>{p}</p>
+              ))}
+            </div>
+          </div>
           {/* Caso Formicentro */}
           <div style={{ ...S.card, marginTop: '2.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', alignItems: 'center' }}>
             <div>
-              <p style={{ ...S.bodyMuted, fontSize: '13px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '10px', color: '#94a3b8' }}>{c.fabricacion.caso.titulo}</p>
+              <p style={{ fontSize: 'clamp(1.5rem, 3vw, 2.1rem)', fontWeight: 900, lineHeight: 1.15, letterSpacing: '-0.01em', margin: '0 0 1rem', color: '#181B1C', fontFamily: 'Sora, sans-serif' }}>{c.fabricacion.caso.titulo}</p>
               {c.fabricacion.caso.logo && <img src={c.fabricacion.caso.logo} alt="Formicentro" style={{ height: '36px', objectFit: 'contain', marginBottom: '1rem' }} />}
               {c.fabricacion.caso.parrafos.map((p: string, i: number) => (
                 <p key={i} style={S.bodyMuted}>{p}</p>
@@ -467,7 +473,7 @@ export default function QuienesSomosPage() {
             </div>
             {/* Video placeholder */}
             {(c.fabricacion.caso.videoPlaceholder || !c.fabricacion.caso.videoUrl) && (
-              <div style={{ aspectRatio: '16/9', background: '#f1f5f9', border: '2px dashed #cbd5e1', borderRadius: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+              <div style={{ aspectRatio: '9/16', maxWidth: '280px', width: '100%', margin: '0 auto', background: '#f1f5f9', border: '2px dashed #cbd5e1', borderRadius: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
                 <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="1.5">
                   <circle cx="12" cy="12" r="10" /><polygon points="10 8 16 12 10 16 10 8" fill="#94a3b8" stroke="none" />
                 </svg>
