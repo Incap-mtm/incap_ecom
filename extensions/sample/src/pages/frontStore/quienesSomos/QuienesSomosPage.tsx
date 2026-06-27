@@ -326,13 +326,20 @@ export default function QuienesSomosPage() {
       <section style={{ background: '#f1f5f9', ...S.sectionPad }}>
         <div style={S.inner}>
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <span style={S.kicker}>{c.marcasGrupo.kicker}</span>
-            <h2 style={S.h2}>{c.marcasGrupo.titulo}</h2>
+            <span style={{ ...S.kicker, color: '#2A4899', fontSize: 'clamp(1rem, 2vw, 1.4rem)', letterSpacing: '0.18em' }}>{c.marcasGrupo.kicker}</span>
+            <h2 style={{ ...S.h2, textTransform: 'uppercase' }}>{c.marcasGrupo.titulo}</h2>
           </div>
+          {/* INCAP — marca principal, centrada y grande */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2.25rem' }}>
+            {c.marcasGrupo.logos.filter((l: any) => l.nombre === 'INCAP').map((logo: any) => (
+              <img key={logo.nombre} src={logo.src} alt={logo.nombre} style={{ height: '80px', width: 'auto', objectFit: 'contain' }} />
+            ))}
+          </div>
+          {/* Resto de marcas — 50% del tamaño de INCAP */}
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '2.5rem' }}>
-            {c.marcasGrupo.logos.map((logo: any) => (
+            {c.marcasGrupo.logos.filter((l: any) => l.nombre !== 'INCAP').map((logo: any) => (
               <img key={logo.nombre} src={logo.src} alt={logo.nombre}
-                style={{ height: '44px', width: 'auto', objectFit: 'contain', filter: 'grayscale(0.6)', opacity: 0.8, transition: 'filter 0.25s, opacity 0.25s' }}
+                style={{ height: '40px', width: 'auto', objectFit: 'contain', filter: 'grayscale(0.6)', opacity: 0.8, transition: 'filter 0.25s, opacity 0.25s' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.filter = 'grayscale(0)'; (e.currentTarget as HTMLImageElement).style.opacity = '1'; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.filter = 'grayscale(0.6)'; (e.currentTarget as HTMLImageElement).style.opacity = '0.8'; }}
               />
