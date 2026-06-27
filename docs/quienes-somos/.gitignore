@@ -1,0 +1,5 @@
+# Material fuente pesado/redundante — no versionar.
+# El contenido vive en quienes-somos.content.json (semilla del setting)
+# y los assets optimizados en themes/industrial-glue/public/images/quienes-somos/.
+*.pdf
+Recursos/
