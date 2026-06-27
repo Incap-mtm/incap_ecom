@@ -286,20 +286,14 @@ export default function QuienesSomosPage() {
       </section>
 
       {/* ── 3. MISIÓN / VISIÓN ───────────────────────────────────────────── */}
-      <section style={{ background: '#f1f5f9', ...S.sectionPad }}>
+      <section style={{ background: '#fff', ...S.sectionPad, paddingTop: 0 }}>
         <div style={S.inner}>
-          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <span style={S.kicker}>Propósito</span>
-            <h2 style={S.h2}>Misión y Visión</h2>
-          </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-            <div style={{ background: '#2A4899', borderRadius: '16px', padding: '2.25rem' }}>
-              <span style={{ ...S.kicker, color: '#85C639', marginBottom: '14px' }}>Misión</span>
-              <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.88)', lineHeight: 1.8, margin: 0, fontFamily: 'Sora, sans-serif' }}>{c.misionVision.mision}</p>
+            <div style={{ background: '#fff', borderRadius: '16px', padding: '2.25rem', boxShadow: '0 12px 30px rgba(24,27,28,0.12)' }}>
+              <p style={{ fontSize: '15px', color: '#374151', lineHeight: 1.8, margin: 0, fontFamily: 'Sora, sans-serif' }}>{c.misionVision.mision}</p>
             </div>
-            <div style={{ background: '#181B1C', borderRadius: '16px', padding: '2.25rem' }}>
-              <span style={{ ...S.kicker, color: '#85C639', marginBottom: '14px' }}>Visión</span>
-              <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.8, margin: 0, fontFamily: 'Sora, sans-serif' }}>{c.misionVision.vision}</p>
+            <div style={{ background: '#fff', borderRadius: '16px', padding: '2.25rem', boxShadow: '0 12px 30px rgba(24,27,28,0.12)' }}>
+              <p style={{ fontSize: '15px', color: '#374151', lineHeight: 1.8, margin: 0, fontFamily: 'Sora, sans-serif' }}>{c.misionVision.vision}</p>
             </div>
           </div>
         </div>
