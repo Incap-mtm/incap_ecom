@@ -275,7 +275,7 @@ export default function QuienesSomosPage() {
           </div>
           <div style={{ display: 'grid', gap: '1.25rem' }}>
             {c.somos.marcas.map((m: any, i: number) => (
-              <div key={i} style={{ background: m.color, borderRadius: '16px', padding: '1.75rem 1.75rem 1.85rem', boxShadow: '0 10px 30px rgba(24,27,28,0.12)' }}>
+              <div key={i} style={{ background: m.color, borderRadius: '0 16px 16px 16px', padding: '1.75rem 1.75rem 1.85rem', boxShadow: '0 10px 30px rgba(24,27,28,0.12)' }}>
                 <span style={{ fontSize: '9px', fontWeight: 700, color: 'rgba(255,255,255,0.7)', letterSpacing: '0.25em', textTransform: 'uppercase' as const, display: 'block', marginBottom: '14px' }}>{m.tag}</span>
                 {m.imagen && <img src={m.imagen} alt={m.tag} style={{ height: '38px', width: 'auto', objectFit: 'contain', display: 'block', marginBottom: '16px' }} />}
                 <p style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.92)', lineHeight: 1.7, margin: 0, fontFamily: 'Sora, sans-serif' }}>{m.descripcion}</p>
