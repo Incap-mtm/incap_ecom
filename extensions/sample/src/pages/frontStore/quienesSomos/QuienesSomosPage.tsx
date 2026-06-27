@@ -305,12 +305,12 @@ export default function QuienesSomosPage() {
       <section style={{ background: '#fff', ...S.sectionPad }}>
         <div style={S.inner}>
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <span style={S.kicker}>{c.pilares.kicker}</span>
-            <h2 style={S.h2}>{c.pilares.titulo}</h2>
+            <span style={{ ...S.kicker, color: '#2A4899', fontSize: 'clamp(1rem, 2vw, 1.4rem)', letterSpacing: '0.18em' }}>{c.pilares.kicker}</span>
+            <h2 style={{ ...S.h2, color: '#85C639', textTransform: 'uppercase' }}>{c.pilares.titulo}</h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem' }}>
             {c.pilares.items.map((p: any, i: number) => (
-              <div key={i} style={{ ...S.card, textAlign: 'center' }}>
+              <div key={i} style={{ ...S.card, borderRadius: '0 16px 16px 16px', textAlign: 'center' }}>
                 <div style={{ width: '56px', height: '56px', borderRadius: '14px', background: '#2A4899', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.25rem' }}>
                   {PILAR_ICONS[p.titulo] ?? <IconCheck />}
                 </div>
