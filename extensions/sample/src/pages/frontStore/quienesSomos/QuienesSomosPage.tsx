@@ -504,7 +504,7 @@ export default function QuienesSomosPage() {
       </section>
 
       {/* ── 11. ALIANZAS ─────────────────────────────────────────────────── */}
-      <section style={{ background: '#1e2a5e', ...S.sectionPad }}>
+      <section style={{ background: 'linear-gradient(160deg, #0E032B 0%, #161449 100%)', ...S.sectionPad }}>
         <div style={{ ...S.inner, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem', alignItems: 'center' }}>
           <div>
             <h2 style={S.h2White}>
@@ -520,7 +520,7 @@ export default function QuienesSomosPage() {
             </div>
           </div>
           <div>
-            <img src={c.alianzas.mapa} alt="Mapa de alianzas INCAP en Colombia" style={{ width: '100%', borderRadius: '16px', objectFit: 'contain', maxHeight: '420px' }} />
+            <img src={c.alianzas.mapa} alt="Mapa de alianzas INCAP en Colombia" style={{ width: '100%', objectFit: 'contain', maxHeight: '460px', mixBlendMode: 'screen' }} />
           </div>
         </div>
       </section>
