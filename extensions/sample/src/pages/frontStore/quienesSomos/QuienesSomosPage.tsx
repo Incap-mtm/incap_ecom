@@ -198,8 +198,8 @@ const S = {
   inner: { maxWidth: '1200px', margin: '0 auto' },
   h2: { fontSize: 'clamp(1.5rem, 3.5vw, 2.5rem)', fontWeight: 900, color: '#181B1C', margin: '0 0 1rem', letterSpacing: '-0.02em', lineHeight: 1.1, fontFamily: 'Sora, sans-serif' },
   h2White: { fontSize: 'clamp(1.5rem, 3.5vw, 2.5rem)', fontWeight: 900, color: '#fff', margin: '0 0 1rem', letterSpacing: '-0.02em', lineHeight: 1.1, fontFamily: 'Sora, sans-serif' },
-  body: { fontSize: '15px', color: '#374151', lineHeight: 1.8, fontFamily: 'Inter, sans-serif', margin: '0 0 1rem' },
-  bodyMuted: { fontSize: '13px', color: '#64748b', lineHeight: 1.75, fontFamily: 'Inter, sans-serif', margin: 0 },
+  body: { fontSize: '15px', color: '#374151', lineHeight: 1.8, fontFamily: 'Sora, sans-serif', margin: '0 0 1rem' },
+  bodyMuted: { fontSize: '13px', color: '#64748b', lineHeight: 1.75, fontFamily: 'Sora, sans-serif', margin: 0 },
   card: { background: '#fff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.75rem', boxShadow: '0 2px 12px rgba(42,72,153,0.07)' },
   green: { color: '#85C639' },
 };
@@ -217,7 +217,7 @@ export default function QuienesSomosPage() {
   const waHref = `https://api.whatsapp.com/send?phone=${wa}&text=Quiero%20hablar%20con%20un%20experto`;
 
   return (
-    <div style={{ fontFamily: 'Sora, Inter, sans-serif', background: '#f8fafc', color: '#181B1C' }}>
+    <div style={{ fontFamily: 'Sora, sans-serif', background: '#f8fafc', color: '#181B1C' }}>
 
       {/* ── 1. HERO ──────────────────────────────────────────────────────── */}
       <section style={{ background: 'linear-gradient(135deg, #2A4899 0%, #1e3576 100%)', position: 'relative', overflow: 'hidden' }}>
@@ -229,7 +229,7 @@ export default function QuienesSomosPage() {
             <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 900, color: '#fff', margin: '0 0 1.25rem', lineHeight: 1.1, letterSpacing: '-0.02em', fontFamily: 'Sora, sans-serif' }}>
               Fabricamos la química que <span style={S.green}>mueve</span> la industria colombiana.
             </h1>
-            <p style={{ fontSize: '16px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.75, margin: '0 0 2rem', fontFamily: 'Inter, sans-serif', maxWidth: '520px' }}>
+            <p style={{ fontSize: '16px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.75, margin: '0 0 2rem', fontFamily: 'Sora, sans-serif', maxWidth: '520px' }}>
               {c.hero.subtitulo}
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
@@ -256,7 +256,7 @@ export default function QuienesSomosPage() {
           {c.hero.stats.map((st: any, i: number) => (
             <div key={i} style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '50px', padding: '14px 20px', textAlign: 'center' }}>
               <div style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 900, color: '#fff', fontFamily: 'Sora, sans-serif', lineHeight: 1 }}>{st.valor}</div>
-              <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.65)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '4px', fontFamily: 'Inter, sans-serif' }}>{st.label}</div>
+              <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.65)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '4px', fontFamily: 'Sora, sans-serif' }}>{st.label}</div>
             </div>
           ))}
         </div>
@@ -273,13 +273,10 @@ export default function QuienesSomosPage() {
           </div>
           <div style={{ display: 'grid', gap: '1.25rem' }}>
             {c.somos.marcas.map((m: any, i: number) => (
-              <div key={i} style={{ ...S.card, borderTop: `4px solid ${m.color}`, padding: '0' }}>
-                <div style={{ height: '6px', background: m.color, borderRadius: '16px 16px 0 0' }} />
-                <div style={{ padding: '1.5rem' }}>
-                  <span style={{ fontSize: '9px', fontWeight: 700, color: m.color, letterSpacing: '0.25em', textTransform: 'uppercase' as const, display: 'block', marginBottom: '10px' }}>{m.tag}</span>
-                  {m.imagen && <img src={m.imagen} alt={m.tag} style={{ height: '40px', objectFit: 'contain', marginBottom: '10px' }} />}
-                  <p style={S.bodyMuted}>{m.descripcion}</p>
-                </div>
+              <div key={i} style={{ background: m.color, borderRadius: '16px', padding: '1.75rem 1.75rem 1.85rem', boxShadow: '0 10px 30px rgba(24,27,28,0.12)' }}>
+                <span style={{ fontSize: '9px', fontWeight: 700, color: 'rgba(255,255,255,0.7)', letterSpacing: '0.25em', textTransform: 'uppercase' as const, display: 'block', marginBottom: '14px' }}>{m.tag}</span>
+                {m.imagen && <img src={m.imagen} alt={m.tag} style={{ height: '38px', width: 'auto', objectFit: 'contain', display: 'block', marginBottom: '16px' }} />}
+                <p style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.92)', lineHeight: 1.7, margin: 0, fontFamily: 'Sora, sans-serif' }}>{m.descripcion}</p>
               </div>
             ))}
           </div>
@@ -296,11 +293,11 @@ export default function QuienesSomosPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
             <div style={{ background: '#2A4899', borderRadius: '16px', padding: '2.25rem' }}>
               <span style={{ ...S.kicker, color: '#85C639', marginBottom: '14px' }}>Misión</span>
-              <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.88)', lineHeight: 1.8, margin: 0, fontFamily: 'Inter, sans-serif' }}>{c.misionVision.mision}</p>
+              <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.88)', lineHeight: 1.8, margin: 0, fontFamily: 'Sora, sans-serif' }}>{c.misionVision.mision}</p>
             </div>
             <div style={{ background: '#181B1C', borderRadius: '16px', padding: '2.25rem' }}>
               <span style={{ ...S.kicker, color: '#85C639', marginBottom: '14px' }}>Visión</span>
-              <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.8, margin: 0, fontFamily: 'Inter, sans-serif' }}>{c.misionVision.vision}</p>
+              <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.8, margin: 0, fontFamily: 'Sora, sans-serif' }}>{c.misionVision.vision}</p>
             </div>
           </div>
         </div>
@@ -363,7 +360,7 @@ export default function QuienesSomosPage() {
                   <img src={ind.icon} alt={ind.nombre} style={{ width: '32px', height: '32px', objectFit: 'contain', filter: 'brightness(10)' }} />
                 </div>
                 <h3 style={{ fontSize: '0.95rem', fontWeight: 900, color: '#fff', margin: '0 0 0.625rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{ind.nombre}</h3>
-                <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.65, margin: '0 0 1.25rem', fontFamily: 'Inter, sans-serif', flex: 1 }}>{ind.descripcion}</p>
+                <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.65, margin: '0 0 1.25rem', fontFamily: 'Sora, sans-serif', flex: 1 }}>{ind.descripcion}</p>
                 <span style={{ fontSize: '10px', fontWeight: 900, color: '#85C639', textTransform: 'uppercase', letterSpacing: '0.12em' }}>Ver soluciones →</span>
               </a>
             ))}
@@ -423,7 +420,7 @@ export default function QuienesSomosPage() {
                 Conoce a <span style={S.green}>CAP</span>: la fuerza y la frescura tienen nuevo rostro
               </h2>
               {c.mascota.parrafos.map((p: string, i: number) => (
-                <p key={i} style={{ fontSize: '15px', color: 'rgba(255,255,255,0.8)', lineHeight: 1.8, fontFamily: 'Inter, sans-serif', margin: '0 0 1rem' }}>{p}</p>
+                <p key={i} style={{ fontSize: '15px', color: 'rgba(255,255,255,0.8)', lineHeight: 1.8, fontFamily: 'Sora, sans-serif', margin: '0 0 1rem' }}>{p}</p>
               ))}
             </div>
           </div>
@@ -437,7 +434,7 @@ export default function QuienesSomosPage() {
                 border: card.destacado ? 'none' : '1px solid rgba(255,255,255,0.15)',
               }}>
                 <h3 style={{ fontSize: '0.9rem', fontWeight: 900, color: card.destacado ? '#181B1C' : '#85C639', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.625rem' }}>{card.titulo}</h3>
-                <p style={{ fontSize: '13px', color: card.destacado ? '#181B1C' : 'rgba(255,255,255,0.75)', lineHeight: 1.7, margin: 0, fontFamily: 'Inter, sans-serif' }}>{card.descripcion}</p>
+                <p style={{ fontSize: '13px', color: card.destacado ? '#181B1C' : 'rgba(255,255,255,0.75)', lineHeight: 1.7, margin: 0, fontFamily: 'Sora, sans-serif' }}>{card.descripcion}</p>
               </div>
             ))}
           </div>
@@ -470,7 +467,7 @@ export default function QuienesSomosPage() {
                   <circle cx="12" cy="12" r="10" /><polygon points="10 8 16 12 10 16 10 8" fill="#94a3b8" stroke="none" />
                 </svg>
                 <span style={{ fontSize: '12px', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.12em' }}>Video Reel</span>
-                <span style={{ fontSize: '11px', color: '#cbd5e1', fontFamily: 'Inter, sans-serif' }}>Próximamente</span>
+                <span style={{ fontSize: '11px', color: '#cbd5e1', fontFamily: 'Sora, sans-serif' }}>Próximamente</span>
               </div>
             )}
           </div>
@@ -502,7 +499,7 @@ export default function QuienesSomosPage() {
             <h2 style={S.h2White}>
               Alianzas que <span style={S.green}>construyen país</span>
             </h2>
-            <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.8, fontFamily: 'Inter, sans-serif', margin: '0 0 1.75rem' }}>{c.alianzas.intro}</p>
+            <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.8, fontFamily: 'Sora, sans-serif', margin: '0 0 1.75rem' }}>{c.alianzas.intro}</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
               {c.alianzas.ciudades.map((ciudad: string) => (
                 <span key={ciudad} style={{ display: 'inline-block', background: '#85C639', color: '#181B1C', fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', padding: '5px 12px', borderRadius: '20px' }}>
@@ -555,9 +552,9 @@ export default function QuienesSomosPage() {
             <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', fontWeight: 900, color: '#fff', margin: '0 0 0.5rem', lineHeight: 1, letterSpacing: '-0.02em', fontFamily: 'Sora, sans-serif' }}>
               ¿Fallas de <span style={S.green}>PEGUE?</span>
             </h2>
-            <p style={{ fontSize: '16px', color: 'rgba(255,255,255,0.6)', fontFamily: 'Inter, sans-serif', margin: '0 0 2rem', lineHeight: 1.6 }}>{c.fallasCta.subtitulo}</p>
+            <p style={{ fontSize: '16px', color: 'rgba(255,255,255,0.6)', fontFamily: 'Sora, sans-serif', margin: '0 0 2rem', lineHeight: 1.6 }}>{c.fallasCta.subtitulo}</p>
             {c.fallasCta.parrafos.map((p: string, i: number) => (
-              <p key={i} style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.8, fontFamily: 'Inter, sans-serif', margin: '0 0 1rem' }}>{p}</p>
+              <p key={i} style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.8, fontFamily: 'Sora, sans-serif', margin: '0 0 1rem' }}>{p}</p>
             ))}
             <a href={waHref} target="_blank" rel="noopener noreferrer"
               style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#85C639', color: '#181B1C', padding: '16px 32px', borderRadius: '50px', fontSize: '12px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', textDecoration: 'none', marginTop: '1rem' }}>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery } from 'urql';
+import { GTM_ID, GTM_SERVER_URL } from '../../utils/gtm.js';
 const SEO_QUERY = `
   query {
     setting {
@@ -13,80 +14,135 @@ const SEO_QUERY = `
 `;
 const SITE_URL = 'https://www.grupoincap.com.co';
 export default function Head() {
-    var _a, _b, _c, _d, _e;
-    const [{ data }] = useQuery({ query: SEO_QUERY, requestPolicy: 'cache-and-network' });
-    const storeName = ((_a = data === null || data === void 0 ? void 0 : data.setting) === null || _a === void 0 ? void 0 : _a.storeName) || 'Grupo INCAP';
-    const phone = ((_b = data === null || data === void 0 ? void 0 : data.setting) === null || _b === void 0 ? void 0 : _b.storePhoneNumber) || '+57 312 378 6835';
-    const instagram = ((_c = data === null || data === void 0 ? void 0 : data.setting) === null || _c === void 0 ? void 0 : _c.storeInstagram) || '';
-    const facebook = ((_d = data === null || data === void 0 ? void 0 : data.setting) === null || _d === void 0 ? void 0 : _d.storeFacebook) || '';
-    const linkedin = ((_e = data === null || data === void 0 ? void 0 : data.setting) === null || _e === void 0 ? void 0 : _e.storeLinkedin) || '';
-    const sameAs = [instagram, facebook, linkedin].filter(Boolean);
+    const [{ data }] = useQuery({
+        query: SEO_QUERY,
+        requestPolicy: 'cache-and-network'
+    });
+    const storeName = data?.setting?.storeName || 'Grupo INCAP';
+    const phone = data?.setting?.storePhoneNumber || '+57 312 378 6835';
+    const instagram = data?.setting?.storeInstagram || '';
+    const facebook = data?.setting?.storeFacebook || '';
+    const linkedin = data?.setting?.storeLinkedin || '';
+    const sameAs = [
+        instagram,
+        facebook,
+        linkedin
+    ].filter(Boolean);
     const orgSchema = {
         '@context': 'https://schema.org',
         '@graph': [
             {
-                '@type': ['Organization', 'LocalBusiness'],
+                '@type': [
+                    'Organization',
+                    'LocalBusiness'
+                ],
                 '@id': `${SITE_URL}/#organization`,
                 name: storeName,
                 url: SITE_URL,
                 logo: {
                     '@type': 'ImageObject',
-                    url: `${SITE_URL}/images/icons/incap_favicon.svg`,
+                    url: `${SITE_URL}/images/icons/incap_favicon.svg`
                 },
                 description: 'Fabricante colombiano de adhesivos industriales para calzado, muebles, colchones y hogar. Asesoría técnica especializada.',
                 address: {
                     '@type': 'PostalAddress',
                     addressCountry: 'CO',
                     addressLocality: 'Bogotá',
-                    addressRegion: 'Cundinamarca',
+                    addressRegion: 'Cundinamarca'
                 },
                 contactPoint: {
                     '@type': 'ContactPoint',
                     telephone: phone,
                     contactType: 'customer service',
-                    availableLanguage: 'Spanish',
+                    availableLanguage: 'Spanish'
                 },
-                ...(sameAs.length > 0 && { sameAs }),
+                ...sameAs.length > 0 && {
+                    sameAs
+                }
             },
             {
                 '@type': 'WebSite',
                 '@id': `${SITE_URL}/#website`,
                 url: SITE_URL,
                 name: storeName,
-                publisher: { '@id': `${SITE_URL}/#organization` },
+                publisher: {
+                    '@id': `${SITE_URL}/#organization`
+                },
                 potentialAction: {
                     '@type': 'SearchAction',
                     target: {
                         '@type': 'EntryPoint',
-                        urlTemplate: `${SITE_URL}/buscar?q={search_term_string}`,
+                        urlTemplate: `${SITE_URL}/buscar?q={search_term_string}`
                     },
-                    'query-input': 'required name=search_term_string',
-                },
-            },
-        ],
+                    'query-input': 'required name=search_term_string'
+                }
+            }
+        ]
     };
-    return (React.createElement(React.Fragment, null,
-        React.createElement("meta", { name: "description", content: "Grupo INCAP \u2014 Fabricante colombiano de adhesivos industriales para calzado, muebles, colchones y hogar. Asesor\u00EDa t\u00E9cnica especializada." }),
-        React.createElement("meta", { name: "robots", content: "index, follow" }),
-        React.createElement("meta", { property: "og:type", content: "website" }),
-        React.createElement("meta", { property: "og:site_name", content: "Grupo INCAP" }),
-        React.createElement("meta", { property: "og:locale", content: "es_CO" }),
-        React.createElement("meta", { property: "og:image", content: `${SITE_URL}/images/banners/Banner_Maderas_Muebles.webp` }),
-        React.createElement("meta", { property: "og:description", content: "Fabricante colombiano de adhesivos industriales para calzado, muebles, colchones y hogar." }),
-        React.createElement("script", { type: "application/ld+json", dangerouslySetInnerHTML: { __html: JSON.stringify(orgSchema) } }),
-        React.createElement("link", { rel: "icon", type: "image/svg+xml", href: "/images/icons/incap_favicon.svg" }),
-        React.createElement("link", { rel: "shortcut icon", href: "/images/icons/incap_favicon.svg" }),
-        React.createElement("link", { rel: "apple-touch-icon", href: "/images/icons/incap_favicon.svg" }),
-        React.createElement("script", { dangerouslySetInnerHTML: { __html: `(function(){var t=document.title;if(t&&!t.startsWith('INCAP')){document.title='INCAP | '+t;}else if(!t){document.title='INCAP';}})();` } }),
-        React.createElement("script", { type: "importmap", dangerouslySetInnerHTML: { __html: JSON.stringify({
-                    imports: {
-                        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-                        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-                    }
-                }) } }),
-        React.createElement("link", { rel: "preload", as: "font", type: "font/woff2", href: "/font/Sora-VariableFont_wght.woff2", crossOrigin: "anonymous" }),
-        React.createElement("link", { rel: "stylesheet", href: "/assets/tailwind.css" }),
-        React.createElement("style", null, `
+    return /*#__PURE__*/ React.createElement(React.Fragment, null, /*#__PURE__*/ React.createElement("script", {
+        dangerouslySetInnerHTML: {
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='${GTM_SERVER_URL}/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`
+        }
+    }), /*#__PURE__*/ React.createElement("meta", {
+        name: "description",
+        content: "Grupo INCAP — Fabricante colombiano de adhesivos industriales para calzado, muebles, colchones y hogar. Asesoría técnica especializada."
+    }), /*#__PURE__*/ React.createElement("meta", {
+        name: "robots",
+        content: "index, follow"
+    }), /*#__PURE__*/ React.createElement("meta", {
+        property: "og:type",
+        content: "website"
+    }), /*#__PURE__*/ React.createElement("meta", {
+        property: "og:site_name",
+        content: "Grupo INCAP"
+    }), /*#__PURE__*/ React.createElement("meta", {
+        property: "og:locale",
+        content: "es_CO"
+    }), /*#__PURE__*/ React.createElement("meta", {
+        property: "og:image",
+        content: `${SITE_URL}/images/banners/Banner_Maderas_Muebles.webp`
+    }), /*#__PURE__*/ React.createElement("meta", {
+        property: "og:description",
+        content: "Fabricante colombiano de adhesivos industriales para calzado, muebles, colchones y hogar."
+    }), /*#__PURE__*/ React.createElement("script", {
+        type: "application/ld+json",
+        dangerouslySetInnerHTML: {
+            __html: JSON.stringify(orgSchema)
+        }
+    }), /*#__PURE__*/ React.createElement("link", {
+        rel: "icon",
+        type: "image/svg+xml",
+        href: "/images/icons/incap_favicon.svg"
+    }), /*#__PURE__*/ React.createElement("link", {
+        rel: "shortcut icon",
+        href: "/images/icons/incap_favicon.svg"
+    }), /*#__PURE__*/ React.createElement("link", {
+        rel: "apple-touch-icon",
+        href: "/images/icons/incap_favicon.svg"
+    }), /*#__PURE__*/ React.createElement("script", {
+        dangerouslySetInnerHTML: {
+            __html: `(function(){var t=document.title;if(t&&!t.startsWith('INCAP')){document.title='INCAP | '+t;}else if(!t){document.title='INCAP';}})();`
+        }
+    }), /*#__PURE__*/ React.createElement("script", {
+        type: "importmap",
+        dangerouslySetInnerHTML: {
+            __html: JSON.stringify({
+                imports: {
+                    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+                }
+            })
+        }
+    }), /*#__PURE__*/ React.createElement("link", {
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: "/font/Sora-VariableFont_wght.woff2",
+        crossOrigin: "anonymous"
+    }), /*#__PURE__*/ React.createElement("link", {
+        rel: "stylesheet",
+        href: "/assets/tailwind.css"
+    }), /*#__PURE__*/ React.createElement("style", null, `
         @font-face {
           font-family: 'Sora';
           src: url('/font/Sora-VariableFont_wght.woff2') format('woff2-variations'),
@@ -596,7 +652,7 @@ export default function Head() {
             height: clamp(320px, 80vw, 480px) !important;
           }
         }
-      `)));
+      `));
 }
 export const layout = {
     areaId: 'head',

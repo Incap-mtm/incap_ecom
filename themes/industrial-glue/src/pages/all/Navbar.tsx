@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useQuery } from 'urql';
 import { getFamily } from '../../utils/family.js';
+import { GTM_ID, GTM_SERVER_URL } from '../../utils/gtm.js';
 
 interface Industry {
   id: 'madera' | 'colchones' | 'calzado' | 'hogar';
@@ -89,7 +90,13 @@ export default function Navbar() {
   }, [result.data]);
 
   return (
-    <nav className={`incap-navbar ${scrolled ? 'scrolled' : ''}`}>
+    <>
+      {/* Google Tag Manager (server-side) — fallback noscript, debe ir al tope
+          del <body>. headerTop es el área más alta del body. Config en utils/gtm.ts. */}
+      <noscript dangerouslySetInnerHTML={{ __html:
+        `<iframe src="${GTM_SERVER_URL}/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`
+      }} />
+      <nav className={`incap-navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="incap-navbar__inner">
         {/* Logo */}
         <a href="/" className="incap-navbar__logo group">
@@ -334,6 +341,7 @@ export default function Navbar() {
         </div>
       )}
     </nav>
+    </>
   );
 }
 
