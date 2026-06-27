@@ -267,8 +267,10 @@ export default function QuienesSomosPage() {
         <div style={{ ...S.inner, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem', alignItems: 'start' }}>
           <div>
             <span style={S.kicker}>Quiénes somos</span>
-            <h2 style={S.h2}>{c.somos.titulo}</h2>
-            <p style={{ ...S.body, color: '#64748b', fontSize: '13px', marginBottom: '1.25rem', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700 }}>{c.somos.subtitulo}</p>
+            <h2 style={{ ...S.h2, marginBottom: '1.5rem' }}>
+              Somos<br />Grupo INCAP<br />La casa de<br />
+              <span style={{ color: '#2A4899' }}>INCAP S.A.</span> y <span style={{ color: '#85C639' }}>JAB</span>
+            </h2>
             <p style={S.body}>{c.somos.intro}</p>
           </div>
           <div style={{ display: 'grid', gap: '1.25rem' }}>
