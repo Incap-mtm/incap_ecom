@@ -434,11 +434,12 @@ export default function QuienesSomosPage() {
               <div key={i} style={{
                 borderRadius: '16px',
                 padding: '1.5rem',
-                background: card.destacado ? '#85C639' : 'rgba(255,255,255,0.08)',
-                border: card.destacado ? 'none' : '1px solid rgba(255,255,255,0.15)',
+                background: card.destacado ? '#85C639' : '#fff',
+                border: '1px solid rgba(255,255,255,0.9)',
+                boxShadow: '0 0 16px rgba(255,255,255,0.45)',
               }}>
-                <h3 style={{ fontSize: '0.9rem', fontWeight: 900, color: card.destacado ? '#181B1C' : '#85C639', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.625rem' }}>{card.titulo}</h3>
-                <p style={{ fontSize: '13px', color: card.destacado ? '#181B1C' : 'rgba(255,255,255,0.75)', lineHeight: 1.7, margin: 0, fontFamily: 'Sora, sans-serif' }}>{card.descripcion}</p>
+                <h3 style={{ fontSize: '0.9rem', fontWeight: 900, color: card.destacado ? '#fff' : '#2A4899', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.625rem' }}>{card.titulo}</h3>
+                <p style={{ fontSize: '13px', color: card.destacado ? 'rgba(255,255,255,0.95)' : 'rgba(42,72,153,0.85)', lineHeight: 1.7, margin: 0, fontFamily: 'Sora, sans-serif' }}>{card.descripcion}</p>
               </div>
             ))}
           </div>
