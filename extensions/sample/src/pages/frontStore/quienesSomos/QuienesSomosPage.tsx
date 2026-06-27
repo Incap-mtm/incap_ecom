@@ -447,14 +447,14 @@ export default function QuienesSomosPage() {
       </section>
 
       {/* ── 9. FABRICACIÓN PROPIA ────────────────────────────────────────── */}
-      <section style={{ background: '#fff', ...S.sectionPad }}>
+      <section style={{ background: '#2A4899', ...S.sectionPad, paddingTop: 0 }}>
         <div style={S.inner}>
           <span style={S.kicker}>{c.fabricacion.kicker}</span>
-          <h2 style={{ ...S.h2, maxWidth: '700px', marginBottom: '1.5rem' }}>
+          <h2 style={{ ...S.h2White, maxWidth: '700px', marginBottom: '1.5rem' }}>
             Fabricamos la mayoría de lo que vendemos. Y <span style={S.green}>lo diseñamos nosotros</span>.
           </h2>
           {c.fabricacion.parrafos.map((p: string, i: number) => (
-            <p key={i} style={{ ...S.body, maxWidth: '780px' }}>{p}</p>
+            <p key={i} style={{ ...S.body, color: 'rgba(255,255,255,0.85)', maxWidth: '780px' }}>{p}</p>
           ))}
           {/* Caso Formicentro */}
           <div style={{ ...S.card, marginTop: '2.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', alignItems: 'center' }}>
