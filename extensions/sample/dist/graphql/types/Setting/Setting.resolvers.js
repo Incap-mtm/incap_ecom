@@ -11,6 +11,7 @@ export default {
         storeTiktok: (setting) => findSetting(setting, 'storeTiktok'),
         storeYoutube: (setting) => findSetting(setting, 'storeYoutube'),
         variantSizeOrder: (setting) => findSetting(setting, 'variant_size_order', '[]'),
+        quienesSomos: (setting) => findSetting(setting, 'quienes_somos', '{}'),
     },
     Query: {
         sizeOptions: async (_, __, { pool: ctxPool }) => {

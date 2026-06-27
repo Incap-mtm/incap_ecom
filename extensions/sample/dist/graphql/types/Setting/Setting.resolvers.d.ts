@@ -8,6 +8,7 @@ declare namespace _default {
         function storeTiktok(setting: any): any;
         function storeYoutube(setting: any): any;
         function variantSizeOrder(setting: any): any;
+        function quienesSomos(setting: any): any;
     }
     namespace Query {
         function sizeOptions(_: any, __: any, { pool: ctxPool }: {
