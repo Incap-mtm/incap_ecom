@@ -125,7 +125,7 @@ export default function BlogPostPage() {
   // CMS query — sólo cuando tenemos el slug
   const cmsUrlKey = post?.cmsUrlKey ?? '';
   const cmsQueryStr = cmsUrlKey
-    ? `query { cmsPages(filters: [{ key: "url_key", operation: eq, value: "${cmsUrlKey}" }]) { items { urlKey name content metaTitle metaDescription } } }`
+    ? `query { cmsPages(filters: [{ key: "url_key", operation: eq, value: "${cmsUrlKey}" }, { key: "limit", operation: eq, value: "500" }]) { items { urlKey name content metaTitle metaDescription } } }`
     : '{ __typename }';
 
   const [cmsResult] = useQuery({
@@ -134,8 +134,11 @@ export default function BlogPostPage() {
     requestPolicy: 'cache-and-network',
   });
 
-  // Extraer contenido del CMS o usar fallback
-  const cmsPage = cmsResult.data?.cmsPages?.items?.[0];
+  // Extraer contenido del CMS o usar fallback.
+  // El filtro url_key del resolver no es confiable → buscamos por urlKey exacto
+  // en los items devueltos (nunca items[0], que sería otro artículo).
+  const cmsItems: any[] = cmsResult.data?.cmsPages?.items ?? [];
+  const cmsPage = cmsItems.find((p) => p?.urlKey === cmsUrlKey);
   const blocks = cmsPage?.content ? extractBlocks(cmsPage.content) : [];
   const usesFallback = blocks.length === 0;
 
