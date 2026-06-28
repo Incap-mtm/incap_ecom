@@ -93,6 +93,7 @@ const BLOG_INDEX = {
   posts: [
     {
       slug: 'incap-sa-en-interzum-2026',
+      cmsUrlKey: 'blog-incap-sa-en-interzum-2026', // compat código previo (CMS Pages); el código nuevo usa body
       title:
         'INCAP SA en Interzum 2026: evolución de marca y consolidación del Grupo como solución integral para la industria',
       excerpt:
@@ -106,6 +107,7 @@ const BLOG_INDEX = {
     },
     {
       slug: 'adhesivos-para-calzado-en-colombia',
+      cmsUrlKey: 'blog-adhesivos-para-calzado-en-colombia', // compat código previo (CMS Pages); el código nuevo usa body
       title:
         'Adhesivos para calzado en Colombia: cómo INCAP SA y JAB acompañan al fabricante desde la asesoría técnica hasta el producto final',
       excerpt:
