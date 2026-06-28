@@ -61,8 +61,8 @@ const DEFAULT_CONTENT = {
     subtitulo: 'La casa de INCAP S.A. y JAB',
     intro: 'Nacimos en Bogotá, crecimos con Colombia y hoy somos el aliado técnico de ferreterías, fabricantes y talleres de norte a sur del territorio nacional. Bajo el paraguas de Grupo INCAP conviven dos marcas especializadas y cuatro aliados estratégicos que amplían nuestra oferta de valor. Cada marca tiene un rol específico dentro del ecosistema industrial colombiano, y juntas cubren desde el adhesivo de contacto de alta performance hasta los componentes y suministros complementarios que completan el proceso del fabricante.',
     marcas: [
-      { tag: 'Marca insignia del grupo', imagen: '/images/quienes-somos/marca-incap.png', descripcion: 'Adhesivos industriales de alto rendimiento para madera, colchones, calzado, marroquinería y más. Cinco décadas de confianza técnica en el mercado colombiano.', color: '#2A4899' },
-      { tag: 'Componentes y suministros', imagen: '/images/quienes-somos/marca-jab.png', descripcion: 'Línea de componentes y suministros complementarios que amplía la solución integral de Grupo INCAP para el fabricante colombiano.', color: '#85C639' },
+      { tag: 'Marca insignia del grupo', imagen: '/images/quienes-somos/marca-incap.webp', descripcion: 'Adhesivos industriales de alto rendimiento para madera, colchones, calzado, marroquinería y más. Cinco décadas de confianza técnica en el mercado colombiano.', color: '#2A4899' },
+      { tag: 'Componentes y suministros', imagen: '/images/quienes-somos/marca-jab.webp', descripcion: 'Línea de componentes y suministros complementarios que amplía la solución integral de Grupo INCAP para el fabricante colombiano.', color: '#85C639' },
     ],
   },
   misionVision: {
@@ -82,12 +82,12 @@ const DEFAULT_CONTENT = {
     kicker: 'Marcas del grupo',
     titulo: 'Seis marcas, una misma excelencia.',
     logos: [
-      { nombre: 'INCAP',    src: '/images/quienes-somos/logo-incap.png' },
-      { nombre: 'JAB',      src: '/images/quienes-somos/logo-jab.png' },
-      { nombre: 'TECNOGI',  src: '/images/quienes-somos/logo-tecnogi.png' },
-      { nombre: 'Kenda',    src: '/images/quienes-somos/logo-kenda.png' },
-      { nombre: 'CT Point', src: '/images/quienes-somos/logo-ctpoint.png' },
-      { nombre: 'Intercom', src: '/images/quienes-somos/logo-intercom.png' },
+      { nombre: 'INCAP',    src: '/images/quienes-somos/logo-incap.webp' },
+      { nombre: 'JAB',      src: '/images/quienes-somos/logo-jab.webp' },
+      { nombre: 'TECNOGI',  src: '/images/quienes-somos/logo-tecnogi.webp' },
+      { nombre: 'Kenda',    src: '/images/quienes-somos/logo-kenda.webp' },
+      { nombre: 'CT Point', src: '/images/quienes-somos/logo-ctpoint.webp' },
+      { nombre: 'Intercom', src: '/images/quienes-somos/logo-intercom.webp' },
     ],
   },
   industrias: {
@@ -143,7 +143,7 @@ const DEFAULT_CONTENT = {
     ],
     caso: {
       titulo: 'Adhesivo diseñado a la medida para',
-      logo: '/images/quienes-somos/formicentro-logo.png',
+      logo: '/images/quienes-somos/formicentro-logo.webp',
       parrafos: [
         'Cuando un distribuidor de la talla de Formicentro necesitaba una solución de pegado que su proceso no encontraba en el mercado, INCAP no buscó en el catálogo; diseñó la fórmula desde cero.',
         'Trabajamos de forma conjunta con el equipo de planta, analizamos los materiales específicos, las condiciones de temperatura y humedad, y los tiempos de ciclo; hasta desarrollar un adhesivo que respondiera exactamente a sus exigencias de producción.',
@@ -175,9 +175,9 @@ const DEFAULT_CONTENT = {
     ],
     imagen: '/images/quienes-somos/cap-bidon.webp',
     features: [
-      { icon: '/images/quienes-somos/icon-menos-plastico.png',     titulo: '85% menos plástico',         descripcion: 'Frente al bidón tradicional de 5 galones, el Bidon Box reduce significativamente el plástico generado por cada unidad de adhesivo consumida.' },
-      { icon: '/images/quienes-somos/icon-libre-salpicaduras.png', titulo: 'Libre de salpicaduras',       descripcion: 'El sistema de vertido controlado elimina derrames accidentales, mejorando la seguridad del operario y reduciendo el desperdicio de producto.' },
-      { icon: '/images/quienes-somos/icon-facil-verter.png',       titulo: 'Fácil de almacenar y verter', descripcion: 'El formato caja optimiza el espacio de bodega, es más ligero y permite vaciado completo sin residuos.' },
+      { icon: '/images/quienes-somos/icon-menos-plastico.webp',     titulo: '85% menos plástico',         descripcion: 'Frente al bidón tradicional de 5 galones, el Bidon Box reduce significativamente el plástico generado por cada unidad de adhesivo consumida.' },
+      { icon: '/images/quienes-somos/icon-libre-salpicaduras.webp', titulo: 'Libre de salpicaduras',       descripcion: 'El sistema de vertido controlado elimina derrames accidentales, mejorando la seguridad del operario y reduciendo el desperdicio de producto.' },
+      { icon: '/images/quienes-somos/icon-facil-verter.webp',       titulo: 'Fácil de almacenar y verter', descripcion: 'El formato caja optimiza el espacio de bodega, es más ligero y permite vaciado completo sin residuos.' },
     ],
   },
   fallasCta: {
