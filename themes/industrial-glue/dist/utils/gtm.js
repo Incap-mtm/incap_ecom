@@ -10,3 +10,9 @@
 // del código no cambia.
 export const GTM_ID = 'GTM-K5C72GVM';
 export const GTM_LOADER_URL = 'https://www.googletagmanager.com';
+// Dominio de producción donde SÍ debe medirse. El loader (Head.tsx) solo
+// carga GTM si el hostname es este dominio (o un subdominio suyo) → staging
+// (*.up.railway.app) y localhost NO miden, evitando contaminar la propiedad
+// GA4 con tráfico de prueba. Los trackers igual pueblan el dataLayer en
+// cualquier entorno, así se pueden verificar los eventos sin enviar a GA4.
+export const GTM_PROD_HOST = 'grupoincap.com.co';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from 'urql';
-import { GTM_ID, GTM_LOADER_URL } from '../../utils/gtm.js';
+import { GTM_ID, GTM_LOADER_URL, GTM_PROD_HOST } from '../../utils/gtm.js';
 
 const SEO_QUERY = `
   query {
@@ -74,9 +74,11 @@ export default function Head() {
   return (
     <>
       {/* Google Tag Manager — loader del contenedor web, lo más alto posible
-          del <head>. Config en utils/gtm.ts. */}
+          del <head>. Solo carga en el dominio de producción (GTM_PROD_HOST):
+          staging (*.up.railway.app) y localhost no miden → no contaminan GA4.
+          Config en utils/gtm.ts. */}
       <script dangerouslySetInnerHTML={{ __html:
-        `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='${GTM_LOADER_URL}/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`
+        `if(location.hostname===${JSON.stringify(GTM_PROD_HOST)}||location.hostname.endsWith(${JSON.stringify('.' + GTM_PROD_HOST)})){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='${GTM_LOADER_URL}/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');}`
       }} />
 
       {/* SEO — meta base */}
