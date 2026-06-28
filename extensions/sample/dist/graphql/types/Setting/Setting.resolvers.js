@@ -12,6 +12,7 @@ export default {
         storeYoutube: (setting) => findSetting(setting, 'storeYoutube'),
         variantSizeOrder: (setting) => findSetting(setting, 'variant_size_order', '[]'),
         quienesSomos: (setting) => findSetting(setting, 'quienes_somos', '{}'),
+        blogIndex: (setting) => findSetting(setting, 'blog_index', '{}'),
     },
     Query: {
         sizeOptions: async (_, __, { pool: ctxPool }) => {

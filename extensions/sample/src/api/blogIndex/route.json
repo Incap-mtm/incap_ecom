@@ -1,0 +1,5 @@
+{
+  "methods": ["GET", "POST"],
+  "path": "/blog-index",
+  "access": "private"
+}

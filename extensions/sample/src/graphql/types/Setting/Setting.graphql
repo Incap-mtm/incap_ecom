@@ -8,6 +8,7 @@ extend type Setting {
   storeYoutube: String
   variantSizeOrder: String
   quienesSomos: String
+  blogIndex: String
 }
 
 type SizeOption {
