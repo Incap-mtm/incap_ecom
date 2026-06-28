@@ -1,7 +1,9 @@
 /**
- * Página admin /blog-admin
- * Gestiona los metadatos del blog: lista de posts en el setting `blog_index`.
- * El cuerpo de cada artículo se redacta en Admin → CMS → Pages.
+ * Página admin /blog-admin — editor completo del blog INCAP.
+ *
+ * Todo el blog (título, slug, excerpt, fecha, tags, destacado, portada, cuerpo)
+ * se gestiona desde aquí. El cuerpo es Markdown almacenado en el setting
+ * `blog_index` — sin dependencia de CMS Pages.
  */
 import React from 'react';
 interface Props {
