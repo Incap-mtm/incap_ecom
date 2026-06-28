@@ -556,22 +556,30 @@ export default function QuienesSomosPage() {
 
       {/* ── 13. FALLAS CTA ───────────────────────────────────────────────── */}
       <section style={{ background: '#181B1C', ...S.sectionPad }}>
-        <div style={{ ...S.inner, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem', alignItems: 'center' }}>
+        <div style={{ ...S.inner, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
           <div>
-            <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', fontWeight: 900, color: '#fff', margin: '0 0 0.5rem', lineHeight: 1, letterSpacing: '-0.02em', fontFamily: 'Sora, sans-serif' }}>
-              ¿Fallas de <span style={S.green}>PEGUE?</span>
+            <div style={{ display: 'inline-block', background: 'rgba(133,198,57,0.1)', border: '1px solid rgba(133,198,57,0.2)', padding: '8px 22px', borderRadius: '10px', marginBottom: '1.75rem' }}>
+              <span style={{ color: '#85C639', fontWeight: 900, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.35em' }}>Soporte Técnico Especializado</span>
+            </div>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', fontWeight: 900, color: '#fff', margin: '0 0 1.5rem', lineHeight: 0.95, letterSpacing: '-0.03em', textTransform: 'uppercase', fontFamily: 'Sora, sans-serif' }}>
+              ¿Fallas de <span style={S.green}>Pegue?</span>
             </h2>
-            <p style={{ fontSize: '16px', color: 'rgba(255,255,255,0.6)', fontFamily: 'Sora, sans-serif', margin: '0 0 2rem', lineHeight: 1.6 }}>{c.fallasCta.subtitulo}</p>
+            <p style={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.6rem)', color: '#fff', fontWeight: 700, lineHeight: 1.25, fontFamily: 'Sora, sans-serif', margin: '0 0 1.25rem' }}>{c.fallasCta.subtitulo}</p>
             {c.fallasCta.parrafos.map((p: string, i: number) => (
-              <p key={i} style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.8, fontFamily: 'Sora, sans-serif', margin: '0 0 1rem' }}>{p}</p>
+              <p key={i} style={{ fontSize: i === 0 ? '15px' : '13px', color: i === 0 ? '#94a3b8' : '#64748b', lineHeight: 1.7, fontFamily: 'Sora, sans-serif', margin: '0 0 1rem', maxWidth: '560px' }}>{p}</p>
             ))}
             <a href={waHref} target="_blank" rel="noopener noreferrer"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#85C639', color: '#181B1C', padding: '16px 32px', borderRadius: '50px', fontSize: '12px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', textDecoration: 'none', marginTop: '1rem' }}>
-              {c.fallasCta.boton.texto} →
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', background: '#85C639', color: '#181B1C', padding: '18px 40px', borderRadius: '50px', fontSize: '14px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.05em', textDecoration: 'none', marginTop: '1.5rem' }}>
+              {c.fallasCta.boton.texto}
             </a>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', opacity: 0.15 }}>
-            <img src={c.hero.imagen} alt="" aria-hidden="true" style={{ maxHeight: '360px', maxWidth: '100%', objectFit: 'contain' }} />
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ position: 'relative', maxWidth: '420px', width: '100%' }}>
+              <div style={{ position: 'absolute', inset: '-2.5rem', background: 'rgba(42,72,153,0.2)', borderRadius: '4rem', filter: 'blur(48px)' }} />
+              <div style={{ position: 'relative', borderRadius: '2.5rem', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 24px 64px rgba(0,0,0,0.5)', padding: '1.5rem' }}>
+                <img src="/images/sections/Fallas_De_Pegue_contacto.webp" alt="Técnico INCAP en planta" style={{ width: '100%', height: 'auto', objectFit: 'cover', borderRadius: '1.25rem', display: 'block' }} />
+              </div>
+            </div>
           </div>
         </div>
       </section>
