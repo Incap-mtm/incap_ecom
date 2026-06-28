@@ -520,7 +520,7 @@ export default function QuienesSomosPage() {
             </div>
           </div>
           <div>
-            <img src={c.alianzas.mapa} alt="Mapa de alianzas INCAP en Colombia" style={{ width: '100%', objectFit: 'contain', maxHeight: '460px', mixBlendMode: 'screen' }} />
+            <img src={c.alianzas.mapa} alt="Mapa de alianzas INCAP en Colombia" style={{ width: '100%', borderRadius: '16px', objectFit: 'contain', maxHeight: '420px' }} />
           </div>
         </div>
       </section>
