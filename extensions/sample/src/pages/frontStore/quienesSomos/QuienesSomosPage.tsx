@@ -538,11 +538,11 @@ export default function QuienesSomosPage() {
             ))}
             <div style={{ marginTop: '1.75rem', display: 'grid', gap: '1rem' }}>
               {c.innovacion.features.map((f: any, i: number) => (
-                <div key={i} style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: '#fff', borderRadius: '0 16px 16px 16px', padding: '1.1rem 1.4rem', boxShadow: '0 8px 22px rgba(42,72,153,0.12)' }}>
-                  <img src={f.icon} alt={f.titulo} style={{ width: '84px', height: '84px', objectFit: 'contain', flexShrink: 0 }} />
+                <div key={i} style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: '#2A4899', borderRadius: '0 16px 16px 16px', padding: '1.1rem 1.4rem', boxShadow: '0 10px 24px rgba(42,72,153,0.22)' }}>
+                  <img src={f.icon} alt={f.titulo} style={{ width: '84px', height: '84px', objectFit: 'contain', flexShrink: 0, filter: 'brightness(0) invert(1)' }} />
                   <div>
-                    <div style={{ fontSize: '14px', fontWeight: 900, color: '#2A4899', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>{f.titulo}</div>
-                    <p style={{ ...S.bodyMuted, fontSize: '12.5px' }}>{f.descripcion}</p>
+                    <div style={{ fontSize: '14px', fontWeight: 900, color: '#85C639', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>{f.titulo}</div>
+                    <p style={{ fontSize: '12.5px', color: 'rgba(255,255,255,0.82)', lineHeight: 1.6, margin: 0, fontFamily: 'Sora, sans-serif' }}>{f.descripcion}</p>
                   </div>
                 </div>
               ))}
