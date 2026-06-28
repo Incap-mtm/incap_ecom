@@ -536,15 +536,15 @@ export default function QuienesSomosPage() {
             {c.innovacion.parrafos.map((p: string, i: number) => (
               <p key={i} style={S.body}>{p}</p>
             ))}
-            <div style={{ display: 'grid', gap: '1rem', marginTop: '1.5rem' }}>
+            <div style={{ marginTop: '1.75rem', background: '#2A4899', borderRadius: '0 16px 16px 16px', padding: '1.75rem', display: 'grid', gap: '1.5rem', boxShadow: '0 12px 30px rgba(42,72,153,0.25)' }}>
               {c.innovacion.features.map((f: any, i: number) => (
-                <div key={i} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
-                  <div style={{ width: '44px', height: '44px', borderRadius: '10px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <img src={f.icon} alt={f.titulo} style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
+                <div key={i} style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
+                  <div style={{ width: '104px', height: '104px', borderRadius: '14px', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <img src={f.icon} alt={f.titulo} style={{ width: '82px', height: '82px', objectFit: 'contain' }} />
                   </div>
                   <div>
-                    <div style={{ fontSize: '13px', fontWeight: 900, color: '#85C639', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '3px' }}>{f.titulo}</div>
-                    <p style={{ ...S.bodyMuted, fontSize: '12px' }}>{f.descripcion}</p>
+                    <div style={{ fontSize: '14px', fontWeight: 900, color: '#85C639', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '5px' }}>{f.titulo}</div>
+                    <p style={{ fontSize: '12.5px', color: 'rgba(255,255,255,0.82)', lineHeight: 1.6, margin: 0, fontFamily: 'Sora, sans-serif' }}>{f.descripcion}</p>
                   </div>
                 </div>
               ))}
