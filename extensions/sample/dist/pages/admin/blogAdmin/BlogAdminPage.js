@@ -4,7 +4,7 @@
  * El cuerpo de cada artículo se redacta en Admin → CMS → Pages.
  */
 import React, { useState } from 'react';
-import { DEFAULT_BLOG } from '../../frontStore/blog/blogData.js';
+import { DEFAULT_BLOG } from '../../../components/blogData.js';
 const AZUL = '#2A4899';
 const VERDE = '#85C639';
 const BORDER = '#e2e8f0';

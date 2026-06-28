@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useQuery } from 'urql';
-import { DEFAULT_BLOG, parseBlogIndex, formatDate, type BlogPost } from './blogData.js';
+import { DEFAULT_BLOG, parseBlogIndex, formatDate, type BlogPost } from '../../../components/blogData.js';
 
 const QUERY = `
   query BlogPageQuery {
