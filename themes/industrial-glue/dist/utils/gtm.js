@@ -1,15 +1,12 @@
-// Configuración de Google Tag Manager — server-side tagging.
+// Configuración de Google Tag Manager — instalación estándar (client-side).
 //
-// El loader del contenedor WEB (GTM_ID) se sirve desde el servidor de tagging
-// en Railway (GTM_SERVER_URL) en lugar de googletagmanager.com. Así las
-// peticiones de medición pasan por nuestro propio endpoint (server-side).
+// El contenedor web (GTM_ID) se carga desde el CDN de Google
+// (GTM_LOADER_URL). Config centralizada acá para no duplicar el ID/URL
+// entre el loader (Head.tsx) y el fallback noscript (Navbar.tsx).
 //
-// ⚠️ MIGRACIÓN PENDIENTE A FIRST-PARTY:
-// GTM_SERVER_URL apunta hoy al dominio default de Railway (*.up.railway.app),
-// que es un dominio DISTINTO al del sitio → contexto third-party. Para obtener
-// el beneficio real del server-side (cookies first-party, mayor duración,
-// menos bloqueo por ITP/ad-blockers) hay que mapear un subdominio propio
-// (ej. https://sgtm.grupoincap.com.co) al servicio de Railway y reemplazar
-// solo esta constante. El resto del código no cambia.
-export const GTM_ID = 'GTM-NN76KTDJ';
-export const GTM_SERVER_URL = 'https://server-side-tracking-production-154d.up.railway.app';
+// Nota: si en el futuro se quiere migrar a server-side tagging, basta con
+// reemplazar GTM_LOADER_URL por la URL del servidor de tagging (idealmente
+// un subdominio first-party, ej. https://sgtm.grupoincap.com.co). El resto
+// del código no cambia.
+export const GTM_ID = 'GTM-K5C72GVM';
+export const GTM_LOADER_URL = 'https://www.googletagmanager.com';

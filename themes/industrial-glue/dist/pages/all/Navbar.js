@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useQuery } from 'urql';
 import { getFamily } from '../../utils/family.js';
-import { GTM_ID, GTM_SERVER_URL } from '../../utils/gtm.js';
+import { GTM_ID, GTM_LOADER_URL } from '../../utils/gtm.js';
 const industries = [
     { id: 'madera', name: 'Madera y Muebles', href: '/industrias/madera', icon: '/images/icons/Icono_Maderas.webp', catUrlKey: 'madera' },
     { id: 'colchones', name: 'Colchones y Espumas', href: '/industrias/colchones', icon: '/images/icons/Icono_Colchones.webp', catUrlKey: 'colchones' },
@@ -75,7 +75,7 @@ export default function Navbar() {
         return out;
     }, [result.data]);
     return (React.createElement(React.Fragment, null,
-        React.createElement("noscript", { dangerouslySetInnerHTML: { __html: `<iframe src="${GTM_SERVER_URL}/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`
+        React.createElement("noscript", { dangerouslySetInnerHTML: { __html: `<iframe src="${GTM_LOADER_URL}/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`
             } }),
         React.createElement("nav", { className: `incap-navbar ${scrolled ? 'scrolled' : ''}` },
             React.createElement("div", { className: "incap-navbar__inner" },
