@@ -39,6 +39,13 @@ Corré cada chequeo y reportá resultado individual. Usá `git diff --staged --n
 
 10. **Coordinación Hero/widget**: si se tocó `Hero.tsx`, el widget `hero_slider`, o el seed, RECORDÁ en el reporte: la home depende de la instancia sembrada en DB; eliminar Hero.tsx sin sembrar = home en blanco; sembrar con Hero.tsx presente = doble hero. Verificá que el plan de seed esté contemplado.
 
+11. **Presencia de Google Tag Manager (medición — NO debe perderse)**: la instalación de GTM vive en 3 archivos del tema y debe seguir intacta en CADA push, incluso si el cambio actual no la toca. Verificá las 4 cosas (FAIL si falta cualquiera):
+    - `themes/industrial-glue/src/utils/gtm.ts` existe y exporta `GTM_ID` (formato `GTM-XXXXXXX`) y `GTM_LOADER_URL`. Su `.js` en `dist/utils/` debe coincidir.
+    - `themes/industrial-glue/src/pages/all/Head.tsx`: importa de `../../utils/gtm.js` y contiene el loader (`gtm.js?id=` con el `<script>` que inserta el snippet). Su `dist/.../Head.js` también.
+    - `themes/industrial-glue/src/pages/all/Navbar.tsx`: contiene el `<noscript>` con `ns.html?id=`. Su `dist/.../Navbar.js` también.
+    - Si algún cambio del push **modifica** Head.tsx/Navbar.tsx/gtm.ts, confirmá que el snippet/import/ID NO se quitó ni se cambió por error. Si el ID cambió, marcalo como ADVERTENCIA explícita (puede ser intencional, pero el cliente debe saberlo).
+    - Comando rápido: `grep -l "gtm.js?id" themes/industrial-glue/dist/pages/all/Head.js && grep -l "ns.html?id" themes/industrial-glue/dist/pages/all/Navbar.js && grep "GTM-" themes/industrial-glue/dist/utils/gtm.js`. Si alguno no devuelve match = FAIL.
+
 ## Formato de salida
 
 Terminá SIEMPRE con un veredicto claro:
