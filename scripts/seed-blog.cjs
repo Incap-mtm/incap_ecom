@@ -190,7 +190,10 @@ const BLOG_INDEX = {
 // ── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
-  const client = new Client({ connectionString: DATABASE_URL });
+  const client = new Client({
+    connectionString: DATABASE_URL,
+    ssl: process.env.PGSSL_INSECURE ? { rejectUnauthorized: false } : undefined,
+  });
   await client.connect();
   console.log('Conectado a PostgreSQL.');
 
@@ -225,8 +228,8 @@ async function main() {
       } else {
         // Insert
         const r = await client.query(
-          `INSERT INTO cms_page (layout, status)
-           VALUES ('1column', true)
+          `INSERT INTO cms_page (status)
+           VALUES (true)
            RETURNING cms_page_id`,
         );
         const newId = r.rows[0].cms_page_id;
@@ -250,8 +253,13 @@ async function main() {
     );
     console.log('  [UPSERT] Setting blog_index');
 
-    await client.query('COMMIT');
-    console.log('\nSeed completado exitosamente.');
+    if (process.env.DRY_RUN) {
+      await client.query('ROLLBACK');
+      console.log('\nDRY RUN: todas las sentencias ejecutaron OK — ROLLBACK (no se persistió nada).');
+    } else {
+      await client.query('COMMIT');
+      console.log('\nSeed completado exitosamente.');
+    }
   } catch (err) {
     await client.query('ROLLBACK');
     console.error('ERROR — rollback:', err.message);
