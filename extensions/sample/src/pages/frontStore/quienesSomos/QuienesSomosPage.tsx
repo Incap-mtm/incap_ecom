@@ -549,7 +549,7 @@ export default function QuienesSomosPage() {
             </div>
           </div>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <img src={c.innovacion.imagen} alt="CAP con Bidon Box INCAP" style={{ maxHeight: '460px', maxWidth: '100%', objectFit: 'contain', filter: 'drop-shadow(0 20px 40px rgba(42,72,153,0.2))' }} />
+            <img src={c.innovacion.imagen} alt="CAP con Bidon Box INCAP" style={{ maxHeight: '690px', maxWidth: '100%', objectFit: 'contain', filter: 'drop-shadow(0 20px 40px rgba(42,72,153,0.2))' }} />
           </div>
         </div>
       </section>
