@@ -1,0 +1,55 @@
+name: GTM Guard
+
+# Protege la instalación de Google Tag Manager (medición del sitio).
+# Falla el workflow si el snippet de GTM desaparece del tema en cualquier
+# push a main/staging. Así la medición no se puede quitar por error sin que
+# el push quede marcado en rojo en GitHub. Ver también: ítem 11 del
+# incap-verifier y themes/industrial-glue/src/utils/gtm.ts.
+
+on:
+  push:
+    branches: [main, staging]
+  pull_request:
+    branches: [main, staging]
+
+jobs:
+  gtm-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verificar presencia de GTM (src + dist)
+        run: |
+          set -e
+          fail=0
+          check() {
+            # $1 = archivo, $2 = patrón (fixed string), $3 = descripción
+            if grep -qF "$2" "$1"; then
+              echo "  ✓ $3"
+            else
+              echo "  ✗ FALTA: $3  (patrón '$2' no encontrado en $1)"
+              fail=1
+            fi
+          }
+
+          T=themes/industrial-glue
+
+          echo "== Config (utils/gtm.ts + dist) =="
+          check "$T/src/utils/gtm.ts"  "GTM-"           "src/utils/gtm.ts exporta un GTM_ID"
+          check "$T/dist/utils/gtm.js" "GTM-"           "dist/utils/gtm.js exporta un GTM_ID"
+
+          echo "== Loader (Head.tsx + dist) =="
+          check "$T/src/pages/all/Head.tsx" "gtm.js?id=" "src/Head.tsx tiene el loader de GTM"
+          check "$T/dist/pages/all/Head.js" "gtm.js?id=" "dist/Head.js tiene el loader de GTM"
+
+          echo "== Noscript (Navbar.tsx + dist) =="
+          check "$T/src/pages/all/Navbar.tsx" "ns.html?id=" "src/Navbar.tsx tiene el noscript de GTM"
+          check "$T/dist/pages/all/Navbar.js" "ns.html?id=" "dist/Navbar.js tiene el noscript de GTM"
+
+          echo ""
+          if [ "$fail" -ne 0 ]; then
+            echo "❌ La instalación de GTM se quitó o rompió. NO mergear/desplegar sin restaurarla."
+            echo "   Restaurar desde themes/industrial-glue/src/utils/gtm.ts + Head.tsx + Navbar.tsx y recompilar (src→dist)."
+            exit 1
+          fi
+          echo "✅ GTM presente en src y dist. Medición protegida."
