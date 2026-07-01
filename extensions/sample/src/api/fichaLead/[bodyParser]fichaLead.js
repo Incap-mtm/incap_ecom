@@ -1,3 +1,27 @@
+import { pool } from '@evershop/evershop/lib/postgres';
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/**
+ * Destinatarios de la notificación de lead. Lee FRESCO de la DB el setting
+ * `lead_emails` (editable desde el admin, varios separados por coma/;/salto).
+ * Fallback: env FICHA_LEAD_EMAIL / STORE_OWNER_EMAIL, o la casilla comercial.
+ */
+async function getRecipients() {
+  try {
+    const { rows } = await pool.query(
+      `SELECT value FROM setting WHERE name = 'lead_emails' LIMIT 1`,
+    );
+    const raw = rows[0]?.value || '';
+    const list = raw.split(/[,;\n]+/).map((s) => s.trim()).filter((e) => EMAIL_RE.test(e));
+    if (list.length) return list;
+  } catch (e) {
+    console.error('[FichaLead] getRecipients:', e.message);
+  }
+  const envEmail = process.env.FICHA_LEAD_EMAIL || process.env.STORE_OWNER_EMAIL;
+  return [envEmail || 'comercial@grupoincap.com.co'];
+}
+
 export default async function fichaLead(request, response) {
   try {
     const {
@@ -40,9 +64,9 @@ export default async function fichaLead(request, response) {
 
     // Enviar email vía Resend si está configurado
     const resendKey = process.env.RESEND_API_KEY;
-    const toEmail = process.env.FICHA_LEAD_EMAIL || process.env.STORE_OWNER_EMAIL || 'comercial@grupoincap.com.co';
 
     if (resendKey) {
+      const recipients = await getRecipients();
       const asunto = esCatalogo
         ? 'Nueva descarga de catálogo'
         : `Nueva descarga de ficha técnica — ${productName || sku || 'producto'}`;
@@ -61,7 +85,7 @@ export default async function fichaLead(request, response) {
           },
           body: JSON.stringify({
             from: 'INCAP Web <noreply@grupoincap.com.co>',
-            to: [toEmail],
+            to: recipients,
             subject: asunto,
             html: `
               <h2 style="color:#2A4899">${esCatalogo ? 'Nueva solicitud de catálogo' : 'Nueva solicitud de ficha técnica'}</h2>

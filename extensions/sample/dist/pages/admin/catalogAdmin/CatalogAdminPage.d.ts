@@ -13,6 +13,7 @@ interface Props {
     setting: {
         catalogUrl: string;
         catalogButtonText: string;
+        leadEmails: string;
     };
 }
 export default function CatalogAdminPage({ setting }: Props): React.JSX.Element;
@@ -20,5 +21,5 @@ export declare const layout: {
     areaId: string;
     sortOrder: number;
 };
-export declare const query = "\n  query CatalogAdminQuery {\n    setting {\n      catalogUrl\n      catalogButtonText\n    }\n  }\n";
+export declare const query = "\n  query CatalogAdminQuery {\n    setting {\n      catalogUrl\n      catalogButtonText\n      leadEmails\n    }\n  }\n";
 export {};

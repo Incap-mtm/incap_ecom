@@ -37,6 +37,16 @@ export default async function catalogConfig(request, response) {
       return response.status(400).json({ success: false, error: 'El texto del botón es requerido.' });
     }
 
+    // Correos de notificación de leads (0..n, separados por coma/;/salto)
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const rawEmails = (request.body?.leadEmails ?? '').toString();
+    const emailList = rawEmails.split(/[,;\n]+/).map((s) => s.trim()).filter(Boolean);
+    const invalid = emailList.filter((e) => !EMAIL_RE.test(e));
+    if (invalid.length) {
+      return response.status(400).json({ success: false, error: `Correo(s) inválido(s): ${invalid.join(', ')}` });
+    }
+    const leadEmails = emailList.join(', ');
+
     let catalogUrl = null;
     const file = request.file;
     if (file) {
@@ -53,12 +63,13 @@ export default async function catalogConfig(request, response) {
 
     // Persistir settings
     await upsertSetting('catalog_button_text', buttonText);
+    await upsertSetting('lead_emails', leadEmails);
     if (catalogUrl) {
       await upsertSetting('catalog_url', catalogUrl);
     }
     await refreshSetting();
 
-    return response.json({ success: true, catalogButtonText: buttonText, catalogUrl });
+    return response.json({ success: true, catalogButtonText: buttonText, catalogUrl, leadEmails });
   } catch (err) {
     console.error('[CatalogConfig] Error:', err.message);
     return response.status(500).json({ success: false, error: err.message });

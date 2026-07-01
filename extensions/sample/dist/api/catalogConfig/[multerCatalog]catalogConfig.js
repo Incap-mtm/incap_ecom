@@ -20,7 +20,7 @@ async function upsertSetting(name, value) {
      ON CONFLICT (name) DO UPDATE SET value = EXCLUDED.value, is_json = false`, [name, value]);
 }
 export default async function catalogConfig(request, response) {
-    var _a;
+    var _a, _b, _c;
     const admin = typeof request.getCurrentUser === 'function' ? request.getCurrentUser() : null;
     if (!admin) {
         return response.status(401).json({ success: false, error: 'No autorizado' });
@@ -30,6 +30,15 @@ export default async function catalogConfig(request, response) {
         if (!buttonText) {
             return response.status(400).json({ success: false, error: 'El texto del botón es requerido.' });
         }
+        // Correos de notificación de leads (0..n, separados por coma/;/salto)
+        const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const rawEmails = ((_c = (_b = request.body) === null || _b === void 0 ? void 0 : _b.leadEmails) !== null && _c !== void 0 ? _c : '').toString();
+        const emailList = rawEmails.split(/[,;\n]+/).map((s) => s.trim()).filter(Boolean);
+        const invalid = emailList.filter((e) => !EMAIL_RE.test(e));
+        if (invalid.length) {
+            return response.status(400).json({ success: false, error: `Correo(s) inválido(s): ${invalid.join(', ')}` });
+        }
+        const leadEmails = emailList.join(', ');
         let catalogUrl = null;
         const file = request.file;
         if (file) {
@@ -45,11 +54,12 @@ export default async function catalogConfig(request, response) {
         }
         // Persistir settings
         await upsertSetting('catalog_button_text', buttonText);
+        await upsertSetting('lead_emails', leadEmails);
         if (catalogUrl) {
             await upsertSetting('catalog_url', catalogUrl);
         }
         await refreshSetting();
-        return response.json({ success: true, catalogButtonText: buttonText, catalogUrl });
+        return response.json({ success: true, catalogButtonText: buttonText, catalogUrl, leadEmails });
     }
     catch (err) {
         console.error('[CatalogConfig] Error:', err.message);

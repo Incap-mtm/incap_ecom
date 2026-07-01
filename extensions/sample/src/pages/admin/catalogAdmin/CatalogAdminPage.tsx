@@ -24,12 +24,14 @@ interface Props {
   setting: {
     catalogUrl: string;
     catalogButtonText: string;
+    leadEmails: string;
   };
 }
 
 export default function CatalogAdminPage({ setting }: Props) {
   const [buttonText, setButtonText] = useState(setting?.catalogButtonText || 'Descargar Catálogo');
   const [currentUrl, setCurrentUrl] = useState(setting?.catalogUrl || '');
+  const [leadEmails, setLeadEmails] = useState(setting?.leadEmails || '');
   const [file, setFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
@@ -47,6 +49,7 @@ export default function CatalogAdminPage({ setting }: Props) {
     try {
       const fd = new FormData();
       fd.append('buttonText', buttonText.trim());
+      fd.append('leadEmails', leadEmails.trim());
       if (file) fd.append('catalog', file);
       const res = await fetch('/api/catalog-config', {
         method: 'POST',
@@ -86,7 +89,8 @@ export default function CatalogAdminPage({ setting }: Props) {
         Catálogo descargable
       </h1>
       <p style={{ fontSize: '13px', color: '#64748b', margin: '0 0 1.5rem' }}>
-        Actualizá el PDF del catálogo y el texto del botón del header. Se actualiza cada mes.
+        Actualizá el PDF del catálogo y el texto del botón del header (se actualiza cada mes), y
+        gestioná los correos que reciben las descargas de fichas y catálogo.
       </p>
 
       {error && (
@@ -147,6 +151,22 @@ export default function CatalogAdminPage({ setting }: Props) {
           </p>
         </div>
 
+        {/* Separador */}
+        <div style={{ borderTop: `1px solid ${BORDER}`, margin: '1.75rem 0 1.5rem' }} />
+
+        {/* Correos de notificación de leads */}
+        <label style={labelStyle}>Correos de notificación de leads</label>
+        <textarea
+          style={{ ...inputStyle, minHeight: '70px', resize: 'vertical', fontFamily: 'Inter, sans-serif' }}
+          value={leadEmails}
+          onChange={(e) => setLeadEmails(e.target.value)}
+          placeholder="correo1@empresa.com, correo2@empresa.com"
+        />
+        <p style={{ fontSize: '11px', color: '#94a3b8', margin: '6px 0 0', lineHeight: 1.5 }}>
+          A estos correos llega cada descarga de <strong>ficha técnica</strong> y de <strong>catálogo</strong>.
+          Podés poner varios separados por coma. Si lo dejás vacío, se usa el correo por defecto del sistema.
+        </p>
+
         {/* Guardar */}
         <button
           type="button"
@@ -181,6 +201,7 @@ export const query = `
     setting {
       catalogUrl
       catalogButtonText
+      leadEmails
     }
   }
 `;

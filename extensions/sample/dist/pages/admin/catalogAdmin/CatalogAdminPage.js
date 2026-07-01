@@ -23,6 +23,7 @@ function extractError(data, fallback) {
 export default function CatalogAdminPage({ setting }) {
     const [buttonText, setButtonText] = useState((setting === null || setting === void 0 ? void 0 : setting.catalogButtonText) || 'Descargar Catálogo');
     const [currentUrl, setCurrentUrl] = useState((setting === null || setting === void 0 ? void 0 : setting.catalogUrl) || '');
+    const [leadEmails, setLeadEmails] = useState((setting === null || setting === void 0 ? void 0 : setting.leadEmails) || '');
     const [file, setFile] = useState(null);
     const [busy, setBusy] = useState(false);
     const [successMsg, setSuccessMsg] = useState('');
@@ -39,6 +40,7 @@ export default function CatalogAdminPage({ setting }) {
         try {
             const fd = new FormData();
             fd.append('buttonText', buttonText.trim());
+            fd.append('leadEmails', leadEmails.trim());
             if (file)
                 fd.append('catalog', file);
             const res = await fetch('/api/catalog-config', {
@@ -78,7 +80,7 @@ export default function CatalogAdminPage({ setting }) {
     };
     return (React.createElement("div", { style: { fontFamily: 'Sora, sans-serif', padding: '2rem', maxWidth: '720px' } },
         React.createElement("h1", { style: { fontSize: '1.5rem', fontWeight: 900, color: AZUL, margin: '0 0 4px' } }, "Cat\u00E1logo descargable"),
-        React.createElement("p", { style: { fontSize: '13px', color: '#64748b', margin: '0 0 1.5rem' } }, "Actualiz\u00E1 el PDF del cat\u00E1logo y el texto del bot\u00F3n del header. Se actualiza cada mes."),
+        React.createElement("p", { style: { fontSize: '13px', color: '#64748b', margin: '0 0 1.5rem' } }, "Actualiz\u00E1 el PDF del cat\u00E1logo y el texto del bot\u00F3n del header (se actualiza cada mes), y gestion\u00E1 los correos que reciben las descargas de fichas y cat\u00E1logo."),
         error && (React.createElement("div", { style: { background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: '8px', padding: '10px 16px', marginBottom: '1rem', color: '#dc2626', fontSize: '13px' } }, error)),
         successMsg && (React.createElement("div", { style: { background: '#f0fdf4', border: '1px solid #86efac', borderRadius: '8px', padding: '10px 16px', marginBottom: '1rem', color: '#16a34a', fontSize: '13px' } }, successMsg)),
         React.createElement("div", { style: { background: '#fff', border: `1px solid ${BORDER}`, borderRadius: '16px', padding: '1.75rem' } },
@@ -101,6 +103,15 @@ export default function CatalogAdminPage({ setting }) {
                     (file.size / 1024 / 1024).toFixed(2),
                     " MB)")),
                 React.createElement("p", { style: { fontSize: '11px', color: '#94a3b8', margin: '6px 0 0', lineHeight: 1.5 } }, "M\u00E1ximo 15 MB. El PDF queda en el volumen de media y se sirve en /assets/catalogo/...")),
+            React.createElement("div", { style: { borderTop: `1px solid ${BORDER}`, margin: '1.75rem 0 1.5rem' } }),
+            React.createElement("label", { style: labelStyle }, "Correos de notificaci\u00F3n de leads"),
+            React.createElement("textarea", { style: { ...inputStyle, minHeight: '70px', resize: 'vertical', fontFamily: 'Inter, sans-serif' }, value: leadEmails, onChange: (e) => setLeadEmails(e.target.value), placeholder: "correo1@empresa.com, correo2@empresa.com" }),
+            React.createElement("p", { style: { fontSize: '11px', color: '#94a3b8', margin: '6px 0 0', lineHeight: 1.5 } },
+                "A estos correos llega cada descarga de ",
+                React.createElement("strong", null, "ficha t\u00E9cnica"),
+                " y de ",
+                React.createElement("strong", null, "cat\u00E1logo"),
+                ". Pod\u00E9s poner varios separados por coma. Si lo dej\u00E1s vac\u00EDo, se usa el correo por defecto del sistema."),
             React.createElement("button", { type: "button", onClick: handleSave, disabled: busy, style: {
                     marginTop: '1.5rem', background: busy ? '#94a3b8' : AZUL, color: '#fff', border: 'none',
                     borderRadius: '8px', padding: '11px 26px', fontSize: '12px', fontWeight: 900,
@@ -118,6 +129,7 @@ export const query = `
     setting {
       catalogUrl
       catalogButtonText
+      leadEmails
     }
   }
 `;

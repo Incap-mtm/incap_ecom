@@ -11,6 +11,7 @@ extend type Setting {
   blogIndex: String
   catalogUrl: String
   catalogButtonText: String
+  leadEmails: String
 }
 
 type SizeOption {

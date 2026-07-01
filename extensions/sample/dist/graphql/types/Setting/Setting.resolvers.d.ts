@@ -12,6 +12,7 @@ declare namespace _default {
         function blogIndex(setting: any): any;
         function catalogUrl(setting: any): any;
         function catalogButtonText(setting: any): any;
+        function leadEmails(setting: any): any;
     }
     namespace Query {
         function sizeOptions(_: any, __: any, { pool: ctxPool }: {

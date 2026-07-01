@@ -15,6 +15,7 @@ export default {
         blogIndex: (setting) => findSetting(setting, 'blog_index', '{}'),
         catalogUrl: (setting) => findSetting(setting, 'catalog_url', '/assets/catalogo-incap.pdf'),
         catalogButtonText: (setting) => findSetting(setting, 'catalog_button_text', 'Descargar Catálogo'),
+        leadEmails: (setting) => findSetting(setting, 'lead_emails', ''),
     },
     Query: {
         sizeOptions: async (_, __, { pool: ctxPool }) => {
