@@ -37,7 +37,11 @@ CATÁLOGO:
 `;
 async function fetchCatalog(port) {
     var _a, _b, _c;
-    const res = await fetch(`http://localhost:${port}/graphql`, {
+    // El endpoint GraphQL de Evershop vive bajo el prefijo /api → /api/graphql.
+    // (Sin el prefijo, /graphql resuelve a una página del frontStore "Not found"
+    //  que devuelve HTML → res.json() falla → catálogo vacío → el asesor no
+    //  puede recomendar productos reales.)
+    const res = await fetch(`http://localhost:${port}/api/graphql`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: GQL_CATALOG,
