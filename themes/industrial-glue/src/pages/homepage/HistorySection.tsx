@@ -61,6 +61,10 @@ function init(container) {
     renderer.setSize(w, h);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
+    // Tone mapping filmico → evita que los highlights del plastico blanco se
+    // "quemen"/clipeen (colores explotados). Rolloff suave de las altas luces.
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
     renderer.shadowMap.enabled = false;
     container.appendChild(renderer.domElement);
 
@@ -69,16 +73,18 @@ function init(container) {
     const pmrem = new THREE.PMREMGenerator(renderer);
     scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 
-    /* Lights */
-    scene.add(new THREE.AmbientLight(0xffffff, 2.8));
-    const key = new THREE.DirectionalLight(0xffffff, 3.6);
+    /* Lights — intensidades moderadas: con el tone mapping filmico + el
+       environment (RoomEnvironment) el plastico se ve blanco y limpio sin
+       quemarse. Antes estaban muy altas (ambient 2.8 / key 3.6) → clipping. */
+    scene.add(new THREE.AmbientLight(0xffffff, 1.1));
+    const key = new THREE.DirectionalLight(0xffffff, 2.0);
     key.position.set(4, 8, 6);
     scene.add(key);
     // Relleno blanco (antes azulado, que engrisaba el producto)
-    const fill = new THREE.DirectionalLight(0xffffff, 0.8);
+    const fill = new THREE.DirectionalLight(0xffffff, 0.5);
     fill.position.set(-5, -2, -3);
     scene.add(fill);
-    const rim = new THREE.DirectionalLight(0xffffff, 0.8);
+    const rim = new THREE.DirectionalLight(0xffffff, 0.55);
     rim.position.set(-3, 4, -6);
     scene.add(rim);
 
