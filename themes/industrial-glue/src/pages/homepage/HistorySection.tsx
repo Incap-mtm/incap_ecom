@@ -82,9 +82,10 @@ function init(container) {
     rim.position.set(-3, 4, -6);
     scene.add(rim);
 
-    let raf    = 0;
-    let mixer  = null;
-    let action = null;
+    let raf       = 0;
+    let mixer     = null;
+    let action    = null;
+    let tiltGroup = null;
 
     /* Load model */
     new GLTFLoader().load(
@@ -102,12 +103,13 @@ function init(container) {
 
         // Wrap in a group for the static tilt — keeps animation on model unaffected
         const isMobile = window.innerWidth < 1024;
-        const tiltGroup = new THREE.Group();
+        tiltGroup = new THREE.Group();
         tiltGroup.rotation.z = (15 * Math.PI / 180);
         tiltGroup.position.y = isMobile ? -1.3  : -1.25;
         tiltGroup.position.x = isMobile ?  0.0  : -1.5;
         tiltGroup.add(model);
         scene.add(tiltGroup);
+        onScroll(); // estado inicial: escala pequeña + rotación en 0
 
         /* Wire scroll to the built-in 'rotacion' animation */
         if (gltf.animations && gltf.animations.length) {
@@ -128,16 +130,27 @@ function init(container) {
       (err) => console.error('[INCAP 3D] GLB error:', err)
     );
 
-    /* Scroll → scrub animation */
+    /* Scroll → escala (pequeño→actual) + scrub de la rotación.
+       El progreso va de 0 (el producto entra por abajo) a 1 (desaparece por
+       arriba), atado a la visibilidad del PRODUCTO (no de toda la sección). */
     function onScroll() {
-      if (!mixer || !action) return;
-      const section = container.closest('section');
-      if (!section) return;
-      const rect  = section.getBoundingClientRect();
-      const vh    = window.innerHeight;
-      const prog  = Math.min(1, Math.max(0, (vh - rect.top) / (vh + rect.height)));
-      action.time = prog * action.getClip().duration;
-      mixer.update(0);
+      if (!tiltGroup) return;
+      const rect = container.getBoundingClientRect();
+      const vh   = window.innerHeight;
+      const prog = Math.min(1, Math.max(0, (vh - rect.top) / (vh + rect.height)));
+
+      // Rotación scrubada por scroll (si el modelo trae animación)
+      if (action && mixer) {
+        action.time = prog * action.getClip().duration;
+        mixer.update(0);
+      }
+
+      // Escala: inicia pequeño y crece hasta el tamaño actual (scale = 1),
+      // alcanzándolo cuando el producto queda centrado/arriba (~75% del recorrido).
+      const SCALE_MIN = 0.45;
+      const g     = Math.min(1, prog / 0.75);
+      const eased = 1 - Math.pow(1 - g, 3); // easeOutCubic
+      tiltGroup.scale.setScalar(SCALE_MIN + (1 - SCALE_MIN) * eased);
     }
     window.addEventListener('scroll', onScroll, { passive: true });
 
