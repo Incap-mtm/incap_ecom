@@ -84,7 +84,7 @@ export default async function fichaLead(request, response) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            from: 'INCAP Web <noreply@grupoincap.com.co>',
+            from: 'INCAP Web <onboarding@resend.dev>',
             to: recipients,
             subject: asunto,
             html: `
