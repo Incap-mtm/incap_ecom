@@ -36,6 +36,10 @@ const BODY_CSS = `
 .blog-md-body strong { font-weight: 700; }
 .blog-md-body em { font-style: italic; }
 .blog-md-body code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 14px; font-family: monospace; }
+.blog-md-body figure.blog-fig { margin: 2rem 0; }
+.blog-md-body figure.blog-fig img { display: block; width: 100%; height: auto; border-radius: 12px; }
+.blog-md-body figure.blog-fig figcaption { margin-top: 0.6rem; font-size: 13px; color: #64748b; font-family: Sora, sans-serif; line-height: 1.5; text-align: center; font-style: italic; }
+.blog-md-body p img { max-width: 100%; height: auto; border-radius: 8px; }
 `;
 
 export default function BlogPostPage() {
@@ -74,7 +78,7 @@ export default function BlogPostPage() {
   // JSON-LD Article
   const coverAbsolute = post?.cover
     ? `https://www.grupoincap.com.co${post.cover}`
-    : 'https://www.grupoincap.com.co/images/blog/incap-sa-en-interzum-2026.webp';
+    : 'https://www.grupoincap.com.co/images/blog/interzum/interzum-stand-equipo.webp';
 
   const jsonLd = post
     ? JSON.stringify({

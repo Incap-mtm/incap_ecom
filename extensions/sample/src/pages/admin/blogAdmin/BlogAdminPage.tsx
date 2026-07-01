@@ -72,8 +72,11 @@ function PostForm({ initial, onSave, onCancel, busy }: FormProps) {
   const [showPreview, setShowPreview] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
   const [coverError, setCoverError] = useState('');
+  const [uploadingBodyImg, setUploadingBodyImg] = useState(false);
+  const [bodyImgError, setBodyImgError] = useState('');
   const bodyRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const bodyImgInputRef = useRef<HTMLInputElement>(null);
 
   const set = (key: keyof BlogPost, value: any) =>
     setForm((f) => ({ ...f, [key]: value }));
@@ -98,30 +101,66 @@ function PostForm({ initial, onSave, onCancel, busy }: FormProps) {
     }));
   }
 
-  // ── Subida de portada ──────────────────────────────────────────────────────
+  // ── Subida de imágenes (portada y cuerpo comparten endpoint) ────────────────
+
+  /**
+   * Sube una imagen a /api/blog-cover (convierte a WebP y devuelve la URL
+   * /assets/blog/...). Reutilizado por la portada y por las imágenes del cuerpo.
+   */
+  async function uploadImage(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append('cover', file);
+    const res = await fetch('/api/blog-cover', {
+      method: 'POST',
+      credentials: 'same-origin',
+      body: formData,
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.success || !data.url) {
+      throw new Error(extractError(data, 'Error al subir la imagen.'));
+    }
+    return data.url as string;
+  }
 
   async function handleCoverFile(file: File) {
     setUploadingCover(true);
     setCoverError('');
     try {
-      const formData = new FormData();
-      formData.append('cover', file);
-      const res = await fetch('/api/blog-cover', {
-        method: 'POST',
-        credentials: 'same-origin',
-        body: formData,
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.success) {
-        setCoverError(extractError(data, 'Error al subir la imagen.'));
-      } else {
-        set('cover', data.url);
-        setCoverError('');
-      }
+      const url = await uploadImage(file);
+      set('cover', url);
     } catch (e: any) {
       setCoverError(e?.message || 'Error de conexión al subir imagen.');
     } finally {
       setUploadingCover(false);
+    }
+  }
+
+  /** Sube una imagen y la inserta en el cuerpo Markdown como ![](url). */
+  async function handleBodyImageFile(file: File) {
+    setUploadingBodyImg(true);
+    setBodyImgError('');
+    try {
+      const url = await uploadImage(file);
+      // Insertar en el cursor (o al final) como bloque de imagen con caption editable.
+      const ta = bodyRef.current;
+      const snippet = `\n\n![Descripción de la imagen](${url})\n\n`;
+      setForm((f) => {
+        const start = ta?.selectionStart ?? f.body.length;
+        const end = ta?.selectionEnd ?? f.body.length;
+        const newBody = f.body.substring(0, start) + snippet + f.body.substring(end);
+        const caret = start + snippet.length;
+        setTimeout(() => {
+          if (bodyRef.current) {
+            bodyRef.current.focus();
+            bodyRef.current.setSelectionRange(caret, caret);
+          }
+        }, 16);
+        return { ...f, body: newBody };
+      });
+    } catch (e: any) {
+      setBodyImgError(e?.message || 'Error de conexión al subir imagen.');
+    } finally {
+      setUploadingBodyImg(false);
     }
   }
 
@@ -477,7 +516,40 @@ function PostForm({ initial, onSave, onCancel, busy }: FormProps) {
             >
               Link
             </button>
+            {/* Insertar imagen en el cuerpo (subida) */}
+            <input
+              ref={bodyImgInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              style={{ display: 'none' }}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleBodyImageFile(file);
+                e.target.value = '';
+              }}
+            />
+            <button
+              type="button"
+              style={{ ...toolbarBtnStyle, background: uploadingBodyImg ? '#e2e8f0' : '#e0e7ff', color: AZUL }}
+              disabled={uploadingBodyImg}
+              onClick={() => bodyImgInputRef.current?.click()}
+            >
+              {uploadingBodyImg ? 'Subiendo…' : '+ Imagen'}
+            </button>
           </div>
+
+          {bodyImgError && (
+            <p
+              style={{
+                fontSize: '11px',
+                color: '#dc2626',
+                margin: '0 0 8px',
+                fontFamily: 'Sora, sans-serif',
+              }}
+            >
+              {bodyImgError}
+            </p>
+          )}
 
           {/* Editor + Preview */}
           <div
@@ -537,6 +609,10 @@ function PostForm({ initial, onSave, onCancel, busy }: FormProps) {
                   .blog-md-preview blockquote p{color:#2A4899;margin:0}
                   .blog-md-preview a{color:#2A4899;text-decoration:underline}
                   .blog-md-preview code{background:#f1f5f9;padding:1px 5px;border-radius:3px;font-size:12px;font-family:monospace}
+                  .blog-md-preview figure.blog-fig{margin:1rem 0}
+                  .blog-md-preview figure.blog-fig img{display:block;width:100%;height:auto;border-radius:8px}
+                  .blog-md-preview figure.blog-fig figcaption{margin-top:.4rem;font-size:11px;color:#64748b;text-align:center;font-style:italic}
+                  .blog-md-preview p img{max-width:100%;height:auto;border-radius:6px}
                 `}</style>
                 {form.body ? (
                   <div
@@ -560,7 +636,7 @@ function PostForm({ initial, onSave, onCancel, busy }: FormProps) {
               fontFamily: 'Sora, sans-serif',
             }}
           >
-            Guía rápida: ## Subtítulo | **negrita** | *itálica* | - lista | &gt; cita | [texto](url)
+            Guía rápida: ## Subtítulo | **negrita** | *itálica* | - lista | &gt; cita | [texto](url) | + Imagen (sube e inserta en el cuerpo)
           </p>
         </div>
 
@@ -765,6 +841,14 @@ export default function BlogAdminPage({ setting }: Props) {
               <code style={{ background: '#dbeafe', padding: '1px 5px', borderRadius: '3px', fontSize: '12px' }}>
                 [texto](url)
               </code>
+            </li>
+            <li>
+              <strong>Imágenes en el cuerpo:</strong> ubicá el cursor donde querés la foto y hacé clic en{' '}
+              <strong>+ Imagen</strong>. Se sube, se convierte a WebP y se inserta como bloque{' '}
+              <code style={{ background: '#dbeafe', padding: '1px 5px', borderRadius: '3px', fontSize: '12px' }}>
+                ![Descripción](url)
+              </code>
+              . Editá el texto entre corchetes: es el pie de foto (y el alt para SEO).
             </li>
             <li>
               Activá <strong>Mostrar preview</strong> para ver el resultado en tiempo real al costado.

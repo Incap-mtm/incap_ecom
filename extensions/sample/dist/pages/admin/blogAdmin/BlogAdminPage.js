@@ -58,8 +58,11 @@ function PostForm({ initial, onSave, onCancel, busy }) {
     const [showPreview, setShowPreview] = useState(false);
     const [uploadingCover, setUploadingCover] = useState(false);
     const [coverError, setCoverError] = useState('');
+    const [uploadingBodyImg, setUploadingBodyImg] = useState(false);
+    const [bodyImgError, setBodyImgError] = useState('');
     const bodyRef = useRef(null);
     const fileInputRef = useRef(null);
+    const bodyImgInputRef = useRef(null);
     const set = (key, value) => setForm((f) => ({ ...f, [key]: value }));
     function handleTitleChange(title) {
         setForm((f) => ({
@@ -79,32 +82,68 @@ function PostForm({ initial, onSave, onCancel, busy }) {
                 .replace(/^-|-$/g, ''),
         }));
     }
-    // ── Subida de portada ──────────────────────────────────────────────────────
+    // ── Subida de imágenes (portada y cuerpo comparten endpoint) ────────────────
+    /**
+     * Sube una imagen a /api/blog-cover (convierte a WebP y devuelve la URL
+     * /assets/blog/...). Reutilizado por la portada y por las imágenes del cuerpo.
+     */
+    async function uploadImage(file) {
+        const formData = new FormData();
+        formData.append('cover', file);
+        const res = await fetch('/api/blog-cover', {
+            method: 'POST',
+            credentials: 'same-origin',
+            body: formData,
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.success || !data.url) {
+            throw new Error(extractError(data, 'Error al subir la imagen.'));
+        }
+        return data.url;
+    }
     async function handleCoverFile(file) {
         setUploadingCover(true);
         setCoverError('');
         try {
-            const formData = new FormData();
-            formData.append('cover', file);
-            const res = await fetch('/api/blog-cover', {
-                method: 'POST',
-                credentials: 'same-origin',
-                body: formData,
-            });
-            const data = await res.json().catch(() => ({}));
-            if (!res.ok || !data.success) {
-                setCoverError(extractError(data, 'Error al subir la imagen.'));
-            }
-            else {
-                set('cover', data.url);
-                setCoverError('');
-            }
+            const url = await uploadImage(file);
+            set('cover', url);
         }
         catch (e) {
             setCoverError((e === null || e === void 0 ? void 0 : e.message) || 'Error de conexión al subir imagen.');
         }
         finally {
             setUploadingCover(false);
+        }
+    }
+    /** Sube una imagen y la inserta en el cuerpo Markdown como ![](url). */
+    async function handleBodyImageFile(file) {
+        setUploadingBodyImg(true);
+        setBodyImgError('');
+        try {
+            const url = await uploadImage(file);
+            // Insertar en el cursor (o al final) como bloque de imagen con caption editable.
+            const ta = bodyRef.current;
+            const snippet = `\n\n![Descripción de la imagen](${url})\n\n`;
+            setForm((f) => {
+                var _a, _b;
+                const start = (_a = ta === null || ta === void 0 ? void 0 : ta.selectionStart) !== null && _a !== void 0 ? _a : f.body.length;
+                const end = (_b = ta === null || ta === void 0 ? void 0 : ta.selectionEnd) !== null && _b !== void 0 ? _b : f.body.length;
+                const newBody = f.body.substring(0, start) + snippet + f.body.substring(end);
+                const caret = start + snippet.length;
+                setTimeout(() => {
+                    if (bodyRef.current) {
+                        bodyRef.current.focus();
+                        bodyRef.current.setSelectionRange(caret, caret);
+                    }
+                }, 16);
+                return { ...f, body: newBody };
+            });
+        }
+        catch (e) {
+            setBodyImgError((e === null || e === void 0 ? void 0 : e.message) || 'Error de conexión al subir imagen.');
+        }
+        finally {
+            setUploadingBodyImg(false);
         }
     }
     // ── Mini-toolbar Markdown ──────────────────────────────────────────────────
@@ -304,7 +343,21 @@ function PostForm({ initial, onSave, onCancel, busy }) {
                     React.createElement("button", { type: "button", style: { ...toolbarBtnStyle, fontStyle: 'italic' }, onClick: () => insertMd('*', '*', 'texto en itálica') }, "I"),
                     React.createElement("button", { type: "button", style: toolbarBtnStyle, onClick: () => insertMd('\n- ', '', 'ítem de lista') }, "- Lista"),
                     React.createElement("button", { type: "button", style: toolbarBtnStyle, onClick: () => insertMd('\n> ', '', 'cita destacada') }, "> Cita"),
-                    React.createElement("button", { type: "button", style: toolbarBtnStyle, onClick: () => insertMd('[', '](https://)', 'texto del enlace') }, "Link")),
+                    React.createElement("button", { type: "button", style: toolbarBtnStyle, onClick: () => insertMd('[', '](https://)', 'texto del enlace') }, "Link"),
+                    React.createElement("input", { ref: bodyImgInputRef, type: "file", accept: "image/jpeg,image/png,image/webp,image/gif", style: { display: 'none' }, onChange: (e) => {
+                            var _a;
+                            const file = (_a = e.target.files) === null || _a === void 0 ? void 0 : _a[0];
+                            if (file)
+                                handleBodyImageFile(file);
+                            e.target.value = '';
+                        } }),
+                    React.createElement("button", { type: "button", style: { ...toolbarBtnStyle, background: uploadingBodyImg ? '#e2e8f0' : '#e0e7ff', color: AZUL }, disabled: uploadingBodyImg, onClick: () => { var _a; return (_a = bodyImgInputRef.current) === null || _a === void 0 ? void 0 : _a.click(); } }, uploadingBodyImg ? 'Subiendo…' : '+ Imagen')),
+                bodyImgError && (React.createElement("p", { style: {
+                        fontSize: '11px',
+                        color: '#dc2626',
+                        margin: '0 0 8px',
+                        fontFamily: 'Sora, sans-serif',
+                    } }, bodyImgError)),
                 React.createElement("div", { style: {
                         display: 'grid',
                         gridTemplateColumns: showPreview ? '1fr 1fr' : '1fr',
@@ -349,6 +402,10 @@ function PostForm({ initial, onSave, onCancel, busy }) {
                   .blog-md-preview blockquote p{color:#2A4899;margin:0}
                   .blog-md-preview a{color:#2A4899;text-decoration:underline}
                   .blog-md-preview code{background:#f1f5f9;padding:1px 5px;border-radius:3px;font-size:12px;font-family:monospace}
+                  .blog-md-preview figure.blog-fig{margin:1rem 0}
+                  .blog-md-preview figure.blog-fig img{display:block;width:100%;height:auto;border-radius:8px}
+                  .blog-md-preview figure.blog-fig figcaption{margin-top:.4rem;font-size:11px;color:#64748b;text-align:center;font-style:italic}
+                  .blog-md-preview p img{max-width:100%;height:auto;border-radius:6px}
                 `),
                         form.body ? (React.createElement("div", { className: "blog-md-preview", dangerouslySetInnerHTML: { __html: bodyHtml } })) : (React.createElement("p", { style: { color: '#94a3b8', fontStyle: 'italic', fontSize: '13px' } }, "El preview aparece aqu\u00ED mientras escrib\u00EDs."))))),
                 React.createElement("p", { style: {
@@ -356,7 +413,7 @@ function PostForm({ initial, onSave, onCancel, busy }) {
                         color: '#94a3b8',
                         margin: '6px 0 0',
                         fontFamily: 'Sora, sans-serif',
-                    } }, "Gu\u00EDa r\u00E1pida: ## Subt\u00EDtulo | **negrita** | *it\u00E1lica* | - lista | > cita | [texto](url)"))),
+                    } }, "Gu\u00EDa r\u00E1pida: ## Subt\u00EDtulo | **negrita** | *it\u00E1lica* | - lista | > cita | [texto](url) | + Imagen (sube e inserta en el cuerpo)"))),
         React.createElement("div", { style: { display: 'flex', gap: '12px', marginTop: '1.5rem' } },
             React.createElement("button", { type: "button", onClick: () => onSave(form), disabled: busy || !form.slug || !form.title, style: {
                     background: busy ? '#94a3b8' : AZUL,
@@ -517,6 +574,15 @@ export default function BlogAdminPage({ setting }) {
                             " cita"),
                         ' ',
                         React.createElement("code", { style: { background: '#dbeafe', padding: '1px 5px', borderRadius: '3px', fontSize: '12px' } }, "[texto](url)")),
+                    React.createElement("li", null,
+                        React.createElement("strong", null, "Im\u00E1genes en el cuerpo:"),
+                        " ubic\u00E1 el cursor donde quer\u00E9s la foto y hac\u00E9 clic en",
+                        ' ',
+                        React.createElement("strong", null, "+ Imagen"),
+                        ". Se sube, se convierte a WebP y se inserta como bloque",
+                        ' ',
+                        React.createElement("code", { style: { background: '#dbeafe', padding: '1px 5px', borderRadius: '3px', fontSize: '12px' } }, "![Descripci\u00F3n](url)"),
+                        ". Edit\u00E1 el texto entre corchetes: es el pie de foto (y el alt para SEO)."),
                     React.createElement("li", null,
                         "Activ\u00E1 ",
                         React.createElement("strong", null, "Mostrar preview"),
