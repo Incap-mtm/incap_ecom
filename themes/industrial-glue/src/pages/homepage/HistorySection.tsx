@@ -49,6 +49,10 @@ function init(container) {
     const w = container.offsetWidth  || 520;
     const h = container.offsetHeight || 520;
 
+    // Offset de giro (Y, radianes) para que la cara "MAXÓN" quede al frente
+    // cuando el producto está centrado en la sección.
+    const ROT_Y_OFFSET = 0;
+
     /* Scene */
     const scene  = new THREE.Scene();
     // FOV 46° + z=4.5 → producto llena bien el canvas sin cortes
@@ -111,10 +115,20 @@ function init(container) {
         const isMobile = window.innerWidth < 1024;
         tiltGroup = new THREE.Group();
         tiltGroup.rotation.z = (15 * Math.PI / 180);
+        tiltGroup.rotation.y = ROT_Y_OFFSET; // cara MAXÓN al frente al centrar
         tiltGroup.position.y = isMobile ? -1.3  : -1.25;
         tiltGroup.position.x = isMobile ?  0.0  : -1.5;
         tiltGroup.add(model);
         scene.add(tiltGroup);
+        // DEBUG (temporal): exponer para calibrar el offset de giro en vivo
+        window.__incap3d = {
+          tiltGroup,
+          getProg: () => {
+            const r = container.getBoundingClientRect();
+            const vh = window.innerHeight;
+            return Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
+          },
+        };
         onScroll(); // estado inicial: escala pequeña + rotación en 0
 
         /* Wire scroll to the built-in 'rotacion' animation */
