@@ -33,41 +33,69 @@ function RichText({ content }) {
     const blocks = [];
     let i = 0;
     let k = 0;
-    const isHeading = (l) => /^#{2,3}\s+/.test(l.trim());
-    const isOl = (l) => /^\d+\.\s+/.test(l.trim());
-    const isUl = (l) => /^[-*]\s+/.test(l.trim());
+    // Marcadores tolerantes: la negrita del modelo puede envolver el marcador
+    // (ej. "**1. Paso**" o "**- item**"), así que aceptamos un "**" opcional.
+    const isHeading = (l) => /^#{1,3}\s+/.test(l.trim());
+    const isOl = (l) => /^(?:\*\*)?\d+\.\s+/.test(l.trim());
+    const isUl = (l) => /^(?:\*\*)?[-*]\s+/.test(l.trim());
+    /** Índice de la próxima línea no vacía (o lines.length). */
+    const nextNonBlank = (from) => {
+        let j = from;
+        while (j < lines.length && lines[j].trim() === '')
+            j++;
+        return j;
+    };
+    /**
+     * Recolecta ítems de lista consecutivos, tolerando líneas en blanco entre
+     * ítems (el modelo suele separarlos con \n\n). Quita el marcador ("N." o
+     * "-"), incluso si el modelo lo envolvió en negrita ("**1. ...**"), sin
+     * romper la negrita interna del caso limpio ("1. **label** — texto").
+     */
+    const collectList = (isKind, markerRe) => {
+        const items = [];
+        while (i < lines.length) {
+            if (lines[i].trim() === '') {
+                const j = nextNonBlank(i + 1);
+                if (j < lines.length && isKind(lines[j])) {
+                    i = j;
+                    continue;
+                }
+                break;
+            }
+            if (!isKind(lines[i]))
+                break;
+            const raw = lines[i].trim();
+            const boldMarker = raw.startsWith('**'); // el "**" envuelve al marcador
+            let text = raw.replace(markerRe, ''); // quita ("**")? + "N." / "-"
+            if (boldMarker)
+                text = text.replace(/\*\*/, ''); // quita el "**" de cierre del marcador
+            items.push(React.createElement("li", { key: k++, style: { marginBottom: '4px' } }, renderInline(text.trim(), `li${k}`)));
+            i++;
+        }
+        return items;
+    };
     while (i < lines.length) {
         const trimmed = lines[i].trim();
         if (trimmed === '') {
             i++;
             continue;
         }
-        // Subtítulo (## / ###)
-        const hm = trimmed.match(/^#{2,3}\s+(.+)/);
+        // Subtítulo (# / ## / ###) — todos compactos para el chat angosto
+        const hm = trimmed.match(/^#{1,3}\s+(.+)/);
         if (hm) {
-            blocks.push(React.createElement("div", { key: k++, style: { fontWeight: 800, fontSize: '13px', color: '#181B1C', margin: '12px 0 4px' } }, renderInline(hm[1], `h${k}`)));
+            blocks.push(React.createElement("div", { key: k++, style: { fontWeight: 800, fontSize: '13px', color: '#181B1C', margin: '12px 0 5px' } }, renderInline(hm[1], `h${k}`)));
             i++;
             continue;
         }
-        // Lista numerada
+        // Lista numerada (mantiene la numeración del modelo vía <ol>)
         if (isOl(trimmed)) {
-            const items = [];
-            while (i < lines.length && isOl(lines[i])) {
-                const m = lines[i].trim().match(/^\d+\.\s+(.+)/);
-                items.push(React.createElement("li", { key: k++, style: { marginBottom: '3px' } }, renderInline(m[1], `ol${k}`)));
-                i++;
-            }
+            const items = collectList(isOl, /^(?:\*\*)?\d+\.\s+/);
             blocks.push(React.createElement("ol", { key: k++, style: { margin: '4px 0 8px', paddingLeft: '20px' } }, items));
             continue;
         }
         // Lista con viñetas
         if (isUl(trimmed)) {
-            const items = [];
-            while (i < lines.length && isUl(lines[i])) {
-                const m = lines[i].trim().match(/^[-*]\s+(.+)/);
-                items.push(React.createElement("li", { key: k++, style: { marginBottom: '3px' } }, renderInline(m[1], `ul${k}`)));
-                i++;
-            }
+            const items = collectList(isUl, /^(?:\*\*)?[-*]\s+/);
             blocks.push(React.createElement("ul", { key: k++, style: { margin: '4px 0 8px', paddingLeft: '20px' } }, items));
             continue;
         }

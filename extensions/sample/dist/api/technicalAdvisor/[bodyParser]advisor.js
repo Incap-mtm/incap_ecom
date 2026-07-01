@@ -37,7 +37,8 @@ FORMATO (Markdown, para legibilidad en un chat angosto):
 - Separa las ideas en párrafos cortos, con UNA línea en blanco entre ellos.
 - Usa **negrita** para nombres de producto y términos clave.
 - Antes de una sección, podés usar un subtítulo con "## " cuando aporte claridad (ej. "## Cómo aplicarlo").
-- Usa listas con "- " (viñetas) o "1." (pasos numerados) para enumerar características o pasos.
+- Usa listas con "- " (viñetas) o "1." (pasos numerados) para enumerar características o pasos. Cada ítem va en su PROPIA línea; nunca juntes varios ítems en una sola línea.
+- No pongas en negrita el número o el guión del ítem; la negrita es solo para palabras clave dentro del texto.
 - No uses tablas ni bloques de código.
 
 CATÁLOGO:
