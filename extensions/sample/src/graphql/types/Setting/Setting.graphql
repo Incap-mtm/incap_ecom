@@ -9,6 +9,8 @@ extend type Setting {
   variantSizeOrder: String
   quienesSomos: String
   blogIndex: String
+  catalogUrl: String
+  catalogButtonText: String
 }
 
 type SizeOption {

@@ -13,6 +13,8 @@ export default {
         variantSizeOrder: (setting) => findSetting(setting, 'variant_size_order', '[]'),
         quienesSomos: (setting) => findSetting(setting, 'quienes_somos', '{}'),
         blogIndex: (setting) => findSetting(setting, 'blog_index', '{}'),
+        catalogUrl: (setting) => findSetting(setting, 'catalog_url', '/assets/catalogo-incap.pdf'),
+        catalogButtonText: (setting) => findSetting(setting, 'catalog_button_text', 'Descargar Catálogo'),
     },
     Query: {
         sizeOptions: async (_, __, { pool: ctxPool }) => {

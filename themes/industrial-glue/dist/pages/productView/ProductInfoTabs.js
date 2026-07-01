@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import LeadDownloadModal from '../../components/LeadDownloadModal.js';
 // ── helpers de parseo ──────────────────────────────────────────────
 const splitDash = (txt) => (txt || '').split(/\s+-\s+/).map(s => s.trim()).filter(Boolean);
 const splitSteps = (txt) => {
@@ -89,40 +90,7 @@ export default function ProductInfoTabs({ product }) {
     // ── Ficha técnica (descarga con captura de lead) ──
     const fichaRaw = get('ficha_tecnica_url') || get('ficha_tecnica');
     const fichaUrl = isValidFichaUrl(fichaRaw) ? fichaRaw : '';
-    const [status, setStatus] = useState('idle');
-    const [form, setForm] = useState({ nombre: '', email: '', telefono: '' });
-    const [errorMsg, setErrorMsg] = useState('');
-    const handleSubmit = async (e) => {
-        var _a;
-        e.preventDefault();
-        setStatus('submitting');
-        setErrorMsg('');
-        try {
-            const res = await fetch('/api/ficha-lead', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...form, productName: (product === null || product === void 0 ? void 0 : product.name) || '', sku: (product === null || product === void 0 ? void 0 : product.sku) || '', fichaUrl }),
-            });
-            const data = await res.json().catch(() => ({}));
-            if (!res.ok) {
-                const msg = typeof (data === null || data === void 0 ? void 0 : data.error) === 'string' ? data.error : (((_a = data === null || data === void 0 ? void 0 : data.error) === null || _a === void 0 ? void 0 : _a.message) || 'Error al enviar. Intenta de nuevo.');
-                setErrorMsg(msg);
-                setStatus('error');
-                return;
-            }
-            setStatus('success');
-            const a = document.createElement('a');
-            a.href = fichaUrl;
-            a.target = '_blank';
-            a.rel = 'noopener noreferrer';
-            a.click();
-        }
-        catch (_b) {
-            setErrorMsg('Error de conexión. Intenta de nuevo.');
-            setStatus('error');
-        }
-    };
-    const closeModal = () => { setStatus('idle'); setErrorMsg(''); };
+    const [showFichaModal, setShowFichaModal] = useState(false);
     // ── construcción de las pestañas en el orden pedido ──
     const usos = get('usos');
     const caract = get('caracteristicas');
@@ -187,7 +155,7 @@ export default function ProductInfoTabs({ product }) {
             key: 'ficha', label: 'Ficha Técnica',
             content: (React.createElement("div", null,
                 React.createElement("p", { className: "text-sm text-white/80 font-inter mb-4 leading-relaxed" }, "Descarg\u00E1 la ficha t\u00E9cnica en PDF con especificaciones, modo de aplicaci\u00F3n y seguridad."),
-                React.createElement("button", { onClick: () => setStatus('open'), className: "inline-flex items-center gap-3 px-6 py-3 bg-[#85C639] hover:bg-[#76b330] text-[#181B1C] font-semibold rounded-lg transition-all duration-300", style: { fontFamily: 'Sora, sans-serif' } },
+                React.createElement("button", { onClick: () => setShowFichaModal(true), className: "inline-flex items-center gap-3 px-6 py-3 bg-[#85C639] hover:bg-[#76b330] text-[#181B1C] font-semibold rounded-lg transition-all duration-300", style: { fontFamily: 'Sora, sans-serif' } },
                     React.createElement("svg", { className: "w-5 h-5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
                         React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" })),
                     "Descargar Ficha T\u00E9cnica",
@@ -230,33 +198,7 @@ export default function ProductInfoTabs({ product }) {
                         : 'border-transparent text-white/60 hover:text-white'}` }, t.label));
             })),
             tabs.map((t) => (React.createElement("div", { key: t.key, role: "tabpanel", "aria-label": t.label, hidden: t.key !== activeKey, className: "min-h-[80px]" }, t.content)))),
-        (status === 'open' || status === 'submitting' || status === 'success' || status === 'error') && (React.createElement("div", { style: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }, onClick: (e) => { if (e.target === e.currentTarget)
-                closeModal(); } },
-            React.createElement("div", { style: { background: '#fff', borderRadius: '20px', padding: '2rem', width: '100%', maxWidth: '420px', boxShadow: '0 24px 64px rgba(0,0,0,0.2)', fontFamily: 'Sora, sans-serif' } }, status === 'success' ? (React.createElement("div", { style: { textAlign: 'center', padding: '1rem 0' } },
-                React.createElement("div", { style: { width: '56px', height: '56px', borderRadius: '50%', background: '#f0fdf4', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' } },
-                    React.createElement("svg", { width: "28", height: "28", fill: "none", stroke: "#16a34a", viewBox: "0 0 24 24" },
-                        React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.5, d: "M5 13l4 4L19 7" }))),
-                React.createElement("h3", { style: { fontSize: '18px', fontWeight: 800, color: '#181B1C', marginBottom: '8px' } }, "\u00A1Descarga iniciada!"),
-                React.createElement("p", { style: { fontSize: '13px', color: '#64748b', lineHeight: 1.6, marginBottom: '1.5rem' } },
-                    "Tu ficha t\u00E9cnica se est\u00E1 descargando. Si no inicia autom\u00E1ticamente,",
-                    ' ',
-                    React.createElement("a", { href: fichaUrl, target: "_blank", rel: "noopener noreferrer", style: { color: '#2A4899', fontWeight: 700 } }, "haz clic aqu\u00ED"),
-                    "."),
-                React.createElement("button", { onClick: closeModal, style: { padding: '10px 24px', background: '#2A4899', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '13px' } }, "Cerrar"))) : (React.createElement(React.Fragment, null,
-                React.createElement("div", { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' } },
-                    React.createElement("div", null,
-                        React.createElement("h3", { style: { fontSize: '17px', fontWeight: 800, color: '#181B1C', margin: 0 } }, "Descargar Ficha T\u00E9cnica"),
-                        React.createElement("p", { style: { fontSize: '12px', color: '#94a3b8', marginTop: '4px', fontFamily: 'Inter, sans-serif', fontWeight: 400 } }, "Completa tus datos para continuar")),
-                    React.createElement("button", { onClick: closeModal, style: { background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', padding: '4px' } },
-                        React.createElement("svg", { width: "20", height: "20", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
-                            React.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M6 18L18 6M6 6l12 12" })))),
-                React.createElement("form", { onSubmit: handleSubmit, style: { display: 'flex', flexDirection: 'column', gap: '14px' } },
-                    ['nombre', 'email', 'telefono'].map((field) => (React.createElement("div", { key: field },
-                        React.createElement("label", { style: { display: 'block', fontSize: '11px', fontWeight: 700, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' } }, field === 'nombre' ? 'Nombre completo' : field === 'email' ? 'Correo electrónico' : 'Teléfono'),
-                        React.createElement("input", { type: field === 'email' ? 'email' : field === 'telefono' ? 'tel' : 'text', required: true, value: form[field], onChange: (e) => setForm(f => ({ ...f, [field]: e.target.value })), disabled: status === 'submitting', placeholder: field === 'nombre' ? 'Tu nombre' : field === 'email' ? 'correo@empresa.com' : '+57 300 000 0000', style: { width: '100%', padding: '10px 14px', border: '1.5px solid #e2e8f0', borderRadius: '10px', fontSize: '13px', fontFamily: 'Inter, sans-serif', outline: 'none', boxSizing: 'border-box', background: status === 'submitting' ? '#f8fafc' : '#fff', color: '#181B1C' } })))),
-                    errorMsg && (React.createElement("p", { style: { fontSize: '12px', color: '#dc2626', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '8px', padding: '8px 12px', margin: 0 } }, errorMsg)),
-                    React.createElement("button", { type: "submit", disabled: status === 'submitting', style: { padding: '12px', background: status === 'submitting' ? '#94a3b8' : '#2A4899', color: '#fff', border: 'none', borderRadius: '12px', fontWeight: 800, cursor: status === 'submitting' ? 'default' : 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '4px' } }, status === 'submitting' ? 'Enviando…' : 'Descargar PDF'),
-                    React.createElement("p", { style: { fontSize: '10px', color: '#94a3b8', textAlign: 'center', margin: 0, fontFamily: 'Inter, sans-serif' } }, "Tus datos son confidenciales y no se comparten con terceros.")))))))));
+        showFichaModal && fichaUrl && (React.createElement(LeadDownloadModal, { context: { kind: 'ficha', productName: (product === null || product === void 0 ? void 0 : product.name) || '', sku: (product === null || product === void 0 ? void 0 : product.sku) || '', downloadUrl: fichaUrl }, title: "Descargar Ficha T\u00E9cnica", onClose: () => setShowFichaModal(false) }))));
 }
 export const layout = {
     areaId: 'productPageBottom',

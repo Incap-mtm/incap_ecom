@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useQuery } from 'urql';
 import { getFamily } from '../../utils/family.js';
 import { GTM_ID, GTM_LOADER_URL } from '../../utils/gtm.js';
+import LeadDownloadModal from '../../components/LeadDownloadModal.js';
 
 interface Industry {
   id: 'madera' | 'colchones' | 'calzado' | 'hogar';
@@ -32,6 +33,15 @@ const FAMILIES_QUERY = `
   }
 `;
 
+const CATALOG_QUERY = `
+  query {
+    setting {
+      catalogUrl
+      catalogButtonText
+    }
+  }
+`;
+
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpandedInd, setMobileExpandedInd] = useState<string | null>(null);
@@ -48,6 +58,12 @@ export default function Navbar() {
   const [isClient, setIsClient] = useState(false);
   useEffect(() => setIsClient(true), []);
   const [result] = useQuery({ query: FAMILIES_QUERY, pause: !isClient });
+
+  // Configuración del botón "Descargar Catálogo" (editable desde el admin)
+  const [catalogResult] = useQuery({ query: CATALOG_QUERY, requestPolicy: 'cache-and-network' });
+  const catalogUrl = catalogResult.data?.setting?.catalogUrl || '/assets/catalogo-incap.pdf';
+  const catalogButtonText = catalogResult.data?.setting?.catalogButtonText || 'Descargar Catálogo';
+  const [showCatalogModal, setShowCatalogModal] = useState(false);
 
   // Construir map: industria.id → [{label, count, isGroup}]
   // Familias que comparten primera palabra se agrupan bajo esa palabra.
@@ -258,12 +274,17 @@ export default function Navbar() {
           <a href="https://api.whatsapp.com/send?phone=+573002171521&text=Quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer" className="btn-incap btn-primary-incap text-xs py-3 px-6">
             Solicitar Asesoría
           </a>
-          <a href="/assets/catalogo-incap.pdf" download className="incap-catalog-link">
+          <button
+            type="button"
+            onClick={() => setShowCatalogModal(true)}
+            className="incap-catalog-link"
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+          >
             <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 3v12" />
             </svg>
-            Descargar Catálogo
-          </a>
+            {catalogButtonText}
+          </button>
           <button
             className="incap-navbar__toggle"
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -338,16 +359,30 @@ export default function Navbar() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
             </svg>
           </a>
-          <a href="/assets/catalogo-incap.pdf" download className="incap-navbar__mobile-link">
-            Descargar Catálogo
+          <button
+            type="button"
+            onClick={() => { setMobileOpen(false); setShowCatalogModal(true); }}
+            className="incap-navbar__mobile-link"
+            style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%' }}
+          >
+            {catalogButtonText}
             <svg className="h-4 w-4 text-[#85C639] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 3v12" />
             </svg>
-          </a>
+          </button>
           <a href="https://api.whatsapp.com/send?phone=+573002171521&text=Quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer" className="btn-incap btn-primary-incap mt-6 justify-center">
             Solicitar Asesoría
           </a>
         </div>
+      )}
+
+      {/* Modal de descarga del catálogo (captura de lead) */}
+      {showCatalogModal && (
+        <LeadDownloadModal
+          context={{ kind: 'catalogo', downloadUrl: catalogUrl }}
+          title={catalogButtonText}
+          onClose={() => setShowCatalogModal(false)}
+        />
       )}
     </nav>
     </>

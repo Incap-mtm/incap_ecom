@@ -1,0 +1,5 @@
+{
+  "methods": ["POST"],
+  "path": "/catalog-config",
+  "access": "private"
+}

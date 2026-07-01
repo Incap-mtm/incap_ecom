@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import LeadDownloadModal from '../../components/LeadDownloadModal.js';
 
 /**
  * Sección informativa de atributos del producto, presentada como pestañas.
@@ -17,8 +18,6 @@ interface ProductProps {
     attributes?: Attribute[];
   };
 }
-
-type Status = 'idle' | 'open' | 'submitting' | 'success' | 'error';
 
 // ── helpers de parseo ──────────────────────────────────────────────
 const splitDash = (txt: string) =>
@@ -135,36 +134,7 @@ export default function ProductInfoTabs({ product }: ProductProps) {
   // ── Ficha técnica (descarga con captura de lead) ──
   const fichaRaw   = get('ficha_tecnica_url') || get('ficha_tecnica');
   const fichaUrl   = isValidFichaUrl(fichaRaw) ? fichaRaw : '';
-  const [status, setStatus] = useState<Status>('idle');
-  const [form, setForm]     = useState({ nombre: '', email: '', telefono: '' });
-  const [errorMsg, setErrorMsg] = useState('');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('submitting');
-    setErrorMsg('');
-    try {
-      const res = await fetch('/api/ficha-lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, productName: product?.name || '', sku: product?.sku || '', fichaUrl }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        const msg = typeof data?.error === 'string' ? data.error : (data?.error?.message || 'Error al enviar. Intenta de nuevo.');
-        setErrorMsg(msg);
-        setStatus('error');
-        return;
-      }
-      setStatus('success');
-      const a = document.createElement('a');
-      a.href = fichaUrl; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.click();
-    } catch {
-      setErrorMsg('Error de conexión. Intenta de nuevo.');
-      setStatus('error');
-    }
-  };
-  const closeModal = () => { setStatus('idle'); setErrorMsg(''); };
+  const [showFichaModal, setShowFichaModal] = useState(false);
 
   // ── construcción de las pestañas en el orden pedido ──
   const usos       = get('usos');
@@ -242,7 +212,7 @@ export default function ProductInfoTabs({ product }: ProductProps) {
           Descargá la ficha técnica en PDF con especificaciones, modo de aplicación y seguridad.
         </p>
         <button
-          onClick={() => setStatus('open')}
+          onClick={() => setShowFichaModal(true)}
           className="inline-flex items-center gap-3 px-6 py-3 bg-[#85C639] hover:bg-[#76b330] text-[#181B1C] font-semibold rounded-lg transition-all duration-300"
           style={{ fontFamily: 'Sora, sans-serif' }}
         >
@@ -337,65 +307,13 @@ export default function ProductInfoTabs({ product }: ProductProps) {
         ))}
       </div>
 
-      {/* Modal de descarga de ficha (captura de lead) */}
-      {(status === 'open' || status === 'submitting' || status === 'success' || status === 'error') && (
-        <div
-          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}
-          onClick={(e) => { if (e.target === e.currentTarget) closeModal(); }}
-        >
-          <div style={{ background: '#fff', borderRadius: '20px', padding: '2rem', width: '100%', maxWidth: '420px', boxShadow: '0 24px 64px rgba(0,0,0,0.2)', fontFamily: 'Sora, sans-serif' }}>
-            {status === 'success' ? (
-              <div style={{ textAlign: 'center', padding: '1rem 0' }}>
-                <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#f0fdf4', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
-                  <svg width="28" height="28" fill="none" stroke="#16a34a" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
-                </div>
-                <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#181B1C', marginBottom: '8px' }}>¡Descarga iniciada!</h3>
-                <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-                  Tu ficha técnica se está descargando. Si no inicia automáticamente,{' '}
-                  <a href={fichaUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#2A4899', fontWeight: 700 }}>haz clic aquí</a>.
-                </p>
-                <button onClick={closeModal} style={{ padding: '10px 24px', background: '#2A4899', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '13px' }}>Cerrar</button>
-              </div>
-            ) : (
-              <>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-                  <div>
-                    <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#181B1C', margin: 0 }}>Descargar Ficha Técnica</h3>
-                    <p style={{ fontSize: '12px', color: '#94a3b8', marginTop: '4px', fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>Completa tus datos para continuar</p>
-                  </div>
-                  <button onClick={closeModal} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', padding: '4px' }}>
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                  </button>
-                </div>
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                  {(['nombre', 'email', 'telefono'] as const).map((field) => (
-                    <div key={field}>
-                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>
-                        {field === 'nombre' ? 'Nombre completo' : field === 'email' ? 'Correo electrónico' : 'Teléfono'}
-                      </label>
-                      <input
-                        type={field === 'email' ? 'email' : field === 'telefono' ? 'tel' : 'text'}
-                        required
-                        value={form[field]}
-                        onChange={(e) => setForm(f => ({ ...f, [field]: e.target.value }))}
-                        disabled={status === 'submitting'}
-                        placeholder={field === 'nombre' ? 'Tu nombre' : field === 'email' ? 'correo@empresa.com' : '+57 300 000 0000'}
-                        style={{ width: '100%', padding: '10px 14px', border: '1.5px solid #e2e8f0', borderRadius: '10px', fontSize: '13px', fontFamily: 'Inter, sans-serif', outline: 'none', boxSizing: 'border-box', background: status === 'submitting' ? '#f8fafc' : '#fff', color: '#181B1C' }}
-                      />
-                    </div>
-                  ))}
-                  {errorMsg && (
-                    <p style={{ fontSize: '12px', color: '#dc2626', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '8px', padding: '8px 12px', margin: 0 }}>{errorMsg}</p>
-                  )}
-                  <button type="submit" disabled={status === 'submitting'} style={{ padding: '12px', background: status === 'submitting' ? '#94a3b8' : '#2A4899', color: '#fff', border: 'none', borderRadius: '12px', fontWeight: 800, cursor: status === 'submitting' ? 'default' : 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '4px' }}>
-                    {status === 'submitting' ? 'Enviando…' : 'Descargar PDF'}
-                  </button>
-                  <p style={{ fontSize: '10px', color: '#94a3b8', textAlign: 'center', margin: 0, fontFamily: 'Inter, sans-serif' }}>Tus datos son confidenciales y no se comparten con terceros.</p>
-                </form>
-              </>
-            )}
-          </div>
-        </div>
+      {/* Modal de descarga de ficha (captura de lead) — componente compartido */}
+      {showFichaModal && fichaUrl && (
+        <LeadDownloadModal
+          context={{ kind: 'ficha', productName: product?.name || '', sku: product?.sku || '', downloadUrl: fichaUrl }}
+          title="Descargar Ficha Técnica"
+          onClose={() => setShowFichaModal(false)}
+        />
       )}
     </section>
   );
