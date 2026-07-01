@@ -1,4 +1,5 @@
 {
   "methods": ["POST"],
-  "path": "/ficha-lead"
+  "path": "/ficha-lead",
+  "access": "public"
 }

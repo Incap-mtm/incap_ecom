@@ -1,4 +1,5 @@
 {
   "methods": ["POST"],
-  "path": "/technical-advisor"
+  "path": "/technical-advisor",
+  "access": "public"
 }
