@@ -50,8 +50,8 @@ function init(container) {
     const h = container.offsetHeight || 520;
 
     // Offset de giro (Y, radianes) para que la cara "MAXÓN" quede al frente
-    // cuando el producto está centrado en la sección.
-    const ROT_Y_OFFSET = 0;
+    // cuando el producto está centrado en la sección (calibrado a 180°).
+    const ROT_Y_OFFSET = Math.PI;
 
     /* Scene */
     const scene  = new THREE.Scene();
@@ -120,15 +120,6 @@ function init(container) {
         tiltGroup.position.x = isMobile ?  0.0  : -1.5;
         tiltGroup.add(model);
         scene.add(tiltGroup);
-        // DEBUG (temporal): exponer para calibrar el offset de giro en vivo
-        window.__incap3d = {
-          tiltGroup,
-          getProg: () => {
-            const r = container.getBoundingClientRect();
-            const vh = window.innerHeight;
-            return Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
-          },
-        };
         onScroll(); // estado inicial: escala pequeña + rotación en 0
 
         /* Wire scroll to the built-in 'rotacion' animation */
