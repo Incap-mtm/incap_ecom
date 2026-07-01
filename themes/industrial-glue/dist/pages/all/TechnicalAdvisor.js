@@ -14,11 +14,83 @@ function UserBubble({ content }) {
     return (React.createElement("div", { style: { display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' } },
         React.createElement("div", { style: { background: '#2A4899', color: '#fff', borderRadius: '16px 16px 4px 16px', padding: '10px 14px', maxWidth: '80%', fontSize: '13px', lineHeight: 1.5 } }, content)));
 }
+// Renderiza **negrita** inline como <strong> (seguro: nodos React, no innerHTML).
+function renderInline(text, keyPrefix) {
+    const parts = text.split(/(\*\*[^*]+\*\*)/g);
+    return parts
+        .filter(p => p !== '')
+        .map((part, i) => /^\*\*[^*]+\*\*$/.test(part)
+        ? React.createElement("strong", { key: `${keyPrefix}-${i}`, style: { fontWeight: 700, color: '#181B1C' } }, part.slice(2, -2))
+        : React.createElement(React.Fragment, { key: `${keyPrefix}-${i}` }, part));
+}
+/**
+ * Renderiza el Markdown ligero que produce el asesor como elementos React:
+ * subtítulos (##/###), párrafos cortos, listas (- y 1.) y **negrita**.
+ * No usa dangerouslySetInnerHTML → XSS-safe por construcción.
+ */
+function RichText({ content }) {
+    const lines = content.split('\n');
+    const blocks = [];
+    let i = 0;
+    let k = 0;
+    const isHeading = (l) => /^#{2,3}\s+/.test(l.trim());
+    const isOl = (l) => /^\d+\.\s+/.test(l.trim());
+    const isUl = (l) => /^[-*]\s+/.test(l.trim());
+    while (i < lines.length) {
+        const trimmed = lines[i].trim();
+        if (trimmed === '') {
+            i++;
+            continue;
+        }
+        // Subtítulo (## / ###)
+        const hm = trimmed.match(/^#{2,3}\s+(.+)/);
+        if (hm) {
+            blocks.push(React.createElement("div", { key: k++, style: { fontWeight: 800, fontSize: '13px', color: '#181B1C', margin: '12px 0 4px' } }, renderInline(hm[1], `h${k}`)));
+            i++;
+            continue;
+        }
+        // Lista numerada
+        if (isOl(trimmed)) {
+            const items = [];
+            while (i < lines.length && isOl(lines[i])) {
+                const m = lines[i].trim().match(/^\d+\.\s+(.+)/);
+                items.push(React.createElement("li", { key: k++, style: { marginBottom: '3px' } }, renderInline(m[1], `ol${k}`)));
+                i++;
+            }
+            blocks.push(React.createElement("ol", { key: k++, style: { margin: '4px 0 8px', paddingLeft: '20px' } }, items));
+            continue;
+        }
+        // Lista con viñetas
+        if (isUl(trimmed)) {
+            const items = [];
+            while (i < lines.length && isUl(lines[i])) {
+                const m = lines[i].trim().match(/^[-*]\s+(.+)/);
+                items.push(React.createElement("li", { key: k++, style: { marginBottom: '3px' } }, renderInline(m[1], `ul${k}`)));
+                i++;
+            }
+            blocks.push(React.createElement("ul", { key: k++, style: { margin: '4px 0 8px', paddingLeft: '20px' } }, items));
+            continue;
+        }
+        // Párrafo — junta líneas hasta blanco o inicio de bloque
+        const paraLines = [];
+        while (i < lines.length &&
+            lines[i].trim() !== '' &&
+            !isHeading(lines[i]) &&
+            !isOl(lines[i]) &&
+            !isUl(lines[i])) {
+            paraLines.push(lines[i].trim());
+            i++;
+        }
+        blocks.push(React.createElement("p", { key: k++, style: { margin: '0 0 8px' } }, renderInline(paraLines.join(' '), `p${k}`)));
+    }
+    return React.createElement(React.Fragment, null, blocks);
+}
 function AssistantBubble({ content, products }) {
     return (React.createElement("div", { style: { marginBottom: '12px' } },
         React.createElement("div", { style: { display: 'flex', gap: '8px', alignItems: 'flex-start' } },
             React.createElement(AgentAvatar, { size: 28 }),
-            React.createElement("div", { style: { background: '#f8fafc', borderRadius: '4px 16px 16px 16px', padding: '10px 14px', maxWidth: '85%', fontSize: '13px', lineHeight: 1.6, color: '#374151', border: '1px solid #e2e8f0' } }, content)),
+            React.createElement("div", { className: "incap-advisor-md", style: { background: '#f8fafc', borderRadius: '4px 16px 16px 16px', padding: '10px 14px', maxWidth: '85%', fontSize: '13px', lineHeight: 1.6, color: '#374151', border: '1px solid #e2e8f0' } },
+                React.createElement(RichText, { content: content }))),
         products && products.length > 0 && (React.createElement("div", { style: { marginLeft: '36px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '6px' } }, products.map(p => (React.createElement("a", { key: p.sku, href: p.url, style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '10px', textDecoration: 'none', transition: 'all 0.15s' }, onMouseEnter: e => { e.currentTarget.style.borderColor = '#2A4899'; e.currentTarget.style.background = '#f0f5ff'; }, onMouseLeave: e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.background = '#fff'; } },
             React.createElement("div", null,
                 React.createElement("div", { style: { fontSize: '12px', fontWeight: 700, color: '#181B1C' } }, p.name)),
@@ -102,6 +174,8 @@ export default function TechnicalAdvisor() {
         React.createElement("style", null, `
         @keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
         @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+        .incap-advisor-md > *:last-child { margin-bottom: 0 !important; }
+        .incap-advisor-md > *:first-child { margin-top: 0 !important; }
       `),
         isOpen && (React.createElement("div", { style: { position: 'absolute', bottom: '72px', right: 0, width: '360px', maxWidth: 'calc(100vw - 32px)', background: '#fff', borderRadius: '20px', boxShadow: '0 24px 64px rgba(0,0,0,0.18)', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', overflow: 'hidden', animation: 'fadeUp 0.25s ease' } },
             React.createElement("div", { style: { background: 'linear-gradient(135deg, #2A4899 0%, #1e3576 100%)', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '10px' } },

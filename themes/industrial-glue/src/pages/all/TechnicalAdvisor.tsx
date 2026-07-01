@@ -39,13 +39,101 @@ function UserBubble({ content }: { content: string }) {
   );
 }
 
+// Renderiza **negrita** inline como <strong> (seguro: nodos React, no innerHTML).
+function renderInline(text: string, keyPrefix: string): React.ReactNode[] {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return parts
+    .filter(p => p !== '')
+    .map((part, i) =>
+      /^\*\*[^*]+\*\*$/.test(part)
+        ? <strong key={`${keyPrefix}-${i}`} style={{ fontWeight: 700, color: '#181B1C' }}>{part.slice(2, -2)}</strong>
+        : <React.Fragment key={`${keyPrefix}-${i}`}>{part}</React.Fragment>
+    );
+}
+
+/**
+ * Renderiza el Markdown ligero que produce el asesor como elementos React:
+ * subtítulos (##/###), párrafos cortos, listas (- y 1.) y **negrita**.
+ * No usa dangerouslySetInnerHTML → XSS-safe por construcción.
+ */
+function RichText({ content }: { content: string }) {
+  const lines = content.split('\n');
+  const blocks: React.ReactNode[] = [];
+  let i = 0;
+  let k = 0;
+
+  const isHeading = (l: string) => /^#{2,3}\s+/.test(l.trim());
+  const isOl = (l: string) => /^\d+\.\s+/.test(l.trim());
+  const isUl = (l: string) => /^[-*]\s+/.test(l.trim());
+
+  while (i < lines.length) {
+    const trimmed = lines[i].trim();
+
+    if (trimmed === '') { i++; continue; }
+
+    // Subtítulo (## / ###)
+    const hm = trimmed.match(/^#{2,3}\s+(.+)/);
+    if (hm) {
+      blocks.push(
+        <div key={k++} style={{ fontWeight: 800, fontSize: '13px', color: '#181B1C', margin: '12px 0 4px' }}>
+          {renderInline(hm[1], `h${k}`)}
+        </div>
+      );
+      i++;
+      continue;
+    }
+
+    // Lista numerada
+    if (isOl(trimmed)) {
+      const items: React.ReactNode[] = [];
+      while (i < lines.length && isOl(lines[i])) {
+        const m = lines[i].trim().match(/^\d+\.\s+(.+)/)!;
+        items.push(<li key={k++} style={{ marginBottom: '3px' }}>{renderInline(m[1], `ol${k}`)}</li>);
+        i++;
+      }
+      blocks.push(<ol key={k++} style={{ margin: '4px 0 8px', paddingLeft: '20px' }}>{items}</ol>);
+      continue;
+    }
+
+    // Lista con viñetas
+    if (isUl(trimmed)) {
+      const items: React.ReactNode[] = [];
+      while (i < lines.length && isUl(lines[i])) {
+        const m = lines[i].trim().match(/^[-*]\s+(.+)/)!;
+        items.push(<li key={k++} style={{ marginBottom: '3px' }}>{renderInline(m[1], `ul${k}`)}</li>);
+        i++;
+      }
+      blocks.push(<ul key={k++} style={{ margin: '4px 0 8px', paddingLeft: '20px' }}>{items}</ul>);
+      continue;
+    }
+
+    // Párrafo — junta líneas hasta blanco o inicio de bloque
+    const paraLines: string[] = [];
+    while (
+      i < lines.length &&
+      lines[i].trim() !== '' &&
+      !isHeading(lines[i]) &&
+      !isOl(lines[i]) &&
+      !isUl(lines[i])
+    ) {
+      paraLines.push(lines[i].trim());
+      i++;
+    }
+    blocks.push(
+      <p key={k++} style={{ margin: '0 0 8px' }}>{renderInline(paraLines.join(' '), `p${k}`)}</p>
+    );
+  }
+
+  return <>{blocks}</>;
+}
+
 function AssistantBubble({ content, products }: { content: string; products?: Product[] }) {
   return (
     <div style={{ marginBottom: '12px' }}>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
         <AgentAvatar size={28} />
-        <div style={{ background: '#f8fafc', borderRadius: '4px 16px 16px 16px', padding: '10px 14px', maxWidth: '85%', fontSize: '13px', lineHeight: 1.6, color: '#374151', border: '1px solid #e2e8f0' }}>
-          {content}
+        <div className="incap-advisor-md" style={{ background: '#f8fafc', borderRadius: '4px 16px 16px 16px', padding: '10px 14px', maxWidth: '85%', fontSize: '13px', lineHeight: 1.6, color: '#374151', border: '1px solid #e2e8f0' }}>
+          <RichText content={content} />
         </div>
       </div>
       {products && products.length > 0 && (
@@ -158,6 +246,8 @@ export default function TechnicalAdvisor() {
       <style>{`
         @keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
         @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+        .incap-advisor-md > *:last-child { margin-bottom: 0 !important; }
+        .incap-advisor-md > *:first-child { margin-top: 0 !important; }
       `}</style>
 
       {/* Chat window */}

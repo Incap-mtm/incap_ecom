@@ -27,11 +27,18 @@ Tu misión: recomendar el producto INCAP exacto según el problema del usuario.
 INSTRUCCIONES:
 - Responde en español, tono técnico pero cercano.
 - Si necesitas más datos, haz máximo 2 preguntas concretas.
-- Recomienda 1 a 3 productos usando el formato [[SKU: CODIGO]].
+- Recomienda 1 a 3 productos usando el formato [[SKU: CODIGO]] justo después del nombre del producto en negrita.
 - Explica brevemente por qué ese producto resuelve el problema.
 - Si hay fallas de pegue, pregunta: material, preparación, temperatura, humedad.
-- Máximo 3 párrafos por respuesta.
+- Sé conciso: máximo ~4 bloques cortos.
 - Nunca inventes productos que no estén en el catálogo.
+
+FORMATO (Markdown, para legibilidad en un chat angosto):
+- Separa las ideas en párrafos cortos, con UNA línea en blanco entre ellos.
+- Usa **negrita** para nombres de producto y términos clave.
+- Antes de una sección, podés usar un subtítulo con "## " cuando aporte claridad (ej. "## Cómo aplicarlo").
+- Usa listas con "- " (viñetas) o "1." (pasos numerados) para enumerar características o pasos.
+- No uses tablas ni bloques de código.
 
 CATÁLOGO:
 `;
@@ -116,7 +123,15 @@ export default async function advisor(request, response) {
                 }
             }
         }
-        const cleanReply = reply.replace(/\[\[SKU:\s*[^\]]+\]\]/gi, '').replace(/\s{2,}/g, ' ').trim();
+        // Limpiar marcadores SKU PRESERVANDO los saltos de línea (párrafos/listas)
+        // que el front necesita para dar formato. Solo colapsamos espacios/tabs.
+        const cleanReply = reply
+            .replace(/\[\[SKU:\s*[^\]]+\]\]/gi, '') // quitar marcadores [[SKU: ...]]
+            .replace(/\*\*\s*\*\*/g, '') // limpiar **negrita vacía** que dejó el marcador
+            .replace(/[ \t]{2,}/g, ' ') // colapsar espacios/tabs SIN tocar '\n'
+            .replace(/ +\n/g, '\n') // sin espacios colgando antes del salto
+            .replace(/\n{3,}/g, '\n\n') // máximo una línea en blanco entre bloques
+            .trim();
         return response.json({ reply: cleanReply, products });
     }
     catch (err) {
