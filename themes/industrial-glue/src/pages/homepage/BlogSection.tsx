@@ -3,17 +3,14 @@ import React from 'react';
 interface BlogPost {
   slug: string;
   title: string;
-  excerpt: string;
-  cover: string;
+  excerpt?: string | null;
+  cover?: string | null;
   date: string;
-  tags?: string[];
-  featured?: boolean;
+  tag?: string | null;
 }
 
 interface Props {
-  setting?: {
-    blogIndex?: string | null;
-  };
+  posts?: (BlogPost | null)[] | null;
 }
 
 const MONTHS = [
@@ -30,24 +27,10 @@ function formatDate(iso: string): string {
   }
 }
 
-function parsePosts(raw?: string | null): BlogPost[] {
-  if (!raw) return [];
-  try {
-    const parsed = JSON.parse(raw);
-    if (parsed && Array.isArray(parsed.posts)) return parsed.posts as BlogPost[];
-  } catch {
-    // sin datos → sección oculta
-  }
-  return [];
-}
+export default function BlogSection({ posts }: Props) {
+  const items = (posts ?? []).filter((p): p is BlogPost => Boolean(p && p.slug));
 
-export default function BlogSection({ setting }: Props) {
-  const posts = parsePosts(setting?.blogIndex)
-    .slice()
-    .sort((a, b) => (b.date || '').localeCompare(a.date || ''))
-    .slice(0, 3);
-
-  if (posts.length === 0) return null;
+  if (items.length === 0) return null;
 
   return (
     <section className="bg-[#f8f9fa] py-20 md:py-28 px-4 sm:px-6 lg:px-8 font-sora">
@@ -75,7 +58,7 @@ export default function BlogSection({ setting }: Props) {
 
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-          {posts.map((post) => (
+          {items.map((post) => (
             <a
               key={post.slug}
               href={`/blog/${post.slug}`}
@@ -98,9 +81,9 @@ export default function BlogSection({ setting }: Props) {
 
               <div className="flex flex-col flex-grow p-6 md:p-8">
                 <div className="flex items-center gap-3 mb-3 flex-wrap">
-                  {post.tags?.[0] && (
+                  {post.tag && (
                     <span className="text-[#2A4899] font-black text-[9px] md:text-[10px] uppercase tracking-[0.3em]">
-                      {post.tags[0]}
+                      {post.tag}
                     </span>
                   )}
                   <span className="text-slate-400 text-[10px] md:text-xs font-inter">
@@ -138,8 +121,13 @@ export const layout = {
 
 export const query = `
 query BlogSectionQuery {
-  setting {
-    blogIndex
+  posts: homeBlogPosts(limit: 3) {
+    slug
+    title
+    excerpt
+    cover
+    date
+    tag
   }
 }
 `;

@@ -20,7 +20,17 @@ type SizeOption {
   text: String!
 }
 
+type HomeBlogPost {
+  slug: String
+  title: String
+  excerpt: String
+  cover: String
+  date: String
+  tag: String
+}
+
 extend type Query {
   sizeOptions: [SizeOption]
   featuredProductsSelected: [Product]
+  homeBlogPosts(limit: Int): [HomeBlogPost]
 }

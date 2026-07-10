@@ -22,6 +22,16 @@ declare namespace _default {
         function featuredProductsSelected(_: any, __: any, { pool: ctxPool }: {
             pool: any;
         }): Promise<(Record<string, any> | undefined)[]>;
+        function homeBlogPosts(_: any, { limit }: {
+            limit: any;
+        }): Promise<{
+            slug: string;
+            title: string;
+            excerpt: string;
+            cover: string;
+            date: string;
+            tag: string | null;
+        }[]>;
     }
 }
 export default _default;

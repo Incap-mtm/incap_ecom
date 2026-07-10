@@ -2,9 +2,11 @@ import { pool } from '@evershop/evershop/lib/postgres';
 import { getSetting } from '@evershop/evershop/setting/services';
 import { getProductsBaseQuery } from '@evershop/evershop/catalog/services';
 import { camelCase } from '@evershop/evershop/lib/util/camelCase';
+import { parseBlogIndex } from '../../../components/blogData.js';
 
 const SIZE_ATTRIBUTE_ID = 2;
 const FEATURED_LIMIT = 10;
+const HOME_BLOG_LIMIT = 3;
 
 const findSetting = (setting, name, fallback = '') =>
   (setting.find((item) => item.name === name) || {}).value || fallback;
@@ -66,6 +68,29 @@ export default {
       // Preservar el orden elegido por el admin
       const byUuid = new Map(rows.map((r) => [r.uuid, camelCase(r)]));
       return capped.map((u) => byUuid.get(u)).filter(Boolean);
+    },
+
+    /**
+     * Últimos posts del blog para la sección del home. Misma fuente que /blog:
+     * setting `blog_index` con fallback a DEFAULT_BLOG (parseBlogIndex) → funciona
+     * aunque el setting no esté sembrado. Devuelve los más recientes por fecha.
+     */
+    homeBlogPosts: async (_, { limit }) => {
+      const raw = await getSetting('blog_index', '');
+      const data = parseBlogIndex(raw);
+      const posts = Array.isArray(data?.posts) ? data.posts : [];
+      const n = Number.isInteger(limit) && limit > 0 ? limit : HOME_BLOG_LIMIT;
+      return [...posts]
+        .sort((a, b) => (b.date || '').localeCompare(a.date || ''))
+        .slice(0, n)
+        .map((p) => ({
+          slug: p.slug,
+          title: p.title,
+          excerpt: p.excerpt,
+          cover: p.cover,
+          date: p.date,
+          tag: Array.isArray(p.tags) && p.tags.length ? p.tags[0] : null
+        }));
     }
   }
 };
