@@ -5,9 +5,16 @@
  * (Endpoint propio de la extensión: el del core hace
  * SET visibility = NULL y acá esa columna es NOT NULL → 500.)
  *
- * Reemplaza:
+ * Reemplaza (mismo key `productEdit/VariantGroup`):
  *   node_modules/@evershop/evershop/dist/modules/catalog/pages/admin/productEdit/VariantGroup.js
- * Por mismo basename + carpeta productEdit+productNew.
+ *
+ * ⚠️ Este archivo DEBE vivir en la carpeta `productEdit/` (NO en
+ * `productEdit+productNew/`). El override admin se resuelve por
+ * `<carpeta>/<Componente>`: si estuviera en `productEdit+productNew/` la key sería
+ * distinta a la del core (`productEdit/VariantGroup`) → NO overridea → se
+ * renderizan DOS bloques de variantes (el del core + este). Los grupos de
+ * variantes solo existen para productos ya creados, así que `productEdit/` es
+ * el lugar correcto (productNew no aplica).
  */
 
 import {
