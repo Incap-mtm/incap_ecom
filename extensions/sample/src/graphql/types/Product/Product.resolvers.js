@@ -66,29 +66,34 @@ export default {
      * quedan fuera solas porque tienen visibility = false.
      */
     relatedProducts: async (product, _, { pool }) => {
-      const { productId } = product;
-      if (!productId) return [];
+      try {
+        const { productId } = product;
+        if (!productId) return [];
 
-      // Categoría del producto actual (tomamos la primera asignada)
-      const cat = await select()
-        .from('product_category')
-        .where('product_id', '=', productId)
-        .load(pool);
-      if (!cat) return [];
+        // En esta versión de Evershop la categoría vive en la columna
+        // product.category_id (NO existe tabla product_category).
+        const current = await select()
+          .from('product')
+          .select('category_id')
+          .where('product_id', '=', productId)
+          .load(pool);
+        const categoryId = current && current.category_id;
+        if (!categoryId) return [];
 
-      const query = getProductsBaseQuery();
-      query
-        .innerJoin('product_category')
-        .on('product_category.product_id', '=', 'product.product_id');
-      query.where('product_category.category_id', '=', cat.category_id);
-      query.andWhere('product.product_id', '<>', productId);
-      query.andWhere('product.status', '=', true);
-      query.andWhere('product.visibility', '=', true);
-      query.orderBy('product.product_id', 'DESC');
-      query.limit(0, RELATED_LIMIT);
+        const query = getProductsBaseQuery();
+        query.where('product.category_id', '=', categoryId);
+        query.andWhere('product.product_id', '<>', productId);
+        query.andWhere('product.status', '=', true);
+        query.andWhere('product.visibility', '=', true);
+        query.orderBy('product.product_id', 'DESC');
+        query.limit(0, RELATED_LIMIT);
 
-      const rows = await query.execute(pool);
-      return rows.map((r) => camelCase(r));
+        const rows = await query.execute(pool);
+        return rows.map((r) => camelCase(r));
+      } catch (e) {
+        // Nunca romper la ficha de producto por los relacionados
+        return [];
+      }
     }
   }
 };
