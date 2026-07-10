@@ -116,7 +116,7 @@ export default function BlogSection({ posts }: Props) {
 
 export const layout = {
   areaId: 'content',
-  sortOrder: 11
+  sortOrder: 14
 };
 
 export const query = `
