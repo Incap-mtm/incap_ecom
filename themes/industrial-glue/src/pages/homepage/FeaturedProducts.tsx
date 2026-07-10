@@ -17,17 +17,23 @@ export default function FeaturedProducts({ products }: Props) {
   const trackRef = useRef<HTMLDivElement>(null);
   const pausedRef = useRef(false);
 
-  // Rotación automática muy suave + loop sin cortes (contenido duplicado)
+  // Rotación automática muy suave + loop sin cortes (contenido duplicado).
+  // scrollLeft se redondea a entero → acumulamos la posición en un float (pos)
+  // para que el avance sub-píxel no se pierda cada frame.
   useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
     let raf = 0;
-    const speed = 0.35; // px por frame → desplazamiento lento y fluido
+    let pos = el.scrollLeft;
+    const speed = 0.4; // px por frame → desplazamiento lento y fluido
     const step = () => {
-      if (!pausedRef.current && el.scrollWidth > el.clientWidth + 4) {
-        el.scrollLeft += speed;
+      if (pausedRef.current) {
+        pos = el.scrollLeft; // sincronizar durante hover / scroll manual
+      } else if (el.scrollWidth > el.clientWidth + 4) {
+        pos += speed;
         const half = el.scrollWidth / 2; // el track está duplicado
-        if (el.scrollLeft >= half) el.scrollLeft -= half;
+        if (pos >= half) pos -= half;
+        el.scrollLeft = pos;
       }
       raf = requestAnimationFrame(step);
     };
