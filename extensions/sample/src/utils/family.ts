@@ -26,9 +26,17 @@ export function parsePresentationSize(presentation: string): number {
   return num;
 }
 
-export function pickRepresentative<T extends { name: string; image?: { url?: string } | null }>(products: T[]): T {
+export function pickRepresentative<T extends { name: string; uuid?: string; image?: { url?: string } | null }>(
+  products: T[],
+  preferredUuid?: string
+): T {
   if (!products || products.length === 0) return products[0];
   if (products.length === 1) return products[0];
+
+  if (preferredUuid) {
+    const preferred = products.find(p => p.uuid === preferredUuid);
+    if (preferred) return preferred;
+  }
 
   const withImages = products.filter(p => p.image?.url);
   const pool = withImages.length > 0 ? withImages : products;

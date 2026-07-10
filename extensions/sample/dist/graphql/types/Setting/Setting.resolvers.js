@@ -23,6 +23,7 @@ export default {
         catalogButtonText: (setting) => findSetting(setting, 'catalog_button_text', 'Descargar Catálogo'),
         leadEmails: (setting) => findSetting(setting, 'lead_emails', ''),
         featuredProducts: (setting) => findSetting(setting, 'featured_products', '[]'),
+        familyCovers: (setting) => findSetting(setting, 'family_covers', '{}'),
     },
     Query: {
         sizeOptions: async (_, __, { pool: ctxPool }) => {

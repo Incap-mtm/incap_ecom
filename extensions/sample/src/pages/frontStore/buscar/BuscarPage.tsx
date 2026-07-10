@@ -6,7 +6,7 @@ function buildQuery(term: string) {
   const safe = term.replace(/"/g, '').replace(/%/g, '');
   return `
     query {
-      setting { storeWhatsappNumber }
+      setting { storeWhatsappNumber familyCovers }
       products(filters: [
         { key: "fulltext", operation: eq, value: "${safe}" }
         { key: "limit",  operation: eq,    value: "500" }
@@ -14,6 +14,7 @@ function buildQuery(term: string) {
       ]) {
         items {
           productId
+          uuid
           name
           sku
           url
@@ -51,6 +52,14 @@ export default function BuscarPage() {
   const total: number = result.data?.products?.total ?? 0;
   const hasKeyword = keyword.length >= 2;
 
+  const covers: Record<string, string> = useMemo(() => {
+    try {
+      return JSON.parse(result.data?.setting?.familyCovers || '{}');
+    } catch {
+      return {};
+    }
+  }, [result.data?.setting?.familyCovers]);
+
   // Ordenar por relevancia: empieza con → contiene → resto
   const sortedItems = useMemo(() => {
     if (!keyword || items.length === 0) return items;
@@ -77,10 +86,10 @@ export default function BuscarPage() {
       .map(([family, products]) => ({
         family,
         products,
-        representative: pickRepresentative(products),
+        representative: pickRepresentative(products, covers[family]),
       }))
       .sort((a, b) => a.family.localeCompare(b.family));
-  }, [sortedItems]);
+  }, [sortedItems, covers]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

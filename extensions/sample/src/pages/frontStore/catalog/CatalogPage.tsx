@@ -28,6 +28,7 @@ const CAT_ORDER = ['madera', 'colchones', 'calzado', 'multiusos'];
 
 const CATALOG_QUERY = `
   query {
+    setting { familyCovers }
     categories(filters: [{ key: "limit", operation: eq, value: "100" }]) {
       items {
         urlKey
@@ -71,6 +72,14 @@ export default function CatalogPage() {
   const initialOpen = CAT_ORDER.reduce((acc, k) => ({ ...acc, [k]: true }), {} as Record<string, boolean>);
   const [openIndustries, setOpenIndustries] = useState<Record<string, boolean>>(initialOpen);
 
+  const covers: Record<string, string> = useMemo(() => {
+    try {
+      return JSON.parse(result.data?.setting?.familyCovers || '{}');
+    } catch {
+      return {};
+    }
+  }, [result.data?.setting?.familyCovers]);
+
   const sections: CatSection[] = useMemo(() => {
     const cats: any[] = result.data?.categories?.items ?? [];
     const out: CatSection[] = [];
@@ -87,7 +96,7 @@ export default function CatalogPage() {
       const families: FamilyCard[] = Object.entries(familyMap)
         .sort((a, b) => a[0].localeCompare(b[0]))
         .map(([family, prods]) => {
-          const rep = pickRepresentative(prods);
+          const rep = pickRepresentative(prods, covers[family]);
           return {
             family,
             count: prods.length,

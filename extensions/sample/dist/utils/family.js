@@ -34,11 +34,16 @@ export function parsePresentationSize(presentation) {
         return num * 30;
     return num;
 }
-export function pickRepresentative(products) {
+export function pickRepresentative(products, preferredUuid) {
     if (!products || products.length === 0)
         return products[0];
     if (products.length === 1)
         return products[0];
+    if (preferredUuid) {
+        const preferred = products.find(p => p.uuid === preferredUuid);
+        if (preferred)
+            return preferred;
+    }
     const withImages = products.filter(p => { var _a; return (_a = p.image) === null || _a === void 0 ? void 0 : _a.url; });
     const pool = withImages.length > 0 ? withImages : products;
     if (pool.length === 1)

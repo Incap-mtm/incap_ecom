@@ -13,6 +13,7 @@ extend type Setting {
   catalogButtonText: String
   leadEmails: String
   featuredProducts: String
+  familyCovers: String
 }
 
 type SizeOption {

@@ -5,7 +5,7 @@ function buildQuery(term) {
     const safe = term.replace(/"/g, '').replace(/%/g, '');
     return `
     query {
-      setting { storeWhatsappNumber }
+      setting { storeWhatsappNumber familyCovers }
       products(filters: [
         { key: "fulltext", operation: eq, value: "${safe}" }
         { key: "limit",  operation: eq,    value: "500" }
@@ -13,6 +13,7 @@ function buildQuery(term) {
       ]) {
         items {
           productId
+          uuid
           name
           sku
           url
@@ -26,7 +27,7 @@ function buildQuery(term) {
 const AZUL = '#2A4899';
 const VERDE = '#85C639';
 export default function BuscarPage() {
-    var _a, _b, _c, _d, _e, _f, _g, _h;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
     const [keyword, setKeyword] = useState('');
     const [inputValue, setInputValue] = useState('');
     useEffect(() => {
@@ -46,6 +47,15 @@ export default function BuscarPage() {
     const items = ((_e = (_d = result.data) === null || _d === void 0 ? void 0 : _d.products) === null || _e === void 0 ? void 0 : _e.items) || [];
     const total = (_h = (_g = (_f = result.data) === null || _f === void 0 ? void 0 : _f.products) === null || _g === void 0 ? void 0 : _g.total) !== null && _h !== void 0 ? _h : 0;
     const hasKeyword = keyword.length >= 2;
+    const covers = useMemo(() => {
+        var _a, _b;
+        try {
+            return JSON.parse(((_b = (_a = result.data) === null || _a === void 0 ? void 0 : _a.setting) === null || _b === void 0 ? void 0 : _b.familyCovers) || '{}');
+        }
+        catch (_c) {
+            return {};
+        }
+    }, [(_k = (_j = result.data) === null || _j === void 0 ? void 0 : _j.setting) === null || _k === void 0 ? void 0 : _k.familyCovers]);
     // Ordenar por relevancia: empieza con → contiene → resto
     const sortedItems = useMemo(() => {
         if (!keyword || items.length === 0)
@@ -73,10 +83,10 @@ export default function BuscarPage() {
             .map(([family, products]) => ({
             family,
             products,
-            representative: pickRepresentative(products),
+            representative: pickRepresentative(products, covers[family]),
         }))
             .sort((a, b) => a.family.localeCompare(b.family));
-    }, [sortedItems]);
+    }, [sortedItems, covers]);
     const handleSubmit = (e) => {
         e.preventDefault();
         const q = inputValue.trim();

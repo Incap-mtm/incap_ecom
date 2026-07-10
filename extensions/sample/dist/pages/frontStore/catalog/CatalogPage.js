@@ -10,6 +10,7 @@ const CAT_META = {
 const CAT_ORDER = ['madera', 'colchones', 'calzado', 'multiusos'];
 const CATALOG_QUERY = `
   query {
+    setting { familyCovers }
     categories(filters: [{ key: "limit", operation: eq, value: "100" }]) {
       items {
         urlKey
@@ -43,12 +44,22 @@ const CATALOG_CSS = `
   }
 `;
 export default function CatalogPage() {
+    var _a, _b;
     const [isClient, setIsClient] = useState(false);
     useEffect(() => setIsClient(true), []);
     const [result] = useQuery({ query: CATALOG_QUERY, pause: !isClient, requestPolicy: 'cache-and-network' });
     const [mobileTab, setMobileTab] = useState(CAT_ORDER[0]);
     const initialOpen = CAT_ORDER.reduce((acc, k) => ({ ...acc, [k]: true }), {});
     const [openIndustries, setOpenIndustries] = useState(initialOpen);
+    const covers = useMemo(() => {
+        var _a, _b;
+        try {
+            return JSON.parse(((_b = (_a = result.data) === null || _a === void 0 ? void 0 : _a.setting) === null || _b === void 0 ? void 0 : _b.familyCovers) || '{}');
+        }
+        catch (_c) {
+            return {};
+        }
+    }, [(_b = (_a = result.data) === null || _a === void 0 ? void 0 : _a.setting) === null || _b === void 0 ? void 0 : _b.familyCovers]);
     const sections = useMemo(() => {
         var _a, _b, _c, _d, _e, _f;
         const cats = (_c = (_b = (_a = result.data) === null || _a === void 0 ? void 0 : _a.categories) === null || _b === void 0 ? void 0 : _b.items) !== null && _c !== void 0 ? _c : [];
@@ -69,7 +80,7 @@ export default function CatalogPage() {
                 .sort((a, b) => a[0].localeCompare(b[0]))
                 .map(([family, prods]) => {
                 var _a, _b, _c, _d;
-                const rep = pickRepresentative(prods);
+                const rep = pickRepresentative(prods, covers[family]);
                 return {
                     family,
                     count: prods.length,

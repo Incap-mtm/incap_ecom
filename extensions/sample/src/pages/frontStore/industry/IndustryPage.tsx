@@ -73,6 +73,7 @@ const PRODUCTS_QUERY = `
   query {
     setting {
       storeWhatsappNumber
+      familyCovers
     }
     categories(filters: [{ key: "limit", operation: eq, value: "100" }]) {
       items {
@@ -114,6 +115,13 @@ export default function IndustryPage() {
   });
 
   const whatsappNumber = result.data?.setting?.storeWhatsappNumber ?? '573002171521';
+  const covers: Record<string, string> = useMemo(() => {
+    try {
+      return JSON.parse(result.data?.setting?.familyCovers || '{}');
+    } catch {
+      return {};
+    }
+  }, [result.data?.setting?.familyCovers]);
   const allCategories = result.data?.categories?.items || [];
   
   // Extraemos todos los productos que pertenezcan a las categorías (urlKey) mapeadas en nuestros slugs
@@ -137,10 +145,10 @@ export default function IndustryPage() {
       .map(([family, products]) => ({
         family,
         products,
-        representative: pickRepresentative(products),
+        representative: pickRepresentative(products, covers[family]),
       }))
       .sort((a, b) => b.products.length - a.products.length || a.family.localeCompare(b.family));
-  }, [realProducts]);
+  }, [realProducts, covers]);
 
   const families = familyGroups.map(g => [g.family, g.products.length] as [string, number]);
 

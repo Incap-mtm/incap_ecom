@@ -7,5 +7,5 @@ export declare const layout: {
     areaId: string;
     sortOrder: number;
 };
-export declare const query = "\n  query CatalogToolsQuery {\n    variantSizeOrderUrl: url(routeId: \"variantSizeOrder\")\n  }\n";
+export declare const query = "\n  query CatalogToolsQuery {\n    variantSizeOrderUrl: url(routeId: \"sizeOrderAdmin\")\n  }\n";
 export {};

@@ -14,6 +14,7 @@ declare namespace _default {
         function catalogButtonText(setting: any): any;
         function leadEmails(setting: any): any;
         function featuredProducts(setting: any): any;
+        function familyCovers(setting: any): any;
     }
     namespace Query {
         function sizeOptions(_: any, __: any, { pool: ctxPool }: {

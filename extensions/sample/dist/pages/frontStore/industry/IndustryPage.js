@@ -57,6 +57,7 @@ const PRODUCTS_QUERY = `
   query {
     setting {
       storeWhatsappNumber
+      familyCovers
     }
     categories(filters: [{ key: "limit", operation: eq, value: "100" }]) {
       items {
@@ -79,7 +80,7 @@ const PRODUCTS_QUERY = `
   }
 `;
 export default function IndustryPage() {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f, _g;
     const [data, setData] = useState(INDUSTRIES_DATA.madera);
     useEffect(() => {
         // Extract ID from the path: /industrias/madera -> madera
@@ -94,7 +95,16 @@ export default function IndustryPage() {
         requestPolicy: 'network-only' // Fuerza a ignorar el caché y siempre pedir los datos más recientes a la base de datos
     });
     const whatsappNumber = (_c = (_b = (_a = result.data) === null || _a === void 0 ? void 0 : _a.setting) === null || _b === void 0 ? void 0 : _b.storeWhatsappNumber) !== null && _c !== void 0 ? _c : '573002171521';
-    const allCategories = ((_e = (_d = result.data) === null || _d === void 0 ? void 0 : _d.categories) === null || _e === void 0 ? void 0 : _e.items) || [];
+    const covers = useMemo(() => {
+        var _a, _b;
+        try {
+            return JSON.parse(((_b = (_a = result.data) === null || _a === void 0 ? void 0 : _a.setting) === null || _b === void 0 ? void 0 : _b.familyCovers) || '{}');
+        }
+        catch (_c) {
+            return {};
+        }
+    }, [(_e = (_d = result.data) === null || _d === void 0 ? void 0 : _d.setting) === null || _e === void 0 ? void 0 : _e.familyCovers]);
+    const allCategories = ((_g = (_f = result.data) === null || _f === void 0 ? void 0 : _f.categories) === null || _g === void 0 ? void 0 : _g.items) || [];
     // Extraemos todos los productos que pertenezcan a las categorías (urlKey) mapeadas en nuestros slugs
     const matchedCategories = allCategories.filter((cat) => data.slugs.includes(cat.urlKey));
     const realProductsRaw = matchedCategories.flatMap((cat) => { var _a; return ((_a = cat.products) === null || _a === void 0 ? void 0 : _a.items) || []; });
@@ -115,10 +125,10 @@ export default function IndustryPage() {
             .map(([family, products]) => ({
             family,
             products,
-            representative: pickRepresentative(products),
+            representative: pickRepresentative(products, covers[family]),
         }))
             .sort((a, b) => b.products.length - a.products.length || a.family.localeCompare(b.family));
-    }, [realProducts]);
+    }, [realProducts, covers]);
     const families = familyGroups.map(g => [g.family, g.products.length]);
     const [activeFamily, setActiveFamily] = useState('');
     useEffect(() => {
