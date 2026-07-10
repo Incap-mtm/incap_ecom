@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from 'react';
+import { getFamily, getPresentation } from '../../utils/family.js';
 
 interface FeaturedProduct {
   uuid: string;
   name: string;
   url: string;
   image?: { url?: string | null; alt?: string | null } | null;
-  price?: { regular?: { text?: string | null } | null } | null;
 }
 
 interface Props {
@@ -132,11 +132,11 @@ export default function FeaturedProducts({ products }: Props) {
                   Destacado
                 </span>
                 <h3 className="text-base md:text-lg font-black font-sora text-[#181B1C] group-hover:text-[#2A4899] transition-colors uppercase tracking-tight leading-tight mb-3 flex-grow">
-                  {p.name}
+                  {getFamily(p.name)}
                 </h3>
-                {p.price?.regular?.text && (
-                  <span className="inline-block text-sm md:text-base font-bold font-sora text-[#2A4899]">
-                    {p.price.regular.text}
+                {getPresentation(p.name) && (
+                  <span className="self-start inline-block text-xs md:text-sm font-bold font-sora text-[#2A4899] border-2 border-[#2A4899] rounded-lg px-3 py-1">
+                    {getPresentation(p.name)}
                   </span>
                 )}
               </div>
@@ -162,11 +162,6 @@ query FeaturedProductsQuery {
     image {
       url
       alt
-    }
-    price {
-      regular {
-        text
-      }
     }
   }
 }
