@@ -227,8 +227,19 @@ function init(container) {
           </div>
 
           {/* Right — composición: "+56 años" (fondo) + producto 3D (frente) + mascota (derecha) */}
+          {/* Ajustes responsive (<1024px): el "56" se achica, el producto se centra
+              y encoge, y baja el alto para que no quede volando sobre el texto. */}
+          <style>{`
+            @media (max-width: 1023px) {
+              .hist-compo { min-height: 430px !important; }
+              .hist-56 { width: 100% !important; max-width: 280px !important; top: 4px !important; }
+              .hist-3d { max-width: 260px; height: 340px; margin-left: auto; margin-right: auto; }
+              .hist-3d canvas { max-width: 100% !important; }
+              .hist-mascot { width: 58% !important; max-width: 260px !important; bottom: -20px !important; }
+            }
+          `}</style>
           <div
-            className={`relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0`}
+            className={`hist-compo relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0`}
             style={{ minHeight: '640px' }}
           >
             {/* "+56 años" — capa de fondo */}
@@ -236,6 +247,7 @@ function init(container) {
               src="/images/sections/56_anos_maxon.webp"
               alt="+56 años de experiencia"
               loading="lazy"
+              className="hist-56"
               style={{ position: 'absolute', zIndex: 0, top: 0, left: '50%', transform: 'translateX(-50%)', width: '140%', maxWidth: '840px', pointerEvents: 'none', userSelect: 'none' }}
             />
 
@@ -244,11 +256,12 @@ function init(container) {
               src="/images/sections/cap_para_maxon.webp"
               alt="Mascota INCAP"
               loading="lazy"
+              className="hist-mascot"
               style={{ position: 'absolute', zIndex: 1, right: 0, bottom: '-48px', width: '72%', maxWidth: '480px', pointerEvents: 'none', userSelect: 'none' }}
             />
 
             {/* Producto 3D — al frente */}
-            <div ref={mountRef} id="incap-3d-mount" style={{ position: 'relative', zIndex: 10 }} />
+            <div ref={mountRef} id="incap-3d-mount" className="hist-3d" style={{ position: 'relative', zIndex: 10 }} />
           </div>
 
         </div>
