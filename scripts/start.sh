@@ -45,4 +45,16 @@ if [ -n "$ADMIN_EMAIL" ] && [ -n "$ADMIN_PASSWORD" ] && [ -n "$ADMIN_FULLNAME" ]
     --password "$ADMIN_PASSWORD" || true
 fi
 
-exec npm start
+# Diagnóstico puntual de errores 500 de API (normalmente OCULTOS en prod).
+# El apiErrorHandler del core solo loguea el stack si isDevelopmentMode() o
+# process.argv.includes('--debug'). Con DEBUG_API=1 arrancamos Evershop con
+# --debug para que loguee el stack de las excepciones de API y de páginas.
+# `evershop start` corre in-process → --debug queda en process.argv del server.
+# Gate por env var → en prod queda APAGADO por defecto; prender solo para
+# capturar un error y APAGAR (unset DEBUG_API) apenas se capture.
+if [ "$DEBUG_API" = "1" ]; then
+  echo "DEBUG_API=1 → arrancando Evershop con --debug (logging de errores de API/páginas activado)"
+  exec npm start -- --debug
+else
+  exec npm start
+fi
