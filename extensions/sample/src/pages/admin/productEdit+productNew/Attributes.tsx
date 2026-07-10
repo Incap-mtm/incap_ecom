@@ -88,6 +88,16 @@ const LONG_TEXT = new Set([
   'pre_tratamiento'
 ]);
 
+// Agrupación visual de atributos en secciones colapsables. NO afecta el orden de
+// registro del form: cada campo sigue usando su índice original en `attributes`.
+// Cualquier atributo cuyo code no figure acá cae en "Otros" → nunca se oculta.
+const ATTRIBUTE_GROUPS = [
+  { key: 'contenido', title: 'Contenido / descripción', defaultOpen: true,  codes: ['usos', 'caracteristicas', 'modo_empleo', 'pre_tratamiento'] },
+  { key: 'ficha',     title: 'Ficha técnica',           defaultOpen: false, codes: ['codigo_industrial', 'ficha_tecnica_url'] },
+  { key: 'seguridad', title: 'Seguridad (GHS)',         defaultOpen: false, codes: ['ghs_pictogramas', 'precauciones_h', 'consejos_prudencia_p'] },
+  { key: 'faq',       title: 'Preguntas frecuentes',    defaultOpen: false, codes: ['preguntas_frecuentes'] }
+];
+
 const getGroup = (groups = [], groupId) =>
   groups.find((group) => group.groupId === groupId) || groups[0];
 
@@ -159,6 +169,39 @@ function HelpTip({ help }: { help?: AttributeHelp }) {
   );
 }
 
+// Sección colapsable. El colapso es por CSS (display:none) — NO desmonta los campos,
+// así siguen registrados en el form (shouldUnregister) y se guardan aunque el grupo
+// esté cerrado. El toggle usa type="button" para no disparar el submit del form.
+function CollapsibleSection({
+  title,
+  count,
+  defaultOpen,
+  children
+}: {
+  title: string;
+  count: number;
+  defaultOpen: boolean;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = React.useState(defaultOpen);
+  return (
+    <div className="border border-border rounded-lg mb-3 overflow-hidden">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="w-full flex items-center gap-2 px-4 py-2.5 bg-muted/40 hover:bg-muted transition-colors text-left"
+      >
+        <span className="text-muted-foreground text-xs w-3">{open ? '▼' : '▶'}</span>
+        <span className="font-semibold text-sm">{title}</span>
+        <span className="text-xs text-muted-foreground font-normal">({count})</span>
+      </button>
+      <div style={{ display: open ? 'block' : 'none' }} className="px-1 py-1">
+        {children}
+      </div>
+    </div>
+  );
+}
+
 export default function Attributes({ product, groups: { items } }) {
   const { unregister, watch } = useFormContext();
   const { fields, remove, append } = useFieldArray({
@@ -192,6 +235,73 @@ export default function Attributes({ product, groups: { items } }) {
       append(newFields);
     }
   }, [currentGroup, items, append, remove, unregister]);
+
+  // Campo de edición según el tipo de atributo.
+  const buildField = (attribute: any, index: number) => {
+    const validation =
+      attribute.is_required === 1
+        ? { required: `${attribute.attribute_name} is required` }
+        : {};
+    const isLong =
+      attribute.type === 'text' && LONG_TEXT.has(attribute.attribute_code);
+    switch (attribute.type) {
+      case 'textarea':
+        return (
+          <TextareaField name={`attributes.${index}.value`} rows={4} required={attribute.is_required === 1} validation={validation} />
+        );
+      case 'select':
+        return (
+          <SelectField name={`attributes.${index}.value`} options={getAttributeOptions(items, attribute.attribute_id)} placeholder="Select an option" validation={validation} />
+        );
+      case 'multiselect':
+        return (
+          <ReactSelectField name={`attributes.${index}.value`} options={getAttributeOptions(items, attribute.attribute_id)} placeholder="Select options" required={attribute.is_required === 1} validation={validation} isMulti />
+        );
+      case 'text':
+        return isLong ? (
+          <TextareaField name={`attributes.${index}.value`} rows={4} required={attribute.is_required === 1} validation={validation} />
+        ) : (
+          <InputField name={`attributes.${index}.value`} required={attribute.is_required === 1} validation={validation} />
+        );
+      default:
+        return (
+          <InputField name={`attributes.${index}.value`} required={attribute.is_required === 1} validation={validation} placeholder={`Enter value for ${attribute.attribute_name}`} />
+        );
+    }
+  };
+
+  const renderRow = ({ attribute, index }: { attribute: any; index: number }) => {
+    const help = FIELD_HELP[attribute.attribute_code];
+    return (
+      <TableRow key={attribute.id}>
+        <TableCell className="align-top whitespace-nowrap">
+          <span>{attribute.attribute_name}</span>
+          {attribute.is_required === 1 && (
+            <span className="text-destructive pl-1">*</span>
+          )}
+          <HelpTip help={help} />
+        </TableCell>
+        <TableCell>
+          <InputField type="hidden" value={attribute.attribute_code} name={`attributes.${index}.attribute_code`} />
+          {buildField(attribute, index)}
+        </TableCell>
+      </TableRow>
+    );
+  };
+
+  // Repartir los campos en secciones colapsables, preservando el índice original.
+  const indexed = fields.map((attribute: any, index: number) => ({ attribute, index }));
+  const knownCodes = new Set(ATTRIBUTE_GROUPS.flatMap((g) => g.codes));
+  const sections: any[] = ATTRIBUTE_GROUPS
+    .map((g) => ({ ...g, items: indexed.filter(({ attribute }) => g.codes.includes(attribute.attribute_code)) }))
+    .filter((g) => g.items.length > 0);
+  const otros = indexed.filter(({ attribute }) => !knownCodes.has(attribute.attribute_code));
+  if (otros.length) {
+    sections.push({ key: 'otros', title: 'Otros', defaultOpen: true, codes: [], items: otros });
+  }
+  // Un grupo con algún campo requerido se abre siempre (para no ocultar errores).
+  const sectionOpen = (s: any) =>
+    s.defaultOpen || s.items.some(({ attribute }: any) => attribute.is_required === 1);
 
   return (
     <Card>
@@ -237,107 +347,18 @@ export default function Attributes({ product, groups: { items } }) {
         </div>
       </CardContent>
       <CardContent>
-        <Table>
-          <TableBody>
-            {fields.map((attribute, index) => {
-              const validation =
-                attribute.is_required === 1
-                  ? { required: `${attribute.attribute_name} is required` }
-                  : {};
-              const help = FIELD_HELP[attribute.attribute_code];
-              const isLong =
-                attribute.type === 'text' &&
-                LONG_TEXT.has(attribute.attribute_code);
-              let Field = null;
-              switch (attribute.type) {
-                case 'textarea':
-                  Field = (
-                    <TextareaField
-                      name={`attributes.${index}.value`}
-                      rows={4}
-                      required={attribute.is_required === 1}
-                      validation={validation}
-                    />
-                  );
-                  break;
-                case 'select':
-                  Field = (
-                    <SelectField
-                      name={`attributes.${index}.value`}
-                      options={getAttributeOptions(
-                        items,
-                        attribute.attribute_id
-                      )}
-                      placeholder="Select an option"
-                      validation={validation}
-                    />
-                  );
-                  break;
-                case 'multiselect':
-                  Field = (
-                    <ReactSelectField
-                      name={`attributes.${index}.value`}
-                      options={getAttributeOptions(
-                        items,
-                        attribute.attribute_id
-                      )}
-                      placeholder="Select options"
-                      required={attribute.is_required === 1}
-                      validation={validation}
-                      isMulti
-                    />
-                  );
-                  break;
-                case 'text':
-                  // Texto largo conocido → textarea; texto corto → input.
-                  Field = isLong ? (
-                    <TextareaField
-                      name={`attributes.${index}.value`}
-                      rows={4}
-                      required={attribute.is_required === 1}
-                      validation={validation}
-                    />
-                  ) : (
-                    <InputField
-                      name={`attributes.${index}.value`}
-                      required={attribute.is_required === 1}
-                      validation={validation}
-                    />
-                  );
-                  break;
-                default:
-                  Field = (
-                    <InputField
-                      name={`attributes.${index}.value`}
-                      required={attribute.is_required === 1}
-                      validation={validation}
-                      placeholder={`Enter value for ${attribute.attribute_name}`}
-                    />
-                  );
-                  break;
-              }
-              return (
-                <TableRow key={attribute.id}>
-                  <TableCell className="align-top whitespace-nowrap">
-                    <span>{attribute.attribute_name}</span>
-                    {attribute.is_required === 1 && (
-                      <span className="text-destructive pl-1">*</span>
-                    )}
-                    <HelpTip help={help} />
-                  </TableCell>
-                  <TableCell>
-                    <InputField
-                      type="hidden"
-                      value={attribute.attribute_code}
-                      name={`attributes.${index}.attribute_code`}
-                    />
-                    {Field}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+        {sections.map((section) => (
+          <CollapsibleSection
+            key={section.key}
+            title={section.title}
+            count={section.items.length}
+            defaultOpen={sectionOpen(section)}
+          >
+            <Table>
+              <TableBody>{section.items.map(renderRow)}</TableBody>
+            </Table>
+          </CollapsibleSection>
+        ))}
       </CardContent>
     </Card>
   );

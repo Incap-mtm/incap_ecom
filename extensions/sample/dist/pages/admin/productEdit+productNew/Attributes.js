@@ -55,6 +55,15 @@ const LONG_TEXT = new Set([
     'consejos_prudencia_p',
     'pre_tratamiento'
 ]);
+// Agrupación visual de atributos en secciones colapsables. NO afecta el orden de
+// registro del form: cada campo sigue usando su índice original en `attributes`.
+// Cualquier atributo cuyo code no figure acá cae en "Otros" → nunca se oculta.
+const ATTRIBUTE_GROUPS = [
+    { key: 'contenido', title: 'Contenido / descripción', defaultOpen: true, codes: ['usos', 'caracteristicas', 'modo_empleo', 'pre_tratamiento'] },
+    { key: 'ficha', title: 'Ficha técnica', defaultOpen: false, codes: ['codigo_industrial', 'ficha_tecnica_url'] },
+    { key: 'seguridad', title: 'Seguridad (GHS)', defaultOpen: false, codes: ['ghs_pictogramas', 'precauciones_h', 'consejos_prudencia_p'] },
+    { key: 'faq', title: 'Preguntas frecuentes', defaultOpen: false, codes: ['preguntas_frecuentes'] }
+];
 const getGroup = (groups = [], groupId) => groups.find((group) => group.groupId === groupId) || groups[0];
 const getAttributeOptions = (groups, attributeId) => {
     var _a;
@@ -94,6 +103,21 @@ function HelpTip({ help }) {
             React.createElement("span", { className: "block text-[10px] font-bold uppercase tracking-wide text-white/50 mb-1" }, "Ejemplo"),
             React.createElement("span", { className: "block font-mono text-[11px] leading-relaxed text-[#85C639] break-words" }, help.ejemplo))));
 }
+// Sección colapsable. El colapso es por CSS (display:none) — NO desmonta los campos,
+// así siguen registrados en el form (shouldUnregister) y se guardan aunque el grupo
+// esté cerrado. El toggle usa type="button" para no disparar el submit del form.
+function CollapsibleSection({ title, count, defaultOpen, children }) {
+    const [open, setOpen] = React.useState(defaultOpen);
+    return (React.createElement("div", { className: "border border-border rounded-lg mb-3 overflow-hidden" },
+        React.createElement("button", { type: "button", onClick: () => setOpen((o) => !o), className: "w-full flex items-center gap-2 px-4 py-2.5 bg-muted/40 hover:bg-muted transition-colors text-left" },
+            React.createElement("span", { className: "text-muted-foreground text-xs w-3" }, open ? '▼' : '▶'),
+            React.createElement("span", { className: "font-semibold text-sm" }, title),
+            React.createElement("span", { className: "text-xs text-muted-foreground font-normal" },
+                "(",
+                count,
+                ")")),
+        React.createElement("div", { style: { display: open ? 'block' : 'none' }, className: "px-1 py-1" }, children)));
+}
 export default function Attributes({ product, groups: { items } }) {
     var _a;
     const { unregister, watch } = useFormContext();
@@ -121,6 +145,48 @@ export default function Attributes({ product, groups: { items } }) {
             append(newFields);
         }
     }, [currentGroup, items, append, remove, unregister]);
+    // Campo de edición según el tipo de atributo.
+    const buildField = (attribute, index) => {
+        const validation = attribute.is_required === 1
+            ? { required: `${attribute.attribute_name} is required` }
+            : {};
+        const isLong = attribute.type === 'text' && LONG_TEXT.has(attribute.attribute_code);
+        switch (attribute.type) {
+            case 'textarea':
+                return (React.createElement(TextareaField, { name: `attributes.${index}.value`, rows: 4, required: attribute.is_required === 1, validation: validation }));
+            case 'select':
+                return (React.createElement(SelectField, { name: `attributes.${index}.value`, options: getAttributeOptions(items, attribute.attribute_id), placeholder: "Select an option", validation: validation }));
+            case 'multiselect':
+                return (React.createElement(ReactSelectField, { name: `attributes.${index}.value`, options: getAttributeOptions(items, attribute.attribute_id), placeholder: "Select options", required: attribute.is_required === 1, validation: validation, isMulti: true }));
+            case 'text':
+                return isLong ? (React.createElement(TextareaField, { name: `attributes.${index}.value`, rows: 4, required: attribute.is_required === 1, validation: validation })) : (React.createElement(InputField, { name: `attributes.${index}.value`, required: attribute.is_required === 1, validation: validation }));
+            default:
+                return (React.createElement(InputField, { name: `attributes.${index}.value`, required: attribute.is_required === 1, validation: validation, placeholder: `Enter value for ${attribute.attribute_name}` }));
+        }
+    };
+    const renderRow = ({ attribute, index }) => {
+        const help = FIELD_HELP[attribute.attribute_code];
+        return (React.createElement(TableRow, { key: attribute.id },
+            React.createElement(TableCell, { className: "align-top whitespace-nowrap" },
+                React.createElement("span", null, attribute.attribute_name),
+                attribute.is_required === 1 && (React.createElement("span", { className: "text-destructive pl-1" }, "*")),
+                React.createElement(HelpTip, { help: help })),
+            React.createElement(TableCell, null,
+                React.createElement(InputField, { type: "hidden", value: attribute.attribute_code, name: `attributes.${index}.attribute_code` }),
+                buildField(attribute, index))));
+    };
+    // Repartir los campos en secciones colapsables, preservando el índice original.
+    const indexed = fields.map((attribute, index) => ({ attribute, index }));
+    const knownCodes = new Set(ATTRIBUTE_GROUPS.flatMap((g) => g.codes));
+    const sections = ATTRIBUTE_GROUPS
+        .map((g) => ({ ...g, items: indexed.filter(({ attribute }) => g.codes.includes(attribute.attribute_code)) }))
+        .filter((g) => g.items.length > 0);
+    const otros = indexed.filter(({ attribute }) => !knownCodes.has(attribute.attribute_code));
+    if (otros.length) {
+        sections.push({ key: 'otros', title: 'Otros', defaultOpen: true, codes: [], items: otros });
+    }
+    // Un grupo con algún campo requerido se abre siempre (para no ocultar errores).
+    const sectionOpen = (s) => s.defaultOpen || s.items.some(({ attribute }) => attribute.is_required === 1);
     return (React.createElement(Card, null,
         React.createElement(CardHeader, null,
             React.createElement(CardTitle, null, "Atributos del producto"),
@@ -139,43 +205,9 @@ export default function Attributes({ product, groups: { items } }) {
                         value: group.groupId,
                         label: group.groupName
                     })), defaultValue: (product === null || product === void 0 ? void 0 : product.groupId) || currentGroup, required: true })))),
-        React.createElement(CardContent, null,
+        React.createElement(CardContent, null, sections.map((section) => (React.createElement(CollapsibleSection, { key: section.key, title: section.title, count: section.items.length, defaultOpen: sectionOpen(section) },
             React.createElement(Table, null,
-                React.createElement(TableBody, null, fields.map((attribute, index) => {
-                    const validation = attribute.is_required === 1
-                        ? { required: `${attribute.attribute_name} is required` }
-                        : {};
-                    const help = FIELD_HELP[attribute.attribute_code];
-                    const isLong = attribute.type === 'text' &&
-                        LONG_TEXT.has(attribute.attribute_code);
-                    let Field = null;
-                    switch (attribute.type) {
-                        case 'textarea':
-                            Field = (React.createElement(TextareaField, { name: `attributes.${index}.value`, rows: 4, required: attribute.is_required === 1, validation: validation }));
-                            break;
-                        case 'select':
-                            Field = (React.createElement(SelectField, { name: `attributes.${index}.value`, options: getAttributeOptions(items, attribute.attribute_id), placeholder: "Select an option", validation: validation }));
-                            break;
-                        case 'multiselect':
-                            Field = (React.createElement(ReactSelectField, { name: `attributes.${index}.value`, options: getAttributeOptions(items, attribute.attribute_id), placeholder: "Select options", required: attribute.is_required === 1, validation: validation, isMulti: true }));
-                            break;
-                        case 'text':
-                            // Texto largo conocido → textarea; texto corto → input.
-                            Field = isLong ? (React.createElement(TextareaField, { name: `attributes.${index}.value`, rows: 4, required: attribute.is_required === 1, validation: validation })) : (React.createElement(InputField, { name: `attributes.${index}.value`, required: attribute.is_required === 1, validation: validation }));
-                            break;
-                        default:
-                            Field = (React.createElement(InputField, { name: `attributes.${index}.value`, required: attribute.is_required === 1, validation: validation, placeholder: `Enter value for ${attribute.attribute_name}` }));
-                            break;
-                    }
-                    return (React.createElement(TableRow, { key: attribute.id },
-                        React.createElement(TableCell, { className: "align-top whitespace-nowrap" },
-                            React.createElement("span", null, attribute.attribute_name),
-                            attribute.is_required === 1 && (React.createElement("span", { className: "text-destructive pl-1" }, "*")),
-                            React.createElement(HelpTip, { help: help })),
-                        React.createElement(TableCell, null,
-                            React.createElement(InputField, { type: "hidden", value: attribute.attribute_code, name: `attributes.${index}.attribute_code` }),
-                            Field)));
-                }))))));
+                React.createElement(TableBody, null, section.items.map(renderRow)))))))));
 }
 export const layout = {
     areaId: 'rightSide',
