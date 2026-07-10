@@ -37,6 +37,13 @@ const PILAR_ICONS: Record<string, React.ReactNode> = {
   'Comunidad': <IconGroup />,
 };
 
+// Extrae el ID de un video de YouTube en formatos shorts / watch / youtu.be / embed.
+const youtubeId = (url: string): string | null => {
+  if (!url) return null;
+  const m = url.match(/(?:shorts\/|watch\?v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+};
+
 // ── Contenido por defecto (fuente de verdad offline) ───────────────────────
 const DEFAULT_CONTENT = {
   hero: {
@@ -148,8 +155,8 @@ const DEFAULT_CONTENT = {
         'Cuando un distribuidor de la talla de Formicentro necesitaba una solución de pegado que su proceso no encontraba en el mercado, INCAP no buscó en el catálogo; diseñó la fórmula desde cero.',
         'Trabajamos de forma conjunta con el equipo de planta, analizamos los materiales específicos, las condiciones de temperatura y humedad, y los tiempos de ciclo; hasta desarrollar un adhesivo que respondiera exactamente a sus exigencias de producción.',
       ],
-      videoUrl: '',
-      videoPlaceholder: true,
+      videoUrl: 'https://www.youtube.com/shorts/cWEAQv2p3w8',
+      videoPlaceholder: false,
     },
   },
   valor3por100: {
@@ -471,16 +478,33 @@ export default function QuienesSomosPage() {
                 <p key={i} style={S.bodyMuted}>{p}</p>
               ))}
             </div>
-            {/* Video placeholder */}
-            {(c.fabricacion.caso.videoPlaceholder || !c.fabricacion.caso.videoUrl) && (
-              <div style={{ aspectRatio: '9/16', maxWidth: '280px', width: '100%', margin: '0 auto', background: '#f1f5f9', border: '2px dashed #cbd5e1', borderRadius: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-                <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="1.5">
-                  <circle cx="12" cy="12" r="10" /><polygon points="10 8 16 12 10 16 10 8" fill="#94a3b8" stroke="none" />
-                </svg>
-                <span style={{ fontSize: '12px', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.12em' }}>Video Reel</span>
-                <span style={{ fontSize: '11px', color: '#cbd5e1', fontFamily: 'Sora, sans-serif' }}>Próximamente</span>
-              </div>
-            )}
+            {/* Video del caso — embed de YouTube si hay URL; si no, placeholder */}
+            {(() => {
+              const caso = c.fabricacion.caso as any;
+              const vid = youtubeId(caso.videoUrl || caso.videoUrlReal || '');
+              if (vid) {
+                return (
+                  <div style={{ aspectRatio: '9/16', maxWidth: '280px', width: '100%', margin: '0 auto', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 12px 30px rgba(24,27,28,0.18)' }}>
+                    <iframe
+                      src={`https://www.youtube.com/embed/${vid}`}
+                      title={caso.titulo}
+                      style={{ width: '100%', height: '100%', border: 0, display: 'block' }}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                    />
+                  </div>
+                );
+              }
+              return (
+                <div style={{ aspectRatio: '9/16', maxWidth: '280px', width: '100%', margin: '0 auto', background: '#f1f5f9', border: '2px dashed #cbd5e1', borderRadius: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+                  <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="1.5">
+                    <circle cx="12" cy="12" r="10" /><polygon points="10 8 16 12 10 16 10 8" fill="#94a3b8" stroke="none" />
+                  </svg>
+                  <span style={{ fontSize: '12px', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.12em' }}>Video Reel</span>
+                  <span style={{ fontSize: '11px', color: '#cbd5e1', fontFamily: 'Sora, sans-serif' }}>Próximamente</span>
+                </div>
+              );
+            })()}
           </div>
         </div>
       </section>
