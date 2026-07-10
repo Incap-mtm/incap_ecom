@@ -8,5 +8,5 @@ export declare const layout: {
     areaId: string;
     sortOrder: number;
 };
-export declare const query = "\n  query CatalogMenuGroupQuery {\n    catalogAdmin: url(routeId: \"catalogAdmin\")\n    featuredProducts: url(routeId: \"featuredProducts\")\n  }\n";
+export declare const query = "\n  query CatalogMenuGroupQuery {\n    catalogAdmin: url(routeId: \"catalogAdmin\")\n    featuredProducts: url(routeId: \"featuredAdmin\")\n  }\n";
 export {};

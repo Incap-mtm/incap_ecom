@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 interface FeaturedProduct {
   uuid: string;
@@ -14,16 +14,49 @@ interface Props {
 
 export default function FeaturedProducts({ products }: Props) {
   const items = (products ?? []).filter((p): p is FeaturedProduct => Boolean(p));
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const pausedRef = useRef(false);
+
+  // Rotación automática muy suave + loop sin cortes (contenido duplicado)
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    let raf = 0;
+    const speed = 0.35; // px por frame → desplazamiento lento y fluido
+    const step = () => {
+      if (!pausedRef.current && el.scrollWidth > el.clientWidth + 4) {
+        el.scrollLeft += speed;
+        const half = el.scrollWidth / 2; // el track está duplicado
+        if (el.scrollLeft >= half) el.scrollLeft -= half;
+      }
+      raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [items.length]);
 
   if (items.length === 0) return null;
 
-  const scroll = (dir: -1 | 1) => {
-    scrollRef.current?.scrollBy({ left: dir * 320, behavior: 'smooth' });
+  const pause = () => { pausedRef.current = true; };
+  const resume = () => { pausedRef.current = false; };
+
+  const nudge = (dir: -1 | 1) => {
+    const el = trackRef.current;
+    if (!el) return;
+    pausedRef.current = true;
+    el.scrollBy({ left: dir * 300, behavior: 'smooth' });
+    window.setTimeout(() => { pausedRef.current = false; }, 1800);
   };
+
+  // Duplicamos los items para que el loop automático sea continuo/sin salto
+  const loop = items.concat(items);
 
   return (
     <section className="bg-white py-20 md:py-28 px-4 sm:px-6 lg:px-8 font-sora">
+      <style>{`
+        .featured-track { scrollbar-width: none; -ms-overflow-style: none; }
+        .featured-track::-webkit-scrollbar { display: none; width: 0; height: 0; }
+      `}</style>
       <div className="w-full max-w-[1920px] mx-auto">
         {/* Header */}
         <div className="flex items-end justify-between mb-10 md:mb-14">
@@ -42,7 +75,7 @@ export default function FeaturedProducts({ products }: Props) {
             <button
               type="button"
               aria-label="Anterior"
-              onClick={() => scroll(-1)}
+              onClick={() => nudge(-1)}
               className="w-12 h-12 rounded-full border-2 border-[#2A4899] text-[#2A4899] hover:bg-[#2A4899] hover:text-white transition-all flex items-center justify-center text-xl font-black"
             >
               ←
@@ -50,7 +83,7 @@ export default function FeaturedProducts({ products }: Props) {
             <button
               type="button"
               aria-label="Siguiente"
-              onClick={() => scroll(1)}
+              onClick={() => nudge(1)}
               className="w-12 h-12 rounded-full border-2 border-[#2A4899] text-[#2A4899] hover:bg-[#2A4899] hover:text-white transition-all flex items-center justify-center text-xl font-black"
             >
               →
@@ -58,17 +91,21 @@ export default function FeaturedProducts({ products }: Props) {
           </div>
         </div>
 
-        {/* Carrusel */}
+        {/* Carrusel — scrollbar oculto, rotación automática */}
         <div
-          ref={scrollRef}
-          className="flex gap-5 md:gap-6 overflow-x-auto pb-4 snap-x snap-mandatory"
-          style={{ scrollbarWidth: 'thin' }}
+          ref={trackRef}
+          className="featured-track flex gap-5 md:gap-6 overflow-x-auto pb-2"
+          onMouseEnter={pause}
+          onMouseLeave={resume}
+          onTouchStart={pause}
         >
-          {items.map((p) => (
+          {loop.map((p, i) => (
             <a
-              key={p.uuid}
+              key={`${p.uuid}-${i}`}
               href={p.url}
-              className="group snap-start shrink-0 w-[240px] md:w-[280px] bg-white rounded-[1.5rem] md:rounded-[2rem] shadow-lg border border-slate-100 hover:shadow-2xl transition-all overflow-hidden flex flex-col"
+              aria-hidden={i >= items.length ? true : undefined}
+              tabIndex={i >= items.length ? -1 : undefined}
+              className="group shrink-0 w-[240px] md:w-[280px] bg-white rounded-[1.5rem] md:rounded-[2rem] shadow-lg border border-slate-100 hover:shadow-2xl transition-all overflow-hidden flex flex-col"
             >
               <div className="h-48 md:h-60 overflow-hidden bg-white flex items-center justify-center p-5">
                 {p.image?.url ? (

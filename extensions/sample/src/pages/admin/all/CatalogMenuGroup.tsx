@@ -36,6 +36,6 @@ export const layout = {
 export const query = `
   query CatalogMenuGroupQuery {
     catalogAdmin: url(routeId: "catalogAdmin")
-    featuredProducts: url(routeId: "featuredProducts")
+    featuredProducts: url(routeId: "featuredAdmin")
   }
 `;
