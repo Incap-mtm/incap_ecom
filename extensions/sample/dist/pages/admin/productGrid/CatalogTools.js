@@ -70,7 +70,7 @@ export const layout = {
 };
 export const query = `
   query CatalogToolsQuery {
-    variantSizeOrderUrl: url(routeId: "variantSizeOrder")
+    variantSizeOrderUrl: url(routeId: "sizeOrderAdmin")
   }
 `;
 //# sourceMappingURL=CatalogTools.js.map
