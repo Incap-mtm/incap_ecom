@@ -10,6 +10,13 @@
  * Fuente de verdad conceptual para el split familia/presentación:
  * themes/industrial-glue/src/utils/family.ts
  *
+ * NOTA: este archivo vive en src/lib/ (NO en una carpeta api/) a propósito.
+ * Evershop escanea como middleware Express todo .js de una carpeta de ruta cuyo
+ * nombre empiece en minúscula (scanForMiddlewareFunctions). Cuando estaba en
+ * api/suggestSku/ se registraba como middleware y se invocaba con (request,...)
+ * → `presentation.trim is not a function` en cada POST /suggest-sku. En lib/ es
+ * solo un helper importado, nunca un middleware.
+ *
  * @param {string} presentation  — la parte después del último " - " en el nombre del producto
  * @returns {{ token: string|null, confident: boolean }}
  */
