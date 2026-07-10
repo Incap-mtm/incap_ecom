@@ -231,22 +231,24 @@ function init(container) {
               y encoge, y baja el alto para que no quede volando sobre el texto. */}
           <style>{`
             @media (max-width: 1023px) {
-              /* Móvil/tablet: producto (frente) sobre la mascota (que lo "presenta"),
-                 y el "+56 años" detrás, corrido ~50% hacia abajo. Se conserva el
-                 orden de capas por z-index (producto z10 > mascota z1 > 56 z0). */
+              /* Móvil/tablet: producto y mascota lado a lado (la mascota lo presenta),
+                 mascota ~50% más grande que el producto, y el "+56 años" debajo. */
               .hist-compo {
                 min-height: 0 !important;
                 margin-top: 0 !important;
                 display: flex;
-                flex-direction: column;
-                align-items: center;
+                flex-wrap: wrap;
+                align-items: flex-end;
+                justify-content: center;
+                gap: 6px;
                 position: relative;
               }
               .hist-3d {
                 order: 1;
-                max-width: 210px;
-                height: 270px;
-                margin: 0 auto;
+                width: 39%;
+                max-width: 150px;
+                height: 210px;
+                margin: 0;
               }
               .hist-3d canvas { max-width: 100% !important; }
               .hist-mascot {
@@ -255,9 +257,9 @@ function init(container) {
                 transform: none !important;
                 right: auto !important;
                 bottom: auto !important;
-                width: 62% !important;
-                max-width: 240px !important;
-                margin-top: -55px !important;
+                width: 57% !important;
+                max-width: 230px !important;
+                margin: 0 !important;
               }
               .hist-56 {
                 order: 3;
@@ -265,9 +267,9 @@ function init(container) {
                 transform: none !important;
                 top: auto !important;
                 left: auto !important;
-                width: auto !important;
-                max-width: 270px !important;
-                margin-top: -72px !important;
+                width: 100% !important;
+                max-width: 290px !important;
+                margin: -18px auto 0 !important;
               }
             }
           `}</style>
