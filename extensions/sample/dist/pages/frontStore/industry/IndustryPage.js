@@ -179,40 +179,43 @@ export default function IndustryPage() {
                             " familia",
                             filteredGroups.length !== 1 ? 's' : '')))),
                 result.fetching ? (React.createElement("div", { className: "text-center py-20 text-slate-400" }, "Cargando portafolio...")) : filteredGroups.length > 0 ? (React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12" }, filteredGroups.map((group) => {
-                    var _a;
+                    var _a, _b;
                     const rep = group.representative;
-                    const firstUrl = `/product/${rep.uuid}`;
+                    const firstUrl = (_a = rep.url) !== null && _a !== void 0 ? _a : `/product/${rep.uuid}`;
                     const sortedProducts = [...group.products].sort((a, b) => {
                         const num = (s) => parseFloat(s.replace(/[^\d.]/g, '')) || 0;
                         return num(getPresentation(a.name)) - num(getPresentation(b.name));
                     });
                     return (React.createElement("div", { key: group.family, className: "bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-xl border border-slate-100 hover:shadow-2xl transition-all overflow-hidden" },
                         React.createElement("a", { href: firstUrl, className: "block" },
-                            React.createElement("div", { className: "h-52 md:h-64 overflow-hidden bg-white flex items-center justify-center p-4" }, ((_a = rep.image) === null || _a === void 0 ? void 0 : _a.url) ? (React.createElement("img", { src: rep.image.url, className: "w-full h-full object-contain hover:scale-105 transition-transform duration-700", alt: group.family })) : (React.createElement("div", { className: "w-full h-full flex items-center justify-center text-slate-300 font-sora font-black uppercase tracking-widest text-base md:text-xl" }, "Sin Imagen"))),
+                            React.createElement("div", { className: "h-52 md:h-64 overflow-hidden bg-white flex items-center justify-center p-4" }, ((_b = rep.image) === null || _b === void 0 ? void 0 : _b.url) ? (React.createElement("img", { src: rep.image.url, className: "w-full h-full object-contain hover:scale-105 transition-transform duration-700", alt: group.family })) : (React.createElement("div", { className: "w-full h-full flex items-center justify-center text-slate-300 font-sora font-black uppercase tracking-widest text-base md:text-xl" }, "Sin Imagen"))),
                             React.createElement("div", { className: "px-6 md:px-10 pt-6 md:pt-8" },
                                 React.createElement("span", { className: "text-[#2A4899] font-black text-[10px] uppercase tracking-[0.4em] mb-2 block" }, "Especializado"),
                                 React.createElement("h3", { className: "text-xl md:text-2xl font-black mb-3 font-sora text-[#181B1C] hover:text-[#2A4899] transition-colors uppercase tracking-tight leading-none" }, group.family))),
                         React.createElement("div", { className: "px-6 md:px-10 pb-6 md:pb-10" },
                             React.createElement("p", { style: { fontSize: '9px', fontWeight: 800, color: '#94a3b8', letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '10px' } }, "Presentaciones"),
-                            React.createElement("div", { style: { display: 'flex', flexWrap: 'wrap', gap: '6px' } }, sortedProducts.map((p) => (React.createElement("a", { key: p.productId, href: `/product/${p.uuid}`, style: {
-                                    display: 'inline-block',
-                                    padding: '4px 10px',
-                                    background: '#f1f5f9',
-                                    color: '#2A4899',
-                                    borderRadius: '6px',
-                                    fontSize: '11px',
-                                    fontWeight: 700,
-                                    fontFamily: 'Sora, sans-serif',
-                                    textDecoration: 'none',
-                                    border: '1.5px solid transparent',
-                                    transition: 'all 0.15s',
-                                }, onMouseOver: (e) => {
-                                    e.currentTarget.style.background = '#2A4899';
-                                    e.currentTarget.style.color = '#fff';
-                                }, onMouseOut: (e) => {
-                                    e.currentTarget.style.background = '#f1f5f9';
-                                    e.currentTarget.style.color = '#2A4899';
-                                } }, getPresentation(p.name))))))));
+                            React.createElement("div", { style: { display: 'flex', flexWrap: 'wrap', gap: '6px' } }, sortedProducts.map((p) => {
+                                var _a;
+                                return (React.createElement("a", { key: p.productId, href: (_a = p.url) !== null && _a !== void 0 ? _a : `/product/${p.uuid}`, style: {
+                                        display: 'inline-block',
+                                        padding: '4px 10px',
+                                        background: '#f1f5f9',
+                                        color: '#2A4899',
+                                        borderRadius: '6px',
+                                        fontSize: '11px',
+                                        fontWeight: 700,
+                                        fontFamily: 'Sora, sans-serif',
+                                        textDecoration: 'none',
+                                        border: '1.5px solid transparent',
+                                        transition: 'all 0.15s',
+                                    }, onMouseOver: (e) => {
+                                        e.currentTarget.style.background = '#2A4899';
+                                        e.currentTarget.style.color = '#fff';
+                                    }, onMouseOut: (e) => {
+                                        e.currentTarget.style.background = '#f1f5f9';
+                                        e.currentTarget.style.color = '#2A4899';
+                                    } }, getPresentation(p.name)));
+                            })))));
                 }))) : (React.createElement("div", { className: "text-center py-20 bg-white rounded-[3rem] border border-slate-100 shadow-sm" },
                     React.createElement("p", { className: "text-2xl text-slate-400 font-light mb-6" },
                         "A\u00FAn no hay productos asignados a la industria de ",

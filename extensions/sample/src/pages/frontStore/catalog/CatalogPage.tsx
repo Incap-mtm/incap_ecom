@@ -317,7 +317,7 @@ export default function CatalogPage() {
                         </p>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
                           {sortedProds.slice(0, 5).map((p: any) => (
-                            <a key={p.productId} href={`/product/${p.uuid}`}
+                            <a key={p.productId} href={p.url ?? `/product/${p.uuid}`}
                               style={{ display: 'inline-block', padding: '3px 8px', background: '#f1f5f9', color: '#2A4899', borderRadius: '6px', fontSize: '10px', fontWeight: 700, fontFamily: 'Sora, sans-serif', textDecoration: 'none', transition: 'all 0.15s' }}
                               onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = '#2A4899'; el.style.color = '#fff'; }}
                               onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = '#f1f5f9'; el.style.color = '#2A4899'; }}

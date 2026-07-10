@@ -182,7 +182,10 @@ export default function CatalogPage() {
                             React.createElement("div", { style: { padding: '0 14px 14px' } },
                                 React.createElement("p", { style: { fontSize: '9px', fontWeight: 800, color: '#94a3b8', letterSpacing: '0.25em', textTransform: 'uppercase', margin: '0 0 6px' } }, "Presentaciones"),
                                 React.createElement("div", { style: { display: 'flex', flexWrap: 'wrap', gap: '4px' } },
-                                    sortedProds.slice(0, 5).map((p) => (React.createElement("a", { key: p.productId, href: `/product/${p.uuid}`, style: { display: 'inline-block', padding: '3px 8px', background: '#f1f5f9', color: '#2A4899', borderRadius: '6px', fontSize: '10px', fontWeight: 700, fontFamily: 'Sora, sans-serif', textDecoration: 'none', transition: 'all 0.15s' }, onMouseEnter: e => { const el = e.currentTarget; el.style.background = '#2A4899'; el.style.color = '#fff'; }, onMouseLeave: e => { const el = e.currentTarget; el.style.background = '#f1f5f9'; el.style.color = '#2A4899'; } }, getPresentation(p.name)))),
+                                    sortedProds.slice(0, 5).map((p) => {
+                                        var _a;
+                                        return (React.createElement("a", { key: p.productId, href: (_a = p.url) !== null && _a !== void 0 ? _a : `/product/${p.uuid}`, style: { display: 'inline-block', padding: '3px 8px', background: '#f1f5f9', color: '#2A4899', borderRadius: '6px', fontSize: '10px', fontWeight: 700, fontFamily: 'Sora, sans-serif', textDecoration: 'none', transition: 'all 0.15s' }, onMouseEnter: e => { const el = e.currentTarget; el.style.background = '#2A4899'; el.style.color = '#fff'; }, onMouseLeave: e => { const el = e.currentTarget; el.style.background = '#f1f5f9'; el.style.color = '#2A4899'; } }, getPresentation(p.name)));
+                                    }),
                                     sortedProds.length > 5 && (React.createElement("a", { href: fc.href, style: { display: 'inline-block', padding: '3px 8px', background: '#e0e7ff', color: '#2A4899', borderRadius: '6px', fontSize: '10px', fontWeight: 700, fontFamily: 'Sora, sans-serif', textDecoration: 'none' } },
                                         "+",
                                         sortedProds.length - 5))))));

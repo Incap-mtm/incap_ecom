@@ -243,7 +243,7 @@ export default function IndustryPage() {
              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12">
                {filteredGroups.map((group) => {
                  const rep = group.representative;
-                 const firstUrl = `/product/${rep.uuid}`;
+                 const firstUrl = rep.url ?? `/product/${rep.uuid}`;
                  const sortedProducts = [...group.products].sort((a: any, b: any) => {
                    const num = (s: string) => parseFloat(s.replace(/[^\d.]/g, '')) || 0;
                    return num(getPresentation(a.name)) - num(getPresentation(b.name));
@@ -272,7 +272,7 @@ export default function IndustryPage() {
                          {sortedProducts.map((p: any) => (
                            <a
                              key={p.productId}
-                             href={`/product/${p.uuid}`}
+                             href={p.url ?? `/product/${p.uuid}`}
                              style={{
                                display: 'inline-block',
                                padding: '4px 10px',
