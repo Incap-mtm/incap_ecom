@@ -1,7 +1,10 @@
 import { select } from '@evershop/postgres-query-builder';
 import { getSetting } from '@evershop/evershop/setting/services';
+import { getProductsBaseQuery } from '@evershop/evershop/catalog/services';
+import { camelCase } from '@evershop/evershop/lib/util/camelCase';
 import { compareSizes } from '../../../lib/sizeSort.js';
 const SIZE_ATTRIBUTE_ID = 2;
+const RELATED_LIMIT = 4;
 export default {
     Product: {
         sizeVariants: async (product, _, { pool }) => {
@@ -47,6 +50,36 @@ export default {
                 url: `/product/${r.uuid}`,
                 isCurrent: r.product_id === productId
             }));
+        },
+        /**
+         * Productos relacionados: hasta 4 de la misma categoría, excluyendo el
+         * producto actual. Devuelve objetos Product completos para que los
+         * resolvers core (url, image, price) los formateen. Las variantes hijas
+         * quedan fuera solas porque tienen visibility = false.
+         */
+        relatedProducts: async (product, _, { pool }) => {
+            const { productId } = product;
+            if (!productId)
+                return [];
+            // Categoría del producto actual (tomamos la primera asignada)
+            const cat = await select()
+                .from('product_category')
+                .where('product_id', '=', productId)
+                .load(pool);
+            if (!cat)
+                return [];
+            const query = getProductsBaseQuery();
+            query
+                .innerJoin('product_category')
+                .on('product_category.product_id', '=', 'product.product_id');
+            query.where('product_category.category_id', '=', cat.category_id);
+            query.andWhere('product.product_id', '<>', productId);
+            query.andWhere('product.status', '=', true);
+            query.andWhere('product.visibility', '=', true);
+            query.orderBy('product.product_id', 'DESC');
+            query.limit(0, RELATED_LIMIT);
+            const rows = await query.execute(pool);
+            return rows.map((r) => camelCase(r));
         }
     }
 };

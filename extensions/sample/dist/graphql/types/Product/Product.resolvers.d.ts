@@ -7,6 +7,9 @@ declare namespace _default {
             url: string;
             isCurrent: boolean;
         }[] | null>;
+        function relatedProducts(product: any, _: any, { pool }: {
+            pool: any;
+        }): Promise<Record<string, any>[]>;
     }
 }
 export default _default;
