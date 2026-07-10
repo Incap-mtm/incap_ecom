@@ -12,6 +12,7 @@ extend type Setting {
   catalogUrl: String
   catalogButtonText: String
   leadEmails: String
+  featuredProducts: String
 }
 
 type SizeOption {
@@ -21,4 +22,5 @@ type SizeOption {
 
 extend type Query {
   sizeOptions: [SizeOption]
+  featuredProductsSelected: [Product]
 }

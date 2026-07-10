@@ -1,5 +1,9 @@
 import { pool } from '@evershop/evershop/lib/postgres';
+import { getSetting } from '@evershop/evershop/setting/services';
+import { getProductsBaseQuery } from '@evershop/evershop/catalog/services';
+import { camelCase } from '@evershop/evershop/lib/util/camelCase';
 const SIZE_ATTRIBUTE_ID = 2;
+const FEATURED_LIMIT = 10;
 const findSetting = (setting, name, fallback = '') => (setting.find((item) => item.name === name) || {}).value || fallback;
 export default {
     Setting: {
@@ -16,6 +20,7 @@ export default {
         catalogUrl: (setting) => findSetting(setting, 'catalog_url', '/assets/catalogo-incap.pdf'),
         catalogButtonText: (setting) => findSetting(setting, 'catalog_button_text', 'Descargar Catálogo'),
         leadEmails: (setting) => findSetting(setting, 'lead_emails', ''),
+        featuredProducts: (setting) => findSetting(setting, 'featured_products', '[]'),
     },
     Query: {
         sizeOptions: async (_, __, { pool: ctxPool }) => {
@@ -25,6 +30,35 @@ export default {
          WHERE attribute_id = $1
          ORDER BY attribute_option_id ASC`, [SIZE_ATTRIBUTE_ID]);
             return rows;
+        },
+        /**
+         * Productos destacados curados por el admin (setting `featured_products` =
+         * array JSON de uuids). Devuelve objetos Product completos, en el mismo
+         * orden elegido, solo activos y visibles. Máximo FEATURED_LIMIT.
+         */
+        featuredProductsSelected: async (_, __, { pool: ctxPool }) => {
+            const p = ctxPool || pool;
+            let uuids = [];
+            try {
+                const raw = await getSetting('featured_products', '[]');
+                const parsed = JSON.parse(raw);
+                if (Array.isArray(parsed))
+                    uuids = parsed.filter((u) => typeof u === 'string');
+            }
+            catch (_a) {
+                uuids = [];
+            }
+            if (uuids.length === 0)
+                return [];
+            const capped = uuids.slice(0, FEATURED_LIMIT);
+            const query = getProductsBaseQuery();
+            query.where('product.uuid', 'IN', capped);
+            query.andWhere('product.status', '=', true);
+            query.andWhere('product.visibility', '=', true);
+            const rows = await query.execute(p);
+            // Preservar el orden elegido por el admin
+            const byUuid = new Map(rows.map((r) => [r.uuid, camelCase(r)]));
+            return capped.map((u) => byUuid.get(u)).filter(Boolean);
         }
     }
 };

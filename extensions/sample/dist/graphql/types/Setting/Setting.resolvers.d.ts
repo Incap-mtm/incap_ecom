@@ -13,11 +13,15 @@ declare namespace _default {
         function catalogUrl(setting: any): any;
         function catalogButtonText(setting: any): any;
         function leadEmails(setting: any): any;
+        function featuredProducts(setting: any): any;
     }
     namespace Query {
         function sizeOptions(_: any, __: any, { pool: ctxPool }: {
             pool: any;
         }): Promise<any>;
+        function featuredProductsSelected(_: any, __: any, { pool: ctxPool }: {
+            pool: any;
+        }): Promise<(Record<string, any> | undefined)[]>;
     }
 }
 export default _default;
