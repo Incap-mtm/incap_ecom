@@ -231,40 +231,43 @@ function init(container) {
               y encoge, y baja el alto para que no quede volando sobre el texto. */}
           <style>{`
             @media (max-width: 1023px) {
-              /* Móvil/tablet: apilar producto → mascota → "+56 años" (compacto) */
+              /* Móvil/tablet: producto (frente) sobre la mascota (que lo "presenta"),
+                 y el "+56 años" detrás, corrido ~50% hacia abajo. Se conserva el
+                 orden de capas por z-index (producto z10 > mascota z1 > 56 z0). */
               .hist-compo {
                 min-height: 0 !important;
                 margin-top: 0 !important;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                position: relative;
               }
               .hist-3d {
                 order: 1;
-                max-width: 230px;
-                height: 290px;
+                max-width: 210px;
+                height: 270px;
                 margin: 0 auto;
               }
               .hist-3d canvas { max-width: 100% !important; }
               .hist-mascot {
                 order: 2;
-                position: static !important;
+                position: relative !important;
                 transform: none !important;
-                width: 60% !important;
-                max-width: 230px !important;
                 right: auto !important;
                 bottom: auto !important;
-                margin-top: -36px !important;
+                width: 62% !important;
+                max-width: 240px !important;
+                margin-top: -55px !important;
               }
               .hist-56 {
                 order: 3;
-                position: static !important;
+                position: relative !important;
                 transform: none !important;
                 top: auto !important;
                 left: auto !important;
                 width: auto !important;
-                max-width: 240px !important;
-                margin-top: 6px !important;
+                max-width: 270px !important;
+                margin-top: -72px !important;
               }
             }
           `}</style>
