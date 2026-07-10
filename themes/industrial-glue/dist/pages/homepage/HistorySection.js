@@ -199,9 +199,9 @@ function init(container) {
             (_a = document.getElementById('incap-3d-script')) === null || _a === void 0 ? void 0 : _a.remove();
         };
     }, []);
-    return (React.createElement("section", { id: "nosotros", className: "py-16 md:py-24 lg:py-32 bg-slate-50 relative", ref: reveal.ref },
+    return (React.createElement("section", { id: "nosotros", className: "py-32 bg-slate-50 relative", ref: reveal.ref },
         React.createElement("div", { className: "max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12" },
-            React.createElement("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-24 items-center mb-16 lg:mb-32" },
+            React.createElement("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-32" },
                 React.createElement("div", { className: `${reveal.className}` },
                     React.createElement("h2", { className: "text-[#2A4899] font-black text-[10px] mb-6 tracking-[0.4em] uppercase font-sora" }, "Nuestra Historia y Prop\u00F3sito"),
                     React.createElement("h3", { className: "text-6xl md:text-8xl font-black text-[#181B1C] font-sora mb-12 leading-[0.9] uppercase tracking-tighter" },
@@ -210,54 +210,10 @@ function init(container) {
                         "DE LA ",
                         React.createElement("span", { className: "text-[#85C639] italic" }, "INDUSTRIA")),
                     React.createElement("p", { className: "text-xl md:text-2xl text-[#2A4899]/70 font-sora font-medium leading-relaxed mb-8 max-w-xl" }, "Desde 1969, entendemos que detr\u00E1s de cada adhesivo hay una familia y una f\u00E1brica que compite a nivel global.")),
-                React.createElement("style", null, `
-            @media (max-width: 1023px) {
-              /* Móvil/tablet: producto y mascota lado a lado (la mascota lo presenta),
-                 mascota ~50% más grande que el producto, y el "+56 años" debajo. */
-              .hist-compo {
-                min-height: 0 !important;
-                margin-top: 0 !important;
-                display: flex;
-                flex-wrap: wrap;
-                align-items: flex-end;
-                justify-content: center;
-                gap: 6px;
-                position: relative;
-              }
-              .hist-3d {
-                order: 1;
-                width: 39%;
-                max-width: 150px;
-                height: 210px;
-                margin: 0;
-              }
-              .hist-3d canvas { max-width: 100% !important; }
-              .hist-mascot {
-                order: 2;
-                position: relative !important;
-                transform: none !important;
-                right: auto !important;
-                bottom: auto !important;
-                width: 57% !important;
-                max-width: 230px !important;
-                margin: 0 !important;
-              }
-              .hist-56 {
-                order: 3;
-                position: relative !important;
-                transform: none !important;
-                top: auto !important;
-                left: auto !important;
-                width: 100% !important;
-                max-width: 290px !important;
-                margin: -18px auto 0 !important;
-              }
-            }
-          `),
-                React.createElement("div", { className: `hist-compo relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0`, style: { minHeight: '640px' } },
-                    React.createElement("img", { src: "/images/sections/56_anos_maxon.webp", alt: "+56 a\u00F1os de experiencia", loading: "lazy", className: "hist-56", style: { position: 'absolute', zIndex: 0, top: 0, left: '50%', transform: 'translateX(-50%)', width: '140%', maxWidth: '840px', pointerEvents: 'none', userSelect: 'none' } }),
-                    React.createElement("img", { src: "/images/sections/cap_para_maxon.webp", alt: "Mascota INCAP", loading: "lazy", className: "hist-mascot", style: { position: 'absolute', zIndex: 1, right: 0, bottom: '-48px', width: '72%', maxWidth: '480px', pointerEvents: 'none', userSelect: 'none' } }),
-                    React.createElement("div", { ref: mountRef, id: "incap-3d-mount", className: "hist-3d", style: { position: 'relative', zIndex: 10 } }))),
+                React.createElement("div", { className: `relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0`, style: { minHeight: '640px' } },
+                    React.createElement("img", { src: "/images/sections/56_anos_maxon.webp", alt: "+56 a\u00F1os de experiencia", loading: "lazy", style: { position: 'absolute', zIndex: 0, top: 0, left: '50%', transform: 'translateX(-50%)', width: '140%', maxWidth: '840px', pointerEvents: 'none', userSelect: 'none' } }),
+                    React.createElement("img", { src: "/images/sections/cap_para_maxon.webp", alt: "Mascota INCAP", loading: "lazy", style: { position: 'absolute', zIndex: 1, right: 0, bottom: '-48px', width: '72%', maxWidth: '480px', pointerEvents: 'none', userSelect: 'none' } }),
+                    React.createElement("div", { ref: mountRef, id: "incap-3d-mount", style: { position: 'relative', zIndex: 10 } }))),
             React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12" }, [
                 { t: 'INGENIERÍA CON ROSTRO HUMANO', d: 'No creemos en catálogos fríos. Creemos en la presencia real en tu planta.' },
                 { t: 'INNOVACIÓN CON RESPONSABILIDAD', d: 'Lideramos con fórmulas Libres de Tolueno (LT) para proteger a tus operarios.' },
