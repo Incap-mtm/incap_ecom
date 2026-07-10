@@ -209,9 +209,9 @@ function init(container) {
   }, []);
 
   return (
-    <section id="nosotros" className="py-32 bg-slate-50 relative" ref={reveal.ref}>
+    <section id="nosotros" className="py-16 md:py-24 lg:py-32 bg-slate-50 relative" ref={reveal.ref}>
       <div className="max-w-[1536px] mx-auto px-6 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-32">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-24 items-center mb-16 lg:mb-32">
 
           {/* Left — text */}
           <div className={`${reveal.className}`}>
@@ -231,11 +231,41 @@ function init(container) {
               y encoge, y baja el alto para que no quede volando sobre el texto. */}
           <style>{`
             @media (max-width: 1023px) {
-              .hist-compo { min-height: 430px !important; }
-              .hist-56 { width: 100% !important; max-width: 280px !important; top: 4px !important; }
-              .hist-3d { max-width: 260px; height: 340px; margin-left: auto; margin-right: auto; }
+              /* Móvil/tablet: apilar producto → mascota → "+56 años" (compacto) */
+              .hist-compo {
+                min-height: 0 !important;
+                margin-top: 0 !important;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+              }
+              .hist-3d {
+                order: 1;
+                max-width: 230px;
+                height: 290px;
+                margin: 0 auto;
+              }
               .hist-3d canvas { max-width: 100% !important; }
-              .hist-mascot { width: 58% !important; max-width: 260px !important; bottom: -20px !important; }
+              .hist-mascot {
+                order: 2;
+                position: static !important;
+                transform: none !important;
+                width: 60% !important;
+                max-width: 230px !important;
+                right: auto !important;
+                bottom: auto !important;
+                margin-top: -36px !important;
+              }
+              .hist-56 {
+                order: 3;
+                position: static !important;
+                transform: none !important;
+                top: auto !important;
+                left: auto !important;
+                width: auto !important;
+                max-width: 240px !important;
+                margin-top: 6px !important;
+              }
             }
           `}</style>
           <div
