@@ -1,5 +1,6 @@
 import { select } from '@evershop/postgres-query-builder';
 import { getSetting } from '@evershop/evershop/setting/services';
+import { compareSizes } from '../../../lib/sizeSort.js';
 const SIZE_ATTRIBUTE_ID = 2;
 export default {
     Product: {
@@ -38,8 +39,8 @@ export default {
                 const posB = idxB === -1 ? Infinity : idxB;
                 if (posA !== posB)
                     return posA - posB;
-                // Ambos no listados: ordenar alfabéticamente por option_text
-                return (a.option_text || '').localeCompare(b.option_text || '');
+                // Ambos no listados: ordenar de menor a mayor por tamaño
+                return compareSizes(a.option_text, b.option_text);
             });
             return rows.map((r) => ({
                 label: r.option_text,

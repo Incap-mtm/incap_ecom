@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/common/ui/Card.js';
 import { Button } from '@components/common/ui/Button.js';
+import { compareSizes } from '../../../lib/sizeSort.js';
 const AZUL = '#2A4899';
 const VERDE = '#85C639';
 // ---------------------------------------------------------------------------
@@ -20,11 +21,11 @@ function buildOrderedList(orderIds, allOptions) {
         if (opt)
             ordered.push(opt);
     }
-    // Luego los restantes (no listados), por texto
+    // Luego los restantes (no listados), de menor a mayor por tamaño
     const orderedIds = new Set(orderIds);
     const rest = allOptions
         .filter((o) => !orderedIds.has(o.id))
-        .sort((a, b) => a.text.localeCompare(b.text));
+        .sort((a, b) => compareSizes(a.text, b.text));
     return [...ordered, ...rest];
 }
 // ---------------------------------------------------------------------------
@@ -53,6 +54,10 @@ function VariantSizeOrderPage({ variantSizeOrderJson, sizeOptionsData }) {
             return;
         [next[index], next[target]] = [next[target], next[index]];
         setItems(next);
+        setStatus({ kind: 'idle' });
+    };
+    const sortAscending = () => {
+        setItems((prev) => [...prev].sort((a, b) => compareSizes(a.text, b.text)));
         setStatus({ kind: 'idle' });
     };
     const handleSave = async () => {
@@ -91,12 +96,29 @@ function VariantSizeOrderPage({ variantSizeOrderJson, sizeOptionsData }) {
         React.createElement(CardHeader, null,
             React.createElement(CardTitle, null, "Orden de tama\u00F1os de variante"),
             React.createElement(CardDescription, null,
-                "Define el orden en que aparecen los tama\u00F1os en el selector de variantes de la ficha de producto. Us\u00E1 los botones ",
+                "Define el orden en que aparecen los tama\u00F1os en el selector de variantes de la ficha de producto. Por defecto se ordenan ",
+                React.createElement("strong", null, "de menor a mayor"),
+                "; us\u00E1",
+                ' ',
+                React.createElement("strong", null, "Ordenar de menor a mayor"),
+                " para reaplicarlo, o los botones",
+                ' ',
                 React.createElement("strong", null, "Subir"),
                 " y ",
                 React.createElement("strong", null, "Bajar"),
-                " para reordenar. Los tama\u00F1os que no est\u00E9n en la lista aparecer\u00E1n al final en orden alfab\u00E9tico.")),
+                " para ajustarlo manualmente.")),
         React.createElement(CardContent, null, items.length === 0 ? (React.createElement("p", { style: { color: '#6b7280', fontSize: 14 } }, "No hay tama\u00F1os de variante registrados. Ejecut\u00E1 primero \"Sincronizar variantes\" desde la grilla de productos.")) : (React.createElement("div", { style: { maxWidth: 480 } },
+            React.createElement("div", { style: { marginBottom: 12 } },
+                React.createElement("button", { onClick: sortAscending, style: {
+                        padding: '6px 14px',
+                        fontSize: 13,
+                        background: '#fff',
+                        color: AZUL,
+                        border: `2px solid ${AZUL}`,
+                        borderRadius: 6,
+                        cursor: 'pointer',
+                        fontWeight: 600
+                    }, title: "Reordena todos los tama\u00F1os de menor a mayor" }, "\u2195 Ordenar de menor a mayor")),
             React.createElement("table", { style: { width: '100%', borderCollapse: 'collapse', fontSize: 14 } },
                 React.createElement("thead", null,
                     React.createElement("tr", null,

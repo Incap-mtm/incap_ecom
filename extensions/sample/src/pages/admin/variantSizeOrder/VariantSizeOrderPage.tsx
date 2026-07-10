@@ -12,6 +12,7 @@ import {
   CardTitle
 } from '@components/common/ui/Card.js';
 import { Button } from '@components/common/ui/Button.js';
+import { compareSizes } from '../../../lib/sizeSort.js';
 
 const AZUL = '#2A4899';
 const VERDE = '#85C639';
@@ -39,11 +40,11 @@ function buildOrderedList(orderIds: number[], allOptions: SizeOption[]): SizeOpt
     if (opt) ordered.push(opt);
   }
 
-  // Luego los restantes (no listados), por texto
+  // Luego los restantes (no listados), de menor a mayor por tamaño
   const orderedIds = new Set(orderIds);
   const rest = allOptions
     .filter((o) => !orderedIds.has(o.id))
-    .sort((a, b) => a.text.localeCompare(b.text));
+    .sort((a, b) => compareSizes(a.text, b.text));
 
   return [...ordered, ...rest];
 }
@@ -73,6 +74,11 @@ function VariantSizeOrderPage({ variantSizeOrderJson, sizeOptionsData }: Props) 
     if (target < 0 || target >= next.length) return;
     [next[index], next[target]] = [next[target], next[index]];
     setItems(next);
+    setStatus({ kind: 'idle' });
+  };
+
+  const sortAscending = () => {
+    setItems((prev) => [...prev].sort((a, b) => compareSizes(a.text, b.text)));
     setStatus({ kind: 'idle' });
   };
 
@@ -113,8 +119,9 @@ function VariantSizeOrderPage({ variantSizeOrderJson, sizeOptionsData }: Props) 
         <CardTitle>Orden de tamaños de variante</CardTitle>
         <CardDescription>
           Define el orden en que aparecen los tamaños en el selector de variantes de la ficha de
-          producto. Usá los botones <strong>Subir</strong> y <strong>Bajar</strong> para reordenar.
-          Los tamaños que no estén en la lista aparecerán al final en orden alfabético.
+          producto. Por defecto se ordenan <strong>de menor a mayor</strong>; usá{' '}
+          <strong>Ordenar de menor a mayor</strong> para reaplicarlo, o los botones{' '}
+          <strong>Subir</strong> y <strong>Bajar</strong> para ajustarlo manualmente.
         </CardDescription>
       </CardHeader>
 
@@ -126,6 +133,24 @@ function VariantSizeOrderPage({ variantSizeOrderJson, sizeOptionsData }: Props) 
           </p>
         ) : (
           <div style={{ maxWidth: 480 }}>
+            <div style={{ marginBottom: 12 }}>
+              <button
+                onClick={sortAscending}
+                style={{
+                  padding: '6px 14px',
+                  fontSize: 13,
+                  background: '#fff',
+                  color: AZUL,
+                  border: `2px solid ${AZUL}`,
+                  borderRadius: 6,
+                  cursor: 'pointer',
+                  fontWeight: 600
+                }}
+                title="Reordena todos los tamaños de menor a mayor"
+              >
+                ↕ Ordenar de menor a mayor
+              </button>
+            </div>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
               <thead>
                 <tr>
