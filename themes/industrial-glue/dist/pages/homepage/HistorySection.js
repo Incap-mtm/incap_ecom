@@ -8,6 +8,10 @@ export default function HistorySection() {
         const container = mountRef.current;
         if (!container)
             return;
+        // La composición 3D solo existe en desktop (lg+). En mobile se muestra
+        // una imagen estática, así que no inicializamos Three.js.
+        if (window.innerWidth < 1024)
+            return;
         let injected = false;
         const inject = () => {
             var _a;
@@ -210,7 +214,9 @@ function init(container) {
                         "DE LA ",
                         React.createElement("span", { className: "text-[#85C639] italic" }, "INDUSTRIA")),
                     React.createElement("p", { className: "text-xl md:text-2xl text-[#2A4899]/70 font-sora font-medium leading-relaxed mb-8 max-w-xl" }, "Desde 1969, entendemos que detr\u00E1s de cada adhesivo hay una familia y una f\u00E1brica que compite a nivel global.")),
-                React.createElement("div", { className: `relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0`, style: { minHeight: '640px' } },
+                React.createElement("div", { className: `block lg:hidden ${reveal.className} reveal-stagger-2 active mt-10` },
+                    React.createElement("img", { src: "/images/sections/cap_maxon_mobile.webp", alt: "+56 a\u00F1os uniendo la industria \u2014 INCAP", loading: "lazy", style: { display: 'block', width: '100%', maxWidth: '520px', margin: '0 auto', pointerEvents: 'none', userSelect: 'none' } })),
+                React.createElement("div", { className: `hidden lg:block relative ${reveal.className} reveal-stagger-2 active lg:mt-0`, style: { minHeight: '640px' } },
                     React.createElement("img", { src: "/images/sections/56_anos_maxon.webp", alt: "+56 a\u00F1os de experiencia", loading: "lazy", style: { position: 'absolute', zIndex: 0, top: 0, left: '50%', transform: 'translateX(-50%)', width: '140%', maxWidth: '840px', pointerEvents: 'none', userSelect: 'none' } }),
                     React.createElement("img", { src: "/images/sections/cap_para_maxon.webp", alt: "Mascota INCAP", loading: "lazy", style: { position: 'absolute', zIndex: 1, right: 0, bottom: '-48px', width: '72%', maxWidth: '480px', pointerEvents: 'none', userSelect: 'none' } }),
                     React.createElement("div", { ref: mountRef, id: "incap-3d-mount", style: { position: 'relative', zIndex: 10 } }))),

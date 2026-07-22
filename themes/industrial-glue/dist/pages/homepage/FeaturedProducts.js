@@ -1,7 +1,29 @@
 import React, { useRef, useEffect } from 'react';
-import { getFamily, getPresentation } from '../../utils/family.js';
+import { getFamily } from '../../utils/family.js';
+import FamilyCard from '../../components/FamilyCard.js';
 export default function FeaturedProducts({ products }) {
-    const items = (products !== null && products !== void 0 ? products : []).filter((p) => Boolean(p));
+    var _a, _b, _c;
+    const raw = (products !== null && products !== void 0 ? products : []).filter((p) => Boolean(p));
+    // Agrupar por familia preservando el orden elegido por el admin: si eligió
+    // "Super PVA - 20kg" y "Super PVA - 5kg" se muestra UNA card de la familia
+    // con todas sus presentaciones como chips.
+    const seen = new Set();
+    const items = [];
+    for (const p of raw) {
+        const family = getFamily(p.name) || p.name;
+        if (seen.has(family))
+            continue;
+        seen.add(family);
+        const members = ((_a = p.familyMembers) !== null && _a !== void 0 ? _a : []).filter((m) => Boolean(m));
+        items.push({
+            family,
+            label: 'Destacado',
+            accent: '#2A4899',
+            repImage: (_c = (_b = p.image) === null || _b === void 0 ? void 0 : _b.url) !== null && _c !== void 0 ? _c : null,
+            repUrl: p.url,
+            members: members.length ? members : [{ name: p.name, url: p.url, uuid: p.uuid }],
+        });
+    }
     const trackRef = useRef(null);
     const pausedRef = useRef(false);
     // Rotación automática muy suave + loop sin cortes (contenido duplicado).
@@ -60,15 +82,8 @@ export default function FeaturedProducts({ products }) {
                 React.createElement("div", { className: "hidden md:flex gap-3" },
                     React.createElement("button", { type: "button", "aria-label": "Anterior", onClick: () => nudge(-1), className: "w-12 h-12 rounded-full border-2 border-[#2A4899] text-[#2A4899] hover:bg-[#2A4899] hover:text-white transition-all flex items-center justify-center text-xl font-black" }, "\u2190"),
                     React.createElement("button", { type: "button", "aria-label": "Siguiente", onClick: () => nudge(1), className: "w-12 h-12 rounded-full border-2 border-[#2A4899] text-[#2A4899] hover:bg-[#2A4899] hover:text-white transition-all flex items-center justify-center text-xl font-black" }, "\u2192"))),
-            React.createElement("div", { ref: trackRef, className: "featured-track flex gap-5 md:gap-6 overflow-x-auto pb-2", onMouseEnter: pause, onMouseLeave: resume, onTouchStart: pause }, loop.map((p, i) => {
-                var _a;
-                return (React.createElement("a", { key: `${p.uuid}-${i}`, href: p.url, "aria-hidden": i >= items.length ? true : undefined, tabIndex: i >= items.length ? -1 : undefined, className: "group shrink-0 w-[240px] md:w-[280px] bg-white rounded-[1.5rem] md:rounded-[2rem] shadow-lg border border-slate-100 hover:shadow-2xl transition-all overflow-hidden flex flex-col" },
-                    React.createElement("div", { className: "h-48 md:h-60 overflow-hidden bg-white flex items-center justify-center p-5" }, ((_a = p.image) === null || _a === void 0 ? void 0 : _a.url) ? (React.createElement("img", { src: p.image.url, alt: p.image.alt || p.name, loading: "lazy", className: "w-full h-full object-contain group-hover:scale-105 transition-transform duration-700" })) : (React.createElement("div", { className: "w-full h-full flex items-center justify-center text-slate-300 font-sora font-black uppercase tracking-widest text-sm" }, "Sin Imagen"))),
-                    React.createElement("div", { className: "px-5 md:px-7 pt-5 md:pt-6 pb-6 md:pb-8 flex flex-col flex-grow border-t border-slate-100" },
-                        React.createElement("span", { className: "text-[#2A4899] font-black text-[9px] md:text-[10px] uppercase tracking-[0.3em] mb-2 block" }, "Destacado"),
-                        React.createElement("h3", { className: "text-base md:text-lg font-black font-sora text-[#181B1C] group-hover:text-[#2A4899] transition-colors uppercase tracking-tight leading-tight mb-3 flex-grow" }, getFamily(p.name)),
-                        getPresentation(p.name) && (React.createElement("span", { className: "self-start inline-block text-xs md:text-sm font-bold font-sora text-[#2A4899] border-2 border-[#2A4899] rounded-lg px-3 py-1" }, getPresentation(p.name))))));
-            })))));
+            React.createElement("div", { ref: trackRef, className: "featured-track flex gap-5 md:gap-6 overflow-x-auto pb-2", onMouseEnter: pause, onMouseLeave: resume, onTouchStart: pause }, loop.map((c, i) => (React.createElement("div", { key: `${c.family}-${i}`, "aria-hidden": i >= items.length ? true : undefined, className: "shrink-0 w-[240px] md:w-[280px]" },
+                React.createElement(FamilyCard, { data: c }))))))));
 }
 export const layout = {
     areaId: 'content',
@@ -83,6 +98,12 @@ query FeaturedProductsQuery {
     image {
       url
       alt
+    }
+    familyMembers {
+      productId
+      uuid
+      name
+      url
     }
   }
 }

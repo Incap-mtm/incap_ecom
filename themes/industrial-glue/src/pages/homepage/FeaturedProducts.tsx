@@ -1,11 +1,13 @@
 import React, { useRef, useEffect } from 'react';
-import { getFamily, getPresentation } from '../../utils/family.js';
+import { getFamily } from '../../utils/family.js';
+import FamilyCard, { FamilyCardData, FamilyMember } from '../../components/FamilyCard.js';
 
 interface FeaturedProduct {
   uuid: string;
   name: string;
   url: string;
   image?: { url?: string | null; alt?: string | null } | null;
+  familyMembers?: (FamilyMember | null)[] | null;
 }
 
 interface Props {
@@ -13,7 +15,30 @@ interface Props {
 }
 
 export default function FeaturedProducts({ products }: Props) {
-  const items = (products ?? []).filter((p): p is FeaturedProduct => Boolean(p));
+  const raw = (products ?? []).filter((p): p is FeaturedProduct => Boolean(p));
+
+  // Agrupar por familia preservando el orden elegido por el admin: si eligió
+  // "Super PVA - 20kg" y "Super PVA - 5kg" se muestra UNA card de la familia
+  // con todas sus presentaciones como chips.
+  const seen = new Set<string>();
+  const items: FamilyCardData[] = [];
+  for (const p of raw) {
+    const family = getFamily(p.name) || p.name;
+    if (seen.has(family)) continue;
+    seen.add(family);
+    const members = (p.familyMembers ?? []).filter(
+      (m): m is FamilyMember => Boolean(m)
+    );
+    items.push({
+      family,
+      label: 'Destacado',
+      accent: '#2A4899',
+      repImage: p.image?.url ?? null,
+      repUrl: p.url,
+      members: members.length ? members : [{ name: p.name, url: p.url, uuid: p.uuid }],
+    });
+  }
+
   const trackRef = useRef<HTMLDivElement>(null);
   const pausedRef = useRef(false);
 
@@ -105,42 +130,14 @@ export default function FeaturedProducts({ products }: Props) {
           onMouseLeave={resume}
           onTouchStart={pause}
         >
-          {loop.map((p, i) => (
-            <a
-              key={`${p.uuid}-${i}`}
-              href={p.url}
+          {loop.map((c, i) => (
+            <div
+              key={`${c.family}-${i}`}
               aria-hidden={i >= items.length ? true : undefined}
-              tabIndex={i >= items.length ? -1 : undefined}
-              className="group shrink-0 w-[240px] md:w-[280px] bg-white rounded-[1.5rem] md:rounded-[2rem] shadow-lg border border-slate-100 hover:shadow-2xl transition-all overflow-hidden flex flex-col"
+              className="shrink-0 w-[240px] md:w-[280px]"
             >
-              <div className="h-48 md:h-60 overflow-hidden bg-white flex items-center justify-center p-5">
-                {p.image?.url ? (
-                  <img
-                    src={p.image.url}
-                    alt={p.image.alt || p.name}
-                    loading="lazy"
-                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-slate-300 font-sora font-black uppercase tracking-widest text-sm">
-                    Sin Imagen
-                  </div>
-                )}
-              </div>
-              <div className="px-5 md:px-7 pt-5 md:pt-6 pb-6 md:pb-8 flex flex-col flex-grow border-t border-slate-100">
-                <span className="text-[#2A4899] font-black text-[9px] md:text-[10px] uppercase tracking-[0.3em] mb-2 block">
-                  Destacado
-                </span>
-                <h3 className="text-base md:text-lg font-black font-sora text-[#181B1C] group-hover:text-[#2A4899] transition-colors uppercase tracking-tight leading-tight mb-3 flex-grow">
-                  {getFamily(p.name)}
-                </h3>
-                {getPresentation(p.name) && (
-                  <span className="self-start inline-block text-xs md:text-sm font-bold font-sora text-[#2A4899] border-2 border-[#2A4899] rounded-lg px-3 py-1">
-                    {getPresentation(p.name)}
-                  </span>
-                )}
-              </div>
-            </a>
+              <FamilyCard data={c} />
+            </div>
           ))}
         </div>
       </div>
@@ -162,6 +159,12 @@ query FeaturedProductsQuery {
     image {
       url
       alt
+    }
+    familyMembers {
+      productId
+      uuid
+      name
+      url
     }
   }
 }

@@ -10,6 +10,9 @@ export default function HistorySection() {
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
+    // La composición 3D solo existe en desktop (lg+). En mobile se muestra
+    // una imagen estática, así que no inicializamos Three.js.
+    if (window.innerWidth < 1024) return;
 
     let injected = false;
 
@@ -227,8 +230,19 @@ function init(container) {
           </div>
 
           {/* Right — composición: "+56 años" (fondo) + producto 3D (frente) + mascota (derecha) */}
+          {/* Mobile: una sola imagen estática reemplaza toda la composición 3D */}
+          <div className={`block lg:hidden ${reveal.className} reveal-stagger-2 active mt-10`}>
+            <img
+              src="/images/sections/cap_maxon_mobile.webp"
+              alt="+56 años uniendo la industria — INCAP"
+              loading="lazy"
+              style={{ display: 'block', width: '100%', maxWidth: '520px', margin: '0 auto', pointerEvents: 'none', userSelect: 'none' }}
+            />
+          </div>
+
+          {/* Desktop: composición 3D interactiva */}
           <div
-            className={`relative ${reveal.className} reveal-stagger-2 active mt-10 lg:mt-0`}
+            className={`hidden lg:block relative ${reveal.className} reveal-stagger-2 active lg:mt-0`}
             style={{ minHeight: '640px' }}
           >
             {/* "+56 años" — capa de fondo */}

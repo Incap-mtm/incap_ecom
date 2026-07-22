@@ -7,4 +7,5 @@ type SizeVariant {
 extend type Product {
   sizeVariants: [SizeVariant]
   relatedProducts: [Product]
+  familyMembers: [Product]
 }

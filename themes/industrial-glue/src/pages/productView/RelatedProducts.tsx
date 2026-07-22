@@ -1,11 +1,14 @@
 import React from 'react';
-import { getFamily, getPresentation } from '../../utils/family.js';
+import { getFamily } from '../../utils/family.js';
+import FamilyCard, { FamilyCardData, FamilyMember } from '../../components/FamilyCard.js';
 
 interface RelatedProduct {
   productId: number;
+  uuid?: string | null;
   name: string;
   url: string;
   image?: { url?: string | null; alt?: string | null } | null;
+  familyMembers?: (FamilyMember | null)[] | null;
 }
 
 interface Props {
@@ -15,10 +18,32 @@ interface Props {
 }
 
 export default function RelatedProducts({ product }: Props) {
-  const items = (product?.relatedProducts ?? []).filter(
+  const raw = (product?.relatedProducts ?? []).filter(
     (p): p is RelatedProduct => Boolean(p)
   );
-  if (items.length === 0) return null;
+
+  // Un representante por familia (el resolver ya devuelve familias distintas,
+  // pero deduplicamos por las dudas para no repetir cards).
+  const seen = new Set<string>();
+  const cards: FamilyCardData[] = [];
+  for (const p of raw) {
+    const family = getFamily(p.name) || p.name;
+    if (seen.has(family)) continue;
+    seen.add(family);
+    const members = (p.familyMembers ?? []).filter(
+      (m): m is FamilyMember => Boolean(m)
+    );
+    cards.push({
+      family,
+      label: 'Relacionado',
+      accent: '#2A4899',
+      repImage: p.image?.url ?? null,
+      repUrl: p.url,
+      members: members.length ? members : [{ name: p.name, url: p.url, uuid: p.uuid }],
+    });
+  }
+
+  if (cards.length === 0) return null;
 
   return (
     <section className="bg-slate-50 py-16 md:py-24 font-sora">
@@ -33,41 +58,9 @@ export default function RelatedProducts({ product }: Props) {
           <div className="w-24 h-2 bg-[#85C639] mt-6" />
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-          {items.map((p) => (
-            <a
-              key={p.productId}
-              href={p.url}
-              className="group bg-white rounded-[1.5rem] md:rounded-[2rem] shadow-lg border border-slate-100 hover:shadow-2xl transition-all overflow-hidden flex flex-col"
-            >
-              <div className="h-48 md:h-60 overflow-hidden bg-white flex items-center justify-center p-5">
-                {p.image?.url ? (
-                  <img
-                    src={p.image.url}
-                    alt={p.image.alt || p.name}
-                    loading="lazy"
-                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-slate-300 font-sora font-black uppercase tracking-widest text-sm">
-                    Sin Imagen
-                  </div>
-                )}
-              </div>
-              <div className="px-5 md:px-7 pt-5 md:pt-6 pb-6 md:pb-8 flex flex-col flex-grow border-t border-slate-100">
-                <span className="text-[#2A4899] font-black text-[9px] md:text-[10px] uppercase tracking-[0.3em] mb-2 block">
-                  Relacionado
-                </span>
-                <h3 className="text-base md:text-lg font-black font-sora text-[#181B1C] group-hover:text-[#2A4899] transition-colors uppercase tracking-tight leading-tight mb-3 flex-grow">
-                  {getFamily(p.name)}
-                </h3>
-                {getPresentation(p.name) && (
-                  <span className="self-start inline-block text-xs md:text-sm font-bold font-sora text-[#2A4899] border-2 border-[#2A4899] rounded-lg px-3 py-1">
-                    {getPresentation(p.name)}
-                  </span>
-                )}
-              </div>
-            </a>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          {cards.map((c) => (
+            <FamilyCard key={c.family} data={c} />
           ))}
         </div>
       </div>
@@ -85,11 +78,18 @@ query RelatedProductsQuery {
   product: currentProduct {
     relatedProducts {
       productId
+      uuid
       name
       url
       image {
         url
         alt
+      }
+      familyMembers {
+        productId
+        uuid
+        name
+        url
       }
     }
   }

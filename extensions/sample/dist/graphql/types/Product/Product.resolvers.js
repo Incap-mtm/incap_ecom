@@ -5,6 +5,16 @@ import { camelCase } from '@evershop/evershop/lib/util/camelCase';
 import { compareSizes } from '../../../lib/sizeSort.js';
 const SIZE_ATTRIBUTE_ID = 2;
 const RELATED_LIMIT = 4;
+/**
+ * Familia derivada del nombre: "Super PVA - 20kg" → "Super PVA".
+ * Misma lógica que themes/industrial-glue/src/utils/family.ts (mantener en sync).
+ */
+function familyOf(name) {
+    if (!name)
+        return '';
+    const i = name.lastIndexOf(' - ');
+    return (i === -1 ? name : name.substring(0, i)).trim();
+}
 export default {
     Product: {
         sizeVariants: async (product, _, { pool }) => {
@@ -52,10 +62,49 @@ export default {
             }));
         },
         /**
-         * Productos relacionados: hasta 4 de la misma categoría, excluyendo el
-         * producto actual. Devuelve objetos Product completos para que los
-         * resolvers core (url, image, price) los formateen. Las variantes hijas
-         * quedan fuera solas porque tienen visibility = false.
+         * Miembros de la familia: todos los productos activos/visibles de la misma
+         * categoría cuyo nombre comparte familia con el producto ("Super PVA - 20kg"
+         * y "Super PVA - 5kg" → familia "Super PVA"). Sirve para que las cards
+         * (relacionados/destacados) muestren todas las presentaciones como chips,
+         * igual que el catálogo. Incluye al propio producto.
+         */
+        familyMembers: async (product, _, { pool }) => {
+            try {
+                const { productId } = product;
+                if (!productId)
+                    return [];
+                const current = await select()
+                    .from('product')
+                    .select('product.category_id')
+                    .select('product_description.name')
+                    .leftJoin('product_description')
+                    .on('product_description.product_description_product_id', '=', 'product.product_id')
+                    .where('product.product_id', '=', productId)
+                    .load(pool);
+                if (!current)
+                    return [];
+                const categoryId = current.category_id;
+                const family = familyOf(current.name);
+                if (!categoryId || !family)
+                    return [];
+                const query = getProductsBaseQuery();
+                query.where('product.category_id', '=', categoryId);
+                query.andWhere('product.status', '=', true);
+                query.andWhere('product.visibility', '=', true);
+                const rows = await query.execute(pool);
+                const members = rows.filter((r) => familyOf(r.name) === family);
+                return members.map((r) => camelCase(r));
+            }
+            catch (e) {
+                return [];
+            }
+        },
+        /**
+         * Productos relacionados: hasta 4 FAMILIAS distintas de la misma categoría,
+         * excluyendo la familia del producto actual. Devuelve un representante por
+         * familia (objeto Product completo) para que los resolvers core (url, image)
+         * lo formateen; el front muestra todas las presentaciones vía familyMembers.
+         * Las variantes hijas quedan fuera solas porque tienen visibility = false.
          */
         relatedProducts: async (product, _, { pool }) => {
             try {
@@ -66,21 +115,36 @@ export default {
                 // product.category_id (NO existe tabla product_category).
                 const current = await select()
                     .from('product')
-                    .select('category_id')
-                    .where('product_id', '=', productId)
+                    .select('product.category_id')
+                    .select('product_description.name')
+                    .leftJoin('product_description')
+                    .on('product_description.product_description_product_id', '=', 'product.product_id')
+                    .where('product.product_id', '=', productId)
                     .load(pool);
                 const categoryId = current && current.category_id;
                 if (!categoryId)
                     return [];
+                const currentFamily = familyOf(current.name);
                 const query = getProductsBaseQuery();
                 query.where('product.category_id', '=', categoryId);
                 query.andWhere('product.product_id', '<>', productId);
                 query.andWhere('product.status', '=', true);
                 query.andWhere('product.visibility', '=', true);
                 query.orderBy('product.product_id', 'DESC');
-                query.limit(0, RELATED_LIMIT);
                 const rows = await query.execute(pool);
-                return rows.map((r) => camelCase(r));
+                // Un representante por familia, saltando la familia del producto actual.
+                const seen = new Set(currentFamily ? [currentFamily] : []);
+                const reps = [];
+                for (const r of rows) {
+                    const f = familyOf(r.name);
+                    if (seen.has(f))
+                        continue;
+                    seen.add(f);
+                    reps.push(camelCase(r));
+                    if (reps.length >= RELATED_LIMIT)
+                        break;
+                }
+                return reps;
             }
             catch (e) {
                 // Nunca romper la ficha de producto por los relacionados

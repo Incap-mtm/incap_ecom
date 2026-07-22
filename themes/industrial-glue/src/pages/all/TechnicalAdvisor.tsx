@@ -15,10 +15,30 @@ interface Product {
   url: string;
 }
 
+interface Article {
+  title: string;
+  url: string;
+}
+
 interface Message {
   role: 'user' | 'assistant';
   content: string;
   products?: Product[];
+  articles?: Article[];
+  whatsapp?: string | null;
+}
+
+/**
+ * Empuja un evento al dataLayer para GTM/GA4. Seguro en SSR (guarda window) y
+ * en cualquier entorno: el dataLayer se puebla siempre; GTM solo se carga en
+ * producción, así que staging/localhost no envían a GA4 pero sí permiten
+ * verificar los eventos. Nunca se envía texto libre del usuario (posible PII).
+ */
+function trackChat(event: string, params?: Record<string, unknown>) {
+  if (typeof window === 'undefined') return;
+  const w = window as any;
+  w.dataLayer = w.dataLayer || [];
+  w.dataLayer.push({ event, ...(params || {}) });
 }
 
 function AgentAvatar({ size }: { size: number }) {
@@ -151,7 +171,7 @@ function RichText({ content }: { content: string }) {
   return <>{blocks}</>;
 }
 
-function AssistantBubble({ content, products }: { content: string; products?: Product[] }) {
+function AssistantBubble({ content, products, articles, whatsapp }: { content: string; products?: Product[]; articles?: Article[]; whatsapp?: string | null }) {
   return (
     <div style={{ marginBottom: '12px' }}>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
@@ -166,6 +186,7 @@ function AssistantBubble({ content, products }: { content: string; products?: Pr
             <a
               key={p.sku}
               href={p.url}
+              onClick={() => trackChat('chatbot_product_click', { chat_sku: p.sku, chat_product_name: p.name })}
               style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '10px', textDecoration: 'none', transition: 'all 0.15s' }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#2A4899'; (e.currentTarget as HTMLElement).style.background = '#f0f5ff'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e2e8f0'; (e.currentTarget as HTMLElement).style.background = '#fff'; }}
@@ -178,6 +199,49 @@ function AssistantBubble({ content, products }: { content: string; products?: Pr
               </svg>
             </a>
           ))}
+        </div>
+      )}
+      {articles && articles.length > 0 && (
+        <div style={{ marginLeft: '36px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          {articles.map(a => (
+            <a
+              key={a.url}
+              href={a.url}
+              onClick={() => trackChat('chatbot_article_click', { chat_article_title: a.title })}
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '10px', textDecoration: 'none', transition: 'all 0.15s' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#85C639'; (e.currentTarget as HTMLElement).style.background = '#f4fbec'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e2e8f0'; (e.currentTarget as HTMLElement).style.background = '#fff'; }}
+            >
+              <svg width="15" height="15" fill="none" stroke="#85C639" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: '9px', fontWeight: 800, color: '#85C639', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Artículo del blog</div>
+                <div style={{ fontSize: '12px', fontWeight: 700, color: '#181B1C', lineHeight: 1.3 }}>{a.title}</div>
+              </div>
+              <svg width="14" height="14" fill="none" stroke="#85C639" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          ))}
+        </div>
+      )}
+      {whatsapp && (
+        <div style={{ marginLeft: '36px', marginTop: '8px' }}>
+          <a
+            href={whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackChat('chatbot_whatsapp_click')}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 16px', background: '#25D366', color: '#fff', borderRadius: '12px', textDecoration: 'none', fontSize: '12px', fontWeight: 800, boxShadow: '0 4px 12px rgba(37,211,102,0.3)', transition: 'transform 0.15s' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}
+          >
+            <svg width="17" height="17" fill="currentColor" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+            </svg>
+            Hablar con un asesor humano
+          </a>
         </div>
       )}
     </div>
@@ -214,9 +278,10 @@ export default function TechnicalAdvisor() {
     if (isOpen) setTimeout(() => inputRef.current?.focus(), 300);
   }, [isOpen]);
 
-  const sendMessage = async (content: string) => {
+  const sendMessage = async (content: string, method: 'chip' | 'input' = 'input', chipLabel?: string) => {
     if (!content.trim() || loading) return;
     setChipsUsed(true);
+    trackChat('chatbot_message_sent', chipLabel ? { chat_method: method, chat_chip: chipLabel } : { chat_method: method });
     const userMsg: Message = { role: 'user', content };
     const history = [...messages, userMsg];
     setMessages(history);
@@ -242,7 +307,14 @@ export default function TechnicalAdvisor() {
         role: 'assistant',
         content: reply,
         products: data.products || [],
+        articles: data.articles || [],
+        whatsapp: data.whatsapp || null,
       }]);
+      trackChat('chatbot_response', {
+        chat_has_products: (data.products || []).length > 0,
+        chat_has_articles: (data.articles || []).length > 0,
+        chat_whatsapp_offered: Boolean(data.whatsapp),
+      });
     } catch {
       setMessages(prev => [...prev, {
         role: 'assistant',
@@ -256,7 +328,7 @@ export default function TechnicalAdvisor() {
 
   const handleChip = (chip: typeof CHIPS[0]) => {
     setChipsUsed(true);
-    if (chip.prompt) sendMessage(chip.prompt);
+    if (chip.prompt) sendMessage(chip.prompt, 'chip', chip.label);
   };
 
   const handleReset = () => {
@@ -315,7 +387,7 @@ export default function TechnicalAdvisor() {
             {messages.map((msg, i) =>
               msg.role === 'user'
                 ? <UserBubble key={i} content={msg.content} />
-                : <AssistantBubble key={i} content={msg.content} products={msg.products} />
+                : <AssistantBubble key={i} content={msg.content} products={msg.products} articles={msg.articles} whatsapp={msg.whatsapp} />
             )}
 
             {loading && <TypingIndicator />}
@@ -354,7 +426,7 @@ export default function TechnicalAdvisor() {
           <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: '#85C639', animation: 'ping 2s cubic-bezier(0,0,0.2,1) infinite', opacity: 0.3 }} />
         )}
         <button
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => setIsOpen(prev => { const next = !prev; if (next) trackChat('chatbot_open'); return next; })}
           style={{ width: '56px', height: '56px', borderRadius: '50%', border: 'none', background: isOpen ? '#181B1C' : 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(42,72,153,0.4)', transition: 'all 0.3s', position: 'relative', zIndex: 1, padding: 0 }}
         >
           {isOpen ? (
