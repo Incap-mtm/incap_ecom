@@ -81,18 +81,20 @@ export default {
         const { productId } = product;
         if (!productId) return [];
 
-        const current = await select()
-          .from('product')
-          .select('product.category_id')
-          .select('product_description.name')
-          .leftJoin('product_description')
-          .on(
-            'product_description.product_description_product_id',
-            '=',
-            'product.product_id'
-          )
-          .where('product.product_id', '=', productId)
-          .load(pool);
+        // SQL crudo: encadenar .where() después de .on() en el query-builder
+        // opera sobre el nodo ON (Join.on() no devuelve el query), perdiendo el
+        // WHERE → la carga fallaba y el catch devolvía []. pool.query es a prueba
+        // de balas (patrón recomendado en CLAUDE.md).
+        const { rows: curRows } = await pool.query(
+          `SELECT p.category_id, pd.name
+             FROM product p
+             LEFT JOIN product_description pd
+               ON pd.product_description_product_id = p.product_id
+            WHERE p.product_id = $1
+            LIMIT 1`,
+          [productId]
+        );
+        const current = curRows[0];
         if (!current) return [];
 
         const categoryId = current.category_id;
@@ -125,19 +127,18 @@ export default {
         if (!productId) return [];
 
         // En esta versión de Evershop la categoría vive en la columna
-        // product.category_id (NO existe tabla product_category).
-        const current = await select()
-          .from('product')
-          .select('product.category_id')
-          .select('product_description.name')
-          .leftJoin('product_description')
-          .on(
-            'product_description.product_description_product_id',
-            '=',
-            'product.product_id'
-          )
-          .where('product.product_id', '=', productId)
-          .load(pool);
+        // product.category_id (NO existe tabla product_category). SQL crudo
+        // porque el join fluido del query-builder rompe el WHERE (ver familyMembers).
+        const { rows: curRows } = await pool.query(
+          `SELECT p.category_id, pd.name
+             FROM product p
+             LEFT JOIN product_description pd
+               ON pd.product_description_product_id = p.product_id
+            WHERE p.product_id = $1
+            LIMIT 1`,
+          [productId]
+        );
+        const current = curRows[0];
         const categoryId = current && current.category_id;
         if (!categoryId) return [];
         const currentFamily = familyOf(current.name);
