@@ -14,3 +14,8 @@ mock-preview/dist/
 db-check.cjs
 test-*.js
 evershop_import.csv
+
+# Claude Code — archivos locales por máquina (no compartir).
+# Los agentes compartidos (.claude/agents/*.md) SÍ se versionan.
+.claude/settings.local.json
+.claude/*.lock
