@@ -1,6 +1,6 @@
 const { Client } = require('pg');
 
-const DB_URL = 'postgresql://postgres:jWUghBxUtgsWrmvxzocrtxTeblOlnprU@switchyard.proxy.rlwy.net:33426/railway';
+const DB_URL = process.env.DATABASE_URL;
 
 const settings = [
   { name: 'storeInstagram', value: 'https://www.instagram.com/incap_col/?hl=es' },

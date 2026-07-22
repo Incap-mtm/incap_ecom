@@ -11,8 +11,7 @@
 const { Client } = require('pg');
 
 const connectionString =
-  process.env.DATABASE_URL ||
-  'postgresql://postgres:jWUghBxUtgsWrmvxzocrtxTeblOlnprU@switchyard.proxy.rlwy.net:33426/railway';
+  process.env.DATABASE_URL;
 
 // Banners actuales del Hero (themes/industrial-glue/public/images/banners/Hero/).
 // El cliente podrá reemplazarlos desde Admin → CMS → Widgets (suben a /media/).

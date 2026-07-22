@@ -10,7 +10,7 @@
 
 const { Client } = require('pg');
 
-const DB_URL = 'postgresql://postgres:jWUghBxUtgsWrmvxzocrtxTeblOlnprU@switchyard.proxy.rlwy.net:33426/railway';
+const DB_URL = process.env.DATABASE_URL;
 
 const args = process.argv.slice(2);
 const DRY_RUN = !args.includes('--fix');

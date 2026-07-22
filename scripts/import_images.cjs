@@ -7,7 +7,7 @@ const CSV_PATH = path.join(__dirname, '../data/Master - Listado prod completo - 
 
 const pool = process.env.DATABASE_URL
   ? new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } })
-  : new Pool({ host: 'localhost', port: 5435, user: 'evershop', password: 'evershop_password', database: 'evershop' });
+  : new Pool({ connectionString: 'postgresql://evershop:evershop_password@localhost:5435/evershop' });
 
 function parseCSV(content) {
   // Proper parser: scans char-by-char to handle quoted fields with embedded newlines

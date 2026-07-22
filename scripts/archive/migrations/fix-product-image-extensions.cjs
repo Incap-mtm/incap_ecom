@@ -16,8 +16,7 @@ const { Client } = require('pg');
 const https = require('https');
 
 const connectionString =
-  process.env.DATABASE_URL ||
-  'postgresql://postgres:jWUghBxUtgsWrmvxzocrtxTeblOlnprU@switchyard.proxy.rlwy.net:33426/railway';
+  process.env.DATABASE_URL;
 const SITE_URL = process.env.SITE_URL || 'https://www.grupoincap.com.co';
 const DRY_RUN = process.argv.includes('--dry-run');
 const CONCURRENCY = 16;

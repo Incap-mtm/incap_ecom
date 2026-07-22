@@ -13,8 +13,7 @@
 
 const { Pool } = require('pg');
 
-const DB_URL = process.env.DATABASE_URL ||
-  'postgresql://postgres:jWUghBxUtgsWrmvxzocrtxTeblOlnprU@switchyard.proxy.rlwy.net:33426/railway';
+const DB_URL = process.env.DATABASE_URL;
 
 const pool = new Pool({ connectionString: DB_URL });
 

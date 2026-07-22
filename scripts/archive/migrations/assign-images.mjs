@@ -26,8 +26,7 @@ import { dirname } from 'path';
 const { Client } = pg;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const DB_URL = process.env.DATABASE_URL ||
-  'postgresql://postgres:jWUghBxUtgsWrmvxzocrtxTeblOlnprU@switchyard.proxy.rlwy.net:33426/railway';
+const DB_URL = process.env.DATABASE_URL;
 
 const DRY_RUN  = process.argv.includes('--dry-run');
 const dirArgIdx = process.argv.indexOf('--dir');

@@ -11,8 +11,7 @@ import pg from 'pg';
 import crypto from 'crypto';
 
 const { Client } = pg;
-const DB_URL = process.env.DATABASE_URL ||
-  'postgresql://postgres:jWUghBxUtgsWrmvxzocrtxTeblOlnprU@switchyard.proxy.rlwy.net:33426/railway';
+const DB_URL = process.env.DATABASE_URL;
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SIZE_ATTRIBUTE_ID = 2;

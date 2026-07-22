@@ -9,8 +9,7 @@
 const { Client } = require('pg');
 
 const connectionString =
-  process.env.DATABASE_URL ||
-  'postgresql://postgres:jWUghBxUtgsWrmvxzocrtxTeblOlnprU@switchyard.proxy.rlwy.net:33426/railway';
+  process.env.DATABASE_URL;
 
 // Atributos que deben quedar editables en el form del producto (estaban sin grupo)
 const ATTRS_TO_GROUP = [

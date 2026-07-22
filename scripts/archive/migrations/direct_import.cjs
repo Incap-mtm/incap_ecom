@@ -4,13 +4,7 @@ const { Pool } = require('pg');
 
 // --- CONFIGURATION ---
 const INPUT_CSV = path.join(__dirname, '../plantilla_productos_incap.csv');
-const pool = new Pool({
-  user: 'evershop',
-  host: 'localhost',
-  database: 'evershop',
-  password: 'evershop_password',
-  port: 5435,
-});
+const pool = new Pool({ connectionString: process.env.DATABASE_URL || 'postgresql://evershop:evershop_password@localhost:5435/evershop' });
 
 /**
  * Slugify helper
